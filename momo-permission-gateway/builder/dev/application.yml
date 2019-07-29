@@ -1,0 +1,166 @@
+
+server:
+  port: ${momo.port}
+  tomcat:
+    uri-encoding: utf-8
+eureka:
+  instance:
+    metadata-map:
+      user.name: ${momo.security.name}
+      user.password: ${momo.security.password}
+    hostname: ${momo.ip}
+    health-check-url-path: /actuator/health
+    preferIpAddress: true
+    instance-id: ${momo.application}:${spring.cloud.client.ip-address}:${momo.port}
+    lease-renewal-interval-in-seconds: 5 # 该配置指示eureka客户端需要向eureka服务器发送心跳的频率  (Spring Cloud默认该配置是 30s)
+    lease-expiration-duration-in-seconds: 6 # 该配置指示eureka服务器在接收到最后一个心跳之后等待的时间，然后才能从列表中删除此实例 (Spring Cloud默认该配置是 90s)
+  client:
+    register-with-eureka: true #表示是否注册自身到eureka服务器 集群情况下 是需要改成true 的因为 集群是注册中心 相互注册自己 同步服务
+    fetch-registry: true  #是否从eureka上获取注册信息 集群情况下需要为true的  因为 会在别的注册中心 获取服务
+    registry-fetch-interval-seconds: 5 #client间隔多久去拉取服务注册信息，默认为30秒，对于api-gateway，如果要迅速获取服务注册状态，可以缩小该值，比如5秒
+    service-url: #（集群时指定另外一个注册中心地址）
+      defaultZone: http://${momo.security.name}:${momo.security.password}@${momo.ip}:${momo.eureka-port}/eureka/
+#      defaultZone: http://${momo.security.name}:${momo.security.password}@${momo.ip}:${momo.eureka-port}:8761/eureka/,http://${momo.security.name}:${momo.security.password}@${momo.ip}:${momo.eureka-port}:8762/eureka/,http://${momo.security.name}:${momo.security.password}@${momo.ip}:${momo.eureka-port}:8763/eureka/
+spring:
+  application:
+    name: ${momo.application}
+  security:
+    user:
+      name: ${momo.security.name}  # 用户名
+      password: ${momo.security.password}   # 用户密码
+  redis:
+    host: 127.0.0.1
+    password:
+    port: 6379
+    database: 0
+    timeout: 300000
+    #    cluster:
+    #      nodes: 127.0.0.1:6380,127.0.0.1:6381,127.0.0.1:6382,127.0.0.1:6383,127.0.0.1:6384,127.0.0.1:6385
+    #      max-redirects: 3
+    lettuce:
+      shutdown-timeout: 100
+      pool:
+        max-active: 50 # 连接池最大连接数（使用负值表示没有限制） 默认 8
+        max-idle: 20 # 连接池中的最大空闲连接 默认 8
+        max-wait: -1 # 连接池最大阻塞等待时间（使用负值表示没有限制） 默认 -1
+        min-idle: 20 # 连接池中的最小空闲连接 默认 0
+#  sleuth:
+#    web:
+#      client:
+#        enabled: true
+#    sampler:
+#      probability: 1
+#  zipkin:
+#    base-url: http://120.78.64.65:9411
+#    enabled: true
+#    sender:
+#      type: web
+#  cloud:
+#    gateway:
+#      discovery: #是否与服务发现组件进行结合，通过 serviceId(必须设置成大写) 转发到具体的服务实例。默认为false，设为true便开启通过服务中心的自动根据 serviceId 创建路由的功能
+#        locator:
+#          lowerCaseServiceId: true
+#          enabled: true
+#      routes: #具体的路由信息，是一个数组，每一个路由基本包含部分：
+#  #        default-filters: # 里面可以定义一些共同的filter，对所有路由都起作用
+#        #################################       后台管理网关        #################################
+#        - id: cloud-spring-server #这个路由的唯一id，不定义的话为一个uuid
+#          uri: lb://cloud-spring-server   #http请求为lb://前缀 + 服务id；ws请求为lb:ws://前缀 + 服务id；表示将请求负载到哪一个服务上
+#          order: 8000 #这个路由的执行order
+#          predicates: #表示这个路由的请求匹配规则，只有符合这个规则的请求才会走这个路由。为一个数组，每个规则为并且的关系。
+#            - Path= /api/platform/**
+#          filters: #请求转发前的filter，为一个数组。
+#            #            - Weight=service3, 5 #路由权重   未完成
+#            - StripPrefix= 1
+#            #自定义限流
+#            - name: RateCheck #限流
+#              args:
+#                keyResolver: apiKeyResolver #apiKeyResolver为keyResolver bean的名字
+#            - name: Retry
+#              args:
+#                retries: 3
+#                series:
+#                  - SERVER_ERROR
+#                methods:
+#                  - GET
+#                  - POST
+#                exceptions:
+#                  - java.io.IOException
+#                  - java.net.ConnectException
+#
+#        #################################       订单服务网关        #################################
+#        - id: cloud-spring-server #这个路由的唯一id，不定义的话为一个uuid
+#          uri: lb://cloud-spring-order   #http请求为lb://前缀 + 服务id；ws请求为lb:ws://前缀 + 服务id；表示将请求负载到哪一个服务上
+#          order: 8000 #这个路由的执行order
+#          predicates: #表示这个路由的请求匹配规则，只有符合这个规则的请求才会走这个路由。为一个数组，每个规则为并且的关系。
+#            - Path= /api/order/**
+#          filters: #请求转发前的filter，为一个数组。
+#            #            - Weight=service3, 5 #路由权重   未完成
+#            - StripPrefix= 1
+#            #自定义限流
+#            - name: RateCheck #限流
+#              args:
+#                keyResolver: apiKeyResolver #apiKeyResolver为keyResolver bean的名字
+#            - name: Retry
+#              args:
+#                retries: 3
+#                series:
+#                  - SERVER_ERROR
+#                methods:
+#                  - GET
+#                  - POST
+#                exceptions:
+#                  - java.io.IOException
+#                  - java.net.ConnectException
+
+        # ------------------------------------------------------------------------
+  #          - id: i5xforyou-biz-kanjia-websocket
+  #            uri: lb:ws://i5xforyou-biz-kanjia-websocket
+  #            predicates:
+  #            - Path= ${server.servlet.context-path}/kanjia-websocket/**
+  #            filters:
+  #            - StripPrefix= 1
+
+logging:
+  level:
+    org.springframework.cloud.gateway: debug
+
+# ribbon重试
+cloud-spring-order:
+  ribbon:
+    #  配置负载均衡策略
+    #NFLoadBalancerRuleClassName: com.netflix.loadbalancer.ZoneAvoidanceRule #  默认规则，符合判断server所在区域的性能和server的可用性选择服务器
+    #NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RoundRobinRule # 轮询
+    #NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule #  随机
+    #NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RetryRule #  先按照RoundRobinRule的策略获取服务，如果获取失败则在制定时间内进行重试，获取可用的服务。
+    #NFLoadBalancerRuleClassName: com.netflix.loadbalancer.WeightedResponseTimeRule #  根据平均响应的时间计算所有服务的权重，响应时间越快服务权重越大被选中的概率越高，刚启动时如果统计信息不足，则使用RoundRobinRule策略，等统计信息足够会切换到WeightedResponseTimeRule
+    #NFLoadBalancerRuleClassName: com.netflix.loadbalancer.AvailabilityFilteringRule #  会先过滤由于多次访问故障而处于断路器跳闸状态的服务，还有并发的连接数量超过阈值的服务，然后对剩余的服务列表按照轮询策略进行访问
+
+    ReadTimeout: 3000
+    ConnectTimeout: 500
+    MaxAutoRetries: 0 #同一台实例最大重试次数,不包括首次调用
+    MaxAutoRetriesNextServer: 3 #重试负载均衡其他的实例最大重试次数,不包括首次调用
+    OkToRetryOnAllOperations: true  #是否所有操作都重试
+    eureka:
+      enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+#################   cloud 初始化参数   ############################
+momo:
+  application: momo-permission-gateway #应用名
+  port: 9000 #项目端口号
+  ip: 111.231.117.239 #注册中心ip地址
+  #  ip: localhost #注册中心ip地址
+  eureka-port: 8761 #注册中心端口号
+  security:
+    name: kagome # 用户名
+    password: kagome123456 #密码
+#################  cloud 项目初始化参数 end  ############################

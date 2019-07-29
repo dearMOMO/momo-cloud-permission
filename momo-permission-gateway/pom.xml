@@ -14,21 +14,32 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 <!--    <groupId>com.momo</groupId>-->
-    <artifactId>momo-permission-eureka</artifactId>
+    <artifactId>momo-permission-gateway</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <name>momo-permission-gateway</name>
     <packaging>jar</packaging>
-    <name>momo-permission-eureka</name>
     <description>Demo project for Spring Boot</description>
+
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-gateway-webflux</artifactId>
         </dependency>
-        <!--eureka注册中心 server-->
+        <!--gateway 网关-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+            <artifactId>spring-cloud-starter-gateway</artifactId>
+        </dependency>
+        <!--eureka注册中心 client-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+        <!--客户端负载-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
         </dependency>
         <!--Admin监控  client-->
         <dependency>
@@ -36,16 +47,51 @@
             <artifactId>spring-boot-admin-starter-client</artifactId>
             <version>${spring-boot-admin.version}</version>
         </dependency>
-        <!-- spring security -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
         <!--简化实体类代码量-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <!--分布式链路跟踪 Sleuth 与 Zipkin  begin-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-sleuth</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zipkin</artifactId>
+        </dependency>
+        <!--分布式链路跟踪 Sleuth 与 Zipkin  end-->
+        <!-- 整合redis begin-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis-reactive</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
+        <!-- 整合redis end-->
+        <!--json序列化-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+        <!--jwt-->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>${jjwt.version}</version>
+        </dependency>
+        <!--http请求-->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -73,7 +119,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
-        <finalName>momo-permission-eureka</finalName>
+        <finalName>momo-permission-gateway</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -122,6 +168,14 @@
                                         <copy file="${basedir}/builder/dev/logback-spring.xml"
                                               tofile="${basedir}/target/classes/logback-spring.xml"/>
 
+                                        <delete file="${basedir}/target/classes/config/jwt.properties"/>
+                                        <copy file="${basedir}/builder/dev/config/jwt.properties"
+                                              tofile="${basedir}/target/classes/config/jwt.properties"/>
+
+                                        <delete file="${basedir}/target/classes/config/resource.properties"/>
+                                        <copy file="${basedir}/builder/dev/config/resource.properties"
+                                              tofile="${basedir}/target/classes/config/resource.properties"/>
+
                                     </target>
 
                                 </configuration>
@@ -157,6 +211,14 @@
                                         <copy file="${basedir}/builder/dev/logback-spring.xml"
                                               tofile="${basedir}/target/classes/logback-spring.xml"/>
 
+                                        <delete file="${basedir}/target/classes/config/jwt.properties"/>
+                                        <copy file="${basedir}/builder/dev/config/jwt.properties"
+                                              tofile="${basedir}/target/classes/config/jwt.properties"/>
+
+                                        <delete file="${basedir}/target/classes/config/resource.properties"/>
+                                        <copy file="${basedir}/builder/dev/config/resource.properties"
+                                              tofile="${basedir}/target/classes/config/resource.properties"/>
+
                                     </target>
 
                                 </configuration>
@@ -191,6 +253,14 @@
                                         <delete file="${basedir}/target/classes/logback-spring.xml"/>
                                         <copy file="${basedir}/builder/pre/logback-spring.xml"
                                               tofile="${basedir}/target/classes/logback-spring.xml"/>
+
+                                        <delete file="${basedir}/target/classes/config/jwt.properties"/>
+                                        <copy file="${basedir}/builder/pre/config/jwt.properties"
+                                              tofile="${basedir}/target/classes/config/jwt.properties"/>
+
+                                        <delete file="${basedir}/target/classes/config/resource.properties"/>
+                                        <copy file="${basedir}/builder/pre/config/resource.properties"
+                                              tofile="${basedir}/target/classes/config/resource.properties"/>
 
                                     </target>
 

@@ -39,6 +39,8 @@
     </properties>
     <modules>
         <module>momo-permission-eureka</module>
+        <module>momo-permission-gateway</module>
+        <module>momo-permission-system-core</module>
     </modules>
     <dependencyManagement>
         <dependencies>
@@ -113,6 +115,16 @@
             <dependency>
                 <groupId>com.momo</groupId>
                 <artifactId>momo-permission-eureka</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.momo</groupId>
+                <artifactId>momo-permission-gateway</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.momo</groupId>
+                <artifactId>momo-permission-system-core</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
         </dependencies>
