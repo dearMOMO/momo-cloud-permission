@@ -59,7 +59,7 @@ public class SysMainService {
 
     public JSONResult userLogin(SysUserLoginReq sysUserLoginReq, HttpServletRequest request) {
         //todo 验证码
-         checkVerificationCode(sysUserLoginReq);
+        checkVerificationCode(sysUserLoginReq);
         UserAccountPwdDO userAccountPwdDO = userAccountPwdMapper.sysUserAccountLogin(sysUserLoginReq.getSysUserLoginName());
         if (null == userAccountPwdDO) {
             throw BizException.fail("用户名或者密码错误");
@@ -160,7 +160,7 @@ public class SysMainService {
         loginLog.loginLog(entity, request);
         //登录成功删除验证码
         redisUtil.del("verUUidCode:" + sysUserLoginReq.getVerUUidCode());
-        return JSONResult.ok("登录成功");
+        return JSONResult.ok(redisUserKey, "登录成功");
     }
 
     public JSONResult createVerificationCode() {
