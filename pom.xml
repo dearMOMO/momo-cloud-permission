@@ -18,23 +18,22 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <spring-cloud.version>Greenwich.SR2</spring-cloud.version>
-        <!--        <spring-cloud.version>Finchley.RELEASE</spring-cloud.version>-->
         <mysql-connector-java.version>6.0.6</mysql-connector-java.version>
-        <pagehelper-spring-boot-starter.version>1.2.3</pagehelper-spring-boot-starter.version>
-        <lombok.version>1.18.2</lombok.version>
-        <fastjson.version>1.2.49</fastjson.version>
+        <pagehelper-spring-boot-starter.version>1.2.10</pagehelper-spring-boot-starter.version>
+        <lombok.version>1.18.8</lombok.version>
+        <fastjson.version>1.2.58</fastjson.version>
         <guava.version>23.0</guava.version>
         <commons-pool2.version>2.6.0</commons-pool2.version>
         <jjwt.version>0.9.1</jjwt.version>
         <httpclient.version>4.5.6</httpclient.version>
         <commons-lang3.version>3.4</commons-lang3.version>
-        <slf4j.version>1.7.1</slf4j.version>
         <UserAgentUtils.version>1.21</UserAgentUtils.version>
         <shiro-core.version>1.4.0</shiro-core.version>
         <netty-all.version>4.1.32.Final</netty-all.version>
         <spring-boot-admin.version>2.0.4</spring-boot-admin.version>
         <EasyCaptcha.version>1.5.0</EasyCaptcha.version>
         <commons-codec.version>1.12</commons-codec.version>
+        <hutool-all.version>4.6.1</hutool-all.version>
     </properties>
     <modules>
         <module>momo-permission-eureka</module>
@@ -43,6 +42,13 @@
     </modules>
     <dependencyManagement>
         <dependencies>
+            <!--一个Java基础工具类，对文件、流、加密解密、转码、正则、线程、XML等JDK方法进行封装，组成各种Util工具类-->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool-all.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>com.github.whvcse</groupId>
                 <artifactId>EasyCaptcha</artifactId>
@@ -128,10 +134,5 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    <repositories>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-    </repositories>
+
 </project>

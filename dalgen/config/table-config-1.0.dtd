@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+        <!--
+        table 下包含多个 column resultmap operation sql 相应说明见定义
+        namespace    命名空间
+        sqlname      sql名
+        remark      说明
+        sequence     oracle使用
+        physicalName 物理表名,分库分表使用
+        ordinalMaxPosition 序号位置
+        ordinalEffectiveDay 生效日期，过期不再使用  2017-04-13
+        -->
+        <!ELEMENT table (column* | resultmap* | operation* |sql*)+>
+        <!ATTLIST table
+                sqlname CDATA #IMPLIED
+                sequence CDATA #IMPLIED
+                physicalName CDATA #IMPLIED
+                ordinalMaxPosition CDATA #IMPLIED
+                ordinalEffectiveDay CDATA #IMPLIED
+                remark CDATA #IMPLIED
+                >
+        <!--
+        column 字段定义,定义字段对应javatype
+        name          数据中字段名
+        javatype      对应转为那种javaType
+        testVal       针对自动生成单元测试默认值
+        relatedColumn 针对 com.alipay.fc.common.lang.money.MultiCurrencyMoney 扩展
+        -->
+        <!ELEMENT column EMPTY>
+        <!ATTLIST column
+                name CDATA #REQUIRED
+                javatype CDATA #REQUIRED
+                jdbctype CDATA #REQUIRED
+                remark CDATA #IMPLIED
+                typeHandler CDATA #IMPLIED
+                testVal CDATA #IMPLIED
+                relatedColumn CDATA #IMPLIED
+                >
+        <!ELEMENT sql (#PCDATA | trim | where | set | foreach | choose | if )*>
+        <!ATTLIST sql
+                id CDATA #REQUIRED
+                >
+        <!--
+        idArg constructor
+        name          数据中字段名
+        javatype      对应转为那种javaType
+        testVal       针对自动生成单元测试默认值
+        relatedColumn 针对 com.alipay.fc.common.lang.money.MultiCurrencyMoney 扩展
+        -->
+        <!ELEMENT idArg EMPTY>
+        <!ATTLIST idArg
+                name CDATA #REQUIRED
+                javatype CDATA #REQUIRED
+                jdbctype CDATA #REQUIRED
+                remark CDATA #IMPLIED
+                >
+
+        <!--
+        idArg constructor
+        name          数据中字段名
+        javatype      对应转为那种javaType
+        testVal       针对自动生成单元测试默认值
+        relatedColumn 针对 com.alipay.fc.common.lang.money.MultiCurrencyMoney 扩展
+        -->
+        <!ELEMENT arg EMPTY>
+        <!ATTLIST arg
+                name CDATA #REQUIRED
+                javatype CDATA #REQUIRED
+                jdbctype CDATA #REQUIRED
+                remark CDATA #IMPLIED
+                >
+
+        <!--
+         自定义resultMap 会生成 customer/${type}.java
+         name        提供给operation 使用
+         type        自定义映射名
+         -->
+        <!ELEMENT resultmap (column* |import* | constructor* | association* | collection*)+>
+        <!ATTLIST resultmap
+                name CDATA #REQUIRED
+                type CDATA #REQUIRED
+                extend(none|base) #IMPLIED
+                remark CDATA #IMPLIED
+                >
+        <!ELEMENT import EMPTY>
+        <!ATTLIST import
+                class CDATA #REQUIRED
+                >
+        <!ELEMENT constructor (idArg | arg)*>
+
+        <!--
+         自定义association 会生成 一对一属性
+         name        提供给operation 使用
+         property    属性名
+         column      查询条件,column 注 意 : 要 处 理 复 合 主 键 , 你 可 以 指 定 多 个 列 名 通 过 column= ” {prop1=col1,prop2=col2} ” 这种语法来传递给嵌套查询语 句。这会引起 prop1 和 prop2 以参数对象形式来设置给目标嵌套查询语句。
+         select      表名字.方法名
+         -->
+        <!ELEMENT association EMPTY>
+        <!ATTLIST association
+                property CDATA #REQUIRED
+                column CDATA #REQUIRED
+                select CDATA #REQUIRED
+                remark CDATA #IMPLIED
+                >
+
+        <!--
+         自定义 collection 会生成一对多属性
+         name        提供给operation 使用
+         property    属性名
+         column      查询条件,column注意:要处理复合主键,你可以指定多个列名通过column=”{prop1=col1,prop2=col2}”这种语法来传递给嵌套查询语句。这会引起 prop1 和 prop2 以参数对象形式来设置给目标嵌套查询语句。
+         select      表名字.方法名
+         -->
+        <!ELEMENT collection EMPTY>
+        <!ATTLIST collection
+                property CDATA #REQUIRED
+                column CDATA #REQUIRED
+                select CDATA #REQUIRED
+                remark CDATA #IMPLIED
+                >
+        <!--
+        最定义操作, 根据这里生成对应的 操作
+        name          name
+        paramtype     object 会自动翻译为 生成的对象
+                      objectList 参考object
+                      primitive 根据字段类型生成
+        multiplicity  one 返回对象,
+                      many 返回list
+                      paging 返回分页
+        pagingCntType paging 默认
+                      optimize
+                      pagingExtCnt 如 select distinct code,name from tb where xx=? 此类分页时使用
+                      pagingCustom 配合 pagingCntOperation 自定义分页查询
+        paging        分页类-生成后即作为参数传递类又作为返回结果类
+        resulttype    指定返回类型
+        resultmap     指定使用哪个resultmap 不写则使用自动生成的resultMap
+        timeout       设置超时时间
+        kvmap         dao自动将结果转为Map mapk 指定字段作为 key,mapv 作为value,mapv为null时返回对象作为value
+                      false 默认值
+                      true  返回Map<?,?> 其中 ?分表对应 mapK，mapV类型
+                      list  返回Map<?,List<?>> 其中 ?分表对应 mapK，mapV类型
+                      set   返回Map<?,Set<?>>  其中 ?分表对应 mapK，mapV类型
+        -->
+        <!ELEMENT operation (#PCDATA | extraparams | selectKey | include | trim | where | set | foreach | choose | if | bind | optimizePaging)*>
+        <!ATTLIST operation
+                name CDATA         #REQUIRED
+                paramtype (object|primitive|objectList) #IMPLIED
+                multiplicity (one|many|paging) #IMPLIED
+                paging CDATA       #IMPLIED
+                pagingCntType (paging|optimize|pagingExtCnt|pagingCustom) #IMPLIED
+                pagingCntOperation CDATA       #IMPLIED
+                remark CDATA       #IMPLIED
+                resulttype CDATA   #IMPLIED
+                resultmap CDATA    #IMPLIED
+                timeout CDATA      #IMPLIED
+                kvmap (false|true|list|set) #IMPLIED
+                mapK CDATA         #IMPLIED
+                mapV CDATA         #IMPLIED
+                >
+
+        <!ELEMENT optimizePaging (#PCDATA | include | trim | where | set | foreach | choose | if | bind )*>
+
+        <!ELEMENT extraparams (param)*>
+
+        <!ELEMENT param EMPTY>
+        <!ATTLIST param
+                name CDATA #REQUIRED
+                javatype CDATA #REQUIRED
+                testVal CDATA #IMPLIED
+                >
+
+        <!ELEMENT include EMPTY>
+        <!ATTLIST include
+                refid CDATA #REQUIRED
+                >
+
+
+        <!ELEMENT selectKey (#PCDATA | include)*>
+        <!ATTLIST selectKey
+                resultType CDATA #IMPLIED
+                keyProperty CDATA #IMPLIED
+                order (BEFORE|AFTER) #IMPLIED
+                >
+
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - -
+                         DYNAMIC ELEMENTS
+          - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+
+        <!ELEMENT bind EMPTY>
+        <!ATTLIST bind
+                name CDATA #REQUIRED
+                value CDATA #REQUIRED
+                >
+
+        <!ELEMENT trim (#PCDATA | include | trim | where | set | foreach | choose | if | bind)*>
+        <!ATTLIST trim
+                prefix CDATA #IMPLIED
+                prefixOverrides CDATA #IMPLIED
+                suffix CDATA #IMPLIED
+                suffixOverrides CDATA #IMPLIED
+                >
+        <!ELEMENT where (#PCDATA | include | trim | where | set | foreach | choose | if | bind)*>
+        <!ELEMENT set (#PCDATA | include | trim | where | set | foreach | choose | if | bind)*>
+
+        <!ELEMENT foreach (#PCDATA | include | trim | where | set | foreach | choose | if | bind)*>
+        <!ATTLIST foreach
+                collection CDATA #REQUIRED
+                item CDATA #IMPLIED
+                index CDATA #IMPLIED
+                open CDATA #IMPLIED
+                close CDATA #IMPLIED
+                separator CDATA #IMPLIED
+                javatype CDATA #IMPLIED
+                >
+
+        <!ELEMENT choose (when* , otherwise?)>
+        <!ELEMENT when (#PCDATA | include | trim | where | set | foreach | choose | if | bind)*>
+        <!ATTLIST when
+                test CDATA #REQUIRED
+                >
+        <!ELEMENT otherwise (#PCDATA | include | trim | where | set | foreach | choose | if | bind)*>
+
+        <!ELEMENT if (#PCDATA | include | trim | where | set | foreach | choose | if | bind)*>
+        <!ATTLIST if
+                test CDATA #REQUIRED
+                >

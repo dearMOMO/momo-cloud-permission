@@ -28,3 +28,4 @@ build/
 ### VS Code ###
 .vscode/
 /logs/
+/mybatis-代码生成器/src/

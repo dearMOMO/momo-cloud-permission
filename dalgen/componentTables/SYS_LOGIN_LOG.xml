@@ -1,0 +1,62 @@
+<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+<table sqlname="SYS_LOGIN_LOG" physicalName="SYS_LOGIN_LOG" remark="登录日志">
+    <!--  特殊字符说明  &lt;&gt;   <> -->
+
+    <operation name="insert" paramtype="object" remark="插入表:SYS_LOGIN_LOG">
+            <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+                SELECT
+                LAST_INSERT_ID()
+            </selectKey>
+        INSERT INTO SYS_LOGIN_LOG(
+            
+            USER_ID
+            ,GROUP_ID
+            ,USER_IP
+            ,USER_LOGIN_SYS
+            ,USER_USER_NAME
+            ,USER_LOGIN_NAME
+            ,USER_LOGIN_TYPE
+            ,USER_LOGIN_BROWSER
+            ,CREATE_TIME
+        )VALUES(
+            
+            #{userId,jdbcType=BIGINT}
+            ,#{groupId,jdbcType=BIGINT}
+            ,#{userIp,jdbcType=VARCHAR}
+            ,#{userLoginSys,jdbcType=VARCHAR}
+            ,#{userUserName,jdbcType=VARCHAR}
+            ,#{userLoginName,jdbcType=VARCHAR}
+            ,#{userLoginType,jdbcType=VARCHAR}
+            ,#{userLoginBrowser,jdbcType=VARCHAR}
+            ,#{createTime,jdbcType=TIMESTAMP}
+        )
+    </operation>
+
+        <operation name="update" paramtype="object" remark="更新表:SYS_LOGIN_LOG">
+            UPDATE SYS_LOGIN_LOG
+            SET
+                    USER_ID         = #{userId,jdbcType=BIGINT}
+                    ,GROUP_ID        = #{groupId,jdbcType=BIGINT}
+                    ,USER_IP         = #{userIp,jdbcType=VARCHAR}
+                    ,USER_LOGIN_SYS  = #{userLoginSys,jdbcType=VARCHAR}
+                    ,USER_USER_NAME  = #{userUserName,jdbcType=VARCHAR}
+                    ,USER_LOGIN_NAME = #{userLoginName,jdbcType=VARCHAR}
+                    ,USER_LOGIN_TYPE = #{userLoginType,jdbcType=VARCHAR}
+                    ,USER_LOGIN_BROWSER = #{userLoginBrowser,jdbcType=VARCHAR}
+                    ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+            WHERE
+                ID              = #{id,jdbcType=BIGINT}
+        </operation>
+
+        <operation name="deleteById" multiplicity="one" remark="根据主键删除数据:SYS_LOGIN_LOG">
+            DELETE FROM SYS_LOGIN_LOG
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </operation>
+
+        <operation name="getById" multiplicity="one" remark="根据主键获取数据:SYS_LOGIN_LOG">
+            SELECT * FROM SYS_LOGIN_LOG
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </operation>
+</table>

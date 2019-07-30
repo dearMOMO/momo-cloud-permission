@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <setting name="logImpl" value="SLF4J"/>
+    </settings>
+
+    <typeHandlers>
+
+    </typeHandlers>
+    <!-- 自动生成,如需修改请移步 mybatis-config.xml.ftl  -->
+    <mappers>
+    </mappers>
+</configuration>

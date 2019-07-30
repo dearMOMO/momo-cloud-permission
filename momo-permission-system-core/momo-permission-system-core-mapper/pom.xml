@@ -11,6 +11,11 @@
     <packaging>jar</packaging>
     <artifactId>momo-permission-system-core-mapper</artifactId>
 <dependencies>
+    <!--  pagehelper 分页插件	-->
+    <dependency>
+        <groupId>com.github.pagehelper</groupId>
+        <artifactId>pagehelper-spring-boot-starter</artifactId>
+    </dependency>
     <dependency>
         <groupId>com.momo</groupId>
         <artifactId>momo-permission-system-core-common</artifactId>

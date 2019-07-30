@@ -11,6 +11,11 @@
     <packaging>jar</packaging>
     <artifactId>momo-permission-system-core-service</artifactId>
     <dependencies>
+        <!--rabbitmq -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.momo</groupId>
             <artifactId>momo-permission-system-core-feign</artifactId>

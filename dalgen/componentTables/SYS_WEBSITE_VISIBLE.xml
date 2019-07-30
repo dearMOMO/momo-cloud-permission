@@ -1,0 +1,38 @@
+<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+<table sqlname="SYS_WEBSITE_VISIBLE" physicalName="SYS_WEBSITE_VISIBLE" remark="网站访问总人数">
+    <!--  特殊字符说明  &lt;&gt;   <> -->
+
+    <operation name="insert" paramtype="object" remark="插入表:SYS_WEBSITE_VISIBLE">
+            <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+                SELECT
+                LAST_INSERT_ID()
+            </selectKey>
+        INSERT INTO SYS_WEBSITE_VISIBLE(
+            
+            VISIBLE_NUMBER
+        )VALUES(
+            
+            #{visibleNumber,jdbcType=BIGINT}
+        )
+    </operation>
+
+        <operation name="update" paramtype="object" remark="更新表:SYS_WEBSITE_VISIBLE">
+            UPDATE SYS_WEBSITE_VISIBLE
+            SET
+                    VISIBLE_NUMBER  = #{visibleNumber,jdbcType=BIGINT}
+            WHERE
+                ID              = #{id,jdbcType=BIGINT}
+        </operation>
+
+        <operation name="deleteById" multiplicity="one" remark="根据主键删除数据:SYS_WEBSITE_VISIBLE">
+            DELETE FROM SYS_WEBSITE_VISIBLE
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </operation>
+
+        <operation name="getById" multiplicity="one" remark="根据主键获取数据:SYS_WEBSITE_VISIBLE">
+            SELECT * FROM SYS_WEBSITE_VISIBLE
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </operation>
+</table>

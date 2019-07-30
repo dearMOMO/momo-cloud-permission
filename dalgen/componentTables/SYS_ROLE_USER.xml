@@ -1,0 +1,62 @@
+<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+<table sqlname="SYS_ROLE_USER" physicalName="SYS_ROLE_USER" remark="角色和用户中间表">
+    <!--  特殊字符说明  &lt;&gt;   <> -->
+
+    <operation name="insert" paramtype="object" remark="插入表:SYS_ROLE_USER">
+            <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+                SELECT
+                LAST_INSERT_ID()
+            </selectKey>
+        INSERT INTO SYS_ROLE_USER(
+            
+            ROLE_ID
+            ,USER_ID
+            ,GROUP_ID
+            ,DEL_FLAG
+            ,CREATE_BY
+            ,UPDATE_BY
+            ,SYS_ROLE_USER_UUID
+            ,CREATE_TIME
+            ,UPDATE_TIME
+        )VALUES(
+            
+            #{roleId,jdbcType=BIGINT}
+            ,#{userId,jdbcType=BIGINT}
+            ,#{groupId,jdbcType=BIGINT}
+            ,#{delFlag,jdbcType=CHAR}
+            ,#{createBy,jdbcType=VARCHAR}
+            ,#{updateBy,jdbcType=VARCHAR}
+            ,#{sysRoleUserUuid,jdbcType=VARCHAR}
+            ,#{createTime,jdbcType=TIMESTAMP}
+            ,#{updateTime,jdbcType=TIMESTAMP}
+        )
+    </operation>
+
+        <operation name="update" paramtype="object" remark="更新表:SYS_ROLE_USER">
+            UPDATE SYS_ROLE_USER
+            SET
+                    ROLE_ID         = #{roleId,jdbcType=BIGINT}
+                    ,USER_ID         = #{userId,jdbcType=BIGINT}
+                    ,GROUP_ID        = #{groupId,jdbcType=BIGINT}
+                    ,DEL_FLAG        = #{delFlag,jdbcType=CHAR}
+                    ,CREATE_BY       = #{createBy,jdbcType=VARCHAR}
+                    ,UPDATE_BY       = #{updateBy,jdbcType=VARCHAR}
+                    ,SYS_ROLE_USER_UUID = #{sysRoleUserUuid,jdbcType=VARCHAR}
+                    ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+                    ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
+            WHERE
+                ID              = #{id,jdbcType=BIGINT}
+        </operation>
+
+        <operation name="deleteById" multiplicity="one" remark="根据主键删除数据:SYS_ROLE_USER">
+            DELETE FROM SYS_ROLE_USER
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </operation>
+
+        <operation name="getById" multiplicity="one" remark="根据主键获取数据:SYS_ROLE_USER">
+            SELECT * FROM SYS_ROLE_USER
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </operation>
+</table>

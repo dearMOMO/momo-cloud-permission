@@ -1,0 +1,58 @@
+<!-- ============================================================== -->
+<!-- Master configuration file for auto-generation of iPaycore dal. -->
+<!-- ============================================================== -->
+
+<config>
+    <!-- ========================================================== -->
+    <!-- The typemap("Type Map") maps from one java type to another -->
+    <!-- java type. If you feel the original sql data type to java -->
+    <!-- type mapping is not satisfactory, you can use typemap to -->
+    <!-- convert it to a more appropriate one. -->
+    <!-- ========================================================== -->
+    <typemap from="java.sql.Date" to="java.util.Date"/>
+    <typemap from="java.sql.Time" to="java.util.Date"/>
+    <typemap from="java.sql.Timestamp" to="java.util.Date"/>
+    <typemap from="java.math.BigDecimal" to="java.math.BigDecimal"/>
+    <typemap from="byte" to="java.lang.Long"/>
+    <typemap from="short" to="java.lang.Long"/>
+    <typemap from="int" to="java.lang.Long"/>
+
+    <!-- ========================================================== -->
+    <!-- datasource config  可以配置多个-->
+    <!-- ========================================================== -->
+    <!--<database name="jcgroupfund" class="com.mysql.jdbc.Driver" type="mysql">-->
+    <!--<property name="url" value="jdbc:mysql://"/>-->
+    <!--<property name="userid" value=""/>-->
+    <!--<property name="password" value=""/>-->
+    <!--<property name="schema" value=""/>-->
+    <!--</database>-->
+
+    <database name="component" class="org.gjt.mm.mysql.Driver" type="mysql">
+        <property name="url" value="jdbc:mysql://127.0.0.1:3306/permission-core?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true"/>
+        <property name="userid" value="root"/>
+        <property name="password" value="123456"/>
+        <property name="schema" value="permission-core"/>
+    </database>
+
+
+    <!-- ========project.name pom.xml中的值========================= -->
+    <!--<package value="com.oschina.${project.name}.common.dal.${database.name}.auto"/>-->
+    <package value="com.momo.mapper"/>
+
+    <!-- ========================================================== -->
+    <tablePrefixs database="component">
+        <!--长的放前面-->
+        <tablePrefix value="tb_" replace=""/>
+        <tablePrefix value="wq_" replace=""/>
+        <tablePrefix value="d_" replace=""/>
+        <tablePrefix value="sys_" replace=""/><!--长的放前面-->
+        <tablePrefix value="log_"/><!--长的放前面-->
+        <tablePrefix value="tp_"/><!--长的放前面-->
+        <tablePrefix value="o_"/><!--长的放前面-->
+        <tablePrefix value="t_"/><!--长的放前面-->
+        <tablePath value="tables/"/>
+    </tablePrefixs>
+    <!--分库分表规则  分表后缀 支持多个-->
+    <!--<splitTableSuffix value="_000"/>-->
+
+</config>

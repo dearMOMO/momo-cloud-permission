@@ -1,0 +1,65 @@
+<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+<table sqlname="SYS_ROLE_ACL" physicalName="SYS_ROLE_ACL" remark="角色和权限中间表">
+    <!--  特殊字符说明  &lt;&gt;   <> -->
+
+    <operation name="insert" paramtype="object" remark="插入表:SYS_ROLE_ACL">
+            <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+                SELECT
+                LAST_INSERT_ID()
+            </selectKey>
+        INSERT INTO SYS_ROLE_ACL(
+            
+            GROUP_ID
+            ,SYS_ACL_ID
+            ,SYS_ROLE_ID
+            ,SYS_ACL_PERMISSION_TYPE
+            ,DEL_FLAG
+            ,CREATE_BY
+            ,UPDATE_BY
+            ,SYS_ROLE_ACL_UUID
+            ,CREATE_TIME
+            ,UPDATE_TIME
+        )VALUES(
+            
+            #{groupId,jdbcType=BIGINT}
+            ,#{sysAclId,jdbcType=BIGINT}
+            ,#{sysRoleId,jdbcType=BIGINT}
+            ,#{sysAclPermissionType,jdbcType=BIGINT}
+            ,#{delFlag,jdbcType=CHAR}
+            ,#{createBy,jdbcType=VARCHAR}
+            ,#{updateBy,jdbcType=VARCHAR}
+            ,#{sysRoleAclUuid,jdbcType=VARCHAR}
+            ,#{createTime,jdbcType=TIMESTAMP}
+            ,#{updateTime,jdbcType=TIMESTAMP}
+        )
+    </operation>
+
+        <operation name="update" paramtype="object" remark="更新表:SYS_ROLE_ACL">
+            UPDATE SYS_ROLE_ACL
+            SET
+                    GROUP_ID        = #{groupId,jdbcType=BIGINT}
+                    ,SYS_ACL_ID      = #{sysAclId,jdbcType=BIGINT}
+                    ,SYS_ROLE_ID     = #{sysRoleId,jdbcType=BIGINT}
+                    ,SYS_ACL_PERMISSION_TYPE = #{sysAclPermissionType,jdbcType=BIGINT}
+                    ,DEL_FLAG        = #{delFlag,jdbcType=CHAR}
+                    ,CREATE_BY       = #{createBy,jdbcType=VARCHAR}
+                    ,UPDATE_BY       = #{updateBy,jdbcType=VARCHAR}
+                    ,SYS_ROLE_ACL_UUID = #{sysRoleAclUuid,jdbcType=VARCHAR}
+                    ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+                    ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
+            WHERE
+                ID              = #{id,jdbcType=BIGINT}
+        </operation>
+
+        <operation name="deleteById" multiplicity="one" remark="根据主键删除数据:SYS_ROLE_ACL">
+            DELETE FROM SYS_ROLE_ACL
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </operation>
+
+        <operation name="getById" multiplicity="one" remark="根据主键获取数据:SYS_ROLE_ACL">
+            SELECT * FROM SYS_ROLE_ACL
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </operation>
+</table>

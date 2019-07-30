@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <groupId>com.yeecli</groupId>
+    <artifactId>component-dalgen</artifactId>
+    <version>1.0.0</version>
+    <modelVersion>4.0.0</modelVersion>
+
+    <repositories>
+        <repository>
+            <id>thirdparty</id>
+            <url>http://172.16.10.16:8081/nexus/content/repositories/thirdparty/</url>
+        </repository>
+        <repository>
+            <id>snapshots</id>
+            <url>http://172.16.10.16:8081/nexus/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>central</id>
+            <url>http://172.16.10.16:8081/nexus/content/repositories/central/</url>
+        </repository>
+        <repository>
+            <id>releases</id>
+            <url>http://172.16.10.16:8081/nexus/content/repositories/releases/</url>
+        </repository>
+    </repositories>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+            <groupId>cn.dalgen.plugins</groupId>
+            <artifactId>mybatis-maven-plugin</artifactId>
+            <version>1.1.7</version>
+            <configuration>
+                <!-- 可选 不填写 使用默认路径-->
+                <templateDirectory>templates</templateDirectory>
+                <!-- 代码输出路径 -->
+                <outputDirectory>../momo-permission-system-core/momo-permission-system-core-mapper/src</outputDirectory>
+                <!-- 配置文件 -->
+                <config>config/config.xml</config>
+                <!-- 自动复制模板 第一次需要设置为true,后续如果templates中的模板有修改需求需要设置为false否则会自动覆盖 -->
+                <copyTemplate>false</copyTemplate>
+            </configuration>
+        </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -1,0 +1,62 @@
+<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+<table sqlname="SYS_BUG" physicalName="SYS_BUG" remark="产品提优">
+    <!--  特殊字符说明  &lt;&gt;   <> -->
+
+    <operation name="insert" paramtype="object" remark="插入表:SYS_BUG">
+            <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+                SELECT
+                LAST_INSERT_ID()
+            </selectKey>
+        INSERT INTO SYS_BUG(
+            
+            CREATE_BY
+            ,UPDATE_BY
+            ,SYS_PRODUCT_IMG
+            ,SYS_PRODUCT_NAME
+            ,SYS_PRODUCT_REPLY
+            ,SYS_PRODUCT_DETAIL
+            ,SYS_PRODUCT_STATUS
+            ,CREATE_TIME
+            ,UPDATE_TIME
+        )VALUES(
+            
+            #{createBy,jdbcType=VARCHAR}
+            ,#{updateBy,jdbcType=VARCHAR}
+            ,#{sysProductImg,jdbcType=VARCHAR}
+            ,#{sysProductName,jdbcType=VARCHAR}
+            ,#{sysProductReply,jdbcType=VARCHAR}
+            ,#{sysProductDetail,jdbcType=VARCHAR}
+            ,#{sysProductStatus,jdbcType=CHAR}
+            ,#{createTime,jdbcType=TIMESTAMP}
+            ,#{updateTime,jdbcType=TIMESTAMP}
+        )
+    </operation>
+
+        <operation name="update" paramtype="object" remark="更新表:SYS_BUG">
+            UPDATE SYS_BUG
+            SET
+                    CREATE_BY       = #{createBy,jdbcType=VARCHAR}
+                    ,UPDATE_BY       = #{updateBy,jdbcType=VARCHAR}
+                    ,SYS_PRODUCT_IMG = #{sysProductImg,jdbcType=VARCHAR}
+                    ,SYS_PRODUCT_NAME = #{sysProductName,jdbcType=VARCHAR}
+                    ,SYS_PRODUCT_REPLY = #{sysProductReply,jdbcType=VARCHAR}
+                    ,SYS_PRODUCT_DETAIL = #{sysProductDetail,jdbcType=VARCHAR}
+                    ,SYS_PRODUCT_STATUS = #{sysProductStatus,jdbcType=CHAR}
+                    ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+                    ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
+            WHERE
+                ID              = #{id,jdbcType=BIGINT}
+        </operation>
+
+        <operation name="deleteById" multiplicity="one" remark="根据主键删除数据:SYS_BUG">
+            DELETE FROM SYS_BUG
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </operation>
+
+        <operation name="getById" multiplicity="one" remark="根据主键获取数据:SYS_BUG">
+            SELECT * FROM SYS_BUG
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </operation>
+</table>
