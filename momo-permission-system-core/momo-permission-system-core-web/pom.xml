@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <!--<parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.6.RELEASE</version>
+        <relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;
+    </parent>-->
+    <parent>
+        <artifactId>momo-permission-system-core</artifactId>
+        <groupId>com.momo</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+<!--    <groupId>com.momo</groupId>-->
+    <artifactId>momo-permission-system-core-web</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>momo-permission-system-core-web</name>
+    <description>Demo project for Spring Boot</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!--eureka注册中心 client-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+        <!--客户端负载-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
+        </dependency>
+        <!--http 调用-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <!--Admin监控  client-->
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-starter-client</artifactId>
+            <version>${spring-boot-admin.version}</version>
+        </dependency>
+        <!--简化实体类代码量-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!--json序列化-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+        <!--jwt-->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+        </dependency>
+        <!-- 整合redis begin-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
+        <!-- 整合redis end-->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+        <!--工具类-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <!--分布式链路跟踪 Sleuth 与 Zipkin  begin-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-sleuth</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zipkin</artifactId>
+        </dependency>
+        <!--分布式链路跟踪 Sleuth 与 Zipkin  end-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.momo</groupId>
+            <artifactId>momo-permission-system-core-service</artifactId>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+        <finalName>momo-permission-system-core</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>*.xml</include>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>*.yml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering> <!-- 是否使用过滤器 -->
+                <includes>
+                    <include>*.properties</include>
+                    <include>**/*.properties</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <name>dev</name>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>1.8</version>
+                        <executions>
+                            <execution>
+                                <phase>compile</phase>
+                                <configuration>
+                                    <target>
+                                        <delete file="${basedir}/target/classes/application.yml"/>
+                                        <copy file="${basedir}/builder/dev/application.yml"
+                                              tofile="${basedir}/target/classes/application.yml"/>
+
+                                        <delete file="${basedir}/target/classes/logback-spring.xml"/>
+                                        <copy file="${basedir}/builder/dev/logback-spring.xml"
+                                              tofile="${basedir}/target/classes/logback-spring.xml"/>
+
+                                        <delete file="${basedir}/target/classes/config/jwt.properties"/>
+                                        <copy file="${basedir}/builder/dev/config/jwt.properties"
+                                              tofile="${basedir}/target/classes/config/jwt.properties"/>
+
+                                        <delete file="${basedir}/target/classes/config/resource.properties"/>
+                                        <copy file="${basedir}/builder/dev/config/resource.properties"
+                                              tofile="${basedir}/target/classes/config/resource.properties"/>
+
+                                    </target>
+
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>master</id>
+            <properties>
+                <name>master</name>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>1.8</version>
+                        <executions>
+                            <execution>
+                                <phase>compile</phase>
+                                <configuration>
+                                    <target>
+                                        <delete file="${basedir}/target/classes/application.yml"/>
+                                        <copy file="${basedir}/builder/dev/application.yml"
+                                              tofile="${basedir}/target/classes/application.yml"/>
+
+                                        <delete file="${basedir}/target/classes/logback-spring.xml"/>
+                                        <copy file="${basedir}/builder/dev/logback-spring.xml"
+                                              tofile="${basedir}/target/classes/logback-spring.xml"/>
+
+                                        <delete file="${basedir}/target/classes/config/jwt.properties"/>
+                                        <copy file="${basedir}/builder/dev/config/jwt.properties"
+                                              tofile="${basedir}/target/classes/config/jwt.properties"/>
+
+                                        <delete file="${basedir}/target/classes/config/resource.properties"/>
+                                        <copy file="${basedir}/builder/dev/config/resource.properties"
+                                              tofile="${basedir}/target/classes/config/resource.properties"/>
+
+                                    </target>
+
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>pre</id>
+            <properties>
+                <name>pre</name>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>1.8</version>
+                        <executions>
+                            <execution>
+                                <phase>compile</phase>
+                                <configuration>
+                                    <target>
+                                        <delete file="${basedir}/target/classes/application.yml"/>
+                                        <copy file="${basedir}/builder/pre/application.yml"
+                                              tofile="${basedir}/target/classes/application.yml"/>
+
+                                        <delete file="${basedir}/target/classes/logback-spring.xml"/>
+                                        <copy file="${basedir}/builder/pre/logback-spring.xml"
+                                              tofile="${basedir}/target/classes/logback-spring.xml"/>
+
+                                        <delete file="${basedir}/target/classes/config/jwt.properties"/>
+                                        <copy file="${basedir}/builder/pre/config/jwt.properties"
+                                              tofile="${basedir}/target/classes/config/jwt.properties"/>
+
+                                        <delete file="${basedir}/target/classes/config/resource.properties"/>
+                                        <copy file="${basedir}/builder/pre/config/resource.properties"
+                                              tofile="${basedir}/target/classes/config/resource.properties"/>
+
+                                    </target>
+
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <name>test</name>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>1.8</version>
+                        <executions>
+                            <execution>
+                                <phase>compile</phase>
+                                <configuration>
+                                    <target>
+                                        <delete file="${basedir}/target/classes/application.yml"/>
+                                        <copy file="${basedir}/builder/test/application.yml"
+                                              tofile="${basedir}/target/classes/application.yml"/>
+
+                                        <delete file="${basedir}/target/classes/logback-spring.xml"/>
+                                        <copy file="${basedir}/builder/test/logback-spring.xml"
+                                              tofile="${basedir}/target/classes/logback-spring.xml"/>
+
+                                        <delete file="${basedir}/target/classes/config/jwt.properties"/>
+                                        <copy file="${basedir}/builder/test/config/jwt.properties"
+                                              tofile="${basedir}/target/classes/config/jwt.properties"/>
+
+                                        <delete file="${basedir}/target/classes/config/resource.properties"/>
+                                        <copy file="${basedir}/builder/test/config/resource.properties"
+                                              tofile="${basedir}/target/classes/config/resource.properties"/>
+
+                                    </target>
+
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>
