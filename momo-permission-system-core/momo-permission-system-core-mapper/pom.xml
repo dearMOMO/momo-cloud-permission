@@ -16,6 +16,12 @@
         <groupId>com.github.pagehelper</groupId>
         <artifactId>pagehelper-spring-boot-starter</artifactId>
     </dependency>
+    <!--简化实体类代码量-->
+    <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <scope>provided</scope>
+    </dependency>
     <dependency>
         <groupId>com.momo</groupId>
         <artifactId>momo-permission-system-core-common</artifactId>

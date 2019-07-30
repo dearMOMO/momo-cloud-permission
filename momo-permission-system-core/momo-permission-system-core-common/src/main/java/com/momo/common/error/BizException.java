@@ -1,10 +1,18 @@
 package com.momo.common.error;
 
+import lombok.*;
+
 /**
  * 业务错误
+ *
  * @author jim
  * @date 16/10/12
  */
+@Getter
+@Setter
+@ToString
+@Builder
+//@EqualsAndHashCode(of = {"id"})
 public class BizException extends RuntimeException {
     private ErrorEnum error = null;
     private String message;
@@ -25,6 +33,10 @@ public class BizException extends RuntimeException {
     public BizException(ErrorEnum error, String message) {
         this.error = error;
         this.message = message;
+    }
+
+    public synchronized static BizException fail(String message) {
+        return BizException.builder().message(message).error(ErrorEnum.ERROR_BIZ_FAIL).build();
     }
 
     public ErrorEnum getError() {

@@ -22,6 +22,10 @@ public class UserDeptDO{
      */
     private Long sysUserId;
     /**
+     * uuid UUID.
+     */
+    private String uuid;
+    /**
      * createBy 创建人.
      */
     private String createBy;
@@ -92,6 +96,22 @@ public class UserDeptDO{
      */
     public Long getSysUserId(){
         return sysUserId;
+    }
+
+    /**
+     * Set uuid UUID.
+     */
+    public void setUuid(String uuid){
+        this.uuid = uuid;
+    }
+
+    /**
+     * Get uuid UUID.
+     *
+     * @return the string
+     */
+    public String getUuid(){
+        return uuid;
     }
 
     /**

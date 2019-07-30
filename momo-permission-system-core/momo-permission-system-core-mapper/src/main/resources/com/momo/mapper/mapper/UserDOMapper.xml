@@ -8,11 +8,11 @@
             <result column="SYS_USER_AREA" property="sysUserArea" jdbcType="BIGINT" javaType="Long"/>
             <result column="SYS_USER_CITY" property="sysUserCity" jdbcType="BIGINT" javaType="Long"/>
             <result column="SYS_USER_PROVINCE" property="sysUserProvince" jdbcType="BIGINT" javaType="Long"/>
+            <result column="UUID" property="uuid" jdbcType="VARCHAR" javaType="String"/>
             <result column="REMARK" property="remark" jdbcType="VARCHAR" javaType="String"/>
             <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
             <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
             <result column="SYS_USER_NAME" property="sysUserName" jdbcType="VARCHAR" javaType="String"/>
-            <result column="SYS_USER_UUID" property="sysUserUuid" jdbcType="VARCHAR" javaType="String"/>
             <result column="SYS_USER_EMAIL" property="sysUserEmail" jdbcType="VARCHAR" javaType="String"/>
             <result column="SYS_USER_PHONE" property="sysUserPhone" jdbcType="VARCHAR" javaType="String"/>
             <result column="SYS_USER_AREA_NAME" property="sysUserAreaName" jdbcType="VARCHAR" javaType="String"/>
@@ -20,14 +20,13 @@
             <result column="SYS_USER_PROVINCE_NAME" property="sysUserProvinceName" jdbcType="VARCHAR" javaType="String"/>
             <result column="STATE" property="state" jdbcType="INTEGER" javaType="Integer"/>
             <result column="DEL_FLAG" property="delFlag" jdbcType="INTEGER" javaType="Integer"/>
-            <result column="SYS_LOGIN_NUMBER" property="sysLoginNumber" jdbcType="INTEGER" javaType="Integer"/>
             <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
             <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
     </resultMap>
 
 
     <sql id="Base_Column_List">
-        ID,GROUP_ID,SYS_USER_AREA,SYS_USER_CITY,SYS_USER_PROVINCE,REMARK,CREATE_BY,UPDATE_BY,SYS_USER_NAME,SYS_USER_UUID,SYS_USER_EMAIL,SYS_USER_PHONE,SYS_USER_AREA_NAME,SYS_USER_CITY_NAME,SYS_USER_PROVINCE_NAME,STATE,DEL_FLAG,SYS_LOGIN_NUMBER,CREATE_TIME,UPDATE_TIME
+        ID,GROUP_ID,SYS_USER_AREA,SYS_USER_CITY,SYS_USER_PROVINCE,UUID,REMARK,CREATE_BY,UPDATE_BY,SYS_USER_NAME,SYS_USER_EMAIL,SYS_USER_PHONE,SYS_USER_AREA_NAME,SYS_USER_CITY_NAME,SYS_USER_PROVINCE_NAME,STATE,DEL_FLAG,CREATE_TIME,UPDATE_TIME
     </sql>
 
 

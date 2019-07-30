@@ -55,39 +55,39 @@ spring:
 #    enabled: true
 #    sender:
 #      type: web
-#  cloud:
-#    gateway:
-#      discovery: #是否与服务发现组件进行结合，通过 serviceId(必须设置成大写) 转发到具体的服务实例。默认为false，设为true便开启通过服务中心的自动根据 serviceId 创建路由的功能
-#        locator:
-#          lowerCaseServiceId: true
-#          enabled: true
-#      routes: #具体的路由信息，是一个数组，每一个路由基本包含部分：
-#  #        default-filters: # 里面可以定义一些共同的filter，对所有路由都起作用
-#        #################################       后台管理网关        #################################
-#        - id: cloud-spring-server #这个路由的唯一id，不定义的话为一个uuid
-#          uri: lb://cloud-spring-server   #http请求为lb://前缀 + 服务id；ws请求为lb:ws://前缀 + 服务id；表示将请求负载到哪一个服务上
-#          order: 8000 #这个路由的执行order
-#          predicates: #表示这个路由的请求匹配规则，只有符合这个规则的请求才会走这个路由。为一个数组，每个规则为并且的关系。
-#            - Path= /api/platform/**
-#          filters: #请求转发前的filter，为一个数组。
-#            #            - Weight=service3, 5 #路由权重   未完成
-#            - StripPrefix= 1
-#            #自定义限流
-#            - name: RateCheck #限流
-#              args:
-#                keyResolver: apiKeyResolver #apiKeyResolver为keyResolver bean的名字
-#            - name: Retry
-#              args:
-#                retries: 3
-#                series:
-#                  - SERVER_ERROR
-#                methods:
-#                  - GET
-#                  - POST
-#                exceptions:
-#                  - java.io.IOException
-#                  - java.net.ConnectException
-#
+  cloud:
+    gateway:
+      discovery: #是否与服务发现组件进行结合，通过 serviceId(必须设置成大写) 转发到具体的服务实例。默认为false，设为true便开启通过服务中心的自动根据 serviceId 创建路由的功能
+        locator:
+          lowerCaseServiceId: true
+          enabled: true
+      routes: #具体的路由信息，是一个数组，每一个路由基本包含部分：
+  #        default-filters: # 里面可以定义一些共同的filter，对所有路由都起作用
+        #################################       后台管理网关        #################################
+        - id: momo-permission-system-core #这个路由的唯一id，不定义的话为一个uuid
+          uri: lb://momo-permission-system-core   #http请求为lb://前缀 + 服务id；ws请求为lb:ws://前缀 + 服务id；表示将请求负载到哪一个服务上
+          order: 8000 #这个路由的执行order
+          predicates: #表示这个路由的请求匹配规则，只有符合这个规则的请求才会走这个路由。为一个数组，每个规则为并且的关系。
+            - Path= /api/platform/**
+          filters: #请求转发前的filter，为一个数组。
+            #            - Weight=service3, 5 #路由权重   未完成
+            - StripPrefix= 1
+            #自定义限流
+            - name: RateCheck #限流
+              args:
+                keyResolver: apiKeyResolver #apiKeyResolver为keyResolver bean的名字
+            - name: Retry
+              args:
+                retries: 3
+                series:
+                  - SERVER_ERROR
+                methods:
+                  - GET
+                  - POST
+                exceptions:
+                  - java.io.IOException
+                  - java.net.ConnectException
+
 #        #################################       订单服务网关        #################################
 #        - id: cloud-spring-server #这个路由的唯一id，不定义的话为一个uuid
 #          uri: lb://cloud-spring-order   #http请求为lb://前缀 + 服务id；ws请求为lb:ws://前缀 + 服务id；表示将请求负载到哪一个服务上

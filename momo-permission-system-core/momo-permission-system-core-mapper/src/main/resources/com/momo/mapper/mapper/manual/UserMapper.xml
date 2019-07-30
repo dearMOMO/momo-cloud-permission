@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.momo.mapper.mapper.manual.UserMapper">
+    <resultMap id="BaseResultMap" type="com.momo.mapper.dataobject.UserDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="sys_user_name" jdbcType="VARCHAR" property="sysUserName" />
+        <result column="uuid" jdbcType="VARCHAR" property="uuid" />
+        <result column="sys_user_phone" jdbcType="VARCHAR" property="sysUserPhone" />
+        <result column="sys_user_email" jdbcType="VARCHAR" property="sysUserEmail" />
+        <result column="sys_user_province_name" jdbcType="VARCHAR" property="sysUserProvinceName" />
+        <result column="sys_user_province" jdbcType="BIGINT" property="sysUserProvince" />
+        <result column="sys_user_city_name" jdbcType="VARCHAR" property="sysUserCityName" />
+        <result column="sys_user_city" jdbcType="BIGINT" property="sysUserCity" />
+        <result column="sys_user_area_name" jdbcType="VARCHAR" property="sysUserAreaName" />
+        <result column="sys_user_area" jdbcType="BIGINT" property="sysUserArea" />
+        <result column="group_id" jdbcType="BIGINT" property="groupId" />
+
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="state" jdbcType="INTEGER" property="state" />
+        <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, sys_user_name, uuid, sys_user_phone, sys_user_email, sys_user_province_name,
+    sys_user_province, sys_user_city_name, sys_user_city, sys_user_area_name, sys_user_area,
+    group_id, remark, state, del_flag, create_by, create_time, update_time,
+    update_by
+  </sql>
+    <select id="getById" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_user
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+</mapper>

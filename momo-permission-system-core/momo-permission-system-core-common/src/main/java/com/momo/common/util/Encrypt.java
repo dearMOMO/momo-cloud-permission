@@ -11,7 +11,7 @@ import java.security.NoSuchAlgorithmException;
  **/
 public class Encrypt {
     public static void main(String[] args) {
-        System.out.println(SHA512AndSHA256("123456","1234").length());
+        System.out.println(SHA512AndSHA256("123456","msnfhfy%$6"));
     }
 
     public static String SHA512AndSHA256(final String msg, final String salt) {

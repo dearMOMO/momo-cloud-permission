@@ -171,7 +171,7 @@ public class DateUtils {
         System.out.println(timeDifference(new Date()));
     }
 
-    public static Date localDateTimeTOdate (LocalDateTime localDateTime){
+    public static Date localDateTimeTOdate(LocalDateTime localDateTime) {
         ZoneId zone = ZoneId.systemDefault();
         Instant instant = localDateTime.atZone(zone).toInstant();
         Date date = Date.from(instant);
@@ -714,6 +714,7 @@ public class DateUtils {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return format.format(date);
     }
+
     /**
      * 获取当前时间
      */
@@ -723,8 +724,44 @@ public class DateUtils {
         return df.format(calendar.getTime());
     }
 
+    public static String getDatePoorTwo(Date endDate, Date nowDate) {
+
+        long nmh = 1000 * 24 * 60 * 60 * 30L;
+        long nd = 1000 * 24 * 60 * 60L;
+        long nh = 1000 * 60 * 60L;
+        long nm = 1000 * 60L;
+        long ns = 1000;
+        // 获得两个时间的毫秒时间差异
+        long diff = endDate.getTime() - nowDate.getTime();
+        long diffTwo = (endDate.getTime() - nowDate.getTime()) / 1000;
+        // 计算差多少天
+        long mh = diff / nmh;
+        long day = diff / nd;
+        // 计算差多少小时
+        long hour = diff % nd / nh;
+        // 计算差多少分钟
+        long min = diff % nd % nh / nm;
+        // 计算差多少秒//输出结果
+        long sec = diff % nd % nh % nm / ns;
+
+        if (mh != 0) {
+            return mh + "月" + (day - mh * 30) + "天" + hour + "小时" + min + "分钟";
+        }
+        if (day != 0) {
+            return day + "天" + hour + "小时" + min + "分钟";
+        }
+        if (hour != 0) {
+            return hour + "小时" + min + "分钟";
+        }
+        if (min != 0) {
+            return min + "分钟";
+        }
+        return "";
+    }
+
     /**
      * 获取日期年份
+     *
      * @param date 日期
      * @return
      */
@@ -733,11 +770,11 @@ public class DateUtils {
         calendar.setTime(date);
         return calendar.get(Calendar.YEAR);
     }
+
     /**
      * 功能描述：返回月
      *
-     * @param date
-     *            Date 日期
+     * @param date Date 日期
      * @return 返回月份
      */
     public static int getMonth(Date date) {
@@ -749,8 +786,7 @@ public class DateUtils {
     /**
      * 功能描述：返回日期
      *
-     * @param date
-     *            Date 日期
+     * @param date Date 日期
      * @return 返回日份
      */
     public static int getDay(Date date) {
@@ -762,8 +798,7 @@ public class DateUtils {
     /**
      * 功能描述：返回小时
      *
-     * @param date
-     *            日期
+     * @param date 日期
      * @return 返回小时
      */
     public static int getHour(Date date) {
@@ -775,8 +810,7 @@ public class DateUtils {
     /**
      * 功能描述：返回分
      *
-     * @param date
-     *            日期
+     * @param date 日期
      * @return 返回分钟
      */
     public static int getMinute(Date date) {
@@ -788,8 +822,7 @@ public class DateUtils {
     /**
      * 返回秒钟
      *
-     * @param date
-     *            Date 日期
+     * @param date Date 日期
      * @return 返回秒钟
      */
     public static int getSecond(Date date) {
@@ -801,8 +834,7 @@ public class DateUtils {
     /**
      * 功能描述：返回毫
      *
-     * @param date
-     *            日期
+     * @param date 日期
      * @return 返回毫
      */
     public static long getMillis(Date date) {

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.momo.mapper.mapper.manual.LoginLogMapper">
+    <insert id="insertSelective" parameterType="com.momo.mapper.dataobject.LoginLogDO">
+        insert into sys_login_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="uuid != null">
+                uuid,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="userUserName != null">
+                user_user_name,
+            </if>
+            <if test="userLoginName != null">
+                user_login_name,
+            </if>
+            <if test="userIp != null">
+                user_ip,
+            </if>
+            <if test="userLoginType != null">
+                user_login_type,
+            </if>
+            <if test="userLoginDevice != null">
+                user_login_device,
+            </if>
+            <if test="userLoginSys != null">
+                user_login_sys,
+            </if>
+            <if test="userLoginBrowser != null">
+                user_login_browser,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="groupId != null">
+                group_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="uuid != null">
+                #{uuid,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="userUserName != null">
+                #{userUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="userLoginName != null">
+                #{userLoginName,jdbcType=VARCHAR},
+            </if>
+            <if test="userIp != null">
+                #{userIp,jdbcType=VARCHAR},
+            </if>
+            <if test="userLoginType != null">
+                #{userLoginType,jdbcType=INTEGER},
+            </if>
+            <if test="userLoginDevice != null">
+                #{userLoginDevice,jdbcType=VARCHAR},
+            </if>
+            <if test="userLoginSys != null">
+                #{userLoginSys,jdbcType=VARCHAR},
+            </if>
+            <if test="userLoginBrowser != null">
+                #{userLoginBrowser,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="groupId != null">
+                #{groupId,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+</mapper>

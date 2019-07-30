@@ -4,12 +4,12 @@
     <!-- 自动生成,请修改 SYS_USER_GROUP.xml -->
     <resultMap id="BaseResultMap"  type="com.momo.mapper.dataobject.UserGroupDO">
             <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+            <result column="UUID" property="uuid" jdbcType="VARCHAR" javaType="String"/>
             <result column="NAME_TOP" property="nameTop" jdbcType="VARCHAR" javaType="String"/>
             <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
             <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
             <result column="NAME_BOTTOM" property="nameBottom" jdbcType="VARCHAR" javaType="String"/>
             <result column="USER_GROUP_NAME" property="userGroupName" jdbcType="VARCHAR" javaType="String"/>
-            <result column="USER_GROUP_UUID" property="userGroupUuid" jdbcType="VARCHAR" javaType="String"/>
             <result column="STATUS" property="status" jdbcType="INTEGER" javaType="Integer"/>
             <result column="DEL_FLAG" property="delFlag" jdbcType="INTEGER" javaType="Integer"/>
             <result column="SYS_OPEN_DAY" property="sysOpenDay" jdbcType="INTEGER" javaType="Integer"/>
@@ -23,7 +23,7 @@
 
 
     <sql id="Base_Column_List">
-        ID,NAME_TOP,CREATE_BY,UPDATE_BY,NAME_BOTTOM,USER_GROUP_NAME,USER_GROUP_UUID,STATUS,DEL_FLAG,SYS_OPEN_DAY,SYS_OPEN_ACCOUNT_NUM,SYS_CREATE_ACCOUNT_NUM,CREATE_TIME,UPDATE_TIME,SYS_ACCOUNT_END_TIME,SYS_ACCOUNT_START_TIME
+        ID,UUID,NAME_TOP,CREATE_BY,UPDATE_BY,NAME_BOTTOM,USER_GROUP_NAME,STATUS,DEL_FLAG,SYS_OPEN_DAY,SYS_OPEN_ACCOUNT_NUM,SYS_CREATE_ACCOUNT_NUM,CREATE_TIME,UPDATE_TIME,SYS_ACCOUNT_END_TIME,SYS_ACCOUNT_START_TIME
     </sql>
 
 

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.momo.mapper.mapper.manual.UserAccountPwdMapper">
+    <resultMap id="BaseResultMap" type="com.momo.mapper.dataobject.UserAccountPwdDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="uuid" jdbcType="VARCHAR" property="uuid" />
+        <result column="sys_user_login_name" jdbcType="VARCHAR" property="sysUserLoginName" />
+        <result column="sys_user_pwd" jdbcType="VARCHAR" property="sysUserPwd" />
+        <result column="sys_user_auth_salt" jdbcType="VARCHAR" property="sysUserAuthSalt" />
+        <result column="sys_user_id" jdbcType="BIGINT" property="sysUserId" />
+        <result column="group_id" jdbcType="BIGINT" property="groupId" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="sys_login_number" jdbcType="INTEGER" property="sysLoginNumber" />
+        <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, uuid, sys_user_login_name, sys_user_pwd, sys_user_auth_salt, sys_user_id, group_id,
+    remark,sys_login_number, status, del_flag, create_by, create_time, update_time, update_by
+  </sql>
+    <select id="sysUserAccountLogin" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_user_account_pwd
+        where sys_user_login_name = #{sysUserLoginName,jdbcType=VARCHAR}
+    </select>
+</mapper>

@@ -6,6 +6,7 @@
             <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
             <result column="SYS_DEPT_ID" property="sysDeptId" jdbcType="BIGINT" javaType="Long"/>
             <result column="SYS_USER_ID" property="sysUserId" jdbcType="BIGINT" javaType="Long"/>
+            <result column="UUID" property="uuid" jdbcType="VARCHAR" javaType="String"/>
             <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
             <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
             <result column="STATE" property="state" jdbcType="INTEGER" javaType="Integer"/>
@@ -16,7 +17,7 @@
 
 
     <sql id="Base_Column_List">
-        ID,SYS_DEPT_ID,SYS_USER_ID,CREATE_BY,UPDATE_BY,STATE,DEL_FLAG,CREATE_TIME,UPDATE_TIME
+        ID,SYS_DEPT_ID,SYS_USER_ID,UUID,CREATE_BY,UPDATE_BY,STATE,DEL_FLAG,CREATE_TIME,UPDATE_TIME
     </sql>
 
 

@@ -33,6 +33,8 @@
         <!--生成对应表及类名-->
 
 
+<table tableName="sys_login_log" domainObjectName="sys_login_log" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" />
+<table tableName="sys_user_account_pwd" domainObjectName="sys_user_account_pwd" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" />
 <table tableName="sys_bug" domainObjectName="sys_bug" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" />
 <table tableName="sys_routes" domainObjectName="sys_routes" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" />
 <table tableName="sys_dept" domainObjectName="sys_dept" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" />

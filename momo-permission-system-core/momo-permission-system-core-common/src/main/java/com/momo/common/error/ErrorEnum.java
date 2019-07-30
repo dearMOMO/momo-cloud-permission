@@ -17,7 +17,6 @@ public enum ErrorEnum {
     ERROR_BIZ_FAIL(10000, 10001, "业务失败"),
     ERROR_BIZ_UNIQUE_REQ_ID(10000, 10002, "唯一性约束重复"),
     SERVICE_ERROR(10000, 90001, "服务错误"),
-    ERROR_ADD_NAME_FAIL(10000,10003,"新增名称重复"),
 
     //2开头为参数校验信息错误
     ERROR_PARAM(20000, 20000, "参数错误"),

@@ -30,6 +30,10 @@ public class UserDO{
      */
     private Long sysUserProvince;
     /**
+     * uuid 唯一，32位字符串，查询用.
+     */
+    private String uuid;
+    /**
      * remark 备注.
      */
     private String remark;
@@ -45,10 +49,6 @@ public class UserDO{
      * sysUserName 姓名.
      */
     private String sysUserName;
-    /**
-     * sysUserUuid 唯一，32位字符串，查询用.
-     */
-    private String sysUserUuid;
     /**
      * sysUserEmail 邮箱.
      */
@@ -77,10 +77,6 @@ public class UserDO{
      * delFlag 删除状态(0-正常，1-删除).
      */
     private Integer delFlag;
-    /**
-     * sysLoginNumber 账号允许登录的次数 -1 不限次数 ，0禁止登陆.
-     */
-    private Integer sysLoginNumber;
     /**
      * createTime 创建时间.
      */
@@ -171,6 +167,22 @@ public class UserDO{
     }
 
     /**
+     * Set uuid 唯一，32位字符串，查询用.
+     */
+    public void setUuid(String uuid){
+        this.uuid = uuid;
+    }
+
+    /**
+     * Get uuid 唯一，32位字符串，查询用.
+     *
+     * @return the string
+     */
+    public String getUuid(){
+        return uuid;
+    }
+
+    /**
      * Set remark 备注.
      */
     public void setRemark(String remark){
@@ -232,22 +244,6 @@ public class UserDO{
      */
     public String getSysUserName(){
         return sysUserName;
-    }
-
-    /**
-     * Set sysUserUuid 唯一，32位字符串，查询用.
-     */
-    public void setSysUserUuid(String sysUserUuid){
-        this.sysUserUuid = sysUserUuid;
-    }
-
-    /**
-     * Get sysUserUuid 唯一，32位字符串，查询用.
-     *
-     * @return the string
-     */
-    public String getSysUserUuid(){
-        return sysUserUuid;
     }
 
     /**
@@ -360,22 +356,6 @@ public class UserDO{
      */
     public Integer getDelFlag(){
         return delFlag;
-    }
-
-    /**
-     * Set sysLoginNumber 账号允许登录的次数 -1 不限次数 ，0禁止登陆.
-     */
-    public void setSysLoginNumber(Integer sysLoginNumber){
-        this.sysLoginNumber = sysLoginNumber;
-    }
-
-    /**
-     * Get sysLoginNumber 账号允许登录的次数 -1 不限次数 ，0禁止登陆.
-     *
-     * @return the string
-     */
-    public Integer getSysLoginNumber(){
-        return sysLoginNumber;
     }
 
     /**

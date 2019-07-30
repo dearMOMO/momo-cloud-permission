@@ -4,7 +4,7 @@ import java.util.Date;
 import com.momo.mapper.dataobject.UserAccountPwdDO;
 
 /**
- * The table 会员登录
+ * The table 用户基础表
  * 注意:此结构有系统生成,禁止手工修改,以免被覆盖,请通过dalgen生成
  */
 public class UserAccountPwdDO{
@@ -14,11 +14,19 @@ public class UserAccountPwdDO{
      */
     private Long id;
     /**
+     * groupId 第三方组 kagome-momo-open-source默认为1.
+     */
+    private Long groupId;
+    /**
      * sysUserId 关联用户表id.
      */
     private Long sysUserId;
     /**
-     * remark REMARK.
+     * uuid uuid.
+     */
+    private String uuid;
+    /**
+     * remark 备注.
      */
     private String remark;
     /**
@@ -50,6 +58,10 @@ public class UserAccountPwdDO{
      */
     private Integer delFlag;
     /**
+     * sysLoginNumber 账号允许登录的次数 -1 不限次数 ，0禁止登陆.
+     */
+    private Integer sysLoginNumber;
+    /**
      * createTime 创建时间.
      */
     private Date createTime;
@@ -75,6 +87,22 @@ public class UserAccountPwdDO{
     }
 
     /**
+     * Set groupId 第三方组 kagome-momo-open-source默认为1.
+     */
+    public void setGroupId(Long groupId){
+        this.groupId = groupId;
+    }
+
+    /**
+     * Get groupId 第三方组 kagome-momo-open-source默认为1.
+     *
+     * @return the string
+     */
+    public Long getGroupId(){
+        return groupId;
+    }
+
+    /**
      * Set sysUserId 关联用户表id.
      */
     public void setSysUserId(Long sysUserId){
@@ -91,14 +119,30 @@ public class UserAccountPwdDO{
     }
 
     /**
-     * Set remark REMARK.
+     * Set uuid uuid.
+     */
+    public void setUuid(String uuid){
+        this.uuid = uuid;
+    }
+
+    /**
+     * Get uuid uuid.
+     *
+     * @return the string
+     */
+    public String getUuid(){
+        return uuid;
+    }
+
+    /**
+     * Set remark 备注.
      */
     public void setRemark(String remark){
         this.remark = remark;
     }
 
     /**
-     * Get remark REMARK.
+     * Get remark 备注.
      *
      * @return the string
      */
@@ -216,6 +260,22 @@ public class UserAccountPwdDO{
      */
     public Integer getDelFlag(){
         return delFlag;
+    }
+
+    /**
+     * Set sysLoginNumber 账号允许登录的次数 -1 不限次数 ，0禁止登陆.
+     */
+    public void setSysLoginNumber(Integer sysLoginNumber){
+        this.sysLoginNumber = sysLoginNumber;
+    }
+
+    /**
+     * Get sysLoginNumber 账号允许登录的次数 -1 不限次数 ，0禁止登陆.
+     *
+     * @return the string
+     */
+    public Integer getSysLoginNumber(){
+        return sysLoginNumber;
     }
 
     /**

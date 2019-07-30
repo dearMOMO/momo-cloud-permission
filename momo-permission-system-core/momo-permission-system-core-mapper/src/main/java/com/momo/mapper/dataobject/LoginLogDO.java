@@ -22,6 +22,10 @@ public class LoginLogDO{
      */
     private Long groupId;
     /**
+     * uuid UUID.
+     */
+    private String uuid;
+    /**
      * userIp 用户ip.
      */
     private String userIp;
@@ -38,13 +42,17 @@ public class LoginLogDO{
      */
     private String userLoginName;
     /**
-     * userLoginType 登录设备.
+     * userLoginDevice 登录设备.
      */
-    private String userLoginType;
+    private String userLoginDevice;
     /**
      * userLoginBrowser 获取浏览器类型.
      */
     private String userLoginBrowser;
+    /**
+     * userLoginType 登录类型.
+     */
+    private Integer userLoginType;
     /**
      * createTime 登录时间.
      */
@@ -96,6 +104,22 @@ public class LoginLogDO{
      */
     public Long getGroupId(){
         return groupId;
+    }
+
+    /**
+     * Set uuid UUID.
+     */
+    public void setUuid(String uuid){
+        this.uuid = uuid;
+    }
+
+    /**
+     * Get uuid UUID.
+     *
+     * @return the string
+     */
+    public String getUuid(){
+        return uuid;
     }
 
     /**
@@ -163,19 +187,19 @@ public class LoginLogDO{
     }
 
     /**
-     * Set userLoginType 登录设备.
+     * Set userLoginDevice 登录设备.
      */
-    public void setUserLoginType(String userLoginType){
-        this.userLoginType = userLoginType;
+    public void setUserLoginDevice(String userLoginDevice){
+        this.userLoginDevice = userLoginDevice;
     }
 
     /**
-     * Get userLoginType 登录设备.
+     * Get userLoginDevice 登录设备.
      *
      * @return the string
      */
-    public String getUserLoginType(){
-        return userLoginType;
+    public String getUserLoginDevice(){
+        return userLoginDevice;
     }
 
     /**
@@ -192,6 +216,22 @@ public class LoginLogDO{
      */
     public String getUserLoginBrowser(){
         return userLoginBrowser;
+    }
+
+    /**
+     * Set userLoginType 登录类型.
+     */
+    public void setUserLoginType(Integer userLoginType){
+        this.userLoginType = userLoginType;
+    }
+
+    /**
+     * Get userLoginType 登录类型.
+     *
+     * @return the string
+     */
+    public Integer getUserLoginType(){
+        return userLoginType;
     }
 
     /**

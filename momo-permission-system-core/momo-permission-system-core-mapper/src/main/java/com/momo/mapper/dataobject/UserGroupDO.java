@@ -14,6 +14,10 @@ public class UserGroupDO{
      */
     private Long id;
     /**
+     * uuid uuid.
+     */
+    private String uuid;
+    /**
      * nameTop 顶部名称.
      */
     private String nameTop;
@@ -33,10 +37,6 @@ public class UserGroupDO{
      * userGroupName 用户组名称/第三方公司名称.
      */
     private String userGroupName;
-    /**
-     * userGroupUuid uuid.
-     */
-    private String userGroupUuid;
     /**
      * status 状态 0启用  1禁用.
      */
@@ -88,6 +88,22 @@ public class UserGroupDO{
      */
     public Long getId(){
         return id;
+    }
+
+    /**
+     * Set uuid uuid.
+     */
+    public void setUuid(String uuid){
+        this.uuid = uuid;
+    }
+
+    /**
+     * Get uuid uuid.
+     *
+     * @return the string
+     */
+    public String getUuid(){
+        return uuid;
     }
 
     /**
@@ -168,22 +184,6 @@ public class UserGroupDO{
      */
     public String getUserGroupName(){
         return userGroupName;
-    }
-
-    /**
-     * Set userGroupUuid uuid.
-     */
-    public void setUserGroupUuid(String userGroupUuid){
-        this.userGroupUuid = userGroupUuid;
-    }
-
-    /**
-     * Get userGroupUuid uuid.
-     *
-     * @return the string
-     */
-    public String getUserGroupUuid(){
-        return userGroupUuid;
     }
 
     /**
