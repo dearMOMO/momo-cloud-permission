@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.momo.mapper.mapper.manual.AclMapper">
+    <resultMap id="BaseResultMap" type="com.momo.mapper.dataobject.AclDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="uuid" jdbcType="VARCHAR" property="uuid" />
+        <result column="sys_acl_action" jdbcType="VARCHAR" property="sysAclAction" />
+        <result column="sys_acl_router" jdbcType="VARCHAR" property="sysAclRouter" />
+        <result column="sys_acl_name" jdbcType="VARCHAR" property="sysAclName" />
+        <result column="sys_acl_parent_id" jdbcType="BIGINT" property="sysAclParentId" />
+        <result column="sys_acl_level" jdbcType="VARCHAR" property="sysAclLevel" />
+        <result column="sys_acl_permission_type" jdbcType="BIGINT" property="sysAclPermissionType" />
+        <result column="sys_acl_url" jdbcType="VARCHAR" property="sysAclUrl" />
+        <result column="sys_acl_type" jdbcType="INTEGER" property="sysAclType" />
+        <result column="sys_acl_icon" jdbcType="VARCHAR" property="sysAclIcon" />
+        <result column="sys_acl_seq" jdbcType="INTEGER" property="sysAclSeq" />
+        <result column="sys_acl_code" jdbcType="VARCHAR" property="sysAclCode" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, uuid, sys_acl_action, sys_acl_router, sys_acl_name, sys_acl_parent_id, sys_acl_level,
+    sys_acl_permission_type, sys_acl_url, sys_acl_type, sys_acl_icon, sys_acl_seq, sys_acl_code,
+    remark, status, del_flag, create_by, create_time, update_time, update_by
+    </sql>
+
+    <select id="getChildAclModuleListByLevel" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+           id, uuid, sys_acl_action, sys_acl_router, sys_acl_name, sys_acl_parent_id, sys_acl_level,
+    sys_acl_permission_type, sys_acl_url, sys_acl_type, sys_acl_icon, sys_acl_seq, sys_acl_code,
+    remark, status, del_flag, create_by, create_time, update_time, update_by
+        FROM sys_acl WHERE sys_acl_module_level LIKE CONCAT(#{aclModuleLevel},'%')
+    </select>
+
+    <select id="checkUrl" parameterType="map" resultType="integer">
+        SELECT COUNT(id)
+        from sys_acl
+        where sys_acl_url=#{url,jdbcType=VARCHAR} and sys_acl_permission_type=#{permissionType,jdbcType=VARCHAR}
+        <if test="id!=null">
+            and   id!=#{id,jdbcType=BIGINT}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_acl
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectByPrimaryUuid" parameterType="string" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_acl
+        where uuid = #{uuid,jdbcType=VARCHAR}
+    </select>
+    <update id="batchUpdateLevel" parameterType="map">
+        <foreach collection="sysAclModuleList" item="sysAclModule" separator=";">
+            UPDATE sys_acl
+            SET sys_acl_module_level = #{sysAclModule.sysAclModuleLevel}
+            WHERE id = #{sysAclModule.id}
+        </foreach>
+    </update>
+    <insert id="insertSelective" parameterType="com.momo.mapper.dataobject.AclDO">
+        insert into sys_acl
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="uuid != null">
+                uuid,
+            </if>
+            <if test="sysAclAction != null">
+                sys_acl_action,
+            </if>
+            <if test="sysAclRouter != null">
+                sys_acl_router,
+            </if>
+            <if test="sysAclName != null">
+                sys_acl_name,
+            </if>
+            <if test="sysAclParentId != null">
+                sys_acl_parent_id,
+            </if>
+            <if test="sysAclLevel != null">
+                sys_acl_level,
+            </if>
+            <if test="sysAclPermissionType != null">
+                sys_acl_permission_type,
+            </if>
+            <if test="sysAclUrl != null">
+                sys_acl_url,
+            </if>
+            <if test="sysAclType != null">
+                sys_acl_type,
+            </if>
+            <if test="sysAclIcon != null">
+                sys_acl_icon,
+            </if>
+            <if test="sysAclSeq != null">
+                sys_acl_seq,
+            </if>
+            <if test="sysAclCode != null">
+                sys_acl_code,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="uuid != null">
+                #{uuid,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclAction != null">
+                #{sysAclAction,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclRouter != null">
+                #{sysAclRouter,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclName != null">
+                #{sysAclName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclParentId != null">
+                #{sysAclParentId,jdbcType=BIGINT},
+            </if>
+            <if test="sysAclLevel != null">
+                #{sysAclLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclPermissionType != null">
+                #{sysAclPermissionType,jdbcType=BIGINT},
+            </if>
+            <if test="sysAclUrl != null">
+                #{sysAclUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclType != null">
+                #{sysAclType,jdbcType=INTEGER},
+            </if>
+            <if test="sysAclIcon != null">
+                #{sysAclIcon,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclSeq != null">
+                #{sysAclSeq,jdbcType=INTEGER},
+            </if>
+            <if test="sysAclCode != null">
+                #{sysAclCode,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=INTEGER},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.momo.mapper.dataobject.AclDO">
+        update sys_acl
+        <set>
+            <if test="uuid != null">
+                uuid = #{uuid,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclAction != null">
+                sys_acl_action = #{sysAclAction,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclRouter != null">
+                sys_acl_router = #{sysAclRouter,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclName != null">
+                sys_acl_name = #{sysAclName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclParentId != null">
+                sys_acl_parent_id = #{sysAclParentId,jdbcType=BIGINT},
+            </if>
+            <if test="sysAclLevel != null">
+                sys_acl_level = #{sysAclLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclPermissionType != null">
+                sys_acl_permission_type = #{sysAclPermissionType,jdbcType=BIGINT},
+            </if>
+            <if test="sysAclUrl != null">
+                sys_acl_url = #{sysAclUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclType != null">
+                sys_acl_type = #{sysAclType,jdbcType=INTEGER},
+            </if>
+            <if test="sysAclIcon != null">
+                sys_acl_icon = #{sysAclIcon,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclSeq != null">
+                sys_acl_seq = #{sysAclSeq,jdbcType=INTEGER},
+            </if>
+            <if test="sysAclCode != null">
+                sys_acl_code = #{sysAclCode,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=INTEGER},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>
