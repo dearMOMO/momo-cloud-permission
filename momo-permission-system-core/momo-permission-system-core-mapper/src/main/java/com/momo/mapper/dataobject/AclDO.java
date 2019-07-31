@@ -22,6 +22,10 @@ public class AclDO{
      */
     private Long sysAclPermissionType;
     /**
+     * uuid 唯一，32位字符串，查询用.
+     */
+    private String uuid;
+    /**
      * remark 备注.
      */
     private String remark;
@@ -49,10 +53,6 @@ public class AclDO{
      * sysAclName 权限名称.
      */
     private String sysAclName;
-    /**
-     * sysAclUuid 唯一，32位字符串，查询用.
-     */
-    private String sysAclUuid;
     /**
      * sysAclLevel 权限层级.
      */
@@ -136,6 +136,22 @@ public class AclDO{
      */
     public Long getSysAclPermissionType(){
         return sysAclPermissionType;
+    }
+
+    /**
+     * Set uuid 唯一，32位字符串，查询用.
+     */
+    public void setUuid(String uuid){
+        this.uuid = uuid;
+    }
+
+    /**
+     * Get uuid 唯一，32位字符串，查询用.
+     *
+     * @return the string
+     */
+    public String getUuid(){
+        return uuid;
     }
 
     /**
@@ -248,22 +264,6 @@ public class AclDO{
      */
     public String getSysAclName(){
         return sysAclName;
-    }
-
-    /**
-     * Set sysAclUuid 唯一，32位字符串，查询用.
-     */
-    public void setSysAclUuid(String sysAclUuid){
-        this.sysAclUuid = sysAclUuid;
-    }
-
-    /**
-     * Get sysAclUuid 唯一，32位字符串，查询用.
-     *
-     * @return the string
-     */
-    public String getSysAclUuid(){
-        return sysAclUuid;
     }
 
     /**

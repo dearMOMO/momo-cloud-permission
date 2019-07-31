@@ -6,6 +6,7 @@
             <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
             <result column="SYS_ACL_PARENT_ID" property="sysAclParentId" jdbcType="BIGINT" javaType="Long"/>
             <result column="SYS_ACL_PERMISSION_TYPE" property="sysAclPermissionType" jdbcType="BIGINT" javaType="Long"/>
+            <result column="UUID" property="uuid" jdbcType="VARCHAR" javaType="String"/>
             <result column="REMARK" property="remark" jdbcType="VARCHAR" javaType="String"/>
             <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
             <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
@@ -13,7 +14,6 @@
             <result column="SYS_ACL_CODE" property="sysAclCode" jdbcType="VARCHAR" javaType="String"/>
             <result column="SYS_ACL_ICON" property="sysAclIcon" jdbcType="VARCHAR" javaType="String"/>
             <result column="SYS_ACL_NAME" property="sysAclName" jdbcType="VARCHAR" javaType="String"/>
-            <result column="SYS_ACL_UUID" property="sysAclUuid" jdbcType="VARCHAR" javaType="String"/>
             <result column="SYS_ACL_LEVEL" property="sysAclLevel" jdbcType="VARCHAR" javaType="String"/>
             <result column="SYS_ACL_ACTION" property="sysAclAction" jdbcType="VARCHAR" javaType="String"/>
             <result column="SYS_ACL_ROUTER" property="sysAclRouter" jdbcType="VARCHAR" javaType="String"/>
@@ -27,7 +27,7 @@
 
 
     <sql id="Base_Column_List">
-        ID,SYS_ACL_PARENT_ID,SYS_ACL_PERMISSION_TYPE,REMARK,CREATE_BY,UPDATE_BY,SYS_ACL_URL,SYS_ACL_CODE,SYS_ACL_ICON,SYS_ACL_NAME,SYS_ACL_UUID,SYS_ACL_LEVEL,SYS_ACL_ACTION,SYS_ACL_ROUTER,STATUS,DEL_FLAG,SYS_ACL_SEQ,SYS_ACL_TYPE,CREATE_TIME,UPDATE_TIME
+        ID,SYS_ACL_PARENT_ID,SYS_ACL_PERMISSION_TYPE,UUID,REMARK,CREATE_BY,UPDATE_BY,SYS_ACL_URL,SYS_ACL_CODE,SYS_ACL_ICON,SYS_ACL_NAME,SYS_ACL_LEVEL,SYS_ACL_ACTION,SYS_ACL_ROUTER,STATUS,DEL_FLAG,SYS_ACL_SEQ,SYS_ACL_TYPE,CREATE_TIME,UPDATE_TIME
     </sql>
 
 

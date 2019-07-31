@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.momo.mapper.mapper.manual.AuthorityMapper">
+
+    <resultMap id="getAllAcl" type="com.momo.mapper.dataobject.AclDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="uuid" jdbcType="VARCHAR" property="uuid" />
+        <result column="sys_acl_action" jdbcType="VARCHAR" property="sysAclAction" />
+        <result column="sys_acl_router" jdbcType="VARCHAR" property="sysAclRouter" />
+        <result column="sys_acl_name" jdbcType="VARCHAR" property="sysAclName" />
+        <result column="sys_acl_parent_id" jdbcType="BIGINT" property="sysAclParentId" />
+        <result column="sys_acl_level" jdbcType="VARCHAR" property="sysAclLevel" />
+        <result column="sys_acl_permission_type" jdbcType="BIGINT" property="sysAclPermissionType" />
+        <result column="sys_acl_url" jdbcType="VARCHAR" property="sysAclUrl" />
+        <result column="sys_acl_type" jdbcType="INTEGER" property="sysAclType" />
+        <result column="sys_acl_icon" jdbcType="VARCHAR" property="sysAclIcon" />
+        <result column="sys_acl_seq" jdbcType="INTEGER" property="sysAclSeq" />
+        <result column="sys_acl_code" jdbcType="VARCHAR" property="sysAclCode" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    </resultMap>
+
+    <select id="rolesByUserId" parameterType="map" resultType="long">
+        SELECT
+        role_id
+        FROM sys_role_user
+        <trim prefix="where" prefixOverrides="and">
+            <if test="userId!=null">
+                and user_id=#{userId}
+            </if>
+        </trim>
+    </select>
+
+    <select id="rolesByRoleId" parameterType="map" resultType="long">
+        SELECT
+        id
+        FROM sys_role WHERE
+        <if test="roleStatus!=null">
+            sys_role_status=#{roleStatus} AND
+        </if>
+        id IN
+        <foreach collection="roleIds" close=")" item="item" open="(" separator=",">
+            #{item}
+        </foreach>
+    </select>
+    <select id="getAllAcl" parameterType="map" resultMap="getAllAcl">
+        SELECT
+        id, uuid, sys_acl_action, sys_acl_router, sys_acl_name, sys_acl_parent_id, sys_acl_level,
+        sys_acl_permission_type, sys_acl_url, sys_acl_type, sys_acl_icon, sys_acl_seq, sys_acl_code,
+        remark, status, del_flag, create_by, create_time, update_time, update_by
+        FROM  sys_acl
+        <trim prefixOverrides="and" prefix="where">
+            <if test="aclPermissionType!=null">
+                AND sys_acl_permission_type = #{aclPermissionType,jdbcType=BIGINT}
+            </if>
+            <if test="userAclIdList!=null and userAclIdList.size()!=0">
+                AND id IN
+                <foreach collection="userAclIdList" item="item" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+        </trim>
+    </select>
+    <select id="aclsByRoleId" parameterType="map" resultType="long">
+        SELECT
+        sys_acl_id
+        FROM sys_role_acl WHERE
+        <if test="sys_acl_permission_type!=null">
+            sys_acl_permission_type=#{sys_acl_permission_type} AND
+        </if>
+        sys_role_id IN
+        <foreach collection="roleIds" close=")" item="item" open="(" separator=",">
+            #{item}
+        </foreach>
+    </select>
+</mapper>
