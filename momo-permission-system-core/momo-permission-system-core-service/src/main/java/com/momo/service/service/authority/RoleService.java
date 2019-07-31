@@ -260,6 +260,7 @@ public class RoleService extends BaseService {
         List<RoleAclDO> roleUserList = Lists.newArrayList();
         for (RoleAclDO aclId : aclIdList) {
             RoleAclDO roleUserDO = new RoleAclDO();
+            roleUserDO.setId(snowFlake.nextId());
             roleUserDO.setDelFlag(0);
             roleUserDO.setGroupId(groupId);
             roleUserDO.setSysAclId(aclId.getSysAclId());
@@ -285,10 +286,14 @@ public class RoleService extends BaseService {
         List<RoleUserDO> roleUserList = Lists.newArrayList();
         for (Long aclId : roleIdList) {
             RoleUserDO roleUserDO = new RoleUserDO();
+            roleUserDO.setId(snowFlake.nextId());
             roleUserDO.setRoleId(aclId);
             roleUserDO.setGroupId(groupId);
             roleUserDO.setUserId(userId);
             roleUserDO.setCreateTime(DateUtil.getDateTime());
+            roleUserDO.setCreateBy(redisUser.getSysUserName());
+            roleUserDO.setUpdateBy(redisUser.getSysUserName());
+            roleUserDO.setUpdateTime(DateUtil.getDateTime());
             roleUserList.add(roleUserDO);
         }
         roleMapper.batchInsertUserRoles(roleUserList);

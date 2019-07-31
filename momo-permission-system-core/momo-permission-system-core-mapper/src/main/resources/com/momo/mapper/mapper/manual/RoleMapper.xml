@@ -103,11 +103,11 @@
     </delete>
     <insert id="batchInsertRoleAcls" parameterType="map">
         <foreach collection="roleAcls" item="item"  separator=";">
-            insert into sys_role_acl ( uuid, sys_role_id,
+            insert into sys_role_acl (id, uuid, sys_role_id,
             sys_acl_id, sys_acl_permission_type, group_id,
             del_flag, create_by, create_time,
             update_time, update_by)
-            values ( #{item.uuid,jdbcType=VARCHAR}, #{item.sysRoleId,jdbcType=BIGINT},
+            values ( #{item.id,jdbcType=BIGINT},#{item.uuid,jdbcType=VARCHAR}, #{item.sysRoleId,jdbcType=BIGINT},
             #{item.sysAclId,jdbcType=BIGINT}, #{item.sysAclPermissionType,jdbcType=BIGINT}, #{item.groupId,jdbcType=BIGINT},
             #{item.delFlag,jdbcType=CHAR}, #{item.createBy,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP},
             #{item.updateTime,jdbcType=TIMESTAMP}, #{item.updateBy,jdbcType=VARCHAR})
@@ -115,11 +115,13 @@
     </insert>
     <insert id="batchInsertUserRoles" parameterType="map">
         <foreach collection="roleUsers" item="item" separator=";">
-            insert into sys_role_user ( role_id, user_id,
-            comp_id, create_time)
-            values (  #{item.roleId,jdbcType=BIGINT},
-            #{item.userId,jdbcType=BIGINT}, #{item.compId,jdbcType=BIGINT},
-            #{item.createTime,jdbcType=TIMESTAMP})
+            insert into sys_role_user ( id,role_id, user_id,
+            group_id, create_by, create_time,
+            update_time, update_by)
+            values (#{item.id,jdbcType=BIGINT},  #{item.roleId,jdbcType=BIGINT},
+            #{item.userId,jdbcType=BIGINT}, #{item.groupId,jdbcType=BIGINT},
+            #{item.createBy,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.updateTime,jdbcType=TIMESTAMP}, #{item.updateBy,jdbcType=VARCHAR})
         </foreach>
     </insert>
     <insert id="insertSelective" parameterType="com.momo.mapper.dataobject.RoleDO">
