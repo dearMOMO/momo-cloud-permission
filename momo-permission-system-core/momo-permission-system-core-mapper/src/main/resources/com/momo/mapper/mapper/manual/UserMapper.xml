@@ -35,4 +35,10 @@
         from sys_user
         where id = #{id,jdbcType=BIGINT}
     </select>
+    <select id="uuid" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_user
+        where uuid = #{uuid,jdbcType=VARCHAR}
+    </select>
 </mapper>

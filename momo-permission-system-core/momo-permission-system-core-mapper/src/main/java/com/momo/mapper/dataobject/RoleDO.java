@@ -18,6 +18,10 @@ public class RoleDO{
      */
     private Long groupId;
     /**
+     * uuid 唯一，32位字符串，查询用.
+     */
+    private String uuid;
+    /**
      * remark 备注.
      */
     private String remark;
@@ -33,10 +37,6 @@ public class RoleDO{
      * sysRoleName 角色名称.
      */
     private String sysRoleName;
-    /**
-     * sysRoleUuid 唯一，32位字符串，查询用.
-     */
-    private String sysRoleUuid;
     /**
      * status 是否被禁用  0否 1禁用.
      */
@@ -88,6 +88,22 @@ public class RoleDO{
      */
     public Long getGroupId(){
         return groupId;
+    }
+
+    /**
+     * Set uuid 唯一，32位字符串，查询用.
+     */
+    public void setUuid(String uuid){
+        this.uuid = uuid;
+    }
+
+    /**
+     * Get uuid 唯一，32位字符串，查询用.
+     *
+     * @return the string
+     */
+    public String getUuid(){
+        return uuid;
     }
 
     /**
@@ -152,22 +168,6 @@ public class RoleDO{
      */
     public String getSysRoleName(){
         return sysRoleName;
-    }
-
-    /**
-     * Set sysRoleUuid 唯一，32位字符串，查询用.
-     */
-    public void setSysRoleUuid(String sysRoleUuid){
-        this.sysRoleUuid = sysRoleUuid;
-    }
-
-    /**
-     * Get sysRoleUuid 唯一，32位字符串，查询用.
-     *
-     * @return the string
-     */
-    public String getSysRoleUuid(){
-        return sysRoleUuid;
     }
 
     /**

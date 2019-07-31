@@ -30,6 +30,10 @@ public class RoleAclDO{
      */
     private Long sysAclPermissionType;
     /**
+     * uuid 唯一，32位字符串，查询用.
+     */
+    private String uuid;
+    /**
      * createBy 创建人.
      */
     private String createBy;
@@ -37,10 +41,6 @@ public class RoleAclDO{
      * updateBy 修改人.
      */
     private String updateBy;
-    /**
-     * sysRoleAclUuid 唯一，32位字符串，查询用.
-     */
-    private String sysRoleAclUuid;
     /**
      * status 是否被禁用  0否 1禁用.
      */
@@ -139,6 +139,22 @@ public class RoleAclDO{
     }
 
     /**
+     * Set uuid 唯一，32位字符串，查询用.
+     */
+    public void setUuid(String uuid){
+        this.uuid = uuid;
+    }
+
+    /**
+     * Get uuid 唯一，32位字符串，查询用.
+     *
+     * @return the string
+     */
+    public String getUuid(){
+        return uuid;
+    }
+
+    /**
      * Set createBy 创建人.
      */
     public void setCreateBy(String createBy){
@@ -168,22 +184,6 @@ public class RoleAclDO{
      */
     public String getUpdateBy(){
         return updateBy;
-    }
-
-    /**
-     * Set sysRoleAclUuid 唯一，32位字符串，查询用.
-     */
-    public void setSysRoleAclUuid(String sysRoleAclUuid){
-        this.sysRoleAclUuid = sysRoleAclUuid;
-    }
-
-    /**
-     * Get sysRoleAclUuid 唯一，32位字符串，查询用.
-     *
-     * @return the string
-     */
-    public String getSysRoleAclUuid(){
-        return sysRoleAclUuid;
     }
 
     /**

@@ -5,11 +5,11 @@
     <resultMap id="BaseResultMap"  type="com.momo.mapper.dataobject.RoleDO">
             <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
             <result column="GROUP_ID" property="groupId" jdbcType="BIGINT" javaType="Long"/>
+            <result column="UUID" property="uuid" jdbcType="VARCHAR" javaType="String"/>
             <result column="REMARK" property="remark" jdbcType="VARCHAR" javaType="String"/>
             <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
             <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
             <result column="SYS_ROLE_NAME" property="sysRoleName" jdbcType="VARCHAR" javaType="String"/>
-            <result column="SYS_ROLE_UUID" property="sysRoleUuid" jdbcType="VARCHAR" javaType="String"/>
             <result column="STATUS" property="status" jdbcType="INTEGER" javaType="Integer"/>
             <result column="DEL_FLAG" property="delFlag" jdbcType="INTEGER" javaType="Integer"/>
             <result column="SYS_ROLE_TYPE" property="sysRoleType" jdbcType="INTEGER" javaType="Integer"/>
@@ -19,7 +19,7 @@
 
 
     <sql id="Base_Column_List">
-        ID,GROUP_ID,REMARK,CREATE_BY,UPDATE_BY,SYS_ROLE_NAME,SYS_ROLE_UUID,STATUS,DEL_FLAG,SYS_ROLE_TYPE,CREATE_TIME,UPDATE_TIME
+        ID,GROUP_ID,UUID,REMARK,CREATE_BY,UPDATE_BY,SYS_ROLE_NAME,STATUS,DEL_FLAG,SYS_ROLE_TYPE,CREATE_TIME,UPDATE_TIME
     </sql>
 
 

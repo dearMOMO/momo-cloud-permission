@@ -8,4 +8,6 @@ public interface UserMapper {
 
 
     UserDO getById(@Param("id") Long id);
+
+    UserDO uuid(@Param("uuid") String uuid);
 }

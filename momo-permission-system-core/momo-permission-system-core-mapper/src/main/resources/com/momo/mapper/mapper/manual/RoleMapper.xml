@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.momo.mapper.mapper.manual.RoleMapper">
+    <resultMap id="BaseResultMap" type="com.momo.mapper.dataobject.RoleDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="uuid" jdbcType="VARCHAR" property="uuid" />
+        <result column="sys_role_name" jdbcType="VARCHAR" property="sysRoleName" />
+        <result column="sys_role_type" jdbcType="INTEGER" property="sysRoleType" />
+        <result column="group_id" jdbcType="BIGINT" property="groupId" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, uuid, sys_role_name, sys_role_type, group_id, remark, status, del_flag, create_by,
+    create_time, update_time, update_by
+    </sql>
+    <delete id="deleteRoleAclsByRoleId" parameterType="java.lang.Long">
+        delete from sys_role_acl
+        where sys_role_id = #{roleId,jdbcType=BIGINT}
+    </delete>
+    <delete id="deleteRoleAclsAdmin" parameterType="map">
+        delete from sys_role_acl
+        where comp_id = #{groupId,jdbcType=BIGINT} and sys_acl_id IN
+        <foreach collection="aclIds" item="item" separator="," open="(" close=")">
+            #{item,jdbcType=BIGINT}
+        </foreach>
+    </delete>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_role
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="roleList" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_role
+        <trim prefix="where" prefixOverrides="and">
+            <if test="status!=null">
+                AND  status=#{status,jdbcType=INTEGER}
+            </if>
+            <if test="sysRoleName!=null and sysRoleName.trim()!=''">
+                AND  sys_role_name LIKE CONCAT ('%',#{sysRoleName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="sysRoleType!=null">
+                AND  sys_role_type=#{sysRoleType,jdbcType=VARCHAR}
+            </if>
+            <if test="groupId!=null">
+                AND  group_id=#{groupId,jdbcType=BIGINT}
+            </if>
+        </trim>
+    </select>
+    <select id="rolesByCurrentId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+       SELECT id, uuid, role_name, role_type
+        FROM sys_role WHERE id IN(
+            SELECT role_id
+        FROM sys_role_user WHERE user_id=#{userId,jdbcType=BIGINT}
+        ) and status='0'
+    </select>
+    <select id="selectByPrimaryUuid" parameterType="string" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_role
+        where uuid = #{uuid,jdbcType=VARCHAR}
+    </select>
+    <select id="checkRoleName" parameterType="map" resultType="integer">
+        select
+        COUNT(id)
+        from sys_role
+        where
+        sys_role_name=#{roleName}
+        <if test="id!=null">
+            and  id != #{id,jdbcType=BIGINT}
+        </if>
+        <if test="groupId!=null">
+            and  group_id = #{groupId,jdbcType=BIGINT}
+        </if>
+    </select>
+    <select id="checkAdminRole" parameterType="map" resultType="integer">
+        select
+        COUNT(id)
+        from sys_role
+        <trim prefixOverrides="and" prefix="where">
+            <if test="roleType!=null">
+                AND role_type=#{roleType,jdbcType=VARCHAR}
+            </if>
+            <if test="compId!=null">
+                AND comp_id=#{compId,jdbcType=BIGINT}
+            </if>
+            <if test="id!=null">
+                AND   id != #{id,jdbcType=BIGINT}
+            </if>
+        </trim>
+    </select>
+    <delete id="deleteUserRolesByUserId" parameterType="java.lang.Long">
+        delete from sys_role_user
+        where user_id = #{userId,jdbcType=BIGINT}
+    </delete>
+    <insert id="batchInsertRoleAcls" parameterType="map">
+        <foreach collection="roleAcls" item="item"  separator=";">
+            insert into sys_role_acl ( uuid, sys_role_id,
+            sys_acl_id, sys_acl_permission_type, group_id,
+            del_flag, create_by, create_time,
+            update_time, update_by)
+            values ( #{item.uuid,jdbcType=VARCHAR}, #{item.sysRoleId,jdbcType=BIGINT},
+            #{item.sysAclId,jdbcType=BIGINT}, #{item.sysAclPermissionType,jdbcType=BIGINT}, #{item.groupId,jdbcType=BIGINT},
+            #{item.delFlag,jdbcType=CHAR}, #{item.createBy,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.updateTime,jdbcType=TIMESTAMP}, #{item.updateBy,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+    <insert id="batchInsertUserRoles" parameterType="map">
+        <foreach collection="roleUsers" item="item" separator=";">
+            insert into sys_role_user ( role_id, user_id,
+            comp_id, create_time)
+            values (  #{item.roleId,jdbcType=BIGINT},
+            #{item.userId,jdbcType=BIGINT}, #{item.compId,jdbcType=BIGINT},
+            #{item.createTime,jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+    <insert id="insertSelective" parameterType="com.momo.mapper.dataobject.RoleDO">
+        insert into sys_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="uuid != null">
+                uuid,
+            </if>
+            <if test="sysRoleName != null">
+                sys_role_name,
+            </if>
+            <if test="sysRoleType != null">
+                sys_role_type,
+            </if>
+            <if test="groupId != null">
+                group_id,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="uuid != null">
+                #{uuid,jdbcType=VARCHAR},
+            </if>
+            <if test="sysRoleName != null">
+                #{sysRoleName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysRoleType != null">
+                #{sysRoleType,jdbcType=INTEGER},
+            </if>
+            <if test="groupId != null">
+                #{groupId,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=INTEGER},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.momo.mapper.dataobject.RoleDO">
+        update sys_role
+        <set>
+            <if test="uuid != null">
+                uuid = #{uuid,jdbcType=VARCHAR},
+            </if>
+            <if test="sysRoleName != null">
+                sys_role_name = #{sysRoleName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysRoleType != null">
+                sys_role_type = #{sysRoleType,jdbcType=INTEGER},
+            </if>
+            <if test="groupId != null">
+                group_id = #{groupId,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=INTEGER},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <select id="getRoleById" parameterType="map" resultMap="BaseResultMap">
+    SELECT
+         id, uuid, role_name, role_type, comp_id,status
+         FROM sys_role
+    WHERE id=#{id}
+</select>
+    <select id="getRolesByUserId" resultMap="BaseResultMap">
+       SELECT id, uuid, role_name, role_type, comp_id, status
+        FROM sys_role WHERE id IN (
+          SELECT role_id FROM sys_role_user WHERE user_id =#{userId}
+        )
+    </select>
+
+
+
+</mapper>

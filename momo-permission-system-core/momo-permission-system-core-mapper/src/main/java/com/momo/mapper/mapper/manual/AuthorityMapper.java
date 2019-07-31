@@ -46,4 +46,12 @@ public interface AuthorityMapper {
      * @return
      */
     List<Long> aclsByRoleId(@Param("roleIds") List<Long> roleId, @Param("sys_acl_permission_type") Long sys_acl_permission_type);
+
+    /**
+     * 根据组的id 得到管理员ids
+     *
+     * @param groupId
+     * @return
+     */
+    List<Long> rolesAdminByGroupId(@Param("groupId") Long groupId);
 }

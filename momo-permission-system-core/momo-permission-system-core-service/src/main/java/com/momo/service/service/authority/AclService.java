@@ -1,6 +1,5 @@
 package com.momo.service.service.authority;
 
-import com.momo.common.common.JSONResult;
 import com.momo.common.error.BizException;
 import com.momo.common.util.DateUtil;
 import com.momo.common.util.LevelUtil;

@@ -78,4 +78,9 @@
             #{item}
         </foreach>
     </select>
+    <select id="rolesAdminByGroupId" parameterType="map" resultType="long">
+        SELECT
+        id
+        FROM sys_role WHERE group_id=#{groupId} AND role_type='0'
+    </select>
 </mapper>

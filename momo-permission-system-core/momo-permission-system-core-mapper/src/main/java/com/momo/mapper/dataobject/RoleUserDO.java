@@ -26,6 +26,10 @@ public class RoleUserDO{
      */
     private Long groupId;
     /**
+     * uuid 唯一，32位字符串，查询用.
+     */
+    private String uuid;
+    /**
      * createBy 创建人.
      */
     private String createBy;
@@ -33,10 +37,6 @@ public class RoleUserDO{
      * updateBy 修改人.
      */
     private String updateBy;
-    /**
-     * sysRoleUserUuid 唯一，32位字符串，查询用.
-     */
-    private String sysRoleUserUuid;
     /**
      * status 状态 0启用  1禁用.
      */
@@ -119,6 +119,22 @@ public class RoleUserDO{
     }
 
     /**
+     * Set uuid 唯一，32位字符串，查询用.
+     */
+    public void setUuid(String uuid){
+        this.uuid = uuid;
+    }
+
+    /**
+     * Get uuid 唯一，32位字符串，查询用.
+     *
+     * @return the string
+     */
+    public String getUuid(){
+        return uuid;
+    }
+
+    /**
      * Set createBy 创建人.
      */
     public void setCreateBy(String createBy){
@@ -148,22 +164,6 @@ public class RoleUserDO{
      */
     public String getUpdateBy(){
         return updateBy;
-    }
-
-    /**
-     * Set sysRoleUserUuid 唯一，32位字符串，查询用.
-     */
-    public void setSysRoleUserUuid(String sysRoleUserUuid){
-        this.sysRoleUserUuid = sysRoleUserUuid;
-    }
-
-    /**
-     * Get sysRoleUserUuid 唯一，32位字符串，查询用.
-     *
-     * @return the string
-     */
-    public String getSysRoleUserUuid(){
-        return sysRoleUserUuid;
     }
 
     /**
