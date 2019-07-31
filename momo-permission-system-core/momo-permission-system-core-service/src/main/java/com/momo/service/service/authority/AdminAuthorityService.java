@@ -37,7 +37,7 @@ public class AdminAuthorityService extends BaseService {
         List<AclDO> userAclList = sysCoreService.getUserAclList(loginAuthReq, redisUser);
         List<AclLevelRes> aclDtoList = Lists.newArrayList();
         for (AclDO acl : userAclList) {
-            if (0 == acl.getStatus()) {
+            if (acl.getStatus().equals(0)) {
                 AclLevelRes dto = AclLevelRes.adapt(acl);
                 dto.setHasAcl(true);
                 dto.setChecked(true);
