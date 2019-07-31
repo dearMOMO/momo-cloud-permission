@@ -30,11 +30,27 @@ public class SysMainController {
      * @return
      */
     @PostMapping("/login/v1")
-//    @MethodLog(description = "保存-方法名称save", clazz = ResPonseUser.class)
     public JSONResult userLogin(@Validated(SysUserLoginReq.Query.class) @RequestBody SysUserLoginReq sysUserLoginReq, HttpServletRequest request) {
-        return sysMainService.userLogin(sysUserLoginReq, request);
+        String msg = sysMainService.userLogin(sysUserLoginReq, request);
+        return JSONResult.ok(msg, "登录成功");
     }
 
+    /**
+     * 获取用户信息
+     *
+     * @return
+     */
+    @PostMapping("/getUserInfo/v1")
+    public JSONResult getUserInfo() {
+        return JSONResult.ok(sysMainService.getUserInfo());
+    }
+
+    /**
+     * 验证码
+     *
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(path = "/images/captcha/v1")
     public JSONResult captcha() throws Exception {
         return sysMainService.createVerificationCode();

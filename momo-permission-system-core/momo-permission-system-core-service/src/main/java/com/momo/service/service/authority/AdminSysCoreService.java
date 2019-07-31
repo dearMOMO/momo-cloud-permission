@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.momo.mapper.dataobject.AclDO;
 import com.momo.mapper.mapper.manual.AuthorityMapper;
 import com.momo.mapper.req.sysmain.RedisUser;
-import com.momo.mapper.res.authority.LoginAuthReq;
+import com.momo.mapper.req.sysmain.LoginAuthReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

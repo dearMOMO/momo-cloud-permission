@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 @Configuration
 public class CrossDomainConfiguration {
     //这里为支持的请求头，如果有自定义的header字段请自己添加（不知道为什么不能使用*）
-    public static final String ALLOWED_HEADERS = "x-requested-with, authorization, Content-Type, Authorization, credential, X-XSRF-TOKEN,userInfo,X-Token,token,client";
+    public static final String ALLOWED_HEADERS = "x-requested-with, authorization, Content-Type, Authorization, credential, X-XSRF-TOKEN,userInfo,x-token,token,client";
     public static final String ALLOWED_METHODS = "POST, GET, OPTIONS,DELETE,PUT";
     public static final String ALLOWED_ORIGIN = "*";
     public static final String ALLOWED_Expose = "*";
@@ -33,7 +33,7 @@ public class CrossDomainConfiguration {
             if (CorsUtils.isCorsRequest(request)) {
                 ServerHttpResponse response = ctx.getResponse();
                 HttpHeaders headers = response.getHeaders();
-                headers.add("Access-Control-Allow-Origin", ALLOWED_ORIGIN);
+//                headers.add("Access-Control-Allow-Origin", ALLOWED_ORIGIN);
                 headers.add("Access-Control-Allow-Methods", ALLOWED_METHODS);
                 headers.add("Access-Control-Max-Age", MAX_AGE);
                 headers.add("Access-Control-Allow-Headers", ALLOWED_HEADERS);

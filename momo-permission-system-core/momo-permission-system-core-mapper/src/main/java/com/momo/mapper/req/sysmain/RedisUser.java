@@ -5,12 +5,13 @@ import lombok.*;
 /**
  * Created by MOMO on 2019/1/7.
  */
-@ToString
 @Getter
 @Setter
+@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+//@EqualsAndHashCode(of = {"id"})
 public class RedisUser {
 
     //redis的随机数

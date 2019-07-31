@@ -21,7 +21,9 @@ import com.momo.mapper.mapper.manual.UserGroupMapper;
 import com.momo.mapper.mapper.manual.UserMapper;
 import com.momo.mapper.req.sysmain.RedisUser;
 import com.momo.mapper.req.sysmain.SysUserLoginReq;
+import com.momo.mapper.res.sysmain.UserInfoRes;
 import com.momo.service.async.LoginLogAsync;
+import com.momo.service.service.BaseService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,7 +41,7 @@ import java.util.Map;
  **/
 @Service
 @Slf4j
-public class SysMainService {
+public class SysMainService extends BaseService {
 
     @Autowired
     private RedisUtil redisUtil;
@@ -57,7 +59,7 @@ public class SysMainService {
     @Value("${momo.superAdmins}")
     private String superAdmins = "";
 
-    public JSONResult userLogin(SysUserLoginReq sysUserLoginReq, HttpServletRequest request) {
+    public String userLogin(SysUserLoginReq sysUserLoginReq, HttpServletRequest request) {
         //todo 验证码
 //        checkVerificationCode(sysUserLoginReq);
         UserAccountPwdDO userAccountPwdDO = userAccountPwdMapper.sysUserAccountLogin(sysUserLoginReq.getSysUserLoginName());
@@ -160,7 +162,13 @@ public class SysMainService {
         loginLog.loginLog(entity, request);
         //登录成功删除验证码
         redisUtil.del("verUUidCode:" + sysUserLoginReq.getVerUUidCode());
-        return JSONResult.ok(redisUserKey, "登录成功");
+        return redisUserKey;
+    }
+
+    public UserInfoRes getUserInfo() {
+        RedisUser redisUser = this.redisUser();
+        UserInfoRes userInfoRes = UserInfoRes.builder().sysUserName(redisUser.getSysUserName()).build();
+        return userInfoRes;
     }
 
     public JSONResult createVerificationCode() {

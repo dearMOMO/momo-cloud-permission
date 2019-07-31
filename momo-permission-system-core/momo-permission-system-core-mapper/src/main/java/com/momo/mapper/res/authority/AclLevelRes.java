@@ -20,16 +20,16 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true, of = {"id"})
-public class AclDto extends AclDO {
-    private List<AclDto> children = Lists.newArrayList();
+public class AclLevelRes extends AclDO {
+    private List<AclLevelRes> children = Lists.newArrayList();
     // 是否要默认选中
     private boolean checked = false;
 
     // 是否有权限操作
     private boolean hasAcl = false;
 
-    public static AclDto adapt(AclDO acl) {
-        AclDto dto = new AclDto();
+    public static AclLevelRes adapt(AclDO acl) {
+        AclLevelRes dto = new AclLevelRes();
         BeanUtils.copyProperties(acl, dto);
         return dto;
     }

@@ -2,8 +2,8 @@ package com.momo.momopermissionsystemcoreweb.controller.authority;
 
 import com.google.common.collect.Maps;
 import com.momo.common.common.JSONResult;
-import com.momo.mapper.res.authority.AclDto;
-import com.momo.mapper.res.authority.LoginAuthReq;
+import com.momo.mapper.res.authority.AclLevelRes;
+import com.momo.mapper.req.sysmain.LoginAuthReq;
 import com.momo.service.service.authority.AdminAuthorityService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class AuthorityController {
     @RequestMapping("/dynamicMenu/v1")
     public JSONResult dynamicMenu(@Validated(LoginAuthReq.Permission.class) @RequestBody LoginAuthReq loginAuthReq) {
         Map<String, Object> map = Maps.newHashMap();
-        List<AclDto> aclModuleLevelDtos_DB = adminAuthorityService.dynamicMenuTree(loginAuthReq);
+        List<AclLevelRes> aclModuleLevelDtos_DB = adminAuthorityService.dynamicMenuTree(loginAuthReq);
         map.put("acls", aclModuleLevelDtos_DB);
         return JSONResult.ok(map);
 
