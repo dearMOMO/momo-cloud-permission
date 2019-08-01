@@ -1,38 +1,75 @@
 package com.momo.common.util.snowFlake;
 
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+
+import java.lang.management.ManagementFactory;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+
 /**
- * 基于Twitter的分布式自增ID算法Snowflake实现分布式有序
- *
- * @author MOMO
- */
+ * @program: momo-cloud-permission
+ * @description: 基于Twitter的分布式自增ID算法Snowflake实现分布式有序
+ * @author: Jie Li
+ * @create: 2019-07-30 15:10
+ **/
+@Slf4j
 public class SnowFlake {
 
-    /** 起始时间戳，用于用当前时间戳减去这个时间戳，算出偏移量 **/
+    /**
+     * 起始时间戳，用于用当前时间戳减去这个时间戳，算出偏移量
+     * 时间起始标记点，作为基准，一般取系统的最近时间（一旦确定不能变动）
+     **/
     private final long startTime = 1519740777809L;
 
-    /** workerId占用的位数5（表示只允许workId的范围为：0-1023）**/
+    /**
+     * workerId占用的位数5（表示只允许workId的范围为：0-1023）
+     **/
     private final long workerIdBits = 5L;
-    /** dataCenterId占用的位数：5 **/
+    /**
+     * dataCenterId占用的位数：5
+     **/
     private final long dataCenterIdBits = 5L;
-    /** 序列号占用的位数：12（表示只允许workId的范围为：0-4095）**/
+    /**
+     * 序列号占用的位数：12（表示只允许workId的范围为：0-4095）
+     **/
     private final long sequenceBits = 12L;
 
-    /** workerId可以使用的最大数值：31 **/
+    /**
+     * workerId可以使用的最大数值：31
+     **/
     private final long maxWorkerId = -1L ^ (-1L << workerIdBits);
-    /** dataCenterId可以使用的最大数值：31 **/
+    /**
+     * dataCenterId可以使用的最大数值：31
+     **/
     private final long maxDataCenterId = -1L ^ (-1L << dataCenterIdBits);
 
     private final long workerIdShift = sequenceBits;
     private final long dataCenterIdShift = sequenceBits + workerIdBits;
     private final long timestampLeftShift = sequenceBits + workerIdBits + dataCenterIdBits;
 
-    /** 用mask防止溢出:位与运算保证计算的结果范围始终是 0-4095 **/
+    /**
+     * 用mask防止溢出:位与运算保证计算的结果范围始终是 0-4095
+     **/
     private final long sequenceMask = -1L ^ (-1L << sequenceBits);
 
     private long workerId;
+    /**
+     * 数据标识 ID 部分
+     */
     private long dataCenterId;
+    /**
+     * 并发控制
+     */
     private long sequence = 0L;
+    /**
+     * 上次生产 ID 时间戳
+     */
     private long lastTimestamp = -1L;
+    /**
+     * 时间回拨最长时间(ms)，超过这个时间就抛出异常
+     */
+    private long timestampOffset = 5L;
     private boolean isClock = false;
 
     /**
@@ -60,6 +97,52 @@ public class SnowFlake {
     }
 
     /**
+     * <p>
+     * 获取 maxWorkerId
+     * </p>
+     */
+    protected static long getMaxWorkerId(long datacenterId, long maxWorkerId) {
+        StringBuilder mpid = new StringBuilder();
+        mpid.append(datacenterId);
+        String name = ManagementFactory.getRuntimeMXBean().getName();
+        if (StringUtils.isNotEmpty(name)) {
+            /*
+             * GET jvmPid
+             */
+            mpid.append(name.split("@")[0]);
+        }
+        /*
+         * MAC + PID 的 hashcode 获取16个低位
+         */
+        return (mpid.toString().hashCode() & 0xffff) % (maxWorkerId + 1);
+    }
+
+    /**
+     * <p>
+     * 数据标识id部分
+     * </p>
+     */
+    protected static long getDatacenterId(long maxDatacenterId) {
+        long id = 0L;
+        try {
+            InetAddress ip = InetAddress.getLocalHost();
+            NetworkInterface network = NetworkInterface.getByInetAddress(ip);
+            if (network == null) {
+                id = 1L;
+            } else {
+                byte[] mac = network.getHardwareAddress();
+                if (null != mac) {
+                    id = ((0x000000FF & (long) mac[mac.length - 1]) | (0x0000FF00 & (((long) mac[mac.length - 2]) << 8))) >> 6;
+                    id = id % (maxDatacenterId + 1);
+                }
+            }
+        } catch (Exception e) {
+            log.warn(" getDatacenterId: " + e.getMessage());
+        }
+        return id;
+    }
+
+    /**
      * 获取ID
      *
      * @return
@@ -70,7 +153,7 @@ public class SnowFlake {
         // 闰秒：如果当前时间小于上一次ID生成的时间戳，说明系统时钟回退过这个时候应当抛出异常
         if (timestamp < lastTimestamp) {
             long offset = lastTimestamp - timestamp;
-            if (offset <= 5) {
+            if (offset <= timestampOffset) {
                 try {
                     this.wait(offset << 1);
                     timestamp = this.timeGen();
@@ -140,9 +223,9 @@ public class SnowFlake {
     }
 
     public static void main(String[] args) {
-        SnowFlake snowFlake=new SnowFlake(1,1);
+        SnowFlake snowFlake = new SnowFlake(1, 1);
         for (int i = 0; i < (1 << 12); i++) {
-            Long id=  snowFlake.nextId();
+            Long id = snowFlake.nextId();
             System.out.println(id);
         }
     }
