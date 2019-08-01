@@ -7,6 +7,7 @@
         <result column="sys_acl_action" jdbcType="VARCHAR" property="sysAclAction" />
         <result column="sys_acl_router" jdbcType="VARCHAR" property="sysAclRouter" />
         <result column="sys_acl_name" jdbcType="VARCHAR" property="sysAclName" />
+        <result column="sys_acl_component_name" jdbcType="VARCHAR" property="sysAclComponentName" />
         <result column="sys_acl_parent_id" jdbcType="BIGINT" property="sysAclParentId" />
         <result column="sys_acl_level" jdbcType="VARCHAR" property="sysAclLevel" />
         <result column="sys_acl_permission_type" jdbcType="BIGINT" property="sysAclPermissionType" />
@@ -24,16 +25,18 @@
         <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
     </resultMap>
     <sql id="Base_Column_List">
-        id, uuid, sys_acl_action, sys_acl_router, sys_acl_name, sys_acl_parent_id, sys_acl_level,
-    sys_acl_permission_type, sys_acl_url, sys_acl_type, sys_acl_icon, sys_acl_seq, sys_acl_code,
-    remark, flag, del_flag, create_by, create_time, update_time, update_by
+        id, uuid, sys_acl_action, sys_acl_router, sys_acl_name, sys_acl_component_name, sys_acl_parent_id,
+    sys_acl_level, sys_acl_permission_type, sys_acl_url, sys_acl_type, sys_acl_icon,
+    sys_acl_seq, sys_acl_code, remark, flag, del_flag, create_by, create_time, update_time,
+    update_by
     </sql>
 
     <select id="getChildAclModuleListByLevel" parameterType="map" resultMap="BaseResultMap">
         SELECT
-           id, uuid, sys_acl_action, sys_acl_router, sys_acl_name, sys_acl_parent_id, sys_acl_level,
-    sys_acl_permission_type, sys_acl_url, sys_acl_type, sys_acl_icon, sys_acl_seq, sys_acl_code,
-    remark, flag, del_flag, create_by, create_time, update_time, update_by
+           id, uuid, sys_acl_action, sys_acl_router, sys_acl_name, sys_acl_component_name, sys_acl_parent_id,
+    sys_acl_level, sys_acl_permission_type, sys_acl_url, sys_acl_type, sys_acl_icon,
+    sys_acl_seq, sys_acl_code, remark, flag, del_flag, create_by, create_time, update_time,
+    update_by
         FROM sys_acl WHERE sys_acl_module_level LIKE CONCAT(#{aclModuleLevel},'%')
     </select>
 
@@ -81,6 +84,9 @@
             </if>
             <if test="sysAclName != null">
                 sys_acl_name,
+            </if>
+            <if test="sysAclComponentName != null">
+                sys_acl_component_name,
             </if>
             <if test="sysAclParentId != null">
                 sys_acl_parent_id,
@@ -144,6 +150,9 @@
             <if test="sysAclName != null">
                 #{sysAclName,jdbcType=VARCHAR},
             </if>
+            <if test="sysAclComponentName != null">
+                #{sysAclComponentName,jdbcType=VARCHAR},
+            </if>
             <if test="sysAclParentId != null">
                 #{sysAclParentId,jdbcType=BIGINT},
             </if>
@@ -205,6 +214,9 @@
             </if>
             <if test="sysAclName != null">
                 sys_acl_name = #{sysAclName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclComponentName != null">
+                sys_acl_component_name = #{sysAclComponentName,jdbcType=VARCHAR},
             </if>
             <if test="sysAclParentId != null">
                 sys_acl_parent_id = #{sysAclParentId,jdbcType=BIGINT},

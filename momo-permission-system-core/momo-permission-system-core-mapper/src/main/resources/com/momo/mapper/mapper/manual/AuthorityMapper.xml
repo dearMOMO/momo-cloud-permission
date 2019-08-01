@@ -50,9 +50,10 @@
     </select>
     <select id="getAllAcl" parameterType="map" resultMap="getAllAcl">
         SELECT
-        id, uuid, sys_acl_action, sys_acl_router, sys_acl_name, sys_acl_parent_id, sys_acl_level,
-        sys_acl_permission_type, sys_acl_url, sys_acl_type, sys_acl_icon, sys_acl_seq, sys_acl_code,
-        remark, flag, del_flag, create_by, create_time, update_time, update_by
+        id, uuid, sys_acl_action, sys_acl_router, sys_acl_name, sys_acl_component_name, sys_acl_parent_id,
+        sys_acl_level, sys_acl_permission_type, sys_acl_url, sys_acl_type, sys_acl_icon,
+        sys_acl_seq, sys_acl_code, remark, flag, del_flag, create_by, create_time, update_time,
+        update_by
         FROM  sys_acl
         <trim prefixOverrides="and" prefix="where">
             <if test="aclPermissionType!=null">

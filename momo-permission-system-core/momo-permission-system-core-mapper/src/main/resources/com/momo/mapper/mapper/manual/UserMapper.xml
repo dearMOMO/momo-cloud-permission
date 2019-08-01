@@ -16,7 +16,7 @@
         <result column="group_id" jdbcType="BIGINT" property="groupId" />
 
         <result column="remark" jdbcType="VARCHAR" property="remark" />
-        <result column="state" jdbcType="INTEGER" property="state" />
+        <result column="flag" jdbcType="INTEGER" property="flag" />
         <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
         <result column="create_by" jdbcType="VARCHAR" property="createBy" />
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -26,7 +26,7 @@
     <sql id="Base_Column_List">
     id, sys_user_name, uuid, sys_user_phone, sys_user_email, sys_user_province_name,
     sys_user_province, sys_user_city_name, sys_user_city, sys_user_area_name, sys_user_area,
-    group_id, remark, state, del_flag, create_by, create_time, update_time,
+    group_id, remark, flag, del_flag, create_by, create_time, update_time,
     update_by
   </sql>
     <select id="getById" parameterType="map" resultMap="BaseResultMap">

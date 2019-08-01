@@ -64,6 +64,10 @@ public class AclDO{
      */
     private String sysAclRouter;
     /**
+     * sysAclComponentName 前端组件名称.
+     */
+    private String sysAclComponentName;
+    /**
      * flag 状态 0启用  1禁用.
      */
     private Integer flag;
@@ -310,6 +314,22 @@ public class AclDO{
      */
     public String getSysAclRouter(){
         return sysAclRouter;
+    }
+
+    /**
+     * Set sysAclComponentName 前端组件名称.
+     */
+    public void setSysAclComponentName(String sysAclComponentName){
+        this.sysAclComponentName = sysAclComponentName;
+    }
+
+    /**
+     * Get sysAclComponentName 前端组件名称.
+     *
+     * @return the string
+     */
+    public String getSysAclComponentName(){
+        return sysAclComponentName;
     }
 
     /**
