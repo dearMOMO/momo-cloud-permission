@@ -13,7 +13,7 @@
             <result column="SYS_USER_PWD" property="sysUserPwd" jdbcType="VARCHAR" javaType="String"/>
             <result column="SYS_USER_AUTH_SALT" property="sysUserAuthSalt" jdbcType="VARCHAR" javaType="String"/>
             <result column="SYS_USER_LOGIN_NAME" property="sysUserLoginName" jdbcType="VARCHAR" javaType="String"/>
-            <result column="STATUS" property="status" jdbcType="INTEGER" javaType="Integer"/>
+            <result column="FLAG" property="flag" jdbcType="INTEGER" javaType="Integer"/>
             <result column="DEL_FLAG" property="delFlag" jdbcType="INTEGER" javaType="Integer"/>
             <result column="SYS_LOGIN_NUMBER" property="sysLoginNumber" jdbcType="INTEGER" javaType="Integer"/>
             <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
@@ -22,7 +22,7 @@
 
 
     <sql id="Base_Column_List">
-        ID,GROUP_ID,SYS_USER_ID,UUID,REMARK,CREATE_BY,UPDATE_BY,SYS_USER_PWD,SYS_USER_AUTH_SALT,SYS_USER_LOGIN_NAME,STATUS,DEL_FLAG,SYS_LOGIN_NUMBER,CREATE_TIME,UPDATE_TIME
+        ID,GROUP_ID,SYS_USER_ID,UUID,REMARK,CREATE_BY,UPDATE_BY,SYS_USER_PWD,SYS_USER_AUTH_SALT,SYS_USER_LOGIN_NAME,FLAG,DEL_FLAG,SYS_LOGIN_NUMBER,CREATE_TIME,UPDATE_TIME
     </sql>
 
 

@@ -57,7 +57,7 @@ public class RoleController {
     }
 
     @PostMapping("/roleHaveAclTree/v1")
-    public JSONResult roleHaveAclTree(@Validated(LoginAuthReq.Delete.class) @RequestBody LoginAuthReq loginAuthReq) {
+    public JSONResult roleHaveAclTree(@Validated(LoginAuthReq.Detail.class) @RequestBody LoginAuthReq loginAuthReq) {
         return JSONResult.ok(roleService.roleHaveAclTree(loginAuthReq));
     }
 

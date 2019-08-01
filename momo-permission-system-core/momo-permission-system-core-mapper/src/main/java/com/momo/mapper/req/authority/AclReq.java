@@ -3,6 +3,8 @@ package com.momo.mapper.req.authority;
 import com.momo.common.error.BaseReq;
 import lombok.*;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -56,6 +58,8 @@ public class AclReq extends BaseReq {
      * sysAclType 类型，1：菜单，2：按钮，3：其他.
      */
     @NotNull(message = "类型，1：菜单，2：按钮，3：其他 必填", groups = {save.class, Modify.class})
+    @Max(value = 1,message = "权限类型：最大值为1")
+    @Min(value = 0,message = "权限类型：最小值为0")
     private Integer sysAclType;
     /**
      * sysAclUuid 唯一，32位字符串，查询用.
@@ -63,10 +67,12 @@ public class AclReq extends BaseReq {
     @NotBlank(message = "uuid 必填", groups = {Status.class, Modify.class})
     private String uuid;
     /**
-     * sysAclState 状态 0启用  1禁用.
+     * flag 状态 0启用  1禁用.
      */
     @NotNull(message = "状态 0启用  1禁用 必填", groups = {save.class,Status.class, Modify.class})
-    private Integer status;
+    @Max(value = 1,message = "状态：最大值为1")
+    @Min(value = 0,message = "状态：最小值为0")
+    private Integer flag;
     /**
      * sysAclAction 按钮动作类型(交给前端处理）.
      */
@@ -81,6 +87,7 @@ public class AclReq extends BaseReq {
      * sysAclSeq 权限在当前模块下的顺序，由小到大.
      */
     @NotNull(message = "权限在当前模块下的顺序，由小到大 必填", groups = {save.class, Modify.class})
+    @Min(value = 0,message = "排序：最小值为0")
     private Integer sysAclSeq;
 
 }

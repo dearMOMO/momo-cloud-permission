@@ -34,9 +34,9 @@ public class UserDeptDO{
      */
     private String updateBy;
     /**
-     * state 是否被禁用  0否 1禁用.
+     * flag 是否被禁用  0否 1禁用.
      */
-    private Integer state;
+    private Integer flag;
     /**
      * delFlag 删除状态(0-正常，1-删除).
      */
@@ -147,19 +147,19 @@ public class UserDeptDO{
     }
 
     /**
-     * Set state 是否被禁用  0否 1禁用.
+     * Set flag 是否被禁用  0否 1禁用.
      */
-    public void setState(Integer state){
-        this.state = state;
+    public void setFlag(Integer flag){
+        this.flag = flag;
     }
 
     /**
-     * Get state 是否被禁用  0否 1禁用.
+     * Get flag 是否被禁用  0否 1禁用.
      *
      * @return the string
      */
-    public Integer getState(){
-        return state;
+    public Integer getFlag(){
+        return flag;
     }
 
     /**

@@ -50,9 +50,9 @@ public class UserAccountPwdDO{
      */
     private String sysUserLoginName;
     /**
-     * status 状态 0启用  1禁用.
+     * flag 状态 0启用  1禁用.
      */
-    private Integer status;
+    private Integer flag;
     /**
      * delFlag 删除状态(0-正常，1-删除).
      */
@@ -231,19 +231,19 @@ public class UserAccountPwdDO{
     }
 
     /**
-     * Set status 状态 0启用  1禁用.
+     * Set flag 状态 0启用  1禁用.
      */
-    public void setStatus(Integer status){
-        this.status = status;
+    public void setFlag(Integer flag){
+        this.flag = flag;
     }
 
     /**
-     * Get status 状态 0启用  1禁用.
+     * Get flag 状态 0启用  1禁用.
      *
      * @return the string
      */
-    public Integer getStatus(){
-        return status;
+    public Integer getFlag(){
+        return flag;
     }
 
     /**

@@ -83,10 +83,10 @@ public class AclService extends BaseService {
         }
         AclDO record = new AclDO();
         //状态 0启用  1禁用
-        if (aclReq.getStatus().equals(0)) {
-            record.setStatus(1);
-        } else if (aclReq.getStatus().equals(1)) {
-            record.setStatus(0);
+        if (aclReq.getFlag().equals(0)) {
+            record.setFlag(1);
+        } else if (aclReq.getFlag().equals(1)) {
+            record.setFlag(0);
         }
         RedisUser redisUser = this.redisUser();
         record.setUpdateBy(redisUser.getSysUserName());

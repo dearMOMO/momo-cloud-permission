@@ -30,6 +30,14 @@ public class LoginLogDO{
      */
     private String userIp;
     /**
+     * createBy 创建人.
+     */
+    private String createBy;
+    /**
+     * updateBy 修改人.
+     */
+    private String updateBy;
+    /**
      * userLoginSys 操作系统.
      */
     private String userLoginSys;
@@ -50,6 +58,10 @@ public class LoginLogDO{
      */
     private String userLoginBrowser;
     /**
+     * flag 状态 0启用  1禁用.
+     */
+    private Integer flag;
+    /**
      * userLoginType 登录类型.
      */
     private Integer userLoginType;
@@ -57,6 +69,10 @@ public class LoginLogDO{
      * createTime 登录时间.
      */
     private Date createTime;
+    /**
+     * updateTime 修改时间.
+     */
+    private Date updateTime;
 
     /**
      * Set id ID.
@@ -136,6 +152,38 @@ public class LoginLogDO{
      */
     public String getUserIp(){
         return userIp;
+    }
+
+    /**
+     * Set createBy 创建人.
+     */
+    public void setCreateBy(String createBy){
+        this.createBy = createBy;
+    }
+
+    /**
+     * Get createBy 创建人.
+     *
+     * @return the string
+     */
+    public String getCreateBy(){
+        return createBy;
+    }
+
+    /**
+     * Set updateBy 修改人.
+     */
+    public void setUpdateBy(String updateBy){
+        this.updateBy = updateBy;
+    }
+
+    /**
+     * Get updateBy 修改人.
+     *
+     * @return the string
+     */
+    public String getUpdateBy(){
+        return updateBy;
     }
 
     /**
@@ -219,6 +267,22 @@ public class LoginLogDO{
     }
 
     /**
+     * Set flag 状态 0启用  1禁用.
+     */
+    public void setFlag(Integer flag){
+        this.flag = flag;
+    }
+
+    /**
+     * Get flag 状态 0启用  1禁用.
+     *
+     * @return the string
+     */
+    public Integer getFlag(){
+        return flag;
+    }
+
+    /**
      * Set userLoginType 登录类型.
      */
     public void setUserLoginType(Integer userLoginType){
@@ -248,5 +312,21 @@ public class LoginLogDO{
      */
     public Date getCreateTime(){
         return createTime;
+    }
+
+    /**
+     * Set updateTime 修改时间.
+     */
+    public void setUpdateTime(Date updateTime){
+        this.updateTime = updateTime;
+    }
+
+    /**
+     * Get updateTime 修改时间.
+     *
+     * @return the string
+     */
+    public Date getUpdateTime(){
+        return updateTime;
     }
 }

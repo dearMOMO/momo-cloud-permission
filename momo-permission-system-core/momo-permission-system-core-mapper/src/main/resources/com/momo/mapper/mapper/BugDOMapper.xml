@@ -4,20 +4,21 @@
     <!-- 自动生成,请修改 SYS_BUG.xml -->
     <resultMap id="BaseResultMap"  type="com.momo.mapper.dataobject.BugDO">
             <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+            <result column="UUID" property="uuid" jdbcType="VARCHAR" javaType="String"/>
             <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
             <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
             <result column="SYS_PRODUCT_IMG" property="sysProductImg" jdbcType="VARCHAR" javaType="String"/>
             <result column="SYS_PRODUCT_NAME" property="sysProductName" jdbcType="VARCHAR" javaType="String"/>
             <result column="SYS_PRODUCT_REPLY" property="sysProductReply" jdbcType="VARCHAR" javaType="String"/>
             <result column="SYS_PRODUCT_DETAIL" property="sysProductDetail" jdbcType="VARCHAR" javaType="String"/>
-            <result column="STATUS" property="status" jdbcType="INTEGER" javaType="Integer"/>
+            <result column="FLAG" property="flag" jdbcType="INTEGER" javaType="Integer"/>
             <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
             <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
     </resultMap>
 
 
     <sql id="Base_Column_List">
-        ID,CREATE_BY,UPDATE_BY,SYS_PRODUCT_IMG,SYS_PRODUCT_NAME,SYS_PRODUCT_REPLY,SYS_PRODUCT_DETAIL,STATUS,CREATE_TIME,UPDATE_TIME
+        ID,UUID,CREATE_BY,UPDATE_BY,SYS_PRODUCT_IMG,SYS_PRODUCT_NAME,SYS_PRODUCT_REPLY,SYS_PRODUCT_DETAIL,FLAG,CREATE_TIME,UPDATE_TIME
     </sql>
 
 

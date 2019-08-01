@@ -10,7 +10,7 @@
             <result column="UUID" property="uuid" jdbcType="VARCHAR" javaType="String"/>
             <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
             <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
-            <result column="STATUS" property="status" jdbcType="INTEGER" javaType="Integer"/>
+            <result column="FLAG" property="flag" jdbcType="INTEGER" javaType="Integer"/>
             <result column="DEL_FLAG" property="delFlag" jdbcType="INTEGER" javaType="Integer"/>
             <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
             <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
@@ -18,7 +18,7 @@
 
 
     <sql id="Base_Column_List">
-        ID,ROLE_ID,USER_ID,GROUP_ID,UUID,CREATE_BY,UPDATE_BY,STATUS,DEL_FLAG,CREATE_TIME,UPDATE_TIME
+        ID,ROLE_ID,USER_ID,GROUP_ID,UUID,CREATE_BY,UPDATE_BY,FLAG,DEL_FLAG,CREATE_TIME,UPDATE_TIME
     </sql>
 
 

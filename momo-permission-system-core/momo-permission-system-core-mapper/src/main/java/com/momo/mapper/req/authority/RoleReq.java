@@ -29,10 +29,10 @@ public class RoleReq extends BaseReq {
      */
     private Long groupId;
     /**
-     * status 状态 0启用  1禁用.
+     * flag 状态 0启用  1禁用.
      */
     @NotNull(message = "状态 0启用  1禁用 必填",groups = {save.class,Modify.class,Status.class})
-    private Integer status;
+    private Integer flag;
 
     /**
      * roleName 角色名称.

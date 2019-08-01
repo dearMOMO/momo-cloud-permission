@@ -16,7 +16,7 @@
         <result column="sys_acl_seq" jdbcType="INTEGER" property="sysAclSeq" />
         <result column="sys_acl_code" jdbcType="VARCHAR" property="sysAclCode" />
         <result column="remark" jdbcType="VARCHAR" property="remark" />
-        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="flag" jdbcType="INTEGER" property="flag" />
         <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
         <result column="create_by" jdbcType="VARCHAR" property="createBy" />
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -26,14 +26,14 @@
     <sql id="Base_Column_List">
         id, uuid, sys_acl_action, sys_acl_router, sys_acl_name, sys_acl_parent_id, sys_acl_level,
     sys_acl_permission_type, sys_acl_url, sys_acl_type, sys_acl_icon, sys_acl_seq, sys_acl_code,
-    remark, status, del_flag, create_by, create_time, update_time, update_by
+    remark, flag, del_flag, create_by, create_time, update_time, update_by
     </sql>
 
     <select id="getChildAclModuleListByLevel" parameterType="map" resultMap="BaseResultMap">
         SELECT
            id, uuid, sys_acl_action, sys_acl_router, sys_acl_name, sys_acl_parent_id, sys_acl_level,
     sys_acl_permission_type, sys_acl_url, sys_acl_type, sys_acl_icon, sys_acl_seq, sys_acl_code,
-    remark, status, del_flag, create_by, create_time, update_time, update_by
+    remark, flag, del_flag, create_by, create_time, update_time, update_by
         FROM sys_acl WHERE sys_acl_module_level LIKE CONCAT(#{aclModuleLevel},'%')
     </select>
 
@@ -109,8 +109,8 @@
             <if test="remark != null">
                 remark,
             </if>
-            <if test="status != null">
-                status,
+            <if test="flag != null">
+                flag,
             </if>
             <if test="delFlag != null">
                 del_flag,
@@ -171,8 +171,8 @@
             <if test="remark != null">
                 #{remark,jdbcType=VARCHAR},
             </if>
-            <if test="status != null">
-                #{status,jdbcType=INTEGER},
+            <if test="flag != null">
+                #{flag,jdbcType=INTEGER},
             </if>
             <if test="delFlag != null">
                 #{delFlag,jdbcType=INTEGER},
@@ -233,8 +233,8 @@
             <if test="remark != null">
                 remark = #{remark,jdbcType=VARCHAR},
             </if>
-            <if test="status != null">
-                status = #{status,jdbcType=INTEGER},
+            <if test="flag != null">
+                flag = #{flag,jdbcType=INTEGER},
             </if>
             <if test="delFlag != null">
                 del_flag = #{delFlag,jdbcType=INTEGER},

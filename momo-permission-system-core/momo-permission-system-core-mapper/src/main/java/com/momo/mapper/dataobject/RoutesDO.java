@@ -10,6 +10,10 @@ import com.momo.mapper.dataobject.RoutesDO;
 public class RoutesDO{
 
     /**
+     * uuid UUID.
+     */
+    private String uuid;
+    /**
      * sysId 这个路由的唯一id，不定义的话为一个uuid.
      */
     private String sysId;
@@ -46,9 +50,9 @@ public class RoutesDO{
      */
     private Integer pId;
     /**
-     * status 状态 0启用  1禁用.
+     * flag 状态 0启用  1禁用.
      */
-    private Integer status;
+    private Integer flag;
     /**
      * delFlag 删除状态(0-正常，1-删除).
      */
@@ -65,6 +69,22 @@ public class RoutesDO{
      * updateTime 修改时间.
      */
     private Date updateTime;
+
+    /**
+     * Set uuid UUID.
+     */
+    public void setUuid(String uuid){
+        this.uuid = uuid;
+    }
+
+    /**
+     * Get uuid UUID.
+     *
+     * @return the string
+     */
+    public String getUuid(){
+        return uuid;
+    }
 
     /**
      * Set sysId 这个路由的唯一id，不定义的话为一个uuid.
@@ -211,19 +231,19 @@ public class RoutesDO{
     }
 
     /**
-     * Set status 状态 0启用  1禁用.
+     * Set flag 状态 0启用  1禁用.
      */
-    public void setStatus(Integer status){
-        this.status = status;
+    public void setFlag(Integer flag){
+        this.flag = flag;
     }
 
     /**
-     * Get status 状态 0启用  1禁用.
+     * Get flag 状态 0启用  1禁用.
      *
      * @return the string
      */
-    public Integer getStatus(){
-        return status;
+    public Integer getFlag(){
+        return flag;
     }
 
     /**

@@ -3,6 +3,7 @@
 <mapper namespace="com.momo.mapper.mapper.RoutesDOMapper">
     <!-- 自动生成,请修改 SYS_ROUTES.xml -->
     <resultMap id="BaseResultMap"  type="com.momo.mapper.dataobject.RoutesDO">
+            <result column="UUID" property="uuid" jdbcType="VARCHAR" javaType="String"/>
             <result column="SYS_ID" property="sysId" jdbcType="VARCHAR" javaType="String"/>
             <result column="REMARK" property="remark" jdbcType="VARCHAR" javaType="String"/>
             <result column="SYS_URI" property="sysUri" jdbcType="VARCHAR" javaType="String"/>
@@ -12,7 +13,7 @@
             <result column="SYS_FILTERS" property="sysFilters" jdbcType="VARCHAR" javaType="String"/>
             <result column="SYS_PREDICATES" property="sysPredicates" jdbcType="VARCHAR" javaType="String"/>
             <result column="P_ID" property="pId" jdbcType="INTEGER" javaType="Integer"/>
-            <result column="STATUS" property="status" jdbcType="INTEGER" javaType="Integer"/>
+            <result column="FLAG" property="flag" jdbcType="INTEGER" javaType="Integer"/>
             <result column="DEL_FLAG" property="delFlag" jdbcType="INTEGER" javaType="Integer"/>
             <result column="SYS_ORDER" property="sysOrder" jdbcType="INTEGER" javaType="Integer"/>
             <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
@@ -21,7 +22,7 @@
 
 
     <sql id="Base_Column_List">
-        SYS_ID,REMARK,SYS_URI,SYS_NAME,CREATE_BY,UPDATE_BY,SYS_FILTERS,SYS_PREDICATES,P_ID,STATUS,DEL_FLAG,SYS_ORDER,CREATE_TIME,UPDATE_TIME
+        UUID,SYS_ID,REMARK,SYS_URI,SYS_NAME,CREATE_BY,UPDATE_BY,SYS_FILTERS,SYS_PREDICATES,P_ID,FLAG,DEL_FLAG,SYS_ORDER,CREATE_TIME,UPDATE_TIME
     </sql>
 
 

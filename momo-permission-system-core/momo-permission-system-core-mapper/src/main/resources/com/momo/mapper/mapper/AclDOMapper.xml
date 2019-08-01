@@ -17,7 +17,7 @@
             <result column="SYS_ACL_LEVEL" property="sysAclLevel" jdbcType="VARCHAR" javaType="String"/>
             <result column="SYS_ACL_ACTION" property="sysAclAction" jdbcType="VARCHAR" javaType="String"/>
             <result column="SYS_ACL_ROUTER" property="sysAclRouter" jdbcType="VARCHAR" javaType="String"/>
-            <result column="STATUS" property="status" jdbcType="INTEGER" javaType="Integer"/>
+            <result column="FLAG" property="flag" jdbcType="INTEGER" javaType="Integer"/>
             <result column="DEL_FLAG" property="delFlag" jdbcType="INTEGER" javaType="Integer"/>
             <result column="SYS_ACL_SEQ" property="sysAclSeq" jdbcType="INTEGER" javaType="Integer"/>
             <result column="SYS_ACL_TYPE" property="sysAclType" jdbcType="INTEGER" javaType="Integer"/>
@@ -27,7 +27,7 @@
 
 
     <sql id="Base_Column_List">
-        ID,SYS_ACL_PARENT_ID,SYS_ACL_PERMISSION_TYPE,UUID,REMARK,CREATE_BY,UPDATE_BY,SYS_ACL_URL,SYS_ACL_CODE,SYS_ACL_ICON,SYS_ACL_NAME,SYS_ACL_LEVEL,SYS_ACL_ACTION,SYS_ACL_ROUTER,STATUS,DEL_FLAG,SYS_ACL_SEQ,SYS_ACL_TYPE,CREATE_TIME,UPDATE_TIME
+        ID,SYS_ACL_PARENT_ID,SYS_ACL_PERMISSION_TYPE,UUID,REMARK,CREATE_BY,UPDATE_BY,SYS_ACL_URL,SYS_ACL_CODE,SYS_ACL_ICON,SYS_ACL_NAME,SYS_ACL_LEVEL,SYS_ACL_ACTION,SYS_ACL_ROUTER,FLAG,DEL_FLAG,SYS_ACL_SEQ,SYS_ACL_TYPE,CREATE_TIME,UPDATE_TIME
     </sql>
 
 

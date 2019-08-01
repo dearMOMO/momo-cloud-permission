@@ -8,18 +8,22 @@
             <result column="GROUP_ID" property="groupId" jdbcType="BIGINT" javaType="Long"/>
             <result column="UUID" property="uuid" jdbcType="VARCHAR" javaType="String"/>
             <result column="USER_IP" property="userIp" jdbcType="VARCHAR" javaType="String"/>
+            <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
+            <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
             <result column="USER_LOGIN_SYS" property="userLoginSys" jdbcType="VARCHAR" javaType="String"/>
             <result column="USER_USER_NAME" property="userUserName" jdbcType="VARCHAR" javaType="String"/>
             <result column="USER_LOGIN_NAME" property="userLoginName" jdbcType="VARCHAR" javaType="String"/>
             <result column="USER_LOGIN_DEVICE" property="userLoginDevice" jdbcType="VARCHAR" javaType="String"/>
             <result column="USER_LOGIN_BROWSER" property="userLoginBrowser" jdbcType="VARCHAR" javaType="String"/>
+            <result column="FLAG" property="flag" jdbcType="INTEGER" javaType="Integer"/>
             <result column="USER_LOGIN_TYPE" property="userLoginType" jdbcType="INTEGER" javaType="Integer"/>
             <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
     </resultMap>
 
 
     <sql id="Base_Column_List">
-        ID,USER_ID,GROUP_ID,UUID,USER_IP,USER_LOGIN_SYS,USER_USER_NAME,USER_LOGIN_NAME,USER_LOGIN_DEVICE,USER_LOGIN_BROWSER,USER_LOGIN_TYPE,CREATE_TIME
+        ID,USER_ID,GROUP_ID,UUID,USER_IP,CREATE_BY,UPDATE_BY,USER_LOGIN_SYS,USER_USER_NAME,USER_LOGIN_NAME,USER_LOGIN_DEVICE,USER_LOGIN_BROWSER,FLAG,USER_LOGIN_TYPE,CREATE_TIME,UPDATE_TIME
     </sql>
 
 

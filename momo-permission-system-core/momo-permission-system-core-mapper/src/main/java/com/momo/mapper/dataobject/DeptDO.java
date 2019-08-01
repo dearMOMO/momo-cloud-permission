@@ -22,6 +22,10 @@ public class DeptDO{
      */
     private Long sysDeptParentId;
     /**
+     * uuid 唯一，32位字符串，查询用.
+     */
+    private String uuid;
+    /**
      * remark 备注.
      */
     private String remark;
@@ -38,17 +42,13 @@ public class DeptDO{
      */
     private String sysDeptName;
     /**
-     * sysDeptUuid 唯一，32位字符串，查询用.
-     */
-    private String sysDeptUuid;
-    /**
      * sysDeptLevel 部门层级.
      */
     private String sysDeptLevel;
     /**
-     * status 状态 0启用  1禁用.
+     * flag 状态 0启用  1禁用.
      */
-    private Integer status;
+    private Integer flag;
     /**
      * delFlag 删除状态(0-正常，1-删除).
      */
@@ -119,6 +119,22 @@ public class DeptDO{
     }
 
     /**
+     * Set uuid 唯一，32位字符串，查询用.
+     */
+    public void setUuid(String uuid){
+        this.uuid = uuid;
+    }
+
+    /**
+     * Get uuid 唯一，32位字符串，查询用.
+     *
+     * @return the string
+     */
+    public String getUuid(){
+        return uuid;
+    }
+
+    /**
      * Set remark 备注.
      */
     public void setRemark(String remark){
@@ -183,22 +199,6 @@ public class DeptDO{
     }
 
     /**
-     * Set sysDeptUuid 唯一，32位字符串，查询用.
-     */
-    public void setSysDeptUuid(String sysDeptUuid){
-        this.sysDeptUuid = sysDeptUuid;
-    }
-
-    /**
-     * Get sysDeptUuid 唯一，32位字符串，查询用.
-     *
-     * @return the string
-     */
-    public String getSysDeptUuid(){
-        return sysDeptUuid;
-    }
-
-    /**
      * Set sysDeptLevel 部门层级.
      */
     public void setSysDeptLevel(String sysDeptLevel){
@@ -215,19 +215,19 @@ public class DeptDO{
     }
 
     /**
-     * Set status 状态 0启用  1禁用.
+     * Set flag 状态 0启用  1禁用.
      */
-    public void setStatus(Integer status){
-        this.status = status;
+    public void setFlag(Integer flag){
+        this.flag = flag;
     }
 
     /**
-     * Get status 状态 0启用  1禁用.
+     * Get flag 状态 0启用  1禁用.
      *
      * @return the string
      */
-    public Integer getStatus(){
-        return status;
+    public Integer getFlag(){
+        return flag;
     }
 
     /**

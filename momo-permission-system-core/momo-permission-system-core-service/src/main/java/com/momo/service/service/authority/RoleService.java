@@ -207,7 +207,7 @@ public class RoleService extends BaseService {
                 }
                 //屏蔽非总部操作第三方管理员角色状态
                 //状态 0启用  1禁用
-                if ((selfRoleDO.getSysRoleType().equals(0) && roleReq.getStatus().equals(1))) {
+                if ((selfRoleDO.getSysRoleType().equals(0) && roleReq.getFlag().equals(1))) {
                     throw BizException.fail("您无权限操作管理员角色状态");
                 }
             }
@@ -234,10 +234,10 @@ public class RoleService extends BaseService {
         }
         RoleDO record = new RoleDO();
         //状态 0启用  1禁用
-        if (roleReq.getStatus().equals(0)) {
-            record.setStatus(1);
-        } else if (roleReq.getStatus().equals(1)) {
-            record.setStatus(0);
+        if (roleReq.getFlag().equals(0)) {
+            record.setFlag(1);
+        } else if (roleReq.getFlag().equals(1)) {
+            record.setFlag(0);
         }
         record.setUpdateBy(redisUser.getSysUserName());
         record.setUpdateTime(DateUtil.getDateTime());

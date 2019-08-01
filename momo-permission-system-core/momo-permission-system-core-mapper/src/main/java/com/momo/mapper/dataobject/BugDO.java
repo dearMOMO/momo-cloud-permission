@@ -14,6 +14,10 @@ public class BugDO{
      */
     private Long id;
     /**
+     * uuid UUID.
+     */
+    private String uuid;
+    /**
      * createBy CREATE_BY.
      */
     private String createBy;
@@ -38,9 +42,9 @@ public class BugDO{
      */
     private String sysProductDetail;
     /**
-     * status 处理状态 0 已处理 1未处理.
+     * flag 处理状态 0 已处理 1未处理.
      */
-    private Integer status;
+    private Integer flag;
     /**
      * createTime CREATE_TIME.
      */
@@ -64,6 +68,22 @@ public class BugDO{
      */
     public Long getId(){
         return id;
+    }
+
+    /**
+     * Set uuid UUID.
+     */
+    public void setUuid(String uuid){
+        this.uuid = uuid;
+    }
+
+    /**
+     * Get uuid UUID.
+     *
+     * @return the string
+     */
+    public String getUuid(){
+        return uuid;
     }
 
     /**
@@ -163,19 +183,19 @@ public class BugDO{
     }
 
     /**
-     * Set status 处理状态 0 已处理 1未处理.
+     * Set flag 处理状态 0 已处理 1未处理.
      */
-    public void setStatus(Integer status){
-        this.status = status;
+    public void setFlag(Integer flag){
+        this.flag = flag;
     }
 
     /**
-     * Get status 处理状态 0 已处理 1未处理.
+     * Get flag 处理状态 0 已处理 1未处理.
      *
      * @return the string
      */
-    public Integer getStatus(){
-        return status;
+    public Integer getFlag(){
+        return flag;
     }
 
     /**

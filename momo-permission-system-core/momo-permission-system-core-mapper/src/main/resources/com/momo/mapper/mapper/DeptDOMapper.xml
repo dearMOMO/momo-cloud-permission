@@ -6,13 +6,13 @@
             <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
             <result column="GROUP_ID" property="groupId" jdbcType="BIGINT" javaType="Long"/>
             <result column="SYS_DEPT_PARENT_ID" property="sysDeptParentId" jdbcType="BIGINT" javaType="Long"/>
+            <result column="UUID" property="uuid" jdbcType="VARCHAR" javaType="String"/>
             <result column="REMARK" property="remark" jdbcType="VARCHAR" javaType="String"/>
             <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
             <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
             <result column="SYS_DEPT_NAME" property="sysDeptName" jdbcType="VARCHAR" javaType="String"/>
-            <result column="SYS_DEPT_UUID" property="sysDeptUuid" jdbcType="VARCHAR" javaType="String"/>
             <result column="SYS_DEPT_LEVEL" property="sysDeptLevel" jdbcType="VARCHAR" javaType="String"/>
-            <result column="STATUS" property="status" jdbcType="INTEGER" javaType="Integer"/>
+            <result column="FLAG" property="flag" jdbcType="INTEGER" javaType="Integer"/>
             <result column="DEL_FLAG" property="delFlag" jdbcType="INTEGER" javaType="Integer"/>
             <result column="SYS_IS_LEAF" property="sysIsLeaf" jdbcType="INTEGER" javaType="Integer"/>
             <result column="SYS_DEPT_SEQ" property="sysDeptSeq" jdbcType="INTEGER" javaType="Integer"/>
@@ -22,7 +22,7 @@
 
 
     <sql id="Base_Column_List">
-        ID,GROUP_ID,SYS_DEPT_PARENT_ID,REMARK,CREATE_BY,UPDATE_BY,SYS_DEPT_NAME,SYS_DEPT_UUID,SYS_DEPT_LEVEL,STATUS,DEL_FLAG,SYS_IS_LEAF,SYS_DEPT_SEQ,CREATE_TIME,UPDATE_TIME
+        ID,GROUP_ID,SYS_DEPT_PARENT_ID,UUID,REMARK,CREATE_BY,UPDATE_BY,SYS_DEPT_NAME,SYS_DEPT_LEVEL,FLAG,DEL_FLAG,SYS_IS_LEAF,SYS_DEPT_SEQ,CREATE_TIME,UPDATE_TIME
     </sql>
 
 

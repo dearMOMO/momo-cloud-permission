@@ -38,9 +38,9 @@ public class RoleDO{
      */
     private String sysRoleName;
     /**
-     * status 是否被禁用  0否 1禁用.
+     * flag 是否被禁用  0否 1禁用.
      */
-    private Integer status;
+    private Integer flag;
     /**
      * delFlag 删除状态(0-正常，1-删除).
      */
@@ -171,19 +171,19 @@ public class RoleDO{
     }
 
     /**
-     * Set status 是否被禁用  0否 1禁用.
+     * Set flag 是否被禁用  0否 1禁用.
      */
-    public void setStatus(Integer status){
-        this.status = status;
+    public void setFlag(Integer flag){
+        this.flag = flag;
     }
 
     /**
-     * Get status 是否被禁用  0否 1禁用.
+     * Get flag 是否被禁用  0否 1禁用.
      *
      * @return the string
      */
-    public Integer getStatus(){
-        return status;
+    public Integer getFlag(){
+        return flag;
     }
 
     /**
