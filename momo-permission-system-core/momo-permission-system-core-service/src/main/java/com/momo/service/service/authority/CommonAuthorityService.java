@@ -49,6 +49,7 @@ public class CommonAuthorityService {
             AclLevelRes dto = AclLevelRes.adapt(acl);
             if (userAclIdSet.contains(acl.getId())) {
                 dto.setHasAcl(true);
+                dto.setDisabled(false);
             }
             if (roleAclIdSet.contains(acl.getId())) {
                 dto.setChecked(true);

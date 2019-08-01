@@ -21,16 +21,22 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true, of = {"id"})
 public class AclLevelRes extends AclDO {
+
+    private String label;
+
     private List<AclLevelRes> children = Lists.newArrayList();
     // 是否要默认选中
     private boolean checked = false;
 
     // 是否有权限操作
     private boolean hasAcl = false;
+    // 是否有权限操作
+    private boolean disabled = true;
 
     public static AclLevelRes adapt(AclDO acl) {
         AclLevelRes dto = new AclLevelRes();
         BeanUtils.copyProperties(acl, dto);
+        dto.setLabel(acl.getSysAclName());
         return dto;
     }
 }

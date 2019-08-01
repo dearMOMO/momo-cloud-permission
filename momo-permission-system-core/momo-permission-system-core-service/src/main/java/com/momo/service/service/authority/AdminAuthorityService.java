@@ -40,6 +40,7 @@ public class AdminAuthorityService extends BaseService {
             if (acl.getFlag().equals(0)) {
                 AclLevelRes dto = AclLevelRes.adapt(acl);
                 dto.setHasAcl(true);
+                dto.setDisabled(false);
                 dto.setChecked(true);
                 aclDtoList.add(dto);
             }
@@ -65,6 +66,7 @@ public class AdminAuthorityService extends BaseService {
             AclLevelRes dto = AclLevelRes.adapt(acl);
             if (userAclIdSet.contains(acl.getId())) {
                 dto.setHasAcl(true);
+                dto.setDisabled(false);
             }
             if (roleAclIdSet.contains(acl.getId())) {
                 dto.setChecked(true);
