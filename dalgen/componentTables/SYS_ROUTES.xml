@@ -1,53 +1,262 @@
 <!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
-<table sqlname="SYS_ROUTES" physicalName="SYS_ROUTES" remark="SYS_ROUTES">
-    <!--  特殊字符说明  &lt;&gt;   <> -->
+<table sqlname="sys_routes" physicalName="sys_routes" remark="SYS_ROUTES">
+    <!--  特殊字符说明 &lt;&gt; <> -->
+    <!-- baseSql option中 select * 会自动替换为 include -->
+    <sql id="Base_Column_List">
+        UUID,SYS_ID,REMARK,SYS_URI,SYS_NAME 
+        ,CREATE_BY,UPDATE_BY,SYS_FILTERS,SYS_PREDICATES,P_ID 
+        ,FLAG,DEL_FLAG,SYS_ORDER,CREATE_TIME,UPDATE_TIME
+    </sql>
 
-    <operation name="insert" paramtype="object" remark="插入表:SYS_ROUTES">
-            <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
-                SELECT
-                LAST_INSERT_ID()
-            </selectKey>
-        INSERT INTO SYS_ROUTES(
-            SYS_ID
-            SYS_URI
+    <!-- baseSql option中 select sf.* 会自动替换为 include -->
+    <sql id="Base_SF_Column_List">
+        sf.UUID,sf.SYS_ID,sf.REMARK,sf.SYS_URI,sf.SYS_NAME
+        ,sf.CREATE_BY,sf.UPDATE_BY,sf.SYS_FILTERS,sf.SYS_PREDICATES,sf.P_ID
+        ,sf.FLAG,sf.DEL_FLAG,sf.SYS_ORDER,sf.CREATE_TIME,sf.UPDATE_TIME
+    </sql>
+
+    <operation name="insert" paramtype="object" remark="插入表:sys_routes">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        <![CDATA[
+        INSERT INTO sys_routes(
+            UUID
+            ,SYS_ID
+            ,REMARK
+            ,SYS_URI
             ,SYS_NAME
+            ,CREATE_BY
+            ,UPDATE_BY
             ,SYS_FILTERS
             ,SYS_PREDICATES
             ,P_ID
+            ,FLAG
+            ,DEL_FLAG
             ,SYS_ORDER
+            ,CREATE_TIME
+            ,UPDATE_TIME
         )VALUES(
-            #{sysId,jdbcType=VARCHAR}
-            #{sysUri,jdbcType=VARCHAR}
-            ,#{sysName,jdbcType=VARCHAR}
-            ,#{sysFilters,jdbcType=VARCHAR}
-            ,#{sysPredicates,jdbcType=VARCHAR}
-            ,#{pId,jdbcType=INTEGER}
-            ,#{sysOrder,jdbcType=INTEGER}
+             #{uuid,jdbcType=VARCHAR}
+            , #{sysId,jdbcType=VARCHAR}
+            , #{remark,jdbcType=VARCHAR}
+            , #{sysUri,jdbcType=VARCHAR}
+            , #{sysName,jdbcType=VARCHAR}
+            , #{createBy,jdbcType=VARCHAR}
+            , #{updateBy,jdbcType=VARCHAR}
+            , #{sysFilters,jdbcType=VARCHAR}
+            , #{sysPredicates,jdbcType=VARCHAR}
+            , #{pId,jdbcType=INTEGER}
+            , #{flag,jdbcType=INTEGER}
+            , #{delFlag,jdbcType=INTEGER}
+            , #{sysOrder,jdbcType=INTEGER}
+            , #{createTime,jdbcType=TIMESTAMP}
+            , #{updateTime,jdbcType=TIMESTAMP}
         )
+        ]]>
     </operation>
 
-        <operation name="update" paramtype="object" remark="更新表:SYS_ROUTES">
-            UPDATE SYS_ROUTES
-            SET
-                    SYS_ID          = #{sysId,jdbcType=VARCHAR}
-                    ,SYS_URI         = #{sysUri,jdbcType=VARCHAR}
-                    ,SYS_NAME        = #{sysName,jdbcType=VARCHAR}
-                    ,SYS_FILTERS     = #{sysFilters,jdbcType=VARCHAR}
-                    ,SYS_PREDICATES  = #{sysPredicates,jdbcType=VARCHAR}
-                    ,SYS_ORDER       = #{sysOrder,jdbcType=INTEGER}
-            WHERE
-                P_ID            = #{pId,jdbcType=INTEGER}
-        </operation>
+    <!-- foreach 可以自定义类型，paramtype="primitive" foreach->javatype="自己书写的类"  -->
+    <!-- 只有一个参数且为List时必须将参数命名为list -->
+    <operation name="insertBatch" paramtype="objectList" remark="批量插入表:sys_routes">
+        INSERT INTO sys_routes(
+            UUID
+            ,SYS_ID
+            ,REMARK
+            ,SYS_URI
+            ,SYS_NAME
+            ,CREATE_BY
+            ,UPDATE_BY
+            ,SYS_FILTERS
+            ,SYS_PREDICATES
+            ,P_ID
+            ,FLAG
+            ,DEL_FLAG
+            ,SYS_ORDER
+            ,CREATE_TIME
+            ,UPDATE_TIME
+        )VALUES
+        <foreach collection="list"  item="item" separator=",">
+            (
+                 #{item.uuid,jdbcType=VARCHAR}
+                , #{item.sysId,jdbcType=VARCHAR}
+                , #{item.remark,jdbcType=VARCHAR}
+                , #{item.sysUri,jdbcType=VARCHAR}
+                , #{item.sysName,jdbcType=VARCHAR}
+                , #{item.createBy,jdbcType=VARCHAR}
+                , #{item.updateBy,jdbcType=VARCHAR}
+                , #{item.sysFilters,jdbcType=VARCHAR}
+                , #{item.sysPredicates,jdbcType=VARCHAR}
+                , #{item.pId,jdbcType=INTEGER}
+                , #{item.flag,jdbcType=INTEGER}
+                , #{item.delFlag,jdbcType=INTEGER}
+                , #{item.sysOrder,jdbcType=INTEGER}
+                , #{item.createTime,jdbcType=TIMESTAMP}
+                , #{item.updateTime,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </operation>
 
-        <operation name="deleteByPId" multiplicity="one" remark="根据主键删除数据:SYS_ROUTES">
-            DELETE FROM SYS_ROUTES
-            WHERE
-                P_ID = #{pId,jdbcType=INTEGER}
-        </operation>
+    <!-- 不推荐使用全 update 有需要自己打开
+    <operation name="update" paramtype="object" remark="更新表:sys_routes">
+        <![CDATA[
+        UPDATE sys_routes
+        SET
+            UUID            = #{uuid,jdbcType=VARCHAR}
+            ,SYS_ID          = #{sysId,jdbcType=VARCHAR}
+            ,REMARK          = #{remark,jdbcType=VARCHAR}
+            ,SYS_URI         = #{sysUri,jdbcType=VARCHAR}
+            ,SYS_NAME        = #{sysName,jdbcType=VARCHAR}
+            ,CREATE_BY       = #{createBy,jdbcType=VARCHAR}
+            ,UPDATE_BY       = #{updateBy,jdbcType=VARCHAR}
+            ,SYS_FILTERS     = #{sysFilters,jdbcType=VARCHAR}
+            ,SYS_PREDICATES  = #{sysPredicates,jdbcType=VARCHAR}
+            ,FLAG            = #{flag,jdbcType=INTEGER}
+            ,DEL_FLAG        = #{delFlag,jdbcType=INTEGER}
+            ,SYS_ORDER       = #{sysOrder,jdbcType=INTEGER}
+            ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+            ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
+        WHERE
+            P_ID            = #{pId,jdbcType=INTEGER}
+        ]]>
+    </operation>
+    -->
+    <operation name="deleteByPId"  remark="根据主键删除数据:sys_routes">
+        <![CDATA[
+        DELETE FROM sys_routes
+        WHERE
+            P_ID = #{pId,jdbcType=INTEGER}
+        ]]>
+    </operation>
 
-        <operation name="getByPId" multiplicity="one" remark="根据主键获取数据:SYS_ROUTES">
-            SELECT * FROM SYS_ROUTES
-            WHERE
-                P_ID = #{pId,jdbcType=INTEGER}
-        </operation>
+    <operation name="getByPId" multiplicity="one" remark="根据主键获取数据:sys_routes">
+        SELECT *
+        FROM sys_routes
+        WHERE
+        <![CDATA[
+            P_ID = #{pId,jdbcType=INTEGER}
+        ]]>
+    </operation>
+
+    <!-- 根据唯一约束操作数据 -->
+    <operation name="updateById" paramtype="object" remark="根据唯一约束Id更新表:sys_routes">
+        <![CDATA[
+        UPDATE sys_routes
+        SET
+            UUID            = #{uuid,jdbcType=VARCHAR}
+            ,REMARK          = #{remark,jdbcType=VARCHAR}
+            ,SYS_URI         = #{sysUri,jdbcType=VARCHAR}
+            ,SYS_NAME        = #{sysName,jdbcType=VARCHAR}
+            ,CREATE_BY       = #{createBy,jdbcType=VARCHAR}
+            ,UPDATE_BY       = #{updateBy,jdbcType=VARCHAR}
+            ,SYS_FILTERS     = #{sysFilters,jdbcType=VARCHAR}
+            ,SYS_PREDICATES  = #{sysPredicates,jdbcType=VARCHAR}
+            ,FLAG            = #{flag,jdbcType=INTEGER}
+            ,DEL_FLAG        = #{delFlag,jdbcType=INTEGER}
+            ,SYS_ORDER       = #{sysOrder,jdbcType=INTEGER}
+            ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+            ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
+        WHERE
+            SYS_ID          = #{sysId,jdbcType=VARCHAR}
+        ]]>
+    </operation>
+
+    <operation name="deleteById" remark="根据唯一约束Id删除数据:sys_routes">
+        <![CDATA[
+        DELETE FROM sys_routes
+        WHERE
+            SYS_ID          = #{sysId,jdbcType=VARCHAR}
+        ]]>
+    </operation>
+
+    <operation name="getById" multiplicity="one" remark="根据唯一约束Id获取数据:sys_routes">
+        SELECT *
+        FROM sys_routes
+        WHERE
+        <![CDATA[
+            SYS_ID          = #{sysId,jdbcType=VARCHAR}
+        ]]>
+    </operation>
+
+    <!-- 根据唯一约束操作数据 -->
+    <operation name="updateBySysName" paramtype="object" remark="根据唯一约束SysName更新表:sys_routes">
+        <![CDATA[
+        UPDATE sys_routes
+        SET
+            UUID            = #{uuid,jdbcType=VARCHAR}
+            ,SYS_ID          = #{sysId,jdbcType=VARCHAR}
+            ,REMARK          = #{remark,jdbcType=VARCHAR}
+            ,SYS_URI         = #{sysUri,jdbcType=VARCHAR}
+            ,CREATE_BY       = #{createBy,jdbcType=VARCHAR}
+            ,UPDATE_BY       = #{updateBy,jdbcType=VARCHAR}
+            ,SYS_FILTERS     = #{sysFilters,jdbcType=VARCHAR}
+            ,SYS_PREDICATES  = #{sysPredicates,jdbcType=VARCHAR}
+            ,FLAG            = #{flag,jdbcType=INTEGER}
+            ,DEL_FLAG        = #{delFlag,jdbcType=INTEGER}
+            ,SYS_ORDER       = #{sysOrder,jdbcType=INTEGER}
+            ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+            ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
+        WHERE
+            SYS_NAME        = #{sysName,jdbcType=VARCHAR}
+        ]]>
+    </operation>
+
+    <operation name="deleteBySysName" remark="根据唯一约束SysName删除数据:sys_routes">
+        <![CDATA[
+        DELETE FROM sys_routes
+        WHERE
+            SYS_NAME        = #{sysName,jdbcType=VARCHAR}
+        ]]>
+    </operation>
+
+    <operation name="getBySysName" multiplicity="one" remark="根据唯一约束SysName获取数据:sys_routes">
+        SELECT *
+        FROM sys_routes
+        WHERE
+        <![CDATA[
+            SYS_NAME        = #{sysName,jdbcType=VARCHAR}
+        ]]>
+    </operation>
+
+    <!-- 根据唯一约束操作数据 -->
+    <operation name="updateBySysUri" paramtype="object" remark="根据唯一约束SysUri更新表:sys_routes">
+        <![CDATA[
+        UPDATE sys_routes
+        SET
+            UUID            = #{uuid,jdbcType=VARCHAR}
+            ,SYS_ID          = #{sysId,jdbcType=VARCHAR}
+            ,REMARK          = #{remark,jdbcType=VARCHAR}
+            ,SYS_NAME        = #{sysName,jdbcType=VARCHAR}
+            ,CREATE_BY       = #{createBy,jdbcType=VARCHAR}
+            ,UPDATE_BY       = #{updateBy,jdbcType=VARCHAR}
+            ,SYS_FILTERS     = #{sysFilters,jdbcType=VARCHAR}
+            ,SYS_PREDICATES  = #{sysPredicates,jdbcType=VARCHAR}
+            ,FLAG            = #{flag,jdbcType=INTEGER}
+            ,DEL_FLAG        = #{delFlag,jdbcType=INTEGER}
+            ,SYS_ORDER       = #{sysOrder,jdbcType=INTEGER}
+            ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+            ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
+        WHERE
+            SYS_URI         = #{sysUri,jdbcType=VARCHAR}
+        ]]>
+    </operation>
+
+    <operation name="deleteBySysUri" remark="根据唯一约束SysUri删除数据:sys_routes">
+        <![CDATA[
+        DELETE FROM sys_routes
+        WHERE
+            SYS_URI         = #{sysUri,jdbcType=VARCHAR}
+        ]]>
+    </operation>
+
+    <operation name="getBySysUri" multiplicity="one" remark="根据唯一约束SysUri获取数据:sys_routes">
+        SELECT *
+        FROM sys_routes
+        WHERE
+        <![CDATA[
+            SYS_URI         = #{sysUri,jdbcType=VARCHAR}
+        ]]>
+    </operation>
+
 </table>

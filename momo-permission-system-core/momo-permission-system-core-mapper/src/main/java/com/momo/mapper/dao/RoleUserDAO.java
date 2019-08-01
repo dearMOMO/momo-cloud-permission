@@ -3,11 +3,11 @@ package com.momo.mapper.dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import com.momo.mapper.dataobject.RoleUserDO;
+import java.util.List;
 import com.momo.mapper.mapper.RoleUserDOMapper;
 
 /**
-* The Table SYS_ROLE_USER.
-* 注意:此结构有系统生成,禁止手工修改,以免被覆盖,请通过dalgen生成
+* The Table sys_role_user.
 * 角色和用户中间表
 */
 @Repository
@@ -17,8 +17,7 @@ public class RoleUserDAO{
     private RoleUserDOMapper roleUserDOMapper;
 
     /**
-     * desc:插入表:SYS_ROLE_USER.<br/>
-     * descSql =  SELECT LAST_INSERT_ID() INSERT INTO SYS_ROLE_USER( ROLE_ID ,USER_ID ,GROUP_ID ,DEL_FLAG ,CREATE_BY ,UPDATE_BY ,SYS_ROLE_USER_UUID ,CREATE_TIME ,UPDATE_TIME )VALUES( #{roleId,jdbcType=BIGINT} ,#{userId,jdbcType=BIGINT} ,#{groupId,jdbcType=BIGINT} ,#{delFlag,jdbcType=CHAR} ,#{createBy,jdbcType=VARCHAR} ,#{updateBy,jdbcType=VARCHAR} ,#{sysRoleUserUuid,jdbcType=VARCHAR} ,#{createTime,jdbcType=TIMESTAMP} ,#{updateTime,jdbcType=TIMESTAMP} )
+     * desc:插入表:sys_role_user.<br/>
      * @param entity entity
      * @return int
      */
@@ -26,17 +25,15 @@ public class RoleUserDAO{
         return roleUserDOMapper.insert(entity);
     }
     /**
-     * desc:更新表:SYS_ROLE_USER.<br/>
-     * descSql =  UPDATE SYS_ROLE_USER SET ROLE_ID = #{roleId,jdbcType=BIGINT} ,USER_ID = #{userId,jdbcType=BIGINT} ,GROUP_ID = #{groupId,jdbcType=BIGINT} ,DEL_FLAG = #{delFlag,jdbcType=CHAR} ,CREATE_BY = #{createBy,jdbcType=VARCHAR} ,UPDATE_BY = #{updateBy,jdbcType=VARCHAR} ,SYS_ROLE_USER_UUID = #{sysRoleUserUuid,jdbcType=VARCHAR} ,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP} ,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP} WHERE ID = #{id,jdbcType=BIGINT}
-     * @param entity entity
+     * desc:批量插入表:sys_role_user.<br/>
+     * @param list list
      * @return int
      */
-    public int update(RoleUserDO entity){
-        return roleUserDOMapper.update(entity);
+    public int insertBatch(List<RoleUserDO> list){
+        return roleUserDOMapper.insertBatch(list);
     }
     /**
-     * desc:根据主键删除数据:SYS_ROLE_USER.<br/>
-     * descSql =  DELETE FROM SYS_ROLE_USER WHERE ID = #{id,jdbcType=BIGINT}
+     * desc:根据主键删除数据:sys_role_user.<br/>
      * @param id id
      * @return int
      */
@@ -44,12 +41,35 @@ public class RoleUserDAO{
         return roleUserDOMapper.deleteById(id);
     }
     /**
-     * desc:根据主键获取数据:SYS_ROLE_USER.<br/>
-     * descSql =  SELECT * FROM SYS_ROLE_USER WHERE ID = #{id,jdbcType=BIGINT}
+     * desc:根据主键获取数据:sys_role_user.<br/>
      * @param id id
      * @return RoleUserDO
      */
     public RoleUserDO getById(Long id){
         return roleUserDOMapper.getById(id);
+    }
+    /**
+     * desc:根据普通索引GroupId获取数据:sys_role_user.<br/>
+     * @param groupId groupId
+     * @return List<RoleUserDO>
+     */
+    public List<RoleUserDO> queryByGroupId(Long groupId){
+        return roleUserDOMapper.queryByGroupId(groupId);
+    }
+    /**
+     * desc:根据普通索引RoleId获取数据:sys_role_user.<br/>
+     * @param roleId roleId
+     * @return List<RoleUserDO>
+     */
+    public List<RoleUserDO> queryByRoleId(Long roleId){
+        return roleUserDOMapper.queryByRoleId(roleId);
+    }
+    /**
+     * desc:根据普通索引UserId获取数据:sys_role_user.<br/>
+     * @param userId userId
+     * @return List<RoleUserDO>
+     */
+    public List<RoleUserDO> queryByUserId(Long userId){
+        return roleUserDOMapper.queryByUserId(userId);
     }
 }

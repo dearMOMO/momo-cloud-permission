@@ -1,62 +1,149 @@
 <!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
-<table sqlname="SYS_LOGIN_LOG" physicalName="SYS_LOGIN_LOG" remark="登录日志">
-    <!--  特殊字符说明  &lt;&gt;   <> -->
+<table sqlname="sys_login_log" physicalName="sys_login_log" remark="登录日志">
+    <!--  特殊字符说明 &lt;&gt; <> -->
+    <!-- baseSql option中 select * 会自动替换为 include -->
+    <sql id="Base_Column_List">
+        ID,USER_ID,GROUP_ID,UUID,USER_IP 
+        ,CREATE_BY,UPDATE_BY,USER_LOGIN_SYS,USER_USER_NAME,USER_LOGIN_NAME 
+        ,USER_LOGIN_DEVICE,USER_LOGIN_BROWSER,FLAG,USER_LOGIN_TYPE,CREATE_TIME 
+        ,UPDATE_TIME
+    </sql>
 
-    <operation name="insert" paramtype="object" remark="插入表:SYS_LOGIN_LOG">
-            <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
-                SELECT
-                LAST_INSERT_ID()
-            </selectKey>
-        INSERT INTO SYS_LOGIN_LOG(
-            
-            USER_ID
+    <!-- baseSql option中 select sf.* 会自动替换为 include -->
+    <sql id="Base_SF_Column_List">
+        sf.ID,sf.USER_ID,sf.GROUP_ID,sf.UUID,sf.USER_IP
+        ,sf.CREATE_BY,sf.UPDATE_BY,sf.USER_LOGIN_SYS,sf.USER_USER_NAME,sf.USER_LOGIN_NAME
+        ,sf.USER_LOGIN_DEVICE,sf.USER_LOGIN_BROWSER,sf.FLAG,sf.USER_LOGIN_TYPE,sf.CREATE_TIME
+        ,sf.UPDATE_TIME
+    </sql>
+
+    <operation name="insert" paramtype="object" remark="插入表:sys_login_log">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        <![CDATA[
+        INSERT INTO sys_login_log(
+            ID
+            ,USER_ID
             ,GROUP_ID
+            ,UUID
             ,USER_IP
+            ,CREATE_BY
+            ,UPDATE_BY
             ,USER_LOGIN_SYS
             ,USER_USER_NAME
             ,USER_LOGIN_NAME
-            ,USER_LOGIN_TYPE
+            ,USER_LOGIN_DEVICE
             ,USER_LOGIN_BROWSER
+            ,FLAG
+            ,USER_LOGIN_TYPE
             ,CREATE_TIME
+            ,UPDATE_TIME
         )VALUES(
-            
-            #{userId,jdbcType=BIGINT}
-            ,#{groupId,jdbcType=BIGINT}
-            ,#{userIp,jdbcType=VARCHAR}
-            ,#{userLoginSys,jdbcType=VARCHAR}
-            ,#{userUserName,jdbcType=VARCHAR}
-            ,#{userLoginName,jdbcType=VARCHAR}
-            ,#{userLoginType,jdbcType=VARCHAR}
-            ,#{userLoginBrowser,jdbcType=VARCHAR}
-            ,#{createTime,jdbcType=TIMESTAMP}
+             null
+            , #{userId,jdbcType=BIGINT}
+            , #{groupId,jdbcType=BIGINT}
+            , #{uuid,jdbcType=VARCHAR}
+            , #{userIp,jdbcType=VARCHAR}
+            , #{createBy,jdbcType=VARCHAR}
+            , #{updateBy,jdbcType=VARCHAR}
+            , #{userLoginSys,jdbcType=VARCHAR}
+            , #{userUserName,jdbcType=VARCHAR}
+            , #{userLoginName,jdbcType=VARCHAR}
+            , #{userLoginDevice,jdbcType=VARCHAR}
+            , #{userLoginBrowser,jdbcType=VARCHAR}
+            , #{flag,jdbcType=INTEGER}
+            , #{userLoginType,jdbcType=INTEGER}
+            , #{createTime,jdbcType=TIMESTAMP}
+            , #{updateTime,jdbcType=TIMESTAMP}
         )
+        ]]>
     </operation>
 
-        <operation name="update" paramtype="object" remark="更新表:SYS_LOGIN_LOG">
-            UPDATE SYS_LOGIN_LOG
-            SET
-                    USER_ID         = #{userId,jdbcType=BIGINT}
-                    ,GROUP_ID        = #{groupId,jdbcType=BIGINT}
-                    ,USER_IP         = #{userIp,jdbcType=VARCHAR}
-                    ,USER_LOGIN_SYS  = #{userLoginSys,jdbcType=VARCHAR}
-                    ,USER_USER_NAME  = #{userUserName,jdbcType=VARCHAR}
-                    ,USER_LOGIN_NAME = #{userLoginName,jdbcType=VARCHAR}
-                    ,USER_LOGIN_TYPE = #{userLoginType,jdbcType=VARCHAR}
-                    ,USER_LOGIN_BROWSER = #{userLoginBrowser,jdbcType=VARCHAR}
-                    ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
-            WHERE
-                ID              = #{id,jdbcType=BIGINT}
-        </operation>
+    <!-- foreach 可以自定义类型，paramtype="primitive" foreach->javatype="自己书写的类"  -->
+    <!-- 只有一个参数且为List时必须将参数命名为list -->
+    <operation name="insertBatch" paramtype="objectList" remark="批量插入表:sys_login_log">
+        INSERT INTO sys_login_log(
+            ID
+            ,USER_ID
+            ,GROUP_ID
+            ,UUID
+            ,USER_IP
+            ,CREATE_BY
+            ,UPDATE_BY
+            ,USER_LOGIN_SYS
+            ,USER_USER_NAME
+            ,USER_LOGIN_NAME
+            ,USER_LOGIN_DEVICE
+            ,USER_LOGIN_BROWSER
+            ,FLAG
+            ,USER_LOGIN_TYPE
+            ,CREATE_TIME
+            ,UPDATE_TIME
+        )VALUES
+        <foreach collection="list"  item="item" separator=",">
+            (
+                 null
+                , #{item.userId,jdbcType=BIGINT}
+                , #{item.groupId,jdbcType=BIGINT}
+                , #{item.uuid,jdbcType=VARCHAR}
+                , #{item.userIp,jdbcType=VARCHAR}
+                , #{item.createBy,jdbcType=VARCHAR}
+                , #{item.updateBy,jdbcType=VARCHAR}
+                , #{item.userLoginSys,jdbcType=VARCHAR}
+                , #{item.userUserName,jdbcType=VARCHAR}
+                , #{item.userLoginName,jdbcType=VARCHAR}
+                , #{item.userLoginDevice,jdbcType=VARCHAR}
+                , #{item.userLoginBrowser,jdbcType=VARCHAR}
+                , #{item.flag,jdbcType=INTEGER}
+                , #{item.userLoginType,jdbcType=INTEGER}
+                , #{item.createTime,jdbcType=TIMESTAMP}
+                , #{item.updateTime,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </operation>
 
-        <operation name="deleteById" multiplicity="one" remark="根据主键删除数据:SYS_LOGIN_LOG">
-            DELETE FROM SYS_LOGIN_LOG
-            WHERE
-                ID = #{id,jdbcType=BIGINT}
-        </operation>
+    <!-- 不推荐使用全 update 有需要自己打开
+    <operation name="update" paramtype="object" remark="更新表:sys_login_log">
+        <![CDATA[
+        UPDATE sys_login_log
+        SET
+            USER_ID         = #{userId,jdbcType=BIGINT}
+            ,GROUP_ID        = #{groupId,jdbcType=BIGINT}
+            ,UUID            = #{uuid,jdbcType=VARCHAR}
+            ,USER_IP         = #{userIp,jdbcType=VARCHAR}
+            ,CREATE_BY       = #{createBy,jdbcType=VARCHAR}
+            ,UPDATE_BY       = #{updateBy,jdbcType=VARCHAR}
+            ,USER_LOGIN_SYS  = #{userLoginSys,jdbcType=VARCHAR}
+            ,USER_USER_NAME  = #{userUserName,jdbcType=VARCHAR}
+            ,USER_LOGIN_NAME = #{userLoginName,jdbcType=VARCHAR}
+            ,USER_LOGIN_DEVICE = #{userLoginDevice,jdbcType=VARCHAR}
+            ,USER_LOGIN_BROWSER = #{userLoginBrowser,jdbcType=VARCHAR}
+            ,FLAG            = #{flag,jdbcType=INTEGER}
+            ,USER_LOGIN_TYPE = #{userLoginType,jdbcType=INTEGER}
+            ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+            ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
+        WHERE
+            ID              = #{id,jdbcType=BIGINT}
+        ]]>
+    </operation>
+    -->
+    <operation name="deleteById"  remark="根据主键删除数据:sys_login_log">
+        <![CDATA[
+        DELETE FROM sys_login_log
+        WHERE
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </operation>
 
-        <operation name="getById" multiplicity="one" remark="根据主键获取数据:SYS_LOGIN_LOG">
-            SELECT * FROM SYS_LOGIN_LOG
-            WHERE
-                ID = #{id,jdbcType=BIGINT}
-        </operation>
+    <operation name="getById" multiplicity="one" remark="根据主键获取数据:sys_login_log">
+        SELECT *
+        FROM sys_login_log
+        WHERE
+        <![CDATA[
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </operation>
+
 </table>

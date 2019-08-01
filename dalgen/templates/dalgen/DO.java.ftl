@@ -4,12 +4,13 @@
 package ${DO.packageName};
 
 <#list DO.importLists as import>
+<#if !import?ends_with("${DO.className}")>
 import ${import};
+</#if>
 </#list>
 
 /**
  * The table ${DO.desc}
- * 注意:此结构有系统生成,禁止手工修改,以免被覆盖,请通过dalgen生成
  */
 public class ${DO.className}{
 

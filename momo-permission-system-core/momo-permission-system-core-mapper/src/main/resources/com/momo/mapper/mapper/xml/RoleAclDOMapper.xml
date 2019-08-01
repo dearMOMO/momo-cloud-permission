@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.momo.mapper.mapper.RoleAclDOMapper">
+    <!-- 自动生成,请修改 SYS_ROLE_ACL.xml -->
+    <resultMap id="BaseResultMap"  type="com.momo.mapper.dataobject.RoleAclDO">
+        <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+        <result column="GROUP_ID" property="groupId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="SYS_ACL_ID" property="sysAclId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="SYS_ROLE_ID" property="sysRoleId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="SYS_ACL_PERMISSION_TYPE" property="sysAclPermissionType" jdbcType="BIGINT" javaType="Long"/>
+        <result column="UUID" property="uuid" jdbcType="VARCHAR" javaType="String"/>
+        <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="FLAG" property="flag" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="DEL_FLAG" property="delFlag" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+
+    <sql id="Base_SF_Column_List">
+        sf.ID,sf.GROUP_ID,sf.SYS_ACL_ID,sf.SYS_ROLE_ID,sf.SYS_ACL_PERMISSION_TYPE
+        ,sf.UUID,sf.CREATE_BY,sf.UPDATE_BY,sf.FLAG,sf.DEL_FLAG
+        ,sf.CREATE_TIME,sf.UPDATE_TIME
+    </sql>
+    <sql id="Base_Column_List">
+        ID,GROUP_ID,SYS_ACL_ID,SYS_ROLE_ID,SYS_ACL_PERMISSION_TYPE 
+        ,UUID,CREATE_BY,UPDATE_BY,FLAG,DEL_FLAG 
+        ,CREATE_TIME,UPDATE_TIME
+    </sql>
+
+
+    <!--插入表:sys_role_acl-->
+    <insert id="insert" >
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        <![CDATA[
+        INSERT INTO sys_role_acl(
+            ID
+            ,GROUP_ID
+            ,SYS_ACL_ID
+            ,SYS_ROLE_ID
+            ,SYS_ACL_PERMISSION_TYPE
+            ,UUID
+            ,CREATE_BY
+            ,UPDATE_BY
+            ,FLAG
+            ,DEL_FLAG
+            ,CREATE_TIME
+            ,UPDATE_TIME
+        )VALUES(
+             null
+            , #{groupId,jdbcType=BIGINT}
+            , #{sysAclId,jdbcType=BIGINT}
+            , #{sysRoleId,jdbcType=BIGINT}
+            , #{sysAclPermissionType,jdbcType=BIGINT}
+            , #{uuid,jdbcType=VARCHAR}
+            , #{createBy,jdbcType=VARCHAR}
+            , #{updateBy,jdbcType=VARCHAR}
+            , #{flag,jdbcType=INTEGER}
+            , #{delFlag,jdbcType=INTEGER}
+            , #{createTime,jdbcType=TIMESTAMP}
+            , #{updateTime,jdbcType=TIMESTAMP}
+        )
+        ]]>
+    </insert>
+
+    <!--批量插入表:sys_role_acl-->
+    <insert id="insertBatch" >
+        INSERT INTO sys_role_acl(
+            ID
+            ,GROUP_ID
+            ,SYS_ACL_ID
+            ,SYS_ROLE_ID
+            ,SYS_ACL_PERMISSION_TYPE
+            ,UUID
+            ,CREATE_BY
+            ,UPDATE_BY
+            ,FLAG
+            ,DEL_FLAG
+            ,CREATE_TIME
+            ,UPDATE_TIME
+        )VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+                 null
+                , #{item.groupId,jdbcType=BIGINT}
+                , #{item.sysAclId,jdbcType=BIGINT}
+                , #{item.sysRoleId,jdbcType=BIGINT}
+                , #{item.sysAclPermissionType,jdbcType=BIGINT}
+                , #{item.uuid,jdbcType=VARCHAR}
+                , #{item.createBy,jdbcType=VARCHAR}
+                , #{item.updateBy,jdbcType=VARCHAR}
+                , #{item.flag,jdbcType=INTEGER}
+                , #{item.delFlag,jdbcType=INTEGER}
+                , #{item.createTime,jdbcType=TIMESTAMP}
+                , #{item.updateTime,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </insert>
+
+    <!--根据主键删除数据:sys_role_acl-->
+    <delete id="deleteById" >
+        <![CDATA[
+        DELETE /*MS-SYS-ROLE-ACL-DELETEBYID*/ FROM sys_role_acl
+        WHERE
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </delete>
+
+    <!--根据主键获取数据:sys_role_acl-->
+    <select id="getById" resultMap="BaseResultMap">
+        SELECT /*MS-SYS-ROLE-ACL-GETBYID*/  <include refid="Base_Column_List" />
+        FROM sys_role_acl
+        WHERE
+        <![CDATA[
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </select>
+
+    <!--根据普通索引GroupId获取数据:sys_role_acl-->
+    <select id="queryByGroupId" resultMap="BaseResultMap">
+        SELECT /*MS-SYS-ROLE-ACL-QUERYBYGROUPID*/  <include refid="Base_Column_List" />
+        FROM sys_role_acl
+        WHERE
+        <![CDATA[
+            GROUP_ID        = #{groupId,jdbcType=BIGINT}
+        ]]>
+    </select>
+
+    <!--根据普通索引SysAclId获取数据:sys_role_acl-->
+    <select id="queryBySysAclId" resultMap="BaseResultMap">
+        SELECT /*MS-SYS-ROLE-ACL-QUERYBYSYSACLID*/  <include refid="Base_Column_List" />
+        FROM sys_role_acl
+        WHERE
+        <![CDATA[
+            SYS_ACL_ID      = #{sysAclId,jdbcType=BIGINT}
+        ]]>
+    </select>
+
+    <!--根据普通索引SysAclPermissionType获取数据:sys_role_acl-->
+    <select id="queryBySysAclPermissionType" resultMap="BaseResultMap">
+        SELECT /*MS-SYS-ROLE-ACL-QUERYBYSYSACLPERMISSIONTYPE*/  <include refid="Base_Column_List" />
+        FROM sys_role_acl
+        WHERE
+        <![CDATA[
+            SYS_ACL_PERMISSION_TYPE = #{sysAclPermissionType,jdbcType=BIGINT}
+        ]]>
+    </select>
+
+    <!--根据普通索引SysRoleId获取数据:sys_role_acl-->
+    <select id="queryBySysRoleId" resultMap="BaseResultMap">
+        SELECT /*MS-SYS-ROLE-ACL-QUERYBYSYSROLEID*/  <include refid="Base_Column_List" />
+        FROM sys_role_acl
+        WHERE
+        <![CDATA[
+            SYS_ROLE_ID     = #{sysRoleId,jdbcType=BIGINT}
+        ]]>
+    </select>
+</mapper>

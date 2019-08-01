@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.momo.mapper.mapper.UserAccountPwdDOMapper">
+    <!-- 自动生成,请修改 SYS_USER_ACCOUNT_PWD.xml -->
+    <resultMap id="BaseResultMap"  type="com.momo.mapper.dataobject.UserAccountPwdDO">
+        <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+        <result column="GROUP_ID" property="groupId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="SYS_USER_ID" property="sysUserId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="UUID" property="uuid" jdbcType="VARCHAR" javaType="String"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR" javaType="String"/>
+        <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SYS_USER_PWD" property="sysUserPwd" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SYS_USER_AUTH_SALT" property="sysUserAuthSalt" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SYS_USER_LOGIN_NAME" property="sysUserLoginName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="FLAG" property="flag" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="DEL_FLAG" property="delFlag" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="SYS_LOGIN_NUMBER" property="sysLoginNumber" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+
+    <sql id="Base_SF_Column_List">
+        sf.ID,sf.GROUP_ID,sf.SYS_USER_ID,sf.UUID,sf.REMARK
+        ,sf.CREATE_BY,sf.UPDATE_BY,sf.SYS_USER_PWD,sf.SYS_USER_AUTH_SALT,sf.SYS_USER_LOGIN_NAME
+        ,sf.FLAG,sf.DEL_FLAG,sf.SYS_LOGIN_NUMBER,sf.CREATE_TIME,sf.UPDATE_TIME
+    </sql>
+    <sql id="Base_Column_List">
+        ID,GROUP_ID,SYS_USER_ID,UUID,REMARK 
+        ,CREATE_BY,UPDATE_BY,SYS_USER_PWD,SYS_USER_AUTH_SALT,SYS_USER_LOGIN_NAME 
+        ,FLAG,DEL_FLAG,SYS_LOGIN_NUMBER,CREATE_TIME,UPDATE_TIME
+    </sql>
+
+
+    <!--插入表:sys_user_account_pwd-->
+    <insert id="insert" >
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        <![CDATA[
+        INSERT INTO sys_user_account_pwd(
+            ID
+            ,GROUP_ID
+            ,SYS_USER_ID
+            ,UUID
+            ,REMARK
+            ,CREATE_BY
+            ,UPDATE_BY
+            ,SYS_USER_PWD
+            ,SYS_USER_AUTH_SALT
+            ,SYS_USER_LOGIN_NAME
+            ,FLAG
+            ,DEL_FLAG
+            ,SYS_LOGIN_NUMBER
+            ,CREATE_TIME
+            ,UPDATE_TIME
+        )VALUES(
+             null
+            , #{groupId,jdbcType=BIGINT}
+            , #{sysUserId,jdbcType=BIGINT}
+            , #{uuid,jdbcType=VARCHAR}
+            , #{remark,jdbcType=VARCHAR}
+            , #{createBy,jdbcType=VARCHAR}
+            , #{updateBy,jdbcType=VARCHAR}
+            , #{sysUserPwd,jdbcType=VARCHAR}
+            , #{sysUserAuthSalt,jdbcType=VARCHAR}
+            , #{sysUserLoginName,jdbcType=VARCHAR}
+            , #{flag,jdbcType=INTEGER}
+            , #{delFlag,jdbcType=INTEGER}
+            , #{sysLoginNumber,jdbcType=INTEGER}
+            , #{createTime,jdbcType=TIMESTAMP}
+            , #{updateTime,jdbcType=TIMESTAMP}
+        )
+        ]]>
+    </insert>
+
+    <!--批量插入表:sys_user_account_pwd-->
+    <insert id="insertBatch" >
+        INSERT INTO sys_user_account_pwd(
+            ID
+            ,GROUP_ID
+            ,SYS_USER_ID
+            ,UUID
+            ,REMARK
+            ,CREATE_BY
+            ,UPDATE_BY
+            ,SYS_USER_PWD
+            ,SYS_USER_AUTH_SALT
+            ,SYS_USER_LOGIN_NAME
+            ,FLAG
+            ,DEL_FLAG
+            ,SYS_LOGIN_NUMBER
+            ,CREATE_TIME
+            ,UPDATE_TIME
+        )VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+                 null
+                , #{item.groupId,jdbcType=BIGINT}
+                , #{item.sysUserId,jdbcType=BIGINT}
+                , #{item.uuid,jdbcType=VARCHAR}
+                , #{item.remark,jdbcType=VARCHAR}
+                , #{item.createBy,jdbcType=VARCHAR}
+                , #{item.updateBy,jdbcType=VARCHAR}
+                , #{item.sysUserPwd,jdbcType=VARCHAR}
+                , #{item.sysUserAuthSalt,jdbcType=VARCHAR}
+                , #{item.sysUserLoginName,jdbcType=VARCHAR}
+                , #{item.flag,jdbcType=INTEGER}
+                , #{item.delFlag,jdbcType=INTEGER}
+                , #{item.sysLoginNumber,jdbcType=INTEGER}
+                , #{item.createTime,jdbcType=TIMESTAMP}
+                , #{item.updateTime,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </insert>
+
+    <!--根据主键删除数据:sys_user_account_pwd-->
+    <delete id="deleteById" >
+        <![CDATA[
+        DELETE /*MS-SYS-USER-ACCOUNT-PWD-DELETEBYID*/ FROM sys_user_account_pwd
+        WHERE
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </delete>
+
+    <!--根据主键获取数据:sys_user_account_pwd-->
+    <select id="getById" resultMap="BaseResultMap">
+        SELECT /*MS-SYS-USER-ACCOUNT-PWD-GETBYID*/  <include refid="Base_Column_List" />
+        FROM sys_user_account_pwd
+        WHERE
+        <![CDATA[
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </select>
+</mapper>

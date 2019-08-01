@@ -1,38 +1,73 @@
 <!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
-<table sqlname="SYS_WEBSITE_VISIBLE" physicalName="SYS_WEBSITE_VISIBLE" remark="网站访问总人数">
-    <!--  特殊字符说明  &lt;&gt;   <> -->
+<table sqlname="sys_website_visible" physicalName="sys_website_visible" remark="网站访问总人数">
+    <!--  特殊字符说明 &lt;&gt; <> -->
+    <!-- baseSql option中 select * 会自动替换为 include -->
+    <sql id="Base_Column_List">
+        ID,VISIBLE_NUMBER
+    </sql>
 
-    <operation name="insert" paramtype="object" remark="插入表:SYS_WEBSITE_VISIBLE">
-            <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
-                SELECT
-                LAST_INSERT_ID()
-            </selectKey>
-        INSERT INTO SYS_WEBSITE_VISIBLE(
-            
-            VISIBLE_NUMBER
+    <!-- baseSql option中 select sf.* 会自动替换为 include -->
+    <sql id="Base_SF_Column_List">
+        sf.ID,sf.VISIBLE_NUMBER
+    </sql>
+
+    <operation name="insert" paramtype="object" remark="插入表:sys_website_visible">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        <![CDATA[
+        INSERT INTO sys_website_visible(
+            ID
+            ,VISIBLE_NUMBER
         )VALUES(
-            
-            #{visibleNumber,jdbcType=BIGINT}
+             null
+            , #{visibleNumber,jdbcType=BIGINT}
         )
+        ]]>
     </operation>
 
-        <operation name="update" paramtype="object" remark="更新表:SYS_WEBSITE_VISIBLE">
-            UPDATE SYS_WEBSITE_VISIBLE
-            SET
-                    VISIBLE_NUMBER  = #{visibleNumber,jdbcType=BIGINT}
-            WHERE
-                ID              = #{id,jdbcType=BIGINT}
-        </operation>
+    <!-- foreach 可以自定义类型，paramtype="primitive" foreach->javatype="自己书写的类"  -->
+    <!-- 只有一个参数且为List时必须将参数命名为list -->
+    <operation name="insertBatch" paramtype="objectList" remark="批量插入表:sys_website_visible">
+        INSERT INTO sys_website_visible(
+            ID
+            ,VISIBLE_NUMBER
+        )VALUES
+        <foreach collection="list"  item="item" separator=",">
+            (
+                 null
+                , #{item.visibleNumber,jdbcType=BIGINT}
+            )
+        </foreach>
+    </operation>
 
-        <operation name="deleteById" multiplicity="one" remark="根据主键删除数据:SYS_WEBSITE_VISIBLE">
-            DELETE FROM SYS_WEBSITE_VISIBLE
-            WHERE
-                ID = #{id,jdbcType=BIGINT}
-        </operation>
+    <!-- 不推荐使用全 update 有需要自己打开
+    <operation name="update" paramtype="object" remark="更新表:sys_website_visible">
+        <![CDATA[
+        UPDATE sys_website_visible
+        SET
+            VISIBLE_NUMBER  = #{visibleNumber,jdbcType=BIGINT}
+        WHERE
+            ID              = #{id,jdbcType=BIGINT}
+        ]]>
+    </operation>
+    -->
+    <operation name="deleteById"  remark="根据主键删除数据:sys_website_visible">
+        <![CDATA[
+        DELETE FROM sys_website_visible
+        WHERE
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </operation>
 
-        <operation name="getById" multiplicity="one" remark="根据主键获取数据:SYS_WEBSITE_VISIBLE">
-            SELECT * FROM SYS_WEBSITE_VISIBLE
-            WHERE
-                ID = #{id,jdbcType=BIGINT}
-        </operation>
+    <operation name="getById" multiplicity="one" remark="根据主键获取数据:sys_website_visible">
+        SELECT *
+        FROM sys_website_visible
+        WHERE
+        <![CDATA[
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </operation>
+
 </table>

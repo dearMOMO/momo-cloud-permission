@@ -1,42 +1,63 @@
 package com.momo.mapper.mapper;
 
 import com.momo.mapper.dataobject.RoleUserDO;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 /**
  * 由于需要对分页支持,请直接使用对应的DAO类
- * 注意:此结构有系统生成,禁止手工修改,以免被覆盖,请通过dalgen生成
- * The Table SYS_ROLE_USER.
+ * The Table sys_role_user.
  * 角色和用户中间表
  */
 public interface RoleUserDOMapper{
 
     /**
-     * desc:插入表:SYS_ROLE_USER.<br/>
-     * descSql =  SELECT LAST_INSERT_ID() INSERT INTO SYS_ROLE_USER( ROLE_ID ,USER_ID ,GROUP_ID ,DEL_FLAG ,CREATE_BY ,UPDATE_BY ,SYS_ROLE_USER_UUID ,CREATE_TIME ,UPDATE_TIME )VALUES( #{roleId,jdbcType=BIGINT} ,#{userId,jdbcType=BIGINT} ,#{groupId,jdbcType=BIGINT} ,#{delFlag,jdbcType=CHAR} ,#{createBy,jdbcType=VARCHAR} ,#{updateBy,jdbcType=VARCHAR} ,#{sysRoleUserUuid,jdbcType=VARCHAR} ,#{createTime,jdbcType=TIMESTAMP} ,#{updateTime,jdbcType=TIMESTAMP} )
+     * desc:插入表:sys_role_user.<br/>
+     * descSql =  SELECT LAST_INSERT_ID() <![CDATA[ INSERT INTO sys_role_user( ID ,ROLE_ID ,USER_ID ,GROUP_ID ,UUID ,CREATE_BY ,UPDATE_BY ,FLAG ,DEL_FLAG ,CREATE_TIME ,UPDATE_TIME )VALUES( null , #{roleId,jdbcType=BIGINT} , #{userId,jdbcType=BIGINT} , #{groupId,jdbcType=BIGINT} , #{uuid,jdbcType=VARCHAR} , #{createBy,jdbcType=VARCHAR} , #{updateBy,jdbcType=VARCHAR} , #{flag,jdbcType=INTEGER} , #{delFlag,jdbcType=INTEGER} , #{createTime,jdbcType=TIMESTAMP} , #{updateTime,jdbcType=TIMESTAMP} ) ]]>
      * @param entity entity
      * @return int
      */
     int insert(RoleUserDO entity);
     /**
-     * desc:更新表:SYS_ROLE_USER.<br/>
-     * descSql =  UPDATE SYS_ROLE_USER SET ROLE_ID = #{roleId,jdbcType=BIGINT} ,USER_ID = #{userId,jdbcType=BIGINT} ,GROUP_ID = #{groupId,jdbcType=BIGINT} ,DEL_FLAG = #{delFlag,jdbcType=CHAR} ,CREATE_BY = #{createBy,jdbcType=VARCHAR} ,UPDATE_BY = #{updateBy,jdbcType=VARCHAR} ,SYS_ROLE_USER_UUID = #{sysRoleUserUuid,jdbcType=VARCHAR} ,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP} ,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP} WHERE ID = #{id,jdbcType=BIGINT}
-     * @param entity entity
+     * desc:批量插入表:sys_role_user.<br/>
+     * descSql =  INSERT INTO sys_role_user( ID ,ROLE_ID ,USER_ID ,GROUP_ID ,UUID ,CREATE_BY ,UPDATE_BY ,FLAG ,DEL_FLAG ,CREATE_TIME ,UPDATE_TIME )VALUES ( null , #{item.roleId,jdbcType=BIGINT} , #{item.userId,jdbcType=BIGINT} , #{item.groupId,jdbcType=BIGINT} , #{item.uuid,jdbcType=VARCHAR} , #{item.createBy,jdbcType=VARCHAR} , #{item.updateBy,jdbcType=VARCHAR} , #{item.flag,jdbcType=INTEGER} , #{item.delFlag,jdbcType=INTEGER} , #{item.createTime,jdbcType=TIMESTAMP} , #{item.updateTime,jdbcType=TIMESTAMP} ) 
+     * @param list list
      * @return int
      */
-    int update(RoleUserDO entity);
+    int insertBatch(List<RoleUserDO> list);
     /**
-     * desc:根据主键删除数据:SYS_ROLE_USER.<br/>
-     * descSql =  DELETE FROM SYS_ROLE_USER WHERE ID = #{id,jdbcType=BIGINT}
+     * desc:根据主键删除数据:sys_role_user.<br/>
+     * descSql =  <![CDATA[ DELETE FROM sys_role_user WHERE ID = #{id,jdbcType=BIGINT} ]]>
      * @param id id
      * @return int
      */
     int deleteById(Long id);
     /**
-     * desc:根据主键获取数据:SYS_ROLE_USER.<br/>
-     * descSql =  SELECT * FROM SYS_ROLE_USER WHERE ID = #{id,jdbcType=BIGINT}
+     * desc:根据主键获取数据:sys_role_user.<br/>
+     * descSql =  SELECT * FROM sys_role_user WHERE <![CDATA[ ID = #{id,jdbcType=BIGINT} ]]>
      * @param id id
      * @return RoleUserDO
      */
     RoleUserDO getById(Long id);
+    /**
+     * desc:根据普通索引GroupId获取数据:sys_role_user.<br/>
+     * descSql =  SELECT * FROM sys_role_user WHERE <![CDATA[ GROUP_ID = #{groupId,jdbcType=BIGINT} ]]>
+     * @param groupId groupId
+     * @return List<RoleUserDO>
+     */
+    List<RoleUserDO> queryByGroupId(Long groupId);
+    /**
+     * desc:根据普通索引RoleId获取数据:sys_role_user.<br/>
+     * descSql =  SELECT * FROM sys_role_user WHERE <![CDATA[ ROLE_ID = #{roleId,jdbcType=BIGINT} ]]>
+     * @param roleId roleId
+     * @return List<RoleUserDO>
+     */
+    List<RoleUserDO> queryByRoleId(Long roleId);
+    /**
+     * desc:根据普通索引UserId获取数据:sys_role_user.<br/>
+     * descSql =  SELECT * FROM sys_role_user WHERE <![CDATA[ USER_ID = #{userId,jdbcType=BIGINT} ]]>
+     * @param userId userId
+     * @return List<RoleUserDO>
+     */
+    List<RoleUserDO> queryByUserId(Long userId);
 }

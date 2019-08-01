@@ -1,77 +1,151 @@
 <!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
-<table sqlname="SYS_DEPT" physicalName="SYS_DEPT" remark="部门表">
-    <!--  特殊字符说明  &lt;&gt;   <> -->
+<table sqlname="sys_dept" physicalName="sys_dept" remark="部门表">
+    <!--  特殊字符说明 &lt;&gt; <> -->
+    <!-- baseSql option中 select * 会自动替换为 include -->
+    <sql id="Base_Column_List">
+        ID,GROUP_ID,SYS_DEPT_PARENT_ID,UUID,REMARK 
+        ,CREATE_BY,UPDATE_BY,SYS_DEPT_NAME,SYS_DEPT_LEVEL,FLAG 
+        ,DEL_FLAG,SYS_IS_LEAF,SYS_DEPT_SEQ,CREATE_TIME,UPDATE_TIME
+    </sql>
 
-    <operation name="insert" paramtype="object" remark="插入表:SYS_DEPT">
-            <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
-                SELECT
-                LAST_INSERT_ID()
-            </selectKey>
-        INSERT INTO SYS_DEPT(
-            
-            GROUP_ID
+    <!-- baseSql option中 select sf.* 会自动替换为 include -->
+    <sql id="Base_SF_Column_List">
+        sf.ID,sf.GROUP_ID,sf.SYS_DEPT_PARENT_ID,sf.UUID,sf.REMARK
+        ,sf.CREATE_BY,sf.UPDATE_BY,sf.SYS_DEPT_NAME,sf.SYS_DEPT_LEVEL,sf.FLAG
+        ,sf.DEL_FLAG,sf.SYS_IS_LEAF,sf.SYS_DEPT_SEQ,sf.CREATE_TIME,sf.UPDATE_TIME
+    </sql>
+
+    <operation name="insert" paramtype="object" remark="插入表:sys_dept">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        <![CDATA[
+        INSERT INTO sys_dept(
+            ID
+            ,GROUP_ID
             ,SYS_DEPT_PARENT_ID
-            ,DEL_FLAG
+            ,UUID
+            ,REMARK
             ,CREATE_BY
             ,UPDATE_BY
-            ,SYS_IS_LEAF
             ,SYS_DEPT_NAME
-            ,SYS_DEPT_UUID
             ,SYS_DEPT_LEVEL
-            ,SYS_DEPT_REMARK
-            ,SYS_DEPT_STATUS
+            ,FLAG
+            ,DEL_FLAG
+            ,SYS_IS_LEAF
             ,SYS_DEPT_SEQ
             ,CREATE_TIME
             ,UPDATE_TIME
         )VALUES(
-            
-            #{groupId,jdbcType=BIGINT}
-            ,#{sysDeptParentId,jdbcType=BIGINT}
-            ,#{delFlag,jdbcType=CHAR}
-            ,#{createBy,jdbcType=VARCHAR}
-            ,#{updateBy,jdbcType=VARCHAR}
-            ,#{sysIsLeaf,jdbcType=CHAR}
-            ,#{sysDeptName,jdbcType=VARCHAR}
-            ,#{sysDeptUuid,jdbcType=VARCHAR}
-            ,#{sysDeptLevel,jdbcType=VARCHAR}
-            ,#{sysDeptRemark,jdbcType=VARCHAR}
-            ,#{sysDeptStatus,jdbcType=CHAR}
-            ,#{sysDeptSeq,jdbcType=INTEGER}
-            ,#{createTime,jdbcType=TIMESTAMP}
-            ,#{updateTime,jdbcType=TIMESTAMP}
+             null
+            , #{groupId,jdbcType=BIGINT}
+            , #{sysDeptParentId,jdbcType=BIGINT}
+            , #{uuid,jdbcType=VARCHAR}
+            , #{remark,jdbcType=VARCHAR}
+            , #{createBy,jdbcType=VARCHAR}
+            , #{updateBy,jdbcType=VARCHAR}
+            , #{sysDeptName,jdbcType=VARCHAR}
+            , #{sysDeptLevel,jdbcType=VARCHAR}
+            , #{flag,jdbcType=INTEGER}
+            , #{delFlag,jdbcType=INTEGER}
+            , #{sysIsLeaf,jdbcType=INTEGER}
+            , #{sysDeptSeq,jdbcType=INTEGER}
+            , #{createTime,jdbcType=TIMESTAMP}
+            , #{updateTime,jdbcType=TIMESTAMP}
         )
+        ]]>
     </operation>
 
-        <operation name="update" paramtype="object" remark="更新表:SYS_DEPT">
-            UPDATE SYS_DEPT
-            SET
-                    GROUP_ID        = #{groupId,jdbcType=BIGINT}
-                    ,SYS_DEPT_PARENT_ID = #{sysDeptParentId,jdbcType=BIGINT}
-                    ,DEL_FLAG        = #{delFlag,jdbcType=CHAR}
-                    ,CREATE_BY       = #{createBy,jdbcType=VARCHAR}
-                    ,UPDATE_BY       = #{updateBy,jdbcType=VARCHAR}
-                    ,SYS_IS_LEAF     = #{sysIsLeaf,jdbcType=CHAR}
-                    ,SYS_DEPT_NAME   = #{sysDeptName,jdbcType=VARCHAR}
-                    ,SYS_DEPT_UUID   = #{sysDeptUuid,jdbcType=VARCHAR}
-                    ,SYS_DEPT_LEVEL  = #{sysDeptLevel,jdbcType=VARCHAR}
-                    ,SYS_DEPT_REMARK = #{sysDeptRemark,jdbcType=VARCHAR}
-                    ,SYS_DEPT_STATUS = #{sysDeptStatus,jdbcType=CHAR}
-                    ,SYS_DEPT_SEQ    = #{sysDeptSeq,jdbcType=INTEGER}
-                    ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
-                    ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
-            WHERE
-                ID              = #{id,jdbcType=BIGINT}
-        </operation>
+    <!-- foreach 可以自定义类型，paramtype="primitive" foreach->javatype="自己书写的类"  -->
+    <!-- 只有一个参数且为List时必须将参数命名为list -->
+    <operation name="insertBatch" paramtype="objectList" remark="批量插入表:sys_dept">
+        INSERT INTO sys_dept(
+            ID
+            ,GROUP_ID
+            ,SYS_DEPT_PARENT_ID
+            ,UUID
+            ,REMARK
+            ,CREATE_BY
+            ,UPDATE_BY
+            ,SYS_DEPT_NAME
+            ,SYS_DEPT_LEVEL
+            ,FLAG
+            ,DEL_FLAG
+            ,SYS_IS_LEAF
+            ,SYS_DEPT_SEQ
+            ,CREATE_TIME
+            ,UPDATE_TIME
+        )VALUES
+        <foreach collection="list"  item="item" separator=",">
+            (
+                 null
+                , #{item.groupId,jdbcType=BIGINT}
+                , #{item.sysDeptParentId,jdbcType=BIGINT}
+                , #{item.uuid,jdbcType=VARCHAR}
+                , #{item.remark,jdbcType=VARCHAR}
+                , #{item.createBy,jdbcType=VARCHAR}
+                , #{item.updateBy,jdbcType=VARCHAR}
+                , #{item.sysDeptName,jdbcType=VARCHAR}
+                , #{item.sysDeptLevel,jdbcType=VARCHAR}
+                , #{item.flag,jdbcType=INTEGER}
+                , #{item.delFlag,jdbcType=INTEGER}
+                , #{item.sysIsLeaf,jdbcType=INTEGER}
+                , #{item.sysDeptSeq,jdbcType=INTEGER}
+                , #{item.createTime,jdbcType=TIMESTAMP}
+                , #{item.updateTime,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </operation>
 
-        <operation name="deleteById" multiplicity="one" remark="根据主键删除数据:SYS_DEPT">
-            DELETE FROM SYS_DEPT
-            WHERE
-                ID = #{id,jdbcType=BIGINT}
-        </operation>
+    <!-- 不推荐使用全 update 有需要自己打开
+    <operation name="update" paramtype="object" remark="更新表:sys_dept">
+        <![CDATA[
+        UPDATE sys_dept
+        SET
+            GROUP_ID        = #{groupId,jdbcType=BIGINT}
+            ,SYS_DEPT_PARENT_ID = #{sysDeptParentId,jdbcType=BIGINT}
+            ,UUID            = #{uuid,jdbcType=VARCHAR}
+            ,REMARK          = #{remark,jdbcType=VARCHAR}
+            ,CREATE_BY       = #{createBy,jdbcType=VARCHAR}
+            ,UPDATE_BY       = #{updateBy,jdbcType=VARCHAR}
+            ,SYS_DEPT_NAME   = #{sysDeptName,jdbcType=VARCHAR}
+            ,SYS_DEPT_LEVEL  = #{sysDeptLevel,jdbcType=VARCHAR}
+            ,FLAG            = #{flag,jdbcType=INTEGER}
+            ,DEL_FLAG        = #{delFlag,jdbcType=INTEGER}
+            ,SYS_IS_LEAF     = #{sysIsLeaf,jdbcType=INTEGER}
+            ,SYS_DEPT_SEQ    = #{sysDeptSeq,jdbcType=INTEGER}
+            ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+            ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
+        WHERE
+            ID              = #{id,jdbcType=BIGINT}
+        ]]>
+    </operation>
+    -->
+    <operation name="deleteById"  remark="根据主键删除数据:sys_dept">
+        <![CDATA[
+        DELETE FROM sys_dept
+        WHERE
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </operation>
 
-        <operation name="getById" multiplicity="one" remark="根据主键获取数据:SYS_DEPT">
-            SELECT * FROM SYS_DEPT
-            WHERE
-                ID = #{id,jdbcType=BIGINT}
-        </operation>
+    <operation name="getById" multiplicity="one" remark="根据主键获取数据:sys_dept">
+        SELECT *
+        FROM sys_dept
+        WHERE
+        <![CDATA[
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </operation>
+
+    <!-- 根据普通索引查询数据 -->
+    <operation name="queryBySysDeptUuid" multiplicity="many" remark="根据普通索引SysDeptUuid获取数据:sys_dept">
+        SELECT *
+        FROM sys_dept
+        WHERE
+        <![CDATA[
+            UUID            = #{uuid,jdbcType=VARCHAR}
+        ]]>
+    </operation>
 </table>

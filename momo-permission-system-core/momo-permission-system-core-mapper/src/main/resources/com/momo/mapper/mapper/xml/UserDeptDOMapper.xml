@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.momo.mapper.mapper.UserDeptDOMapper">
+    <!-- 自动生成,请修改 SYS_USER_DEPT.xml -->
+    <resultMap id="BaseResultMap"  type="com.momo.mapper.dataobject.UserDeptDO">
+        <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+        <result column="SYS_DEPT_ID" property="sysDeptId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="SYS_USER_ID" property="sysUserId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="UUID" property="uuid" jdbcType="VARCHAR" javaType="String"/>
+        <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="FLAG" property="flag" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="DEL_FLAG" property="delFlag" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+
+    <sql id="Base_SF_Column_List">
+        sf.ID,sf.SYS_DEPT_ID,sf.SYS_USER_ID,sf.UUID,sf.CREATE_BY
+        ,sf.UPDATE_BY,sf.FLAG,sf.DEL_FLAG,sf.CREATE_TIME,sf.UPDATE_TIME
+    </sql>
+    <sql id="Base_Column_List">
+        ID,SYS_DEPT_ID,SYS_USER_ID,UUID,CREATE_BY 
+        ,UPDATE_BY,FLAG,DEL_FLAG,CREATE_TIME,UPDATE_TIME
+    </sql>
+
+
+    <!--插入表:sys_user_dept-->
+    <insert id="insert" >
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        <![CDATA[
+        INSERT INTO sys_user_dept(
+            ID
+            ,SYS_DEPT_ID
+            ,SYS_USER_ID
+            ,UUID
+            ,CREATE_BY
+            ,UPDATE_BY
+            ,FLAG
+            ,DEL_FLAG
+            ,CREATE_TIME
+            ,UPDATE_TIME
+        )VALUES(
+             null
+            , #{sysDeptId,jdbcType=BIGINT}
+            , #{sysUserId,jdbcType=BIGINT}
+            , #{uuid,jdbcType=VARCHAR}
+            , #{createBy,jdbcType=VARCHAR}
+            , #{updateBy,jdbcType=VARCHAR}
+            , #{flag,jdbcType=INTEGER}
+            , #{delFlag,jdbcType=INTEGER}
+            , #{createTime,jdbcType=TIMESTAMP}
+            , #{updateTime,jdbcType=TIMESTAMP}
+        )
+        ]]>
+    </insert>
+
+    <!--批量插入表:sys_user_dept-->
+    <insert id="insertBatch" >
+        INSERT INTO sys_user_dept(
+            ID
+            ,SYS_DEPT_ID
+            ,SYS_USER_ID
+            ,UUID
+            ,CREATE_BY
+            ,UPDATE_BY
+            ,FLAG
+            ,DEL_FLAG
+            ,CREATE_TIME
+            ,UPDATE_TIME
+        )VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+                 null
+                , #{item.sysDeptId,jdbcType=BIGINT}
+                , #{item.sysUserId,jdbcType=BIGINT}
+                , #{item.uuid,jdbcType=VARCHAR}
+                , #{item.createBy,jdbcType=VARCHAR}
+                , #{item.updateBy,jdbcType=VARCHAR}
+                , #{item.flag,jdbcType=INTEGER}
+                , #{item.delFlag,jdbcType=INTEGER}
+                , #{item.createTime,jdbcType=TIMESTAMP}
+                , #{item.updateTime,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </insert>
+
+    <!--根据主键删除数据:sys_user_dept-->
+    <delete id="deleteById" >
+        <![CDATA[
+        DELETE /*MS-SYS-USER-DEPT-DELETEBYID*/ FROM sys_user_dept
+        WHERE
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </delete>
+
+    <!--根据主键获取数据:sys_user_dept-->
+    <select id="getById" resultMap="BaseResultMap">
+        SELECT /*MS-SYS-USER-DEPT-GETBYID*/  <include refid="Base_Column_List" />
+        FROM sys_user_dept
+        WHERE
+        <![CDATA[
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </select>
+</mapper>

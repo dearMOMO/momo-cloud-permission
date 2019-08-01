@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.momo.mapper.mapper.WebsiteVisibleDOMapper">
+    <!-- 自动生成,请修改 SYS_WEBSITE_VISIBLE.xml -->
+    <resultMap id="BaseResultMap"  type="com.momo.mapper.dataobject.WebsiteVisibleDO">
+        <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+        <result column="VISIBLE_NUMBER" property="visibleNumber" jdbcType="BIGINT" javaType="Long"/>
+    </resultMap>
+
+
+    <sql id="Base_SF_Column_List">
+        sf.ID,sf.VISIBLE_NUMBER
+    </sql>
+    <sql id="Base_Column_List">
+        ID,VISIBLE_NUMBER
+    </sql>
+
+
+    <!--插入表:sys_website_visible-->
+    <insert id="insert" >
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        <![CDATA[
+        INSERT INTO sys_website_visible(
+            ID
+            ,VISIBLE_NUMBER
+        )VALUES(
+             null
+            , #{visibleNumber,jdbcType=BIGINT}
+        )
+        ]]>
+    </insert>
+
+    <!--批量插入表:sys_website_visible-->
+    <insert id="insertBatch" >
+        INSERT INTO sys_website_visible(
+            ID
+            ,VISIBLE_NUMBER
+        )VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+                 null
+                , #{item.visibleNumber,jdbcType=BIGINT}
+            )
+        </foreach>
+    </insert>
+
+    <!--根据主键删除数据:sys_website_visible-->
+    <delete id="deleteById" >
+        <![CDATA[
+        DELETE /*MS-SYS-WEBSITE-VISIBLE-DELETEBYID*/ FROM sys_website_visible
+        WHERE
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </delete>
+
+    <!--根据主键获取数据:sys_website_visible-->
+    <select id="getById" resultMap="BaseResultMap">
+        SELECT /*MS-SYS-WEBSITE-VISIBLE-GETBYID*/  <include refid="Base_Column_List" />
+        FROM sys_website_visible
+        WHERE
+        <![CDATA[
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </select>
+</mapper>

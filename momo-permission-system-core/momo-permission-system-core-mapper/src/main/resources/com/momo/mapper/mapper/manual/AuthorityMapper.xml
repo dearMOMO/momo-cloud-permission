@@ -17,7 +17,7 @@
         <result column="sys_acl_seq" jdbcType="INTEGER" property="sysAclSeq" />
         <result column="sys_acl_code" jdbcType="VARCHAR" property="sysAclCode" />
         <result column="remark" jdbcType="VARCHAR" property="remark" />
-        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="flag" jdbcType="INTEGER" property="flag" />
         <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
         <result column="create_by" jdbcType="VARCHAR" property="createBy" />
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -40,8 +40,8 @@
         SELECT
         id
         FROM sys_role WHERE
-        <if test="roleStatus!=null">
-            sys_role_status=#{roleStatus} AND
+        <if test="flag!=null">
+            flag=#{flag} AND
         </if>
         id IN
         <foreach collection="roleIds" close=")" item="item" open="(" separator=",">
@@ -52,7 +52,7 @@
         SELECT
         id, uuid, sys_acl_action, sys_acl_router, sys_acl_name, sys_acl_parent_id, sys_acl_level,
         sys_acl_permission_type, sys_acl_url, sys_acl_type, sys_acl_icon, sys_acl_seq, sys_acl_code,
-        remark, status, del_flag, create_by, create_time, update_time, update_by
+        remark, flag, del_flag, create_by, create_time, update_time, update_by
         FROM  sys_acl
         <trim prefixOverrides="and" prefix="where">
             <if test="aclPermissionType!=null">

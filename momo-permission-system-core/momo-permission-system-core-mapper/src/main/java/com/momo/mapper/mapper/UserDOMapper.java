@@ -1,42 +1,63 @@
 package com.momo.mapper.mapper;
 
 import com.momo.mapper.dataobject.UserDO;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 /**
  * 由于需要对分页支持,请直接使用对应的DAO类
- * 注意:此结构有系统生成,禁止手工修改,以免被覆盖,请通过dalgen生成
- * The Table SYS_USER.
+ * The Table sys_user.
  * 用户
  */
 public interface UserDOMapper{
 
     /**
-     * desc:插入表:SYS_USER.<br/>
-     * descSql =  SELECT LAST_INSERT_ID() INSERT INTO SYS_USER( DEPT_ID ,GROUP_ID ,SYS_USER_AREA ,SYS_USER_CITY ,SYS_USER_PROVINCE ,DEL_FLAG ,CREATE_BY ,UPDATE_BY ,SYS_USER_PWD ,IS_FORBIDDEN ,SYS_USER_NAME ,SYS_USER_UUID ,SYS_USER_EMAIL ,SYS_USER_PHONE ,SYS_USER_AREA_NAME ,SYS_USER_AUTH_SALT ,SYS_USER_CITY_NAME ,SYS_USER_LOGIN_NAME ,SYS_USER_PROVINCE_NAME ,SYS_LOGIN_NUMBER ,CREATE_TIME ,UPDATE_TIME )VALUES( #{deptId,jdbcType=BIGINT} ,#{groupId,jdbcType=BIGINT} ,#{sysUserArea,jdbcType=BIGINT} ,#{sysUserCity,jdbcType=BIGINT} ,#{sysUserProvince,jdbcType=BIGINT} ,#{delFlag,jdbcType=CHAR} ,#{createBy,jdbcType=VARCHAR} ,#{updateBy,jdbcType=VARCHAR} ,#{sysUserPwd,jdbcType=VARCHAR} ,#{isForbidden,jdbcType=CHAR} ,#{sysUserName,jdbcType=VARCHAR} ,#{sysUserUuid,jdbcType=VARCHAR} ,#{sysUserEmail,jdbcType=VARCHAR} ,#{sysUserPhone,jdbcType=VARCHAR} ,#{sysUserAreaName,jdbcType=VARCHAR} ,#{sysUserAuthSalt,jdbcType=VARCHAR} ,#{sysUserCityName,jdbcType=VARCHAR} ,#{sysUserLoginName,jdbcType=VARCHAR} ,#{sysUserProvinceName,jdbcType=VARCHAR} ,#{sysLoginNumber,jdbcType=INTEGER} ,#{createTime,jdbcType=TIMESTAMP} ,#{updateTime,jdbcType=TIMESTAMP} )
+     * desc:插入表:sys_user.<br/>
+     * descSql =  SELECT LAST_INSERT_ID() <![CDATA[ INSERT INTO sys_user( ID ,GROUP_ID ,SYS_USER_AREA ,SYS_USER_CITY ,SYS_USER_PROVINCE ,UUID ,REMARK ,CREATE_BY ,UPDATE_BY ,SYS_USER_NAME ,SYS_USER_EMAIL ,SYS_USER_PHONE ,SYS_USER_AREA_NAME ,SYS_USER_CITY_NAME ,SYS_USER_PROVINCE_NAME ,FLAG ,DEL_FLAG ,CREATE_TIME ,UPDATE_TIME )VALUES( null , #{groupId,jdbcType=BIGINT} , #{sysUserArea,jdbcType=BIGINT} , #{sysUserCity,jdbcType=BIGINT} , #{sysUserProvince,jdbcType=BIGINT} , #{uuid,jdbcType=VARCHAR} , #{remark,jdbcType=VARCHAR} , #{createBy,jdbcType=VARCHAR} , #{updateBy,jdbcType=VARCHAR} , #{sysUserName,jdbcType=VARCHAR} , #{sysUserEmail,jdbcType=VARCHAR} , #{sysUserPhone,jdbcType=VARCHAR} , #{sysUserAreaName,jdbcType=VARCHAR} , #{sysUserCityName,jdbcType=VARCHAR} , #{sysUserProvinceName,jdbcType=VARCHAR} , #{flag,jdbcType=INTEGER} , #{delFlag,jdbcType=INTEGER} , #{createTime,jdbcType=TIMESTAMP} , #{updateTime,jdbcType=TIMESTAMP} ) ]]>
      * @param entity entity
      * @return int
      */
     int insert(UserDO entity);
     /**
-     * desc:更新表:SYS_USER.<br/>
-     * descSql =  UPDATE SYS_USER SET DEPT_ID = #{deptId,jdbcType=BIGINT} ,GROUP_ID = #{groupId,jdbcType=BIGINT} ,SYS_USER_AREA = #{sysUserArea,jdbcType=BIGINT} ,SYS_USER_CITY = #{sysUserCity,jdbcType=BIGINT} ,SYS_USER_PROVINCE = #{sysUserProvince,jdbcType=BIGINT} ,DEL_FLAG = #{delFlag,jdbcType=CHAR} ,CREATE_BY = #{createBy,jdbcType=VARCHAR} ,UPDATE_BY = #{updateBy,jdbcType=VARCHAR} ,SYS_USER_PWD = #{sysUserPwd,jdbcType=VARCHAR} ,IS_FORBIDDEN = #{isForbidden,jdbcType=CHAR} ,SYS_USER_NAME = #{sysUserName,jdbcType=VARCHAR} ,SYS_USER_UUID = #{sysUserUuid,jdbcType=VARCHAR} ,SYS_USER_EMAIL = #{sysUserEmail,jdbcType=VARCHAR} ,SYS_USER_PHONE = #{sysUserPhone,jdbcType=VARCHAR} ,SYS_USER_AREA_NAME = #{sysUserAreaName,jdbcType=VARCHAR} ,SYS_USER_AUTH_SALT = #{sysUserAuthSalt,jdbcType=VARCHAR} ,SYS_USER_CITY_NAME = #{sysUserCityName,jdbcType=VARCHAR} ,SYS_USER_LOGIN_NAME = #{sysUserLoginName,jdbcType=VARCHAR} ,SYS_USER_PROVINCE_NAME = #{sysUserProvinceName,jdbcType=VARCHAR} ,SYS_LOGIN_NUMBER = #{sysLoginNumber,jdbcType=INTEGER} ,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP} ,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP} WHERE ID = #{id,jdbcType=BIGINT}
-     * @param entity entity
+     * desc:批量插入表:sys_user.<br/>
+     * descSql =  INSERT INTO sys_user( ID ,GROUP_ID ,SYS_USER_AREA ,SYS_USER_CITY ,SYS_USER_PROVINCE ,UUID ,REMARK ,CREATE_BY ,UPDATE_BY ,SYS_USER_NAME ,SYS_USER_EMAIL ,SYS_USER_PHONE ,SYS_USER_AREA_NAME ,SYS_USER_CITY_NAME ,SYS_USER_PROVINCE_NAME ,FLAG ,DEL_FLAG ,CREATE_TIME ,UPDATE_TIME )VALUES ( null , #{item.groupId,jdbcType=BIGINT} , #{item.sysUserArea,jdbcType=BIGINT} , #{item.sysUserCity,jdbcType=BIGINT} , #{item.sysUserProvince,jdbcType=BIGINT} , #{item.uuid,jdbcType=VARCHAR} , #{item.remark,jdbcType=VARCHAR} , #{item.createBy,jdbcType=VARCHAR} , #{item.updateBy,jdbcType=VARCHAR} , #{item.sysUserName,jdbcType=VARCHAR} , #{item.sysUserEmail,jdbcType=VARCHAR} , #{item.sysUserPhone,jdbcType=VARCHAR} , #{item.sysUserAreaName,jdbcType=VARCHAR} , #{item.sysUserCityName,jdbcType=VARCHAR} , #{item.sysUserProvinceName,jdbcType=VARCHAR} , #{item.flag,jdbcType=INTEGER} , #{item.delFlag,jdbcType=INTEGER} , #{item.createTime,jdbcType=TIMESTAMP} , #{item.updateTime,jdbcType=TIMESTAMP} ) 
+     * @param list list
      * @return int
      */
-    int update(UserDO entity);
+    int insertBatch(List<UserDO> list);
     /**
-     * desc:根据主键删除数据:SYS_USER.<br/>
-     * descSql =  DELETE FROM SYS_USER WHERE ID = #{id,jdbcType=BIGINT}
+     * desc:根据主键删除数据:sys_user.<br/>
+     * descSql =  <![CDATA[ DELETE FROM sys_user WHERE ID = #{id,jdbcType=BIGINT} ]]>
      * @param id id
      * @return int
      */
     int deleteById(Long id);
     /**
-     * desc:根据主键获取数据:SYS_USER.<br/>
-     * descSql =  SELECT * FROM SYS_USER WHERE ID = #{id,jdbcType=BIGINT}
+     * desc:根据主键获取数据:sys_user.<br/>
+     * descSql =  SELECT * FROM sys_user WHERE <![CDATA[ ID = #{id,jdbcType=BIGINT} ]]>
      * @param id id
      * @return UserDO
      */
     UserDO getById(Long id);
+    /**
+     * desc:根据普通索引SysUserName获取数据:sys_user.<br/>
+     * descSql =  SELECT * FROM sys_user WHERE <![CDATA[ SYS_USER_NAME = #{sysUserName,jdbcType=VARCHAR} ]]>
+     * @param sysUserName sysUserName
+     * @return List<UserDO>
+     */
+    List<UserDO> queryBySysUserName(@Param("sysUserName")String sysUserName);
+    /**
+     * desc:根据普通索引SysUserPhone获取数据:sys_user.<br/>
+     * descSql =  SELECT * FROM sys_user WHERE <![CDATA[ SYS_USER_PHONE = #{sysUserPhone,jdbcType=VARCHAR} ]]>
+     * @param sysUserPhone sysUserPhone
+     * @return List<UserDO>
+     */
+    List<UserDO> queryBySysUserPhone(@Param("sysUserPhone")String sysUserPhone);
+    /**
+     * desc:根据普通索引SysUserUuid获取数据:sys_user.<br/>
+     * descSql =  SELECT * FROM sys_user WHERE <![CDATA[ UUID = #{uuid,jdbcType=VARCHAR} ]]>
+     * @param uuid uuid
+     * @return List<UserDO>
+     */
+    List<UserDO> queryBySysUserUuid(@Param("uuid")String uuid);
 }

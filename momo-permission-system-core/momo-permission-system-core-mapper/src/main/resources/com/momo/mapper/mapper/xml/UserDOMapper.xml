@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.momo.mapper.mapper.UserDOMapper">
+    <!-- 自动生成,请修改 SYS_USER.xml -->
+    <resultMap id="BaseResultMap"  type="com.momo.mapper.dataobject.UserDO">
+        <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+        <result column="GROUP_ID" property="groupId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="SYS_USER_AREA" property="sysUserArea" jdbcType="BIGINT" javaType="Long"/>
+        <result column="SYS_USER_CITY" property="sysUserCity" jdbcType="BIGINT" javaType="Long"/>
+        <result column="SYS_USER_PROVINCE" property="sysUserProvince" jdbcType="BIGINT" javaType="Long"/>
+        <result column="UUID" property="uuid" jdbcType="VARCHAR" javaType="String"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR" javaType="String"/>
+        <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SYS_USER_NAME" property="sysUserName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SYS_USER_EMAIL" property="sysUserEmail" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SYS_USER_PHONE" property="sysUserPhone" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SYS_USER_AREA_NAME" property="sysUserAreaName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SYS_USER_CITY_NAME" property="sysUserCityName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SYS_USER_PROVINCE_NAME" property="sysUserProvinceName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="FLAG" property="flag" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="DEL_FLAG" property="delFlag" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+
+    <sql id="Base_SF_Column_List">
+        sf.ID,sf.GROUP_ID,sf.SYS_USER_AREA,sf.SYS_USER_CITY,sf.SYS_USER_PROVINCE
+        ,sf.UUID,sf.REMARK,sf.CREATE_BY,sf.UPDATE_BY,sf.SYS_USER_NAME
+        ,sf.SYS_USER_EMAIL,sf.SYS_USER_PHONE,sf.SYS_USER_AREA_NAME,sf.SYS_USER_CITY_NAME,sf.SYS_USER_PROVINCE_NAME
+        ,sf.FLAG,sf.DEL_FLAG,sf.CREATE_TIME,sf.UPDATE_TIME
+    </sql>
+    <sql id="Base_Column_List">
+        ID,GROUP_ID,SYS_USER_AREA,SYS_USER_CITY,SYS_USER_PROVINCE 
+        ,UUID,REMARK,CREATE_BY,UPDATE_BY,SYS_USER_NAME 
+        ,SYS_USER_EMAIL,SYS_USER_PHONE,SYS_USER_AREA_NAME,SYS_USER_CITY_NAME,SYS_USER_PROVINCE_NAME 
+        ,FLAG,DEL_FLAG,CREATE_TIME,UPDATE_TIME
+    </sql>
+
+
+    <!--插入表:sys_user-->
+    <insert id="insert" >
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        <![CDATA[
+        INSERT INTO sys_user(
+            ID
+            ,GROUP_ID
+            ,SYS_USER_AREA
+            ,SYS_USER_CITY
+            ,SYS_USER_PROVINCE
+            ,UUID
+            ,REMARK
+            ,CREATE_BY
+            ,UPDATE_BY
+            ,SYS_USER_NAME
+            ,SYS_USER_EMAIL
+            ,SYS_USER_PHONE
+            ,SYS_USER_AREA_NAME
+            ,SYS_USER_CITY_NAME
+            ,SYS_USER_PROVINCE_NAME
+            ,FLAG
+            ,DEL_FLAG
+            ,CREATE_TIME
+            ,UPDATE_TIME
+        )VALUES(
+             null
+            , #{groupId,jdbcType=BIGINT}
+            , #{sysUserArea,jdbcType=BIGINT}
+            , #{sysUserCity,jdbcType=BIGINT}
+            , #{sysUserProvince,jdbcType=BIGINT}
+            , #{uuid,jdbcType=VARCHAR}
+            , #{remark,jdbcType=VARCHAR}
+            , #{createBy,jdbcType=VARCHAR}
+            , #{updateBy,jdbcType=VARCHAR}
+            , #{sysUserName,jdbcType=VARCHAR}
+            , #{sysUserEmail,jdbcType=VARCHAR}
+            , #{sysUserPhone,jdbcType=VARCHAR}
+            , #{sysUserAreaName,jdbcType=VARCHAR}
+            , #{sysUserCityName,jdbcType=VARCHAR}
+            , #{sysUserProvinceName,jdbcType=VARCHAR}
+            , #{flag,jdbcType=INTEGER}
+            , #{delFlag,jdbcType=INTEGER}
+            , #{createTime,jdbcType=TIMESTAMP}
+            , #{updateTime,jdbcType=TIMESTAMP}
+        )
+        ]]>
+    </insert>
+
+    <!--批量插入表:sys_user-->
+    <insert id="insertBatch" >
+        INSERT INTO sys_user(
+            ID
+            ,GROUP_ID
+            ,SYS_USER_AREA
+            ,SYS_USER_CITY
+            ,SYS_USER_PROVINCE
+            ,UUID
+            ,REMARK
+            ,CREATE_BY
+            ,UPDATE_BY
+            ,SYS_USER_NAME
+            ,SYS_USER_EMAIL
+            ,SYS_USER_PHONE
+            ,SYS_USER_AREA_NAME
+            ,SYS_USER_CITY_NAME
+            ,SYS_USER_PROVINCE_NAME
+            ,FLAG
+            ,DEL_FLAG
+            ,CREATE_TIME
+            ,UPDATE_TIME
+        )VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+                 null
+                , #{item.groupId,jdbcType=BIGINT}
+                , #{item.sysUserArea,jdbcType=BIGINT}
+                , #{item.sysUserCity,jdbcType=BIGINT}
+                , #{item.sysUserProvince,jdbcType=BIGINT}
+                , #{item.uuid,jdbcType=VARCHAR}
+                , #{item.remark,jdbcType=VARCHAR}
+                , #{item.createBy,jdbcType=VARCHAR}
+                , #{item.updateBy,jdbcType=VARCHAR}
+                , #{item.sysUserName,jdbcType=VARCHAR}
+                , #{item.sysUserEmail,jdbcType=VARCHAR}
+                , #{item.sysUserPhone,jdbcType=VARCHAR}
+                , #{item.sysUserAreaName,jdbcType=VARCHAR}
+                , #{item.sysUserCityName,jdbcType=VARCHAR}
+                , #{item.sysUserProvinceName,jdbcType=VARCHAR}
+                , #{item.flag,jdbcType=INTEGER}
+                , #{item.delFlag,jdbcType=INTEGER}
+                , #{item.createTime,jdbcType=TIMESTAMP}
+                , #{item.updateTime,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </insert>
+
+    <!--根据主键删除数据:sys_user-->
+    <delete id="deleteById" >
+        <![CDATA[
+        DELETE /*MS-SYS-USER-DELETEBYID*/ FROM sys_user
+        WHERE
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </delete>
+
+    <!--根据主键获取数据:sys_user-->
+    <select id="getById" resultMap="BaseResultMap">
+        SELECT /*MS-SYS-USER-GETBYID*/  <include refid="Base_Column_List" />
+        FROM sys_user
+        WHERE
+        <![CDATA[
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </select>
+
+    <!--根据普通索引SysUserName获取数据:sys_user-->
+    <select id="queryBySysUserName" resultMap="BaseResultMap">
+        SELECT /*MS-SYS-USER-QUERYBYSYSUSERNAME*/  <include refid="Base_Column_List" />
+        FROM sys_user
+        WHERE
+        <![CDATA[
+            SYS_USER_NAME   = #{sysUserName,jdbcType=VARCHAR}
+        ]]>
+    </select>
+
+    <!--根据普通索引SysUserPhone获取数据:sys_user-->
+    <select id="queryBySysUserPhone" resultMap="BaseResultMap">
+        SELECT /*MS-SYS-USER-QUERYBYSYSUSERPHONE*/  <include refid="Base_Column_List" />
+        FROM sys_user
+        WHERE
+        <![CDATA[
+            SYS_USER_PHONE  = #{sysUserPhone,jdbcType=VARCHAR}
+        ]]>
+    </select>
+
+    <!--根据普通索引SysUserUuid获取数据:sys_user-->
+    <select id="queryBySysUserUuid" resultMap="BaseResultMap">
+        SELECT /*MS-SYS-USER-QUERYBYSYSUSERUUID*/  <include refid="Base_Column_List" />
+        FROM sys_user
+        WHERE
+        <![CDATA[
+            UUID            = #{uuid,jdbcType=VARCHAR}
+        ]]>
+    </select>
+</mapper>

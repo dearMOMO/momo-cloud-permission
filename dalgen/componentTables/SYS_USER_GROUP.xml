@@ -1,23 +1,39 @@
 <!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
-<table sqlname="SYS_USER_GROUP" physicalName="SYS_USER_GROUP" remark="第三方权限组">
-    <!--  特殊字符说明  &lt;&gt;   <> -->
+<table sqlname="sys_user_group" physicalName="sys_user_group" remark="第三方权限组">
+    <!--  特殊字符说明 &lt;&gt; <> -->
+    <!-- baseSql option中 select * 会自动替换为 include -->
+    <sql id="Base_Column_List">
+        ID,UUID,NAME_TOP,CREATE_BY,UPDATE_BY 
+        ,NAME_BOTTOM,USER_GROUP_NAME,FLAG,DEL_FLAG,SYS_OPEN_DAY 
+        ,SYS_OPEN_ACCOUNT_NUM,SYS_CREATE_ACCOUNT_NUM,CREATE_TIME,UPDATE_TIME,SYS_ACCOUNT_END_TIME 
+        ,SYS_ACCOUNT_START_TIME
+    </sql>
 
-    <operation name="insert" paramtype="object" remark="插入表:SYS_USER_GROUP">
-            <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
-                SELECT
-                LAST_INSERT_ID()
-            </selectKey>
-        INSERT INTO SYS_USER_GROUP(
-            
-            DEL_FLAG
+    <!-- baseSql option中 select sf.* 会自动替换为 include -->
+    <sql id="Base_SF_Column_List">
+        sf.ID,sf.UUID,sf.NAME_TOP,sf.CREATE_BY,sf.UPDATE_BY
+        ,sf.NAME_BOTTOM,sf.USER_GROUP_NAME,sf.FLAG,sf.DEL_FLAG,sf.SYS_OPEN_DAY
+        ,sf.SYS_OPEN_ACCOUNT_NUM,sf.SYS_CREATE_ACCOUNT_NUM,sf.CREATE_TIME,sf.UPDATE_TIME,sf.SYS_ACCOUNT_END_TIME
+        ,sf.SYS_ACCOUNT_START_TIME
+    </sql>
+
+    <operation name="insert" paramtype="object" remark="插入表:sys_user_group">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        <![CDATA[
+        INSERT INTO sys_user_group(
+            ID
+            ,UUID
             ,NAME_TOP
             ,CREATE_BY
             ,UPDATE_BY
             ,NAME_BOTTOM
-            ,SYS_OPEN_DAY
             ,USER_GROUP_NAME
-            ,USER_GROUP_UUID
-            ,USER_GROUP_STATUS
+            ,FLAG
+            ,DEL_FLAG
+            ,SYS_OPEN_DAY
             ,SYS_OPEN_ACCOUNT_NUM
             ,SYS_CREATE_ACCOUNT_NUM
             ,CREATE_TIME
@@ -25,56 +41,118 @@
             ,SYS_ACCOUNT_END_TIME
             ,SYS_ACCOUNT_START_TIME
         )VALUES(
-            
-            #{delFlag,jdbcType=CHAR}
-            ,#{nameTop,jdbcType=VARCHAR}
-            ,#{createBy,jdbcType=VARCHAR}
-            ,#{updateBy,jdbcType=VARCHAR}
-            ,#{nameBottom,jdbcType=VARCHAR}
-            ,#{sysOpenDay,jdbcType=VARCHAR}
-            ,#{userGroupName,jdbcType=VARCHAR}
-            ,#{userGroupUuid,jdbcType=VARCHAR}
-            ,#{userGroupStatus,jdbcType=CHAR}
-            ,#{sysOpenAccountNum,jdbcType=INTEGER}
-            ,#{sysCreateAccountNum,jdbcType=INTEGER}
-            ,#{createTime,jdbcType=TIMESTAMP}
-            ,#{updateTime,jdbcType=TIMESTAMP}
-            ,#{sysAccountEndTime,jdbcType=TIMESTAMP}
-            ,#{sysAccountStartTime,jdbcType=TIMESTAMP}
+             null
+            , #{uuid,jdbcType=VARCHAR}
+            , #{nameTop,jdbcType=VARCHAR}
+            , #{createBy,jdbcType=VARCHAR}
+            , #{updateBy,jdbcType=VARCHAR}
+            , #{nameBottom,jdbcType=VARCHAR}
+            , #{userGroupName,jdbcType=VARCHAR}
+            , #{flag,jdbcType=INTEGER}
+            , #{delFlag,jdbcType=INTEGER}
+            , #{sysOpenDay,jdbcType=INTEGER}
+            , #{sysOpenAccountNum,jdbcType=INTEGER}
+            , #{sysCreateAccountNum,jdbcType=INTEGER}
+            , #{createTime,jdbcType=TIMESTAMP}
+            , #{updateTime,jdbcType=TIMESTAMP}
+            , #{sysAccountEndTime,jdbcType=TIMESTAMP}
+            , #{sysAccountStartTime,jdbcType=TIMESTAMP}
         )
+        ]]>
     </operation>
 
-        <operation name="update" paramtype="object" remark="更新表:SYS_USER_GROUP">
-            UPDATE SYS_USER_GROUP
-            SET
-                    DEL_FLAG        = #{delFlag,jdbcType=CHAR}
-                    ,NAME_TOP        = #{nameTop,jdbcType=VARCHAR}
-                    ,CREATE_BY       = #{createBy,jdbcType=VARCHAR}
-                    ,UPDATE_BY       = #{updateBy,jdbcType=VARCHAR}
-                    ,NAME_BOTTOM     = #{nameBottom,jdbcType=VARCHAR}
-                    ,SYS_OPEN_DAY    = #{sysOpenDay,jdbcType=VARCHAR}
-                    ,USER_GROUP_NAME = #{userGroupName,jdbcType=VARCHAR}
-                    ,USER_GROUP_UUID = #{userGroupUuid,jdbcType=VARCHAR}
-                    ,USER_GROUP_STATUS = #{userGroupStatus,jdbcType=CHAR}
-                    ,SYS_OPEN_ACCOUNT_NUM = #{sysOpenAccountNum,jdbcType=INTEGER}
-                    ,SYS_CREATE_ACCOUNT_NUM = #{sysCreateAccountNum,jdbcType=INTEGER}
-                    ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
-                    ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
-                    ,SYS_ACCOUNT_END_TIME = #{sysAccountEndTime,jdbcType=TIMESTAMP}
-                    ,SYS_ACCOUNT_START_TIME = #{sysAccountStartTime,jdbcType=TIMESTAMP}
-            WHERE
-                ID              = #{id,jdbcType=BIGINT}
-        </operation>
+    <!-- foreach 可以自定义类型，paramtype="primitive" foreach->javatype="自己书写的类"  -->
+    <!-- 只有一个参数且为List时必须将参数命名为list -->
+    <operation name="insertBatch" paramtype="objectList" remark="批量插入表:sys_user_group">
+        INSERT INTO sys_user_group(
+            ID
+            ,UUID
+            ,NAME_TOP
+            ,CREATE_BY
+            ,UPDATE_BY
+            ,NAME_BOTTOM
+            ,USER_GROUP_NAME
+            ,FLAG
+            ,DEL_FLAG
+            ,SYS_OPEN_DAY
+            ,SYS_OPEN_ACCOUNT_NUM
+            ,SYS_CREATE_ACCOUNT_NUM
+            ,CREATE_TIME
+            ,UPDATE_TIME
+            ,SYS_ACCOUNT_END_TIME
+            ,SYS_ACCOUNT_START_TIME
+        )VALUES
+        <foreach collection="list"  item="item" separator=",">
+            (
+                 null
+                , #{item.uuid,jdbcType=VARCHAR}
+                , #{item.nameTop,jdbcType=VARCHAR}
+                , #{item.createBy,jdbcType=VARCHAR}
+                , #{item.updateBy,jdbcType=VARCHAR}
+                , #{item.nameBottom,jdbcType=VARCHAR}
+                , #{item.userGroupName,jdbcType=VARCHAR}
+                , #{item.flag,jdbcType=INTEGER}
+                , #{item.delFlag,jdbcType=INTEGER}
+                , #{item.sysOpenDay,jdbcType=INTEGER}
+                , #{item.sysOpenAccountNum,jdbcType=INTEGER}
+                , #{item.sysCreateAccountNum,jdbcType=INTEGER}
+                , #{item.createTime,jdbcType=TIMESTAMP}
+                , #{item.updateTime,jdbcType=TIMESTAMP}
+                , #{item.sysAccountEndTime,jdbcType=TIMESTAMP}
+                , #{item.sysAccountStartTime,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </operation>
 
-        <operation name="deleteById" multiplicity="one" remark="根据主键删除数据:SYS_USER_GROUP">
-            DELETE FROM SYS_USER_GROUP
-            WHERE
-                ID = #{id,jdbcType=BIGINT}
-        </operation>
+    <!-- 不推荐使用全 update 有需要自己打开
+    <operation name="update" paramtype="object" remark="更新表:sys_user_group">
+        <![CDATA[
+        UPDATE sys_user_group
+        SET
+            UUID            = #{uuid,jdbcType=VARCHAR}
+            ,NAME_TOP        = #{nameTop,jdbcType=VARCHAR}
+            ,CREATE_BY       = #{createBy,jdbcType=VARCHAR}
+            ,UPDATE_BY       = #{updateBy,jdbcType=VARCHAR}
+            ,NAME_BOTTOM     = #{nameBottom,jdbcType=VARCHAR}
+            ,USER_GROUP_NAME = #{userGroupName,jdbcType=VARCHAR}
+            ,FLAG            = #{flag,jdbcType=INTEGER}
+            ,DEL_FLAG        = #{delFlag,jdbcType=INTEGER}
+            ,SYS_OPEN_DAY    = #{sysOpenDay,jdbcType=INTEGER}
+            ,SYS_OPEN_ACCOUNT_NUM = #{sysOpenAccountNum,jdbcType=INTEGER}
+            ,SYS_CREATE_ACCOUNT_NUM = #{sysCreateAccountNum,jdbcType=INTEGER}
+            ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+            ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
+            ,SYS_ACCOUNT_END_TIME = #{sysAccountEndTime,jdbcType=TIMESTAMP}
+            ,SYS_ACCOUNT_START_TIME = #{sysAccountStartTime,jdbcType=TIMESTAMP}
+        WHERE
+            ID              = #{id,jdbcType=BIGINT}
+        ]]>
+    </operation>
+    -->
+    <operation name="deleteById"  remark="根据主键删除数据:sys_user_group">
+        <![CDATA[
+        DELETE FROM sys_user_group
+        WHERE
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </operation>
 
-        <operation name="getById" multiplicity="one" remark="根据主键获取数据:SYS_USER_GROUP">
-            SELECT * FROM SYS_USER_GROUP
-            WHERE
-                ID = #{id,jdbcType=BIGINT}
-        </operation>
+    <operation name="getById" multiplicity="one" remark="根据主键获取数据:sys_user_group">
+        SELECT *
+        FROM sys_user_group
+        WHERE
+        <![CDATA[
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </operation>
+
+    <!-- 根据普通索引查询数据 -->
+    <operation name="queryByUserGroupUuid" multiplicity="many" remark="根据普通索引UserGroupUuid获取数据:sys_user_group">
+        SELECT *
+        FROM sys_user_group
+        WHERE
+        <![CDATA[
+            UUID            = #{uuid,jdbcType=VARCHAR}
+        ]]>
+    </operation>
 </table>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.momo.mapper.mapper.BugDOMapper">
+    <!-- 自动生成,请修改 SYS_BUG.xml -->
+    <resultMap id="BaseResultMap"  type="com.momo.mapper.dataobject.BugDO">
+        <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+        <result column="UUID" property="uuid" jdbcType="VARCHAR" javaType="String"/>
+        <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SYS_PRODUCT_IMG" property="sysProductImg" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SYS_PRODUCT_NAME" property="sysProductName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SYS_PRODUCT_REPLY" property="sysProductReply" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SYS_PRODUCT_DETAIL" property="sysProductDetail" jdbcType="VARCHAR" javaType="String"/>
+        <result column="FLAG" property="flag" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+
+    <sql id="Base_SF_Column_List">
+        sf.ID,sf.UUID,sf.CREATE_BY,sf.UPDATE_BY,sf.SYS_PRODUCT_IMG
+        ,sf.SYS_PRODUCT_NAME,sf.SYS_PRODUCT_REPLY,sf.SYS_PRODUCT_DETAIL,sf.FLAG,sf.CREATE_TIME
+        ,sf.UPDATE_TIME
+    </sql>
+    <sql id="Base_Column_List">
+        ID,UUID,CREATE_BY,UPDATE_BY,SYS_PRODUCT_IMG 
+        ,SYS_PRODUCT_NAME,SYS_PRODUCT_REPLY,SYS_PRODUCT_DETAIL,FLAG,CREATE_TIME 
+        ,UPDATE_TIME
+    </sql>
+
+
+    <!--插入表:sys_bug-->
+    <insert id="insert" >
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        <![CDATA[
+        INSERT INTO sys_bug(
+            ID
+            ,UUID
+            ,CREATE_BY
+            ,UPDATE_BY
+            ,SYS_PRODUCT_IMG
+            ,SYS_PRODUCT_NAME
+            ,SYS_PRODUCT_REPLY
+            ,SYS_PRODUCT_DETAIL
+            ,FLAG
+            ,CREATE_TIME
+            ,UPDATE_TIME
+        )VALUES(
+             null
+            , #{uuid,jdbcType=VARCHAR}
+            , #{createBy,jdbcType=VARCHAR}
+            , #{updateBy,jdbcType=VARCHAR}
+            , #{sysProductImg,jdbcType=VARCHAR}
+            , #{sysProductName,jdbcType=VARCHAR}
+            , #{sysProductReply,jdbcType=VARCHAR}
+            , #{sysProductDetail,jdbcType=VARCHAR}
+            , #{flag,jdbcType=INTEGER}
+            , #{createTime,jdbcType=TIMESTAMP}
+            , #{updateTime,jdbcType=TIMESTAMP}
+        )
+        ]]>
+    </insert>
+
+    <!--批量插入表:sys_bug-->
+    <insert id="insertBatch" >
+        INSERT INTO sys_bug(
+            ID
+            ,UUID
+            ,CREATE_BY
+            ,UPDATE_BY
+            ,SYS_PRODUCT_IMG
+            ,SYS_PRODUCT_NAME
+            ,SYS_PRODUCT_REPLY
+            ,SYS_PRODUCT_DETAIL
+            ,FLAG
+            ,CREATE_TIME
+            ,UPDATE_TIME
+        )VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+                 null
+                , #{item.uuid,jdbcType=VARCHAR}
+                , #{item.createBy,jdbcType=VARCHAR}
+                , #{item.updateBy,jdbcType=VARCHAR}
+                , #{item.sysProductImg,jdbcType=VARCHAR}
+                , #{item.sysProductName,jdbcType=VARCHAR}
+                , #{item.sysProductReply,jdbcType=VARCHAR}
+                , #{item.sysProductDetail,jdbcType=VARCHAR}
+                , #{item.flag,jdbcType=INTEGER}
+                , #{item.createTime,jdbcType=TIMESTAMP}
+                , #{item.updateTime,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </insert>
+
+    <!--根据主键删除数据:sys_bug-->
+    <delete id="deleteById" >
+        <![CDATA[
+        DELETE /*MS-SYS-BUG-DELETEBYID*/ FROM sys_bug
+        WHERE
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </delete>
+
+    <!--根据主键获取数据:sys_bug-->
+    <select id="getById" resultMap="BaseResultMap">
+        SELECT /*MS-SYS-BUG-GETBYID*/  <include refid="Base_Column_List" />
+        FROM sys_bug
+        WHERE
+        <![CDATA[
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </select>
+</mapper>

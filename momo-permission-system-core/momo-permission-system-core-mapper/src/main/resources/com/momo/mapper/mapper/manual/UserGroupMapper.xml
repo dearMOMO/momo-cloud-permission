@@ -12,7 +12,7 @@
         <result column="sys_open_account_num" jdbcType="INTEGER" property="sysOpenAccountNum" />
         <result column="name_top" jdbcType="VARCHAR" property="nameTop" />
         <result column="name_bottom" jdbcType="VARCHAR" property="nameBottom" />
-        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="flag" jdbcType="INTEGER" property="flag" />
         <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
         <result column="create_by" jdbcType="VARCHAR" property="createBy" />
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -21,7 +21,7 @@
     </resultMap>
     <sql id="Base_Column_List">
     id, uuid, user_group_name, sys_account_start_time, sys_account_end_time, sys_open_day,
-    sys_create_account_num, sys_open_account_num, name_top, name_bottom, status, del_flag,
+    sys_create_account_num, sys_open_account_num, name_top, name_bottom, flag, del_flag,
     create_by, create_time, update_time, update_by
   </sql>
     <select id="getUserGroupById" parameterType="map" resultMap="BaseResultMap">

@@ -1,42 +1,49 @@
 package com.momo.mapper.mapper;
 
 import com.momo.mapper.dataobject.UserGroupDO;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 /**
  * 由于需要对分页支持,请直接使用对应的DAO类
- * 注意:此结构有系统生成,禁止手工修改,以免被覆盖,请通过dalgen生成
- * The Table SYS_USER_GROUP.
+ * The Table sys_user_group.
  * 第三方权限组
  */
 public interface UserGroupDOMapper{
 
     /**
-     * desc:插入表:SYS_USER_GROUP.<br/>
-     * descSql =  SELECT LAST_INSERT_ID() INSERT INTO SYS_USER_GROUP( DEL_FLAG ,NAME_TOP ,CREATE_BY ,UPDATE_BY ,NAME_BOTTOM ,SYS_OPEN_DAY ,USER_GROUP_NAME ,USER_GROUP_UUID ,USER_GROUP_STATUS ,SYS_OPEN_ACCOUNT_NUM ,SYS_CREATE_ACCOUNT_NUM ,CREATE_TIME ,UPDATE_TIME ,SYS_ACCOUNT_END_TIME ,SYS_ACCOUNT_START_TIME )VALUES( #{delFlag,jdbcType=CHAR} ,#{nameTop,jdbcType=VARCHAR} ,#{createBy,jdbcType=VARCHAR} ,#{updateBy,jdbcType=VARCHAR} ,#{nameBottom,jdbcType=VARCHAR} ,#{sysOpenDay,jdbcType=VARCHAR} ,#{userGroupName,jdbcType=VARCHAR} ,#{userGroupUuid,jdbcType=VARCHAR} ,#{userGroupStatus,jdbcType=CHAR} ,#{sysOpenAccountNum,jdbcType=INTEGER} ,#{sysCreateAccountNum,jdbcType=INTEGER} ,#{createTime,jdbcType=TIMESTAMP} ,#{updateTime,jdbcType=TIMESTAMP} ,#{sysAccountEndTime,jdbcType=TIMESTAMP} ,#{sysAccountStartTime,jdbcType=TIMESTAMP} )
+     * desc:插入表:sys_user_group.<br/>
+     * descSql =  SELECT LAST_INSERT_ID() <![CDATA[ INSERT INTO sys_user_group( ID ,UUID ,NAME_TOP ,CREATE_BY ,UPDATE_BY ,NAME_BOTTOM ,USER_GROUP_NAME ,FLAG ,DEL_FLAG ,SYS_OPEN_DAY ,SYS_OPEN_ACCOUNT_NUM ,SYS_CREATE_ACCOUNT_NUM ,CREATE_TIME ,UPDATE_TIME ,SYS_ACCOUNT_END_TIME ,SYS_ACCOUNT_START_TIME )VALUES( null , #{uuid,jdbcType=VARCHAR} , #{nameTop,jdbcType=VARCHAR} , #{createBy,jdbcType=VARCHAR} , #{updateBy,jdbcType=VARCHAR} , #{nameBottom,jdbcType=VARCHAR} , #{userGroupName,jdbcType=VARCHAR} , #{flag,jdbcType=INTEGER} , #{delFlag,jdbcType=INTEGER} , #{sysOpenDay,jdbcType=INTEGER} , #{sysOpenAccountNum,jdbcType=INTEGER} , #{sysCreateAccountNum,jdbcType=INTEGER} , #{createTime,jdbcType=TIMESTAMP} , #{updateTime,jdbcType=TIMESTAMP} , #{sysAccountEndTime,jdbcType=TIMESTAMP} , #{sysAccountStartTime,jdbcType=TIMESTAMP} ) ]]>
      * @param entity entity
      * @return int
      */
     int insert(UserGroupDO entity);
     /**
-     * desc:更新表:SYS_USER_GROUP.<br/>
-     * descSql =  UPDATE SYS_USER_GROUP SET DEL_FLAG = #{delFlag,jdbcType=CHAR} ,NAME_TOP = #{nameTop,jdbcType=VARCHAR} ,CREATE_BY = #{createBy,jdbcType=VARCHAR} ,UPDATE_BY = #{updateBy,jdbcType=VARCHAR} ,NAME_BOTTOM = #{nameBottom,jdbcType=VARCHAR} ,SYS_OPEN_DAY = #{sysOpenDay,jdbcType=VARCHAR} ,USER_GROUP_NAME = #{userGroupName,jdbcType=VARCHAR} ,USER_GROUP_UUID = #{userGroupUuid,jdbcType=VARCHAR} ,USER_GROUP_STATUS = #{userGroupStatus,jdbcType=CHAR} ,SYS_OPEN_ACCOUNT_NUM = #{sysOpenAccountNum,jdbcType=INTEGER} ,SYS_CREATE_ACCOUNT_NUM = #{sysCreateAccountNum,jdbcType=INTEGER} ,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP} ,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP} ,SYS_ACCOUNT_END_TIME = #{sysAccountEndTime,jdbcType=TIMESTAMP} ,SYS_ACCOUNT_START_TIME = #{sysAccountStartTime,jdbcType=TIMESTAMP} WHERE ID = #{id,jdbcType=BIGINT}
-     * @param entity entity
+     * desc:批量插入表:sys_user_group.<br/>
+     * descSql =  INSERT INTO sys_user_group( ID ,UUID ,NAME_TOP ,CREATE_BY ,UPDATE_BY ,NAME_BOTTOM ,USER_GROUP_NAME ,FLAG ,DEL_FLAG ,SYS_OPEN_DAY ,SYS_OPEN_ACCOUNT_NUM ,SYS_CREATE_ACCOUNT_NUM ,CREATE_TIME ,UPDATE_TIME ,SYS_ACCOUNT_END_TIME ,SYS_ACCOUNT_START_TIME )VALUES ( null , #{item.uuid,jdbcType=VARCHAR} , #{item.nameTop,jdbcType=VARCHAR} , #{item.createBy,jdbcType=VARCHAR} , #{item.updateBy,jdbcType=VARCHAR} , #{item.nameBottom,jdbcType=VARCHAR} , #{item.userGroupName,jdbcType=VARCHAR} , #{item.flag,jdbcType=INTEGER} , #{item.delFlag,jdbcType=INTEGER} , #{item.sysOpenDay,jdbcType=INTEGER} , #{item.sysOpenAccountNum,jdbcType=INTEGER} , #{item.sysCreateAccountNum,jdbcType=INTEGER} , #{item.createTime,jdbcType=TIMESTAMP} , #{item.updateTime,jdbcType=TIMESTAMP} , #{item.sysAccountEndTime,jdbcType=TIMESTAMP} , #{item.sysAccountStartTime,jdbcType=TIMESTAMP} ) 
+     * @param list list
      * @return int
      */
-    int update(UserGroupDO entity);
+    int insertBatch(List<UserGroupDO> list);
     /**
-     * desc:根据主键删除数据:SYS_USER_GROUP.<br/>
-     * descSql =  DELETE FROM SYS_USER_GROUP WHERE ID = #{id,jdbcType=BIGINT}
+     * desc:根据主键删除数据:sys_user_group.<br/>
+     * descSql =  <![CDATA[ DELETE FROM sys_user_group WHERE ID = #{id,jdbcType=BIGINT} ]]>
      * @param id id
      * @return int
      */
     int deleteById(Long id);
     /**
-     * desc:根据主键获取数据:SYS_USER_GROUP.<br/>
-     * descSql =  SELECT * FROM SYS_USER_GROUP WHERE ID = #{id,jdbcType=BIGINT}
+     * desc:根据主键获取数据:sys_user_group.<br/>
+     * descSql =  SELECT * FROM sys_user_group WHERE <![CDATA[ ID = #{id,jdbcType=BIGINT} ]]>
      * @param id id
      * @return UserGroupDO
      */
     UserGroupDO getById(Long id);
+    /**
+     * desc:根据普通索引UserGroupUuid获取数据:sys_user_group.<br/>
+     * descSql =  SELECT * FROM sys_user_group WHERE <![CDATA[ UUID = #{uuid,jdbcType=VARCHAR} ]]>
+     * @param uuid uuid
+     * @return List<UserGroupDO>
+     */
+    List<UserGroupDO> queryByUserGroupUuid(@Param("uuid")String uuid);
 }

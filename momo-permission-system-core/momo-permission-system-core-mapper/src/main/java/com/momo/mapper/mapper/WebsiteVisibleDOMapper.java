@@ -1,40 +1,40 @@
 package com.momo.mapper.mapper;
 
 import com.momo.mapper.dataobject.WebsiteVisibleDO;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 /**
  * 由于需要对分页支持,请直接使用对应的DAO类
- * 注意:此结构有系统生成,禁止手工修改,以免被覆盖,请通过dalgen生成
- * The Table SYS_WEBSITE_VISIBLE.
+ * The Table sys_website_visible.
  * 网站访问总人数
  */
 public interface WebsiteVisibleDOMapper{
 
     /**
-     * desc:插入表:SYS_WEBSITE_VISIBLE.<br/>
-     * descSql =  SELECT LAST_INSERT_ID() INSERT INTO SYS_WEBSITE_VISIBLE( VISIBLE_NUMBER )VALUES( #{visibleNumber,jdbcType=BIGINT} )
+     * desc:插入表:sys_website_visible.<br/>
+     * descSql =  SELECT LAST_INSERT_ID() <![CDATA[ INSERT INTO sys_website_visible( ID ,VISIBLE_NUMBER )VALUES( null , #{visibleNumber,jdbcType=BIGINT} ) ]]>
      * @param entity entity
      * @return int
      */
     int insert(WebsiteVisibleDO entity);
     /**
-     * desc:更新表:SYS_WEBSITE_VISIBLE.<br/>
-     * descSql =  UPDATE SYS_WEBSITE_VISIBLE SET VISIBLE_NUMBER = #{visibleNumber,jdbcType=BIGINT} WHERE ID = #{id,jdbcType=BIGINT}
-     * @param entity entity
+     * desc:批量插入表:sys_website_visible.<br/>
+     * descSql =  INSERT INTO sys_website_visible( ID ,VISIBLE_NUMBER )VALUES ( null , #{item.visibleNumber,jdbcType=BIGINT} ) 
+     * @param list list
      * @return int
      */
-    int update(WebsiteVisibleDO entity);
+    int insertBatch(List<WebsiteVisibleDO> list);
     /**
-     * desc:根据主键删除数据:SYS_WEBSITE_VISIBLE.<br/>
-     * descSql =  DELETE FROM SYS_WEBSITE_VISIBLE WHERE ID = #{id,jdbcType=BIGINT}
+     * desc:根据主键删除数据:sys_website_visible.<br/>
+     * descSql =  <![CDATA[ DELETE FROM sys_website_visible WHERE ID = #{id,jdbcType=BIGINT} ]]>
      * @param id id
      * @return int
      */
     int deleteById(Long id);
     /**
-     * desc:根据主键获取数据:SYS_WEBSITE_VISIBLE.<br/>
-     * descSql =  SELECT * FROM SYS_WEBSITE_VISIBLE WHERE ID = #{id,jdbcType=BIGINT}
+     * desc:根据主键获取数据:sys_website_visible.<br/>
+     * descSql =  SELECT * FROM sys_website_visible WHERE <![CDATA[ ID = #{id,jdbcType=BIGINT} ]]>
      * @param id id
      * @return WebsiteVisibleDO
      */

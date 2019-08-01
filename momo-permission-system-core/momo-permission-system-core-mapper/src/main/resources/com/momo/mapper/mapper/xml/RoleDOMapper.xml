@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.momo.mapper.mapper.RoleDOMapper">
+    <!-- 自动生成,请修改 SYS_ROLE.xml -->
+    <resultMap id="BaseResultMap"  type="com.momo.mapper.dataobject.RoleDO">
+        <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+        <result column="GROUP_ID" property="groupId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="UUID" property="uuid" jdbcType="VARCHAR" javaType="String"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR" javaType="String"/>
+        <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SYS_ROLE_NAME" property="sysRoleName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="FLAG" property="flag" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="DEL_FLAG" property="delFlag" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="SYS_ROLE_TYPE" property="sysRoleType" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+
+    <sql id="Base_SF_Column_List">
+        sf.ID,sf.GROUP_ID,sf.UUID,sf.REMARK,sf.CREATE_BY
+        ,sf.UPDATE_BY,sf.SYS_ROLE_NAME,sf.FLAG,sf.DEL_FLAG,sf.SYS_ROLE_TYPE
+        ,sf.CREATE_TIME,sf.UPDATE_TIME
+    </sql>
+    <sql id="Base_Column_List">
+        ID,GROUP_ID,UUID,REMARK,CREATE_BY 
+        ,UPDATE_BY,SYS_ROLE_NAME,FLAG,DEL_FLAG,SYS_ROLE_TYPE 
+        ,CREATE_TIME,UPDATE_TIME
+    </sql>
+
+
+    <!--插入表:sys_role-->
+    <insert id="insert" >
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        <![CDATA[
+        INSERT INTO sys_role(
+            ID
+            ,GROUP_ID
+            ,UUID
+            ,REMARK
+            ,CREATE_BY
+            ,UPDATE_BY
+            ,SYS_ROLE_NAME
+            ,FLAG
+            ,DEL_FLAG
+            ,SYS_ROLE_TYPE
+            ,CREATE_TIME
+            ,UPDATE_TIME
+        )VALUES(
+             null
+            , #{groupId,jdbcType=BIGINT}
+            , #{uuid,jdbcType=VARCHAR}
+            , #{remark,jdbcType=VARCHAR}
+            , #{createBy,jdbcType=VARCHAR}
+            , #{updateBy,jdbcType=VARCHAR}
+            , #{sysRoleName,jdbcType=VARCHAR}
+            , #{flag,jdbcType=INTEGER}
+            , #{delFlag,jdbcType=INTEGER}
+            , #{sysRoleType,jdbcType=INTEGER}
+            , #{createTime,jdbcType=TIMESTAMP}
+            , #{updateTime,jdbcType=TIMESTAMP}
+        )
+        ]]>
+    </insert>
+
+    <!--批量插入表:sys_role-->
+    <insert id="insertBatch" >
+        INSERT INTO sys_role(
+            ID
+            ,GROUP_ID
+            ,UUID
+            ,REMARK
+            ,CREATE_BY
+            ,UPDATE_BY
+            ,SYS_ROLE_NAME
+            ,FLAG
+            ,DEL_FLAG
+            ,SYS_ROLE_TYPE
+            ,CREATE_TIME
+            ,UPDATE_TIME
+        )VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+                 null
+                , #{item.groupId,jdbcType=BIGINT}
+                , #{item.uuid,jdbcType=VARCHAR}
+                , #{item.remark,jdbcType=VARCHAR}
+                , #{item.createBy,jdbcType=VARCHAR}
+                , #{item.updateBy,jdbcType=VARCHAR}
+                , #{item.sysRoleName,jdbcType=VARCHAR}
+                , #{item.flag,jdbcType=INTEGER}
+                , #{item.delFlag,jdbcType=INTEGER}
+                , #{item.sysRoleType,jdbcType=INTEGER}
+                , #{item.createTime,jdbcType=TIMESTAMP}
+                , #{item.updateTime,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </insert>
+
+    <!--根据主键删除数据:sys_role-->
+    <delete id="deleteById" >
+        <![CDATA[
+        DELETE /*MS-SYS-ROLE-DELETEBYID*/ FROM sys_role
+        WHERE
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </delete>
+
+    <!--根据主键获取数据:sys_role-->
+    <select id="getById" resultMap="BaseResultMap">
+        SELECT /*MS-SYS-ROLE-GETBYID*/  <include refid="Base_Column_List" />
+        FROM sys_role
+        WHERE
+        <![CDATA[
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </select>
+
+    <!--根据普通索引SysRoleUuid获取数据:sys_role-->
+    <select id="queryBySysRoleUuid" resultMap="BaseResultMap">
+        SELECT /*MS-SYS-ROLE-QUERYBYSYSROLEUUID*/  <include refid="Base_Column_List" />
+        FROM sys_role
+        WHERE
+        <![CDATA[
+            UUID            = #{uuid,jdbcType=VARCHAR}
+        ]]>
+    </select>
+</mapper>

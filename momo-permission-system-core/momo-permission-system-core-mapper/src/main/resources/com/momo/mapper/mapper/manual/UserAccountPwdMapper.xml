@@ -10,7 +10,7 @@
         <result column="sys_user_id" jdbcType="BIGINT" property="sysUserId" />
         <result column="group_id" jdbcType="BIGINT" property="groupId" />
         <result column="remark" jdbcType="VARCHAR" property="remark" />
-        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="flag" jdbcType="INTEGER" property="flag" />
         <result column="sys_login_number" jdbcType="INTEGER" property="sysLoginNumber" />
         <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
         <result column="create_by" jdbcType="VARCHAR" property="createBy" />
@@ -20,7 +20,7 @@
     </resultMap>
     <sql id="Base_Column_List">
     id, uuid, sys_user_login_name, sys_user_pwd, sys_user_auth_salt, sys_user_id, group_id,
-    remark,sys_login_number, status, del_flag, create_by, create_time, update_time, update_by
+    remark,sys_login_number, flag, del_flag, create_by, create_time, update_time, update_by
   </sql>
     <select id="sysUserAccountLogin" parameterType="map" resultMap="BaseResultMap">
         select

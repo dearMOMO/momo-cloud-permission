@@ -1,24 +1,19 @@
 <@pp.dropOutputFile />
-<#assign count=0 />
-<#list dalgen.pagings as paging>
-
-    <#assign count=count+1 />
-    <#if count gt 1 >
-        <#break>
-    </#if>
-
+<#if dalgen.pagings?? && dalgen.pagings?size gt 0>
+<#assign paging =dalgen.pagings?first>
     <@pp.changeOutputFile name = "/main/java/${paging.baseClassPath}/BasePage.java" />
 package ${paging.basePackageName};
 
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Map;
+import com.google.common.collect.Maps;
 
 /**
  * 用于分页的工具类
  */
 public class BasePage<T> {
 
-    private List<T> datas           = new ArrayList<>();         //对象记录结果集
+    private List<T> datas;                  //对象记录结果集
     private int     total           = 0;    // 总记录数
     private int     limit           = 20;   // 默认每页显示记录数
     private int     pageNos         = 1;    // 总页数
@@ -32,6 +27,11 @@ public class BasePage<T> {
     private int     navigatePages   = 8;    //导航页码数
     private int[]   navigatePageNos;        //所有导航页号
 
+    private Map<String, List<String>> dataMenus;//数据拥有的菜单
+
+
+    private Map<String, Object> dataDict;//数据字典
+
     private void init() {
         this.pageNos = (this.total - 1) / this.limit + 1;
 
@@ -40,8 +40,6 @@ public class BasePage<T> {
             this.currPageNo = 1;
         } else if (currPageNo > this.pageNos) {
             this.currPageNo = this.pageNos;
-        } else {
-            this.currPageNo = currPageNo;
         }
 
         //基本参数设定之后进行导航页面的计算
@@ -99,7 +97,7 @@ public class BasePage<T> {
 
     /**
      * 得到数据
-     * 
+     *
      * @return
      */
     public List<T> getDatas() {
@@ -108,7 +106,7 @@ public class BasePage<T> {
 
     /**
      * 设置数据
-     * 
+     *
      * @param datas
      */
     public void setDatas(List<T> datas) {
@@ -125,8 +123,17 @@ public class BasePage<T> {
     }
 
     /**
+     * 得到记录总数
+     *
+     * @return {int}
+     */
+    public int getTotalCount() {
+        return total;
+    }
+
+    /**
      * 设置总记录数
-     * 
+     *
      * @param total
      */
     public void setTotal(int total) {
@@ -145,7 +152,7 @@ public class BasePage<T> {
 
     /**
      * 设置每页多少记录
-     * 
+     *
      * @param limit
      */
     public void setLimit(int limit) {
@@ -154,7 +161,7 @@ public class BasePage<T> {
 
     /**
      * 设置导航线上几页
-     * 
+     *
      * @param navigatePages
      */
     public void setNavigatePages(int navigatePages) {
@@ -176,6 +183,15 @@ public class BasePage<T> {
      * @return {int}
      */
     public int getCurrPageNo() {
+        return currPageNo;
+    }
+
+    /**
+     * 得到当前页号
+     *
+     * @return {int}
+     */
+    public int getCurrentPage() {
         return currPageNo;
     }
 
@@ -223,7 +239,31 @@ public class BasePage<T> {
         return (this.currPageNo-1)*this.limit;
     }
 
-                public String toString() {
+    public Map<String, List<String>> getDataMenus() {
+        return dataMenus;
+    }
+
+    public void setDataMenus(Map<String, List<String>> dataMenus) {
+        this.dataMenus = dataMenus;
+    }
+
+    public Map<String, Object> getDataDict() {
+        return dataDict;
+    }
+
+    public void setDataDict(Map<String, Object> dataDict) {
+        this.dataDict = dataDict;
+    }
+
+    public void addDataDict(String key,Object dataDict) {
+        if(this.dataDict==null){
+            this.dataDict = Maps.newHashMap();
+        }
+        this.dataDict.put(key,dataDict);
+    }
+
+    public String toTString() {
+        init();
         StringBuffer sb = new StringBuffer();
         sb.append("[").append("total=").append(total).append(",pageNos=").append(pageNos)
                 .append(",currPageNo=").append(currPageNo).append(",limit=").append(limit)
@@ -231,14 +271,14 @@ public class BasePage<T> {
                 .append(isLastPage).append(",hasPreviousPage=").append(hasPreviousPage)
                 .append(",hasNextPage=").append(hasNextPage).append(",navigatePageNos=");
         int len = navigatePageNos.length;
-        if (len > 0)
-            sb.append(navigatePageNos[0]);
+        if (len > 0){
+            sb.append(navigatePageNos[0]);}
         for (int i = 1; i < len; i++) {
             sb.append(" " + navigatePageNos[i]);
         }
-        sb.append(",datas.size=" + datas.size());
+        sb.append(",datas.size=" + (datas!=null?datas.size():0));
         sb.append("]");
         return sb.toString();
     }
 }
-</#list>
+</#if>

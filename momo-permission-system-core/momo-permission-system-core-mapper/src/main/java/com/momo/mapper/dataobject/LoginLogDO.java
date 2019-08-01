@@ -1,11 +1,9 @@
 package com.momo.mapper.dataobject;
 
 import java.util.Date;
-import com.momo.mapper.dataobject.LoginLogDO;
 
 /**
  * The table 登录日志
- * 注意:此结构有系统生成,禁止手工修改,以免被覆盖,请通过dalgen生成
  */
 public class LoginLogDO{
 

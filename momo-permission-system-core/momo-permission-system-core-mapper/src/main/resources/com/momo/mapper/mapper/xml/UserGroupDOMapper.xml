@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.momo.mapper.mapper.UserGroupDOMapper">
+    <!-- 自动生成,请修改 SYS_USER_GROUP.xml -->
+    <resultMap id="BaseResultMap"  type="com.momo.mapper.dataobject.UserGroupDO">
+        <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+        <result column="UUID" property="uuid" jdbcType="VARCHAR" javaType="String"/>
+        <result column="NAME_TOP" property="nameTop" jdbcType="VARCHAR" javaType="String"/>
+        <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="NAME_BOTTOM" property="nameBottom" jdbcType="VARCHAR" javaType="String"/>
+        <result column="USER_GROUP_NAME" property="userGroupName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="FLAG" property="flag" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="DEL_FLAG" property="delFlag" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="SYS_OPEN_DAY" property="sysOpenDay" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="SYS_OPEN_ACCOUNT_NUM" property="sysOpenAccountNum" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="SYS_CREATE_ACCOUNT_NUM" property="sysCreateAccountNum" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="SYS_ACCOUNT_END_TIME" property="sysAccountEndTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="SYS_ACCOUNT_START_TIME" property="sysAccountStartTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+
+    <sql id="Base_SF_Column_List">
+        sf.ID,sf.UUID,sf.NAME_TOP,sf.CREATE_BY,sf.UPDATE_BY
+        ,sf.NAME_BOTTOM,sf.USER_GROUP_NAME,sf.FLAG,sf.DEL_FLAG,sf.SYS_OPEN_DAY
+        ,sf.SYS_OPEN_ACCOUNT_NUM,sf.SYS_CREATE_ACCOUNT_NUM,sf.CREATE_TIME,sf.UPDATE_TIME,sf.SYS_ACCOUNT_END_TIME
+        ,sf.SYS_ACCOUNT_START_TIME
+    </sql>
+    <sql id="Base_Column_List">
+        ID,UUID,NAME_TOP,CREATE_BY,UPDATE_BY 
+        ,NAME_BOTTOM,USER_GROUP_NAME,FLAG,DEL_FLAG,SYS_OPEN_DAY 
+        ,SYS_OPEN_ACCOUNT_NUM,SYS_CREATE_ACCOUNT_NUM,CREATE_TIME,UPDATE_TIME,SYS_ACCOUNT_END_TIME 
+        ,SYS_ACCOUNT_START_TIME
+    </sql>
+
+
+    <!--插入表:sys_user_group-->
+    <insert id="insert" >
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        <![CDATA[
+        INSERT INTO sys_user_group(
+            ID
+            ,UUID
+            ,NAME_TOP
+            ,CREATE_BY
+            ,UPDATE_BY
+            ,NAME_BOTTOM
+            ,USER_GROUP_NAME
+            ,FLAG
+            ,DEL_FLAG
+            ,SYS_OPEN_DAY
+            ,SYS_OPEN_ACCOUNT_NUM
+            ,SYS_CREATE_ACCOUNT_NUM
+            ,CREATE_TIME
+            ,UPDATE_TIME
+            ,SYS_ACCOUNT_END_TIME
+            ,SYS_ACCOUNT_START_TIME
+        )VALUES(
+             null
+            , #{uuid,jdbcType=VARCHAR}
+            , #{nameTop,jdbcType=VARCHAR}
+            , #{createBy,jdbcType=VARCHAR}
+            , #{updateBy,jdbcType=VARCHAR}
+            , #{nameBottom,jdbcType=VARCHAR}
+            , #{userGroupName,jdbcType=VARCHAR}
+            , #{flag,jdbcType=INTEGER}
+            , #{delFlag,jdbcType=INTEGER}
+            , #{sysOpenDay,jdbcType=INTEGER}
+            , #{sysOpenAccountNum,jdbcType=INTEGER}
+            , #{sysCreateAccountNum,jdbcType=INTEGER}
+            , #{createTime,jdbcType=TIMESTAMP}
+            , #{updateTime,jdbcType=TIMESTAMP}
+            , #{sysAccountEndTime,jdbcType=TIMESTAMP}
+            , #{sysAccountStartTime,jdbcType=TIMESTAMP}
+        )
+        ]]>
+    </insert>
+
+    <!--批量插入表:sys_user_group-->
+    <insert id="insertBatch" >
+        INSERT INTO sys_user_group(
+            ID
+            ,UUID
+            ,NAME_TOP
+            ,CREATE_BY
+            ,UPDATE_BY
+            ,NAME_BOTTOM
+            ,USER_GROUP_NAME
+            ,FLAG
+            ,DEL_FLAG
+            ,SYS_OPEN_DAY
+            ,SYS_OPEN_ACCOUNT_NUM
+            ,SYS_CREATE_ACCOUNT_NUM
+            ,CREATE_TIME
+            ,UPDATE_TIME
+            ,SYS_ACCOUNT_END_TIME
+            ,SYS_ACCOUNT_START_TIME
+        )VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+                 null
+                , #{item.uuid,jdbcType=VARCHAR}
+                , #{item.nameTop,jdbcType=VARCHAR}
+                , #{item.createBy,jdbcType=VARCHAR}
+                , #{item.updateBy,jdbcType=VARCHAR}
+                , #{item.nameBottom,jdbcType=VARCHAR}
+                , #{item.userGroupName,jdbcType=VARCHAR}
+                , #{item.flag,jdbcType=INTEGER}
+                , #{item.delFlag,jdbcType=INTEGER}
+                , #{item.sysOpenDay,jdbcType=INTEGER}
+                , #{item.sysOpenAccountNum,jdbcType=INTEGER}
+                , #{item.sysCreateAccountNum,jdbcType=INTEGER}
+                , #{item.createTime,jdbcType=TIMESTAMP}
+                , #{item.updateTime,jdbcType=TIMESTAMP}
+                , #{item.sysAccountEndTime,jdbcType=TIMESTAMP}
+                , #{item.sysAccountStartTime,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </insert>
+
+    <!--根据主键删除数据:sys_user_group-->
+    <delete id="deleteById" >
+        <![CDATA[
+        DELETE /*MS-SYS-USER-GROUP-DELETEBYID*/ FROM sys_user_group
+        WHERE
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </delete>
+
+    <!--根据主键获取数据:sys_user_group-->
+    <select id="getById" resultMap="BaseResultMap">
+        SELECT /*MS-SYS-USER-GROUP-GETBYID*/  <include refid="Base_Column_List" />
+        FROM sys_user_group
+        WHERE
+        <![CDATA[
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </select>
+
+    <!--根据普通索引UserGroupUuid获取数据:sys_user_group-->
+    <select id="queryByUserGroupUuid" resultMap="BaseResultMap">
+        SELECT /*MS-SYS-USER-GROUP-QUERYBYUSERGROUPUUID*/  <include refid="Base_Column_List" />
+        FROM sys_user_group
+        WHERE
+        <![CDATA[
+            UUID            = #{uuid,jdbcType=VARCHAR}
+        ]]>
+    </select>
+</mapper>

@@ -1,101 +1,191 @@
 <!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
-<table sqlname="SYS_USER" physicalName="SYS_USER" remark="用户">
-    <!--  特殊字符说明  &lt;&gt;   <> -->
+<table sqlname="sys_user" physicalName="sys_user" remark="用户">
+    <!--  特殊字符说明 &lt;&gt; <> -->
+    <!-- baseSql option中 select * 会自动替换为 include -->
+    <sql id="Base_Column_List">
+        ID,GROUP_ID,SYS_USER_AREA,SYS_USER_CITY,SYS_USER_PROVINCE 
+        ,UUID,REMARK,CREATE_BY,UPDATE_BY,SYS_USER_NAME 
+        ,SYS_USER_EMAIL,SYS_USER_PHONE,SYS_USER_AREA_NAME,SYS_USER_CITY_NAME,SYS_USER_PROVINCE_NAME 
+        ,FLAG,DEL_FLAG,CREATE_TIME,UPDATE_TIME
+    </sql>
 
-    <operation name="insert" paramtype="object" remark="插入表:SYS_USER">
-            <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
-                SELECT
-                LAST_INSERT_ID()
-            </selectKey>
-        INSERT INTO SYS_USER(
-            
-            DEPT_ID
+    <!-- baseSql option中 select sf.* 会自动替换为 include -->
+    <sql id="Base_SF_Column_List">
+        sf.ID,sf.GROUP_ID,sf.SYS_USER_AREA,sf.SYS_USER_CITY,sf.SYS_USER_PROVINCE
+        ,sf.UUID,sf.REMARK,sf.CREATE_BY,sf.UPDATE_BY,sf.SYS_USER_NAME
+        ,sf.SYS_USER_EMAIL,sf.SYS_USER_PHONE,sf.SYS_USER_AREA_NAME,sf.SYS_USER_CITY_NAME,sf.SYS_USER_PROVINCE_NAME
+        ,sf.FLAG,sf.DEL_FLAG,sf.CREATE_TIME,sf.UPDATE_TIME
+    </sql>
+
+    <operation name="insert" paramtype="object" remark="插入表:sys_user">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        <![CDATA[
+        INSERT INTO sys_user(
+            ID
             ,GROUP_ID
             ,SYS_USER_AREA
             ,SYS_USER_CITY
             ,SYS_USER_PROVINCE
-            ,DEL_FLAG
+            ,UUID
+            ,REMARK
             ,CREATE_BY
             ,UPDATE_BY
-            ,SYS_USER_PWD
-            ,IS_FORBIDDEN
             ,SYS_USER_NAME
-            ,SYS_USER_UUID
             ,SYS_USER_EMAIL
             ,SYS_USER_PHONE
             ,SYS_USER_AREA_NAME
-            ,SYS_USER_AUTH_SALT
             ,SYS_USER_CITY_NAME
-            ,SYS_USER_LOGIN_NAME
             ,SYS_USER_PROVINCE_NAME
-            ,SYS_LOGIN_NUMBER
+            ,FLAG
+            ,DEL_FLAG
             ,CREATE_TIME
             ,UPDATE_TIME
         )VALUES(
-            
-            #{deptId,jdbcType=BIGINT}
-            ,#{groupId,jdbcType=BIGINT}
-            ,#{sysUserArea,jdbcType=BIGINT}
-            ,#{sysUserCity,jdbcType=BIGINT}
-            ,#{sysUserProvince,jdbcType=BIGINT}
-            ,#{delFlag,jdbcType=CHAR}
-            ,#{createBy,jdbcType=VARCHAR}
-            ,#{updateBy,jdbcType=VARCHAR}
-            ,#{sysUserPwd,jdbcType=VARCHAR}
-            ,#{isForbidden,jdbcType=CHAR}
-            ,#{sysUserName,jdbcType=VARCHAR}
-            ,#{sysUserUuid,jdbcType=VARCHAR}
-            ,#{sysUserEmail,jdbcType=VARCHAR}
-            ,#{sysUserPhone,jdbcType=VARCHAR}
-            ,#{sysUserAreaName,jdbcType=VARCHAR}
-            ,#{sysUserAuthSalt,jdbcType=VARCHAR}
-            ,#{sysUserCityName,jdbcType=VARCHAR}
-            ,#{sysUserLoginName,jdbcType=VARCHAR}
-            ,#{sysUserProvinceName,jdbcType=VARCHAR}
-            ,#{sysLoginNumber,jdbcType=INTEGER}
-            ,#{createTime,jdbcType=TIMESTAMP}
-            ,#{updateTime,jdbcType=TIMESTAMP}
+             null
+            , #{groupId,jdbcType=BIGINT}
+            , #{sysUserArea,jdbcType=BIGINT}
+            , #{sysUserCity,jdbcType=BIGINT}
+            , #{sysUserProvince,jdbcType=BIGINT}
+            , #{uuid,jdbcType=VARCHAR}
+            , #{remark,jdbcType=VARCHAR}
+            , #{createBy,jdbcType=VARCHAR}
+            , #{updateBy,jdbcType=VARCHAR}
+            , #{sysUserName,jdbcType=VARCHAR}
+            , #{sysUserEmail,jdbcType=VARCHAR}
+            , #{sysUserPhone,jdbcType=VARCHAR}
+            , #{sysUserAreaName,jdbcType=VARCHAR}
+            , #{sysUserCityName,jdbcType=VARCHAR}
+            , #{sysUserProvinceName,jdbcType=VARCHAR}
+            , #{flag,jdbcType=INTEGER}
+            , #{delFlag,jdbcType=INTEGER}
+            , #{createTime,jdbcType=TIMESTAMP}
+            , #{updateTime,jdbcType=TIMESTAMP}
         )
+        ]]>
     </operation>
 
-        <operation name="update" paramtype="object" remark="更新表:SYS_USER">
-            UPDATE SYS_USER
-            SET
-                    DEPT_ID         = #{deptId,jdbcType=BIGINT}
-                    ,GROUP_ID        = #{groupId,jdbcType=BIGINT}
-                    ,SYS_USER_AREA   = #{sysUserArea,jdbcType=BIGINT}
-                    ,SYS_USER_CITY   = #{sysUserCity,jdbcType=BIGINT}
-                    ,SYS_USER_PROVINCE = #{sysUserProvince,jdbcType=BIGINT}
-                    ,DEL_FLAG        = #{delFlag,jdbcType=CHAR}
-                    ,CREATE_BY       = #{createBy,jdbcType=VARCHAR}
-                    ,UPDATE_BY       = #{updateBy,jdbcType=VARCHAR}
-                    ,SYS_USER_PWD    = #{sysUserPwd,jdbcType=VARCHAR}
-                    ,IS_FORBIDDEN    = #{isForbidden,jdbcType=CHAR}
-                    ,SYS_USER_NAME   = #{sysUserName,jdbcType=VARCHAR}
-                    ,SYS_USER_UUID   = #{sysUserUuid,jdbcType=VARCHAR}
-                    ,SYS_USER_EMAIL  = #{sysUserEmail,jdbcType=VARCHAR}
-                    ,SYS_USER_PHONE  = #{sysUserPhone,jdbcType=VARCHAR}
-                    ,SYS_USER_AREA_NAME = #{sysUserAreaName,jdbcType=VARCHAR}
-                    ,SYS_USER_AUTH_SALT = #{sysUserAuthSalt,jdbcType=VARCHAR}
-                    ,SYS_USER_CITY_NAME = #{sysUserCityName,jdbcType=VARCHAR}
-                    ,SYS_USER_LOGIN_NAME = #{sysUserLoginName,jdbcType=VARCHAR}
-                    ,SYS_USER_PROVINCE_NAME = #{sysUserProvinceName,jdbcType=VARCHAR}
-                    ,SYS_LOGIN_NUMBER = #{sysLoginNumber,jdbcType=INTEGER}
-                    ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
-                    ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
-            WHERE
-                ID              = #{id,jdbcType=BIGINT}
-        </operation>
+    <!-- foreach 可以自定义类型，paramtype="primitive" foreach->javatype="自己书写的类"  -->
+    <!-- 只有一个参数且为List时必须将参数命名为list -->
+    <operation name="insertBatch" paramtype="objectList" remark="批量插入表:sys_user">
+        INSERT INTO sys_user(
+            ID
+            ,GROUP_ID
+            ,SYS_USER_AREA
+            ,SYS_USER_CITY
+            ,SYS_USER_PROVINCE
+            ,UUID
+            ,REMARK
+            ,CREATE_BY
+            ,UPDATE_BY
+            ,SYS_USER_NAME
+            ,SYS_USER_EMAIL
+            ,SYS_USER_PHONE
+            ,SYS_USER_AREA_NAME
+            ,SYS_USER_CITY_NAME
+            ,SYS_USER_PROVINCE_NAME
+            ,FLAG
+            ,DEL_FLAG
+            ,CREATE_TIME
+            ,UPDATE_TIME
+        )VALUES
+        <foreach collection="list"  item="item" separator=",">
+            (
+                 null
+                , #{item.groupId,jdbcType=BIGINT}
+                , #{item.sysUserArea,jdbcType=BIGINT}
+                , #{item.sysUserCity,jdbcType=BIGINT}
+                , #{item.sysUserProvince,jdbcType=BIGINT}
+                , #{item.uuid,jdbcType=VARCHAR}
+                , #{item.remark,jdbcType=VARCHAR}
+                , #{item.createBy,jdbcType=VARCHAR}
+                , #{item.updateBy,jdbcType=VARCHAR}
+                , #{item.sysUserName,jdbcType=VARCHAR}
+                , #{item.sysUserEmail,jdbcType=VARCHAR}
+                , #{item.sysUserPhone,jdbcType=VARCHAR}
+                , #{item.sysUserAreaName,jdbcType=VARCHAR}
+                , #{item.sysUserCityName,jdbcType=VARCHAR}
+                , #{item.sysUserProvinceName,jdbcType=VARCHAR}
+                , #{item.flag,jdbcType=INTEGER}
+                , #{item.delFlag,jdbcType=INTEGER}
+                , #{item.createTime,jdbcType=TIMESTAMP}
+                , #{item.updateTime,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </operation>
 
-        <operation name="deleteById" multiplicity="one" remark="根据主键删除数据:SYS_USER">
-            DELETE FROM SYS_USER
-            WHERE
-                ID = #{id,jdbcType=BIGINT}
-        </operation>
+    <!-- 不推荐使用全 update 有需要自己打开
+    <operation name="update" paramtype="object" remark="更新表:sys_user">
+        <![CDATA[
+        UPDATE sys_user
+        SET
+            GROUP_ID        = #{groupId,jdbcType=BIGINT}
+            ,SYS_USER_AREA   = #{sysUserArea,jdbcType=BIGINT}
+            ,SYS_USER_CITY   = #{sysUserCity,jdbcType=BIGINT}
+            ,SYS_USER_PROVINCE = #{sysUserProvince,jdbcType=BIGINT}
+            ,UUID            = #{uuid,jdbcType=VARCHAR}
+            ,REMARK          = #{remark,jdbcType=VARCHAR}
+            ,CREATE_BY       = #{createBy,jdbcType=VARCHAR}
+            ,UPDATE_BY       = #{updateBy,jdbcType=VARCHAR}
+            ,SYS_USER_NAME   = #{sysUserName,jdbcType=VARCHAR}
+            ,SYS_USER_EMAIL  = #{sysUserEmail,jdbcType=VARCHAR}
+            ,SYS_USER_PHONE  = #{sysUserPhone,jdbcType=VARCHAR}
+            ,SYS_USER_AREA_NAME = #{sysUserAreaName,jdbcType=VARCHAR}
+            ,SYS_USER_CITY_NAME = #{sysUserCityName,jdbcType=VARCHAR}
+            ,SYS_USER_PROVINCE_NAME = #{sysUserProvinceName,jdbcType=VARCHAR}
+            ,FLAG            = #{flag,jdbcType=INTEGER}
+            ,DEL_FLAG        = #{delFlag,jdbcType=INTEGER}
+            ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+            ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
+        WHERE
+            ID              = #{id,jdbcType=BIGINT}
+        ]]>
+    </operation>
+    -->
+    <operation name="deleteById"  remark="根据主键删除数据:sys_user">
+        <![CDATA[
+        DELETE FROM sys_user
+        WHERE
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </operation>
 
-        <operation name="getById" multiplicity="one" remark="根据主键获取数据:SYS_USER">
-            SELECT * FROM SYS_USER
-            WHERE
-                ID = #{id,jdbcType=BIGINT}
-        </operation>
+    <operation name="getById" multiplicity="one" remark="根据主键获取数据:sys_user">
+        SELECT *
+        FROM sys_user
+        WHERE
+        <![CDATA[
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </operation>
+
+    <!-- 根据普通索引查询数据 -->
+    <operation name="queryBySysUserName" multiplicity="many" remark="根据普通索引SysUserName获取数据:sys_user">
+        SELECT *
+        FROM sys_user
+        WHERE
+        <![CDATA[
+            SYS_USER_NAME   = #{sysUserName,jdbcType=VARCHAR}
+        ]]>
+    </operation>
+    <!-- 根据普通索引查询数据 -->
+    <operation name="queryBySysUserPhone" multiplicity="many" remark="根据普通索引SysUserPhone获取数据:sys_user">
+        SELECT *
+        FROM sys_user
+        WHERE
+        <![CDATA[
+            SYS_USER_PHONE  = #{sysUserPhone,jdbcType=VARCHAR}
+        ]]>
+    </operation>
+    <!-- 根据普通索引查询数据 -->
+    <operation name="queryBySysUserUuid" multiplicity="many" remark="根据普通索引SysUserUuid获取数据:sys_user">
+        SELECT *
+        FROM sys_user
+        WHERE
+        <![CDATA[
+            UUID            = #{uuid,jdbcType=VARCHAR}
+        ]]>
+    </operation>
 </table>

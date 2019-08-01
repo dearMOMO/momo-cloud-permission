@@ -1,59 +1,115 @@
 <!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
-<table sqlname="SYS_USER_DEPT" physicalName="SYS_USER_DEPT" remark="用户和部门">
-    <!--  特殊字符说明  &lt;&gt;   <> -->
+<table sqlname="sys_user_dept" physicalName="sys_user_dept" remark="用户和部门">
+    <!--  特殊字符说明 &lt;&gt; <> -->
+    <!-- baseSql option中 select * 会自动替换为 include -->
+    <sql id="Base_Column_List">
+        ID,SYS_DEPT_ID,SYS_USER_ID,UUID,CREATE_BY 
+        ,UPDATE_BY,FLAG,DEL_FLAG,CREATE_TIME,UPDATE_TIME
+    </sql>
 
-    <operation name="insert" paramtype="object" remark="插入表:SYS_USER_DEPT">
-            <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
-                SELECT
-                LAST_INSERT_ID()
-            </selectKey>
-        INSERT INTO SYS_USER_DEPT(
-            
-            SYS_DEPT_ID
+    <!-- baseSql option中 select sf.* 会自动替换为 include -->
+    <sql id="Base_SF_Column_List">
+        sf.ID,sf.SYS_DEPT_ID,sf.SYS_USER_ID,sf.UUID,sf.CREATE_BY
+        ,sf.UPDATE_BY,sf.FLAG,sf.DEL_FLAG,sf.CREATE_TIME,sf.UPDATE_TIME
+    </sql>
+
+    <operation name="insert" paramtype="object" remark="插入表:sys_user_dept">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        <![CDATA[
+        INSERT INTO sys_user_dept(
+            ID
+            ,SYS_DEPT_ID
             ,SYS_USER_ID
+            ,UUID
             ,CREATE_BY
             ,UPDATE_BY
-            ,STATE
+            ,FLAG
             ,DEL_FLAG
             ,CREATE_TIME
             ,UPDATE_TIME
         )VALUES(
-            
-            #{sysDeptId,jdbcType=BIGINT}
-            ,#{sysUserId,jdbcType=BIGINT}
-            ,#{createBy,jdbcType=VARCHAR}
-            ,#{updateBy,jdbcType=VARCHAR}
-            ,#{state,jdbcType=INTEGER}
-            ,#{delFlag,jdbcType=INTEGER}
-            ,#{createTime,jdbcType=TIMESTAMP}
-            ,#{updateTime,jdbcType=TIMESTAMP}
+             null
+            , #{sysDeptId,jdbcType=BIGINT}
+            , #{sysUserId,jdbcType=BIGINT}
+            , #{uuid,jdbcType=VARCHAR}
+            , #{createBy,jdbcType=VARCHAR}
+            , #{updateBy,jdbcType=VARCHAR}
+            , #{flag,jdbcType=INTEGER}
+            , #{delFlag,jdbcType=INTEGER}
+            , #{createTime,jdbcType=TIMESTAMP}
+            , #{updateTime,jdbcType=TIMESTAMP}
         )
+        ]]>
     </operation>
 
-        <operation name="update" paramtype="object" remark="更新表:SYS_USER_DEPT">
-            UPDATE SYS_USER_DEPT
-            SET
-                    SYS_DEPT_ID     = #{sysDeptId,jdbcType=BIGINT}
-                    ,SYS_USER_ID     = #{sysUserId,jdbcType=BIGINT}
-                    ,CREATE_BY       = #{createBy,jdbcType=VARCHAR}
-                    ,UPDATE_BY       = #{updateBy,jdbcType=VARCHAR}
-                    ,STATE           = #{state,jdbcType=INTEGER}
-                    ,DEL_FLAG        = #{delFlag,jdbcType=INTEGER}
-                    ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
-                    ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
-            WHERE
-                ID              = #{id,jdbcType=BIGINT}
-        </operation>
+    <!-- foreach 可以自定义类型，paramtype="primitive" foreach->javatype="自己书写的类"  -->
+    <!-- 只有一个参数且为List时必须将参数命名为list -->
+    <operation name="insertBatch" paramtype="objectList" remark="批量插入表:sys_user_dept">
+        INSERT INTO sys_user_dept(
+            ID
+            ,SYS_DEPT_ID
+            ,SYS_USER_ID
+            ,UUID
+            ,CREATE_BY
+            ,UPDATE_BY
+            ,FLAG
+            ,DEL_FLAG
+            ,CREATE_TIME
+            ,UPDATE_TIME
+        )VALUES
+        <foreach collection="list"  item="item" separator=",">
+            (
+                 null
+                , #{item.sysDeptId,jdbcType=BIGINT}
+                , #{item.sysUserId,jdbcType=BIGINT}
+                , #{item.uuid,jdbcType=VARCHAR}
+                , #{item.createBy,jdbcType=VARCHAR}
+                , #{item.updateBy,jdbcType=VARCHAR}
+                , #{item.flag,jdbcType=INTEGER}
+                , #{item.delFlag,jdbcType=INTEGER}
+                , #{item.createTime,jdbcType=TIMESTAMP}
+                , #{item.updateTime,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </operation>
 
-        <operation name="deleteById" multiplicity="one" remark="根据主键删除数据:SYS_USER_DEPT">
-            DELETE FROM SYS_USER_DEPT
-            WHERE
-                ID = #{id,jdbcType=BIGINT}
-        </operation>
+    <!-- 不推荐使用全 update 有需要自己打开
+    <operation name="update" paramtype="object" remark="更新表:sys_user_dept">
+        <![CDATA[
+        UPDATE sys_user_dept
+        SET
+            SYS_DEPT_ID     = #{sysDeptId,jdbcType=BIGINT}
+            ,SYS_USER_ID     = #{sysUserId,jdbcType=BIGINT}
+            ,UUID            = #{uuid,jdbcType=VARCHAR}
+            ,CREATE_BY       = #{createBy,jdbcType=VARCHAR}
+            ,UPDATE_BY       = #{updateBy,jdbcType=VARCHAR}
+            ,FLAG            = #{flag,jdbcType=INTEGER}
+            ,DEL_FLAG        = #{delFlag,jdbcType=INTEGER}
+            ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+            ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
+        WHERE
+            ID              = #{id,jdbcType=BIGINT}
+        ]]>
+    </operation>
+    -->
+    <operation name="deleteById"  remark="根据主键删除数据:sys_user_dept">
+        <![CDATA[
+        DELETE FROM sys_user_dept
+        WHERE
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </operation>
 
-        <operation name="getById" multiplicity="one" remark="根据主键获取数据:SYS_USER_DEPT">
-            SELECT * FROM SYS_USER_DEPT
-            WHERE
-                ID = #{id,jdbcType=BIGINT}
-        </operation>
+    <operation name="getById" multiplicity="one" remark="根据主键获取数据:sys_user_dept">
+        SELECT *
+        FROM sys_user_dept
+        WHERE
+        <![CDATA[
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </operation>
+
 </table>
