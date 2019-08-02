@@ -7,6 +7,7 @@
         <result column="uuid" jdbcType="VARCHAR" property="uuid" />
         <result column="sys_acl_action" jdbcType="VARCHAR" property="sysAclAction" />
         <result column="sys_acl_router" jdbcType="VARCHAR" property="sysAclRouter" />
+        <result column="sys_acl_component_name" jdbcType="VARCHAR" property="sysAclComponentName" />
         <result column="sys_acl_name" jdbcType="VARCHAR" property="sysAclName" />
         <result column="sys_acl_parent_id" jdbcType="BIGINT" property="sysAclParentId" />
         <result column="sys_acl_level" jdbcType="VARCHAR" property="sysAclLevel" />
