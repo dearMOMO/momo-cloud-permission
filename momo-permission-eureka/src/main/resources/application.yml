@@ -14,12 +14,12 @@ eureka:
   client:
     register-with-eureka: true #表示是否注册自身到eureka服务器 集群情况下 是需要改成true 的因为 集群是注册中心 相互注册自己 同步服务
     fetch-registry: true  #是否从eureka上获取注册信息 集群情况下需要为true的  因为 会在别的注册中心 获取服务
-    registry-fetch-interval-seconds: 5 #client间隔多久去拉取服务注册信息，默认为30秒，对于api-gateway，如果要迅速获取服务注册状态，可以缩小该值，比如5秒
+    registry-fetch-interval-seconds: 30 #client间隔多久去拉取服务注册信息，默认为30秒，对于api-gateway，如果要迅速获取服务注册状态，可以缩小该值，比如5秒
     service-url: #（集群时指定另外一个注册中心地址）
       defaultZone: http://${momo.security.name}:${momo.security.password}@${eureka.instance.hostname}:${momo.eureka-port}/eureka/
 #      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${eureka.instance.hostname}:8762/eureka/,http://${spring.security.user.name}:${spring.security.user.password}@${eureka.instance.hostname}:8763/eureka/
   server:
-    enable-self-preservation: true #生产为 true 关闭注册中心的保护机制，Eureka 会统计15分钟之内心跳失败的比例低于85%将会触发保护机制，不剔除服务提供者，如果关闭服务注册中心将不可用的实例正确剔除
+    enable-self-preservation: false #生产为 true 关闭注册中心的保护机制，Eureka 会统计15分钟之内心跳失败的比例低于85%将会触发保护机制，不剔除服务提供者，如果关闭服务注册中心将不可用的实例正确剔除
     renewal-percent-threshold: 0.8 #留存的服务实例低于多少比例进入保护模式
     #启用主动失效，并且每次主动失效检测间隔为3s
     eviction-interval-timer-in-ms: 60000 # # 该配置可以修改检查失效服务的时间，每隔20s检查失效服务，并移除列表 (Spring Cloud默认该配置是 60s)

@@ -12,12 +12,12 @@ eureka:
     health-check-url-path: /actuator/health
     preferIpAddress: true
     instance-id: ${momo.application}:${spring.cloud.client.ip-address}:${momo.port}
-    lease-renewal-interval-in-seconds: 5 # 该配置指示eureka客户端需要向eureka服务器发送心跳的频率  (Spring Cloud默认该配置是 30s)
-    lease-expiration-duration-in-seconds: 6 # 该配置指示eureka服务器在接收到最后一个心跳之后等待的时间，然后才能从列表中删除此实例 (Spring Cloud默认该配置是 90s)
+    lease-renewal-interval-in-seconds: 30 # 该配置指示eureka客户端需要向eureka服务器发送心跳的频率  (Spring Cloud默认该配置是 30s)
+    lease-expiration-duration-in-seconds: 90 # 该配置指示eureka服务器在接收到最后一个心跳之后等待的时间，然后才能从列表中删除此实例 (Spring Cloud默认该配置是 90s)
   client:
     register-with-eureka: true #表示是否注册自身到eureka服务器 集群情况下 是需要改成true 的因为 集群是注册中心 相互注册自己 同步服务
     fetch-registry: true  #是否从eureka上获取注册信息 集群情况下需要为true的  因为 会在别的注册中心 获取服务
-    registry-fetch-interval-seconds: 5 #client间隔多久去拉取服务注册信息，默认为30秒，对于api-gateway，如果要迅速获取服务注册状态，可以缩小该值，比如5秒
+    registry-fetch-interval-seconds: 10 #client间隔多久去拉取服务注册信息，默认为30秒，对于api-gateway，如果要迅速获取服务注册状态，可以缩小该值，比如5秒
     service-url: #（集群时指定另外一个注册中心地址）
       defaultZone: http://${momo.security.name}:${momo.security.password}@${momo.ip}:${momo.eureka-port}/eureka/
 #      defaultZone: http://${momo.security.name}:${momo.security.password}@${momo.ip}:${momo.eureka-port}:8761/eureka/,http://${momo.security.name}:${momo.security.password}@${momo.ip}:${momo.eureka-port}:8762/eureka/,http://${momo.security.name}:${momo.security.password}@${momo.ip}:${momo.eureka-port}:8763/eureka/
@@ -126,7 +126,7 @@ logging:
     org.springframework.cloud.gateway: debug
 
 # ribbon重试
-cloud-spring-order:
+momo-permission-system-core:
   ribbon:
     #  配置负载均衡策略
     #NFLoadBalancerRuleClassName: com.netflix.loadbalancer.ZoneAvoidanceRule #  默认规则，符合判断server所在区域的性能和server的可用性选择服务器
