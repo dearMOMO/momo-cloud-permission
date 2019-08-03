@@ -167,7 +167,8 @@ public class SysMainService extends BaseService {
 
     public UserInfoRes getUserInfo() {
         RedisUser redisUser = this.redisUser();
-        UserInfoRes userInfoRes = UserInfoRes.builder().sysUserName(redisUser.getSysUserName()).build();
+        UserDO userDO = userMapper.getUserInfo(redisUser.getBaseId());
+        UserInfoRes userInfoRes = UserInfoRes.builder().sysUserName(userDO.getSysUserName()).build();
         return userInfoRes;
     }
 
