@@ -113,8 +113,9 @@ public class SysMainService extends BaseService {
         final String token = jwtTokenUtil.generateToken(jsonStr, randomKey);
         //限制登录次数 -1 则不进行限制
         Integer loginNumber = userAccountPwdDO.getSysLoginNumber();
-        //限制登录次数
-        if (loginNumber != -1) {
+        if (loginNumber.equals(0)) {
+            throw BizException.fail("您已被限制登陆，请联系管理员");
+        } else if (loginNumber != -1) {//限制登录次数
             //redis  key--》用户id     v----》 List<String> String=uuid
             //redis  key--》uuid     v----》 token
             Object listUuid = redisUtil.get(RedisKeyEnum.REDIS_KEY_USER_ID.getKey() + userDO.getId());
