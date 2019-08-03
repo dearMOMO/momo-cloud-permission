@@ -14,7 +14,6 @@
         <result column="sys_user_area_name" jdbcType="VARCHAR" property="sysUserAreaName" />
         <result column="sys_user_area" jdbcType="BIGINT" property="sysUserArea" />
         <result column="group_id" jdbcType="BIGINT" property="groupId" />
-
         <result column="remark" jdbcType="VARCHAR" property="remark" />
         <result column="flag" jdbcType="INTEGER" property="flag" />
         <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
@@ -23,12 +22,96 @@
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
         <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
     </resultMap>
+    <resultMap id="pageSysUserList" type="com.momo.mapper.dataobject.manual.SysUserListDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="sys_user_name" jdbcType="VARCHAR" property="sysUserName" />
+        <result column="uuid" jdbcType="VARCHAR" property="uuid" />
+        <result column="sys_user_phone" jdbcType="VARCHAR" property="sysUserPhone" />
+        <result column="sys_user_email" jdbcType="VARCHAR" property="sysUserEmail" />
+        <result column="sys_user_province_name" jdbcType="VARCHAR" property="sysUserProvinceName" />
+        <result column="sys_user_province" jdbcType="BIGINT" property="sysUserProvince" />
+        <result column="sys_user_city_name" jdbcType="VARCHAR" property="sysUserCityName" />
+        <result column="sys_user_city" jdbcType="BIGINT" property="sysUserCity" />
+        <result column="sys_user_area_name" jdbcType="VARCHAR" property="sysUserAreaName" />
+        <result column="sys_user_area" jdbcType="BIGINT" property="sysUserArea" />
+        <result column="group_id" jdbcType="BIGINT" property="groupId" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="flag" jdbcType="INTEGER" property="flag" />
+        <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <association property="userAccountPwdDO" javaType="com.momo.mapper.dataobject.UserAccountPwdDO" select="pageSysUserList_loginPwd" column="id"/>
+        <collection property="roles" ofType="com.momo.mapper.dataobject.RoleDO" select="pageSysUserList_roles" column="id"/>
+    </resultMap>
+    <resultMap id="pageSysUserList_roles" type="com.momo.mapper.dataobject.RoleDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="uuid" jdbcType="VARCHAR" property="uuid" />
+        <result column="sys_role_name" jdbcType="VARCHAR" property="sysRoleName" />
+        <result column="sys_role_type" jdbcType="INTEGER" property="sysRoleType" />
+        <result column="group_id" jdbcType="BIGINT" property="groupId" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="flag" jdbcType="INTEGER" property="flag" />
+        <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    </resultMap>
+    <resultMap id="loginPwd" type="com.momo.mapper.dataobject.UserAccountPwdDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="uuid" jdbcType="VARCHAR" property="uuid" />
+        <result column="sys_user_login_name" jdbcType="VARCHAR" property="sysUserLoginName" />
+        <result column="sys_user_pwd" jdbcType="VARCHAR" property="sysUserPwd" />
+        <result column="sys_login_number" jdbcType="INTEGER" property="sysLoginNumber" />
+        <result column="sys_user_auth_salt" jdbcType="VARCHAR" property="sysUserAuthSalt" />
+        <result column="sys_user_id" jdbcType="BIGINT" property="sysUserId" />
+        <result column="group_id" jdbcType="BIGINT" property="groupId" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="flag" jdbcType="INTEGER" property="flag" />
+        <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+
+    </resultMap>
     <sql id="Base_Column_List">
     id, sys_user_name, uuid, sys_user_phone, sys_user_email, sys_user_province_name,
     sys_user_province, sys_user_city_name, sys_user_city, sys_user_area_name, sys_user_area,
     group_id, remark, flag, del_flag, create_by, create_time, update_time,
     update_by
   </sql>
+
+    <select id="pageSysUserList" parameterType="map" resultMap="pageSysUserList">
+        select
+        id, sys_user_name, uuid, sys_user_phone, sys_user_email, remark,update_by
+        from sys_user
+        <trim prefixOverrides="and" prefix="where">
+            <if test="groupId!=null">
+                and group_id = #{groupId}
+            </if>
+            <if test="flag!=null">
+                and flag = #{flag}
+            </if>
+            <if test="sysUserName!=null and sysUserName.trim()!=''">
+                and sys_user_name like CONCAT('%',#{sysUserName},'%')
+            </if>
+        </trim>
+    </select>
+    <select id="pageSysUserList_loginPwd" parameterType="map" resultMap="loginPwd">
+        select
+        id, uuid, sys_user_login_name,flag
+        from sys_user_account_pwd
+        where sys_user_id=#{id}
+    </select>
+    <select id="pageSysUserList_roles" parameterType="map" resultMap="pageSysUserList_roles">
+        SELECT
+        id, sys_role_name, sys_role_type
+        FROM sys_role srole
+        WHERE id IN (SELECT role_id FROM sys_role_user WHERE user_id=#{id})
+    </select>
     <select id="getById" parameterType="map" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
