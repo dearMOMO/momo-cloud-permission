@@ -56,7 +56,11 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
                 List<RoleDO> roles = sysUserListDO.getRoles();
                 Set<Integer> rolesSet = roles.stream().map(roleDO -> roleDO.getSysRoleType()).collect(Collectors.toSet());
                 //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
-                if (rolesSet.contains(0) || rolesSet.contains(1)) {
+                if (rolesSet.contains(0)) {
+                    sysUserListRes.setEditButton(false);
+                    sysUserListRes.setPwdButton(false);
+                }
+                if (rolesSet.contains(1)) {
                     sysUserListRes.setEditButton(false);
                     sysUserListRes.setPwdButton(false);
                 }
