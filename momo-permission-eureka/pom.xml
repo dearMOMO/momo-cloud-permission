@@ -150,11 +150,11 @@
                                 <configuration>
                                     <target>
                                         <delete file="${basedir}/target/classes/application.yml"/>
-                                        <copy file="${basedir}/builder/dev/application.yml"
+                                        <copy file="${basedir}/builder/master/application.yml"
                                               tofile="${basedir}/target/classes/application.yml"/>
 
                                         <delete file="${basedir}/target/classes/logback-spring.xml"/>
-                                        <copy file="${basedir}/builder/dev/logback-spring.xml"
+                                        <copy file="${basedir}/builder/master/logback-spring.xml"
                                               tofile="${basedir}/target/classes/logback-spring.xml"/>
 
                                     </target>

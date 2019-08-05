@@ -204,19 +204,19 @@
                                 <configuration>
                                     <target>
                                         <delete file="${basedir}/target/classes/application.yml"/>
-                                        <copy file="${basedir}/builder/dev/application.yml"
+                                        <copy file="${basedir}/builder/master/application.yml"
                                               tofile="${basedir}/target/classes/application.yml"/>
 
                                         <delete file="${basedir}/target/classes/logback-spring.xml"/>
-                                        <copy file="${basedir}/builder/dev/logback-spring.xml"
+                                        <copy file="${basedir}/builder/master/logback-spring.xml"
                                               tofile="${basedir}/target/classes/logback-spring.xml"/>
 
                                         <delete file="${basedir}/target/classes/config/jwt.properties"/>
-                                        <copy file="${basedir}/builder/dev/config/jwt.properties"
+                                        <copy file="${basedir}/builder/master/config/jwt.properties"
                                               tofile="${basedir}/target/classes/config/jwt.properties"/>
 
                                         <delete file="${basedir}/target/classes/config/resource.properties"/>
-                                        <copy file="${basedir}/builder/dev/config/resource.properties"
+                                        <copy file="${basedir}/builder/master/config/resource.properties"
                                               tofile="${basedir}/target/classes/config/resource.properties"/>
 
                                     </target>
