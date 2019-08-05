@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,6 +35,8 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
 
     @Autowired
     private UserMapper userMapper;
+    @Value("${momo.superAdmins}")
+    private String superAdmins = "";
 
     @Override
     public PageInfo<SysUserListRes> sysUserList(SysUserListReq sysUserListReq) {
@@ -66,6 +69,11 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
                 }
                 //用户是自己登陆，则显示
                 if (sysUserListDO.getId().equals(redisUser.getBaseId())) {
+                    sysUserListRes.setEditButton(true);
+                    sysUserListRes.setPwdButton(true);
+                }
+                //超级管理员，则显示全部
+                if(superAdmins.contains(redisUser.getSysUserPhone())){
                     sysUserListRes.setEditButton(true);
                     sysUserListRes.setPwdButton(true);
                 }
