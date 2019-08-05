@@ -72,6 +72,7 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
                 UserAccountPwdDO userAccountPwdDO = sysUserListDO.getUserAccountPwdDO();
                 //密码绑定
                 if (null != userAccountPwdDO) {
+                    sysUserListRes.setPwdBinding(true);
                     sysUserListRes.setPwdBindingName(userAccountPwdDO.getSysUserLoginName());
                     sysUserListRes.setPwdBindingFlag(userAccountPwdDO.getFlag());
                     sysUserListRes.setPwdBindingDate(userAccountPwdDO.getCreateTime());

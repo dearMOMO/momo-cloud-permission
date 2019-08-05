@@ -25,6 +25,10 @@ public class SysUserListRes extends UserDO {
     private boolean editButton = true;
     //是否显示修改按钮
     private boolean pwdButton = true;
+
+
+    //账号密码  是否绑定
+    private boolean pwdBinding=false;
     //账号密码  是否被禁用  0否 1禁用
     private Integer pwdBindingFlag;
     //账号密码  绑定名称
@@ -32,6 +36,8 @@ public class SysUserListRes extends UserDO {
     //账号密码  绑定时间
     private Date pwdBindingDate;
 
+    //账号密码  是否绑定
+    private boolean wxBinding=false;
     //微信  是否被禁用  0否 1禁用
     private Integer wxBindingFlag;
     private String wxBindingName;
