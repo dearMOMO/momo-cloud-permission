@@ -69,24 +69,13 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
                     sysUserListRes.setEditButton(true);
                     sysUserListRes.setPwdButton(true);
                 }
-                //账号已经绑定的类型
-                List<SysUserListRes> bindingsTypeList = Lists.newArrayList();
-                //账号未经绑定的类型
-                List<SysUserListRes> unBindingsTypeList = Lists.newArrayList();
                 UserAccountPwdDO userAccountPwdDO = sysUserListDO.getUserAccountPwdDO();
                 //密码绑定
                 if (null != userAccountPwdDO) {
-                    SysUserListRes sysUser = new SysUserListRes();
-                    sysUser.setBindingFlag(userAccountPwdDO.getFlag());
-                    sysUser.setBindingName("账号密码");
-                    bindingsTypeList.add(sysUser);
-                } else {
-                    SysUserListRes sysUser = new SysUserListRes();
-                    sysUser.setBindingName("账号密码");
-                    unBindingsTypeList.add(sysUser);
+                    sysUserListRes.setPwdBindingName(userAccountPwdDO.getSysUserLoginName());
+                    sysUserListRes.setPwdBindingFlag(userAccountPwdDO.getFlag());
+                    sysUserListRes.setPwdBindingDate(userAccountPwdDO.getCreateTime());
                 }
-                sysUserListRes.setBindingsTypeList(bindingsTypeList);
-                sysUserListRes.setUnBindingsTypeList(unBindingsTypeList);
                 resList.add(sysUserListRes);
             });
             pageInfoRes.setList(resList);
