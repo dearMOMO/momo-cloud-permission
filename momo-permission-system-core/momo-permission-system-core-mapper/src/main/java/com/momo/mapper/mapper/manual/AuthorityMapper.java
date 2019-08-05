@@ -4,6 +4,7 @@ import com.momo.mapper.dataobject.AclDO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @program: momo-cloud-permission
@@ -45,7 +46,7 @@ public interface AuthorityMapper {
      * @param roleId
      * @return
      */
-    List<Long> aclsByRoleId(@Param("roleIds") List<Long> roleId, @Param("sys_acl_permission_type") Long sys_acl_permission_type);
+    List<Long> aclsByRoleId(@Param("roleIds") Set<Long> roleId, @Param("sys_acl_permission_type") Long sys_acl_permission_type);
 
     /**
      * 根据组的id 得到管理员ids

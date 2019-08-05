@@ -1,14 +1,21 @@
 package com.momo.service.service.authority;
 
+import com.google.common.collect.Lists;
 import com.momo.common.error.BizException;
 import com.momo.common.util.DateUtil;
 import com.momo.common.util.LevelUtil;
 import com.momo.common.util.StrUtil;
 import com.momo.common.util.snowFlake.SnowFlake;
 import com.momo.mapper.dataobject.AclDO;
+import com.momo.mapper.dataobject.RoleDO;
 import com.momo.mapper.mapper.manual.AclMapper;
+import com.momo.mapper.mapper.manual.AuthorityMapper;
+import com.momo.mapper.mapper.manual.RoleMapper;
 import com.momo.mapper.req.authority.AclReq;
+import com.momo.mapper.req.sysmain.LoginAuthReq;
 import com.momo.mapper.req.sysmain.RedisUser;
+import com.momo.mapper.res.authority.AclLevelRes;
+import com.momo.mapper.res.authority.AclTreeRes;
 import com.momo.service.service.BaseService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
@@ -17,6 +24,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @program: momo-cloud-permission
@@ -26,9 +35,58 @@ import java.util.List;
  **/
 @Service
 public class AclService extends BaseService {
+
+    @Autowired
+    private AdminAuthorityService adminAuthorityService;
     @Autowired
     private AclMapper aclMapper;
+    @Autowired
+    private AdminSysCoreService sysCoreService;
+    @Autowired
+    private RoleMapper roleMapper;
+    @Autowired
+    private AuthorityMapper authorityMapper;
     private SnowFlake snowFlake = new SnowFlake(1, 1);
+
+    public AclTreeRes aclTree() {
+        RedisUser redisUser = this.redisUser();
+        // 1、当前用户已分配的权限点
+        List<AclDO> userAclList = sysCoreService.getUserHavingAclList(new LoginAuthReq(), redisUser);
+        List<RoleDO> getRolesByUserId = roleMapper.getRolesByUserId(redisUser.getBaseId());
+        Set<Long> roleIds = getRolesByUserId.stream().map(roleDO -> roleDO.getId()).collect(Collectors.toSet());
+        // 2、当前角色分配的权限点
+        List<AclDO> roleAclList = sysCoreService.getRoleAclList(roleIds, null);
+        // 3、当前系统所有权限点
+        List<AclLevelRes> aclDtoList = Lists.newArrayList();
+        Set<Long> userAclIdSet = userAclList.stream().map(sysAcl -> sysAcl.getId()).collect(Collectors.toSet());
+        Set<Long> roleAclIdSet = roleAclList.stream().map(sysAcl -> sysAcl.getId()).collect(Collectors.toSet());
+        List<AclDO> allAclList = authorityMapper.getAllAcl(null, null);
+        List<String> defaultexpandedKeys = Lists.newArrayList();
+        for (AclDO acl : allAclList) {
+            //状态 0启用  1禁用
+//            if ("0".equals(acl.getSysAclState())){
+            AclLevelRes dto = AclLevelRes.adapt(acl);
+            if (userAclIdSet.contains(acl.getId())) {
+                dto.setHasAcl(true);
+                dto.setDisabled(false);
+            }
+            if (roleAclIdSet.contains(acl.getId())) {
+                dto.setChecked(true);
+                defaultexpandedKeys.add(acl.getUuid());
+            }
+            aclDtoList.add(dto);
+//            }
+        }
+        AclTreeRes aclTreeRes = new AclTreeRes();
+
+        List<AclLevelRes> aclListToTree = adminAuthorityService.aclListToTree(aclDtoList);
+        aclListToTree.forEach(aclLevelRes -> {
+            aclLevelRes.setDefaultexpandedKeys(defaultexpandedKeys);
+        });
+        aclTreeRes.setAclLevelRes(aclListToTree);
+        aclTreeRes.setDefaultexpandedKeys(defaultexpandedKeys);
+        return aclTreeRes;
+    }
 
     @Transactional
     public String insertSelective(AclReq aclReq) {

@@ -3,6 +3,7 @@ package com.momo.service.service.authority;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
 import com.momo.common.util.LevelUtil;
 import com.momo.mapper.dataobject.AclDO;
 import com.momo.mapper.mapper.manual.AuthorityMapper;
@@ -34,15 +35,16 @@ public class CommonAuthorityService {
         // 1、当前用户已分配的权限点
         List<AclDO> userAclList = commonSysCoreService.getUserHavingAclList(loginAuthReq, redisUser);
         // 2、当前角色分配的权限点
-        List<AclDO> roleAclList = commonSysCoreService.getRoleAclList(loginAuthReq.getRoleId(),loginAuthReq.getAclPermissionType());
+        List<AclDO> roleAclList = commonSysCoreService.getRoleAclList(Sets.newHashSet(loginAuthReq.getRoleId()),loginAuthReq.getAclPermissionType());
         // 3、当前系统所有权限点
         List<AclLevelRes> aclDtoList = Lists.newArrayList();
         Set<Long> userAclIdSet = userAclList.stream().map(sysAcl -> sysAcl.getId()).collect(Collectors.toSet());
         Set<Long> roleAclIdSet = roleAclList.stream().map(sysAcl -> sysAcl.getId()).collect(Collectors.toSet());
         //获取第三方管理员角色列表
         List<Long> adminRoles = authorityMapper.rolesAdminByGroupId(redisUser.getGroupId());
+        Set<Long> adminRolesSet = adminRoles.stream().map(aLong -> aLong).collect(Collectors.toSet());
         //根据角色id获取权限ids
-        List<Long> aclIds = authorityMapper.aclsByRoleId(adminRoles,loginAuthReq.getAclPermissionType());
+        List<Long> aclIds = authorityMapper.aclsByRoleId(adminRolesSet,loginAuthReq.getAclPermissionType());
         //根据权限点的ids获取权限点列表
         List<AclDO> allAclList = authorityMapper.getAllAcl(null, aclIds);
         for (AclDO acl : allAclList) {

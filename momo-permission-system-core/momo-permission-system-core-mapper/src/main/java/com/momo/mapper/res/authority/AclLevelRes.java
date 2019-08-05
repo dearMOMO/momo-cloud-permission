@@ -25,6 +25,8 @@ public class AclLevelRes extends AclDO {
     private String label;
 
     private List<AclLevelRes> children = Lists.newArrayList();
+    //默认选中/展开
+    private List<String> defaultexpandedKeys;
     // 是否要默认选中
     private boolean checked = false;
 

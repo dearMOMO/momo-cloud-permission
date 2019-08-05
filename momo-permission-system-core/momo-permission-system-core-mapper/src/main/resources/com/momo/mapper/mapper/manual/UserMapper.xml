@@ -86,7 +86,7 @@
 
     <select id="pageSysUserList" parameterType="map" resultMap="pageSysUserList">
         select
-        id, sys_user_name, uuid, sys_user_phone, sys_user_email, remark,update_by,create_time
+        id, sys_user_name, uuid, sys_user_phone, sys_user_email, remark,update_by,create_time,flag
         from sys_user
         <trim prefixOverrides="and" prefix="where">
             <if test="groupId!=null">

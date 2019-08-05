@@ -3,6 +3,7 @@ package com.momo.service.service.authority;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
 import com.momo.common.util.LevelUtil;
 import com.momo.mapper.dataobject.AclDO;
 import com.momo.mapper.mapper.manual.AuthorityMapper;
@@ -45,7 +46,7 @@ public class AdminAuthorityService extends BaseService {
                 aclDtoList.add(dto);
             }
         }
-        return deptListToTree(aclDtoList);
+        return aclListToTree(aclDtoList);
     }
 
     //为角色授权 权限 之前， 需要查看该角色拥有哪些权限点，以及当前登录用户可以操作哪些权限
@@ -53,13 +54,14 @@ public class AdminAuthorityService extends BaseService {
         // 1、当前用户已分配的权限点
         List<AclDO> userAclList = sysCoreService.getUserHavingAclList(loginAuthReq, redisUser);
         // 2、当前角色分配的权限点
-        List<AclDO> roleAclList = sysCoreService.getRoleAclList(loginAuthReq.getRoleId(), loginAuthReq.getAclPermissionType());
+        List<AclDO> roleAclList = sysCoreService.getRoleAclList(Sets.newHashSet(loginAuthReq.getRoleId()), loginAuthReq.getAclPermissionType());
         // 3、当前系统所有权限点
         List<AclLevelRes> aclDtoList = Lists.newArrayList();
 
         Set<Long> userAclIdSet = userAclList.stream().map(sysAcl -> sysAcl.getId()).collect(Collectors.toSet());
         Set<Long> roleAclIdSet = roleAclList.stream().map(sysAcl -> sysAcl.getId()).collect(Collectors.toSet());
         List<AclDO> allAclList = authorityMapper.getAllAcl(null, null);
+        List<String> defaultexpandedKeys = Lists.newArrayList();
         for (AclDO acl : allAclList) {
             //状态 0启用  1禁用
 //            if ("0".equals(acl.getSysAclState())){
@@ -70,14 +72,19 @@ public class AdminAuthorityService extends BaseService {
             }
             if (roleAclIdSet.contains(acl.getId())) {
                 dto.setChecked(true);
+                defaultexpandedKeys.add(acl.getUuid());
             }
             aclDtoList.add(dto);
 //            }
         }
-        return deptListToTree(aclDtoList);
+        List<AclLevelRes> aclListToTree = aclListToTree(aclDtoList);
+        aclListToTree.forEach(aclLevelRes -> {
+            aclLevelRes.setDefaultexpandedKeys(defaultexpandedKeys);
+        });
+        return aclListToTree;
     }
 
-    private List<AclLevelRes> deptListToTree(List<AclLevelRes> aclDtoList) {
+    public List<AclLevelRes> aclListToTree(List<AclLevelRes> aclDtoList) {
         if (CollectionUtils.isEmpty(aclDtoList)) {
             return Lists.newArrayList();
         }

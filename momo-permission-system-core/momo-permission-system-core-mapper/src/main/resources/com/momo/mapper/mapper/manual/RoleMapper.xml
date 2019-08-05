@@ -56,7 +56,7 @@
         </trim>
     </select>
     <select id="rolesByCurrentId" parameterType="java.lang.Long" resultMap="BaseResultMap">
-       SELECT id, uuid, role_name, role_type
+       SELECT id, uuid,sys_role_name, sys_role_type
         FROM sys_role WHERE id IN(
             SELECT role_id
         FROM sys_role_user WHERE user_id=#{userId,jdbcType=BIGINT}
@@ -244,12 +244,13 @@
     </update>
     <select id="getRoleById" parameterType="map" resultMap="BaseResultMap">
     SELECT
-         id, uuid, role_name, role_type, comp_id,flag
+         id, uuid, sys_role_name, sys_role_type, group_id, remark, flag, del_flag,
+        create_time
          FROM sys_role
     WHERE id=#{id}
 </select>
     <select id="getRolesByUserId" resultMap="BaseResultMap">
-       SELECT id, uuid, role_name, role_type, comp_id, flag
+       SELECT id, uuid, sys_role_name, sys_role_type, group_id, flag, del_flag
         FROM sys_role WHERE id IN (
           SELECT role_id FROM sys_role_user WHERE user_id =#{userId}
         )

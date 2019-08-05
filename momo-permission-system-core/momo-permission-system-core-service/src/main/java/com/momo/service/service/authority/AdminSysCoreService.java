@@ -1,6 +1,7 @@
 package com.momo.service.service.authority;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.momo.mapper.dataobject.AclDO;
 import com.momo.mapper.mapper.manual.AuthorityMapper;
 import com.momo.mapper.req.sysmain.RedisUser;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @program: momo-cloud-permission
@@ -25,9 +28,9 @@ public class AdminSysCoreService {
     @Autowired
     private AuthorityMapper authorityMapper;
 
-    public List<AclDO> getRoleAclList(Long roleId, Long aclPermissionType) {
+    public List<AclDO> getRoleAclList(Set<Long> roleIds, Long aclPermissionType) {
         //根据角色id获取权限点ids
-        List<Long> aclIdList = authorityMapper.aclsByRoleId(Lists.<Long>newArrayList(roleId), aclPermissionType);
+        List<Long> aclIdList = authorityMapper.aclsByRoleId(roleIds, aclPermissionType);
         if (org.apache.commons.collections.CollectionUtils.isEmpty(aclIdList)) {
             return Lists.newArrayList();
         }
@@ -47,7 +50,7 @@ public class AdminSysCoreService {
         if (CollectionUtils.isEmpty(userRoleIdList)) {
             return Lists.newArrayList();
         }
-        List<Long> finalRoleIds = Lists.newArrayList();
+        Set<Long> finalRoleIds = Sets.newHashSet();
         //根据角色ids获取角色列表 临时启用和禁用角色
         //是否被禁用  0否 1禁用
         List<Long> roleIds = authorityMapper.rolesByRoleId(userRoleIdList, "0");
@@ -79,8 +82,9 @@ public class AdminSysCoreService {
         if (org.apache.commons.collections.CollectionUtils.isEmpty(userRoleIdList)) {
             return Lists.newArrayList();
         }
+        Set<Long> userRoleIdListSet = userRoleIdList.stream().map(aLong -> aLong).collect(Collectors.toSet());
         //根据角色ids获取权限点ids
-        List<Long> userAclIdList = authorityMapper.aclsByRoleId(userRoleIdList, loginAuthReq.getAclPermissionType());
+        List<Long> userAclIdList = authorityMapper.aclsByRoleId(userRoleIdListSet, loginAuthReq.getAclPermissionType());
         if (org.apache.commons.collections.CollectionUtils.isEmpty(userAclIdList)) {
             return Lists.newArrayList();
         }

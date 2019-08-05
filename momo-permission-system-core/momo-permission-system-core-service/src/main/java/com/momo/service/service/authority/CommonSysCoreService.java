@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by MOMO on 2019/4/9.
@@ -21,8 +23,8 @@ public class CommonSysCoreService {
     @Autowired
     private AuthorityMapper authorityMapper;
 
-    public List<AclDO> getRoleAclList(Long roleId, Long aclPermissionType) {
-        List<Long> aclIdList = authorityMapper.aclsByRoleId(Lists.<Long>newArrayList(roleId), aclPermissionType);
+    public List<AclDO> getRoleAclList(Set<Long> roleIds, Long aclPermissionType) {
+        List<Long> aclIdList = authorityMapper.aclsByRoleId(roleIds, aclPermissionType);
         if (CollectionUtils.isEmpty(aclIdList)) {
             return Lists.newArrayList();
         }
@@ -35,7 +37,8 @@ public class CommonSysCoreService {
         if (CollectionUtils.isEmpty(userRoleIdList)) {
             return Lists.newArrayList();
         }
-        List<Long> userAclIdList = authorityMapper.aclsByRoleId(userRoleIdList, loginAuthReq.getAclPermissionType());
+        Set<Long> userRoleIdListSet = userRoleIdList.stream().map(aLong -> aLong).collect(Collectors.toSet());
+        List<Long> userAclIdList = authorityMapper.aclsByRoleId(userRoleIdListSet, loginAuthReq.getAclPermissionType());
         if (CollectionUtils.isEmpty(userAclIdList)) {
             return Lists.newArrayList();
         }

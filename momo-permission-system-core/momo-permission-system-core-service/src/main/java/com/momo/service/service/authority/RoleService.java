@@ -89,7 +89,7 @@ public class RoleService extends BaseService {
                 acls.add(roleAclDO.getSysAclId());
             });
         }
-        List<Long> originAclIdList = authorityMapper.aclsByRoleId(Arrays.asList(roleDO.getId()), null);
+        List<Long> originAclIdList = authorityMapper.aclsByRoleId(Sets.newHashSet(roleDO.getId()), null);
         List<Long> alcIds = Lists.newArrayList();
         if (originAclIdList.size() == acls.size()) {
             Set<Long> originAclIdSet = Sets.newHashSet(originAclIdList);

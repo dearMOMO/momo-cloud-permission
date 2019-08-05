@@ -24,6 +24,11 @@ public class AclController {
     @Autowired
     private AclService aclService;
 
+    @RequestMapping("/aclTree/v1")
+    public JSONResult aclTree() {
+        return JSONResult.ok(aclService.aclTree());
+    }
+
     @RequestMapping("/save/v1")
     public JSONResult save(@Validated(AclReq.save.class) @RequestBody AclReq aclReq) {
         return JSONResult.ok(aclService.insertSelective(aclReq));
