@@ -27,11 +27,11 @@ public class FastJsonConfiguration {
         fastJsonConfig.setDateFormat("yyyy-MM-dd HH:mm:ss");
         //修改配置返回内容的过滤
         fastJsonConfig.setSerializerFeatures(
-//                SerializerFeature. WriteMapNullValue,//是否输出值为null的字段,默认为false
+                SerializerFeature. WriteMapNullValue,//是否输出值为null的字段,默认为false
                 SerializerFeature.WriteDateUseDateFormat,//格式化标签
         		SerializerFeature.WriteNullListAsEmpty , //List字段如果为null,输出为[],而非null
                 SerializerFeature.DisableCircularReferenceDetect,//消除对同一对象循环引用的问题，默认为false（如果不配置有可能会进入死循环）
-//                SerializerFeature.WriteMapNullValue,//是否输出值为null的字段,默认为false。
+                SerializerFeature.WriteMapNullValue,//是否输出值为null的字段,默认为false。
                 SerializerFeature.WriteNullStringAsEmpty,//字符类型字段如果为null,输出为"",而非null
                 SerializerFeature.WriteNullBooleanAsFalse//Boolean字段如果为null,输出为false,而非null
         );
