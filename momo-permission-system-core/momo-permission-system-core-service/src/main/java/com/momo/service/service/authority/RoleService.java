@@ -4,7 +4,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.momo.common.common.JSONResult;
 import com.momo.common.error.BizException;
 import com.momo.common.util.DateUtil;
 import com.momo.common.util.StrUtil;
@@ -20,17 +19,19 @@ import com.momo.mapper.req.authority.BatchRoleUserReq;
 import com.momo.mapper.req.authority.RoleReq;
 import com.momo.mapper.req.sysmain.LoginAuthReq;
 import com.momo.mapper.req.sysmain.RedisUser;
+import com.momo.mapper.res.aclmanager.SysRolePageListRes;
 import com.momo.mapper.res.authority.AclLevelRes;
 import com.momo.service.service.BaseService;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @program: momo-cloud-permission
@@ -50,6 +51,8 @@ public class RoleService extends BaseService {
     private AdminAuthorityService adminAuthorityService;
     @Autowired
     private CommonAuthorityService commonAuthorityService;
+    @Value("${momo.superAdmins}")
+    private String superAdmins = "";
     private SnowFlake snowFlake = new SnowFlake(1, 1);
 
     public String rolesToUser(BatchRoleUserReq batchRoleUserReq) {
@@ -84,7 +87,7 @@ public class RoleService extends BaseService {
         }
         List<RoleAclDO> roleAclDOS = batchRoleUserReq.getAcls();
         List<Long> acls = Lists.newArrayList();
-        if (!CollectionUtils.isEmpty(roleAclDOS)) {
+        if (CollectionUtils.isNotEmpty(roleAclDOS)) {
             roleAclDOS.forEach(roleAclDO -> {
                 acls.add(roleAclDO.getSysAclId());
             });
@@ -104,7 +107,7 @@ public class RoleService extends BaseService {
         return "为角色授权权限成功";
     }
 
-    public List<AclLevelRes>  roleHaveAclTree(LoginAuthReq loginAuthReq) {
+    public List<AclLevelRes> roleHaveAclTree(LoginAuthReq loginAuthReq) {
         RoleDO roleDO = roleMapper.selectByPrimaryUuid(loginAuthReq.getSysRoleUuid());
         if (null == roleDO) {
             throw BizException.fail("待授权的角色不存在");
@@ -124,18 +127,69 @@ public class RoleService extends BaseService {
         return roleMapper.rolesByCurrentId(redisUser.getBaseId());
     }
 
-    public PageInfo<RoleDO> roleList(RoleReq roleReq) {
-        PageHelper.startPage(roleReq.getPageNum(), roleReq.getPageSize(), "id desc");
+    public PageInfo<SysRolePageListRes> roleList(RoleReq roleReq) {
         RoleDO selfRoleDO = new RoleDO();
         BeanUtils.copyProperties(roleReq, selfRoleDO);
         RedisUser redisUser = this.redisUser();
         selfRoleDO.setGroupId(redisUser.getGroupId());
-        //角色的类型，0：管理员角色，1：普通用户 2其他
-        //剔除第三方管理员角色
-        selfRoleDO.setSysRoleType(1);
+        PageHelper.startPage(roleReq.getPageNum(), roleReq.getPageSize(), "id desc");
         List<RoleDO> selfRoleDOS = roleMapper.roleList(selfRoleDO);
         PageInfo<RoleDO> pageInfo = new PageInfo<>(selfRoleDOS);
-        return pageInfo;
+        PageInfo<SysRolePageListRes> sysRolePageListResPageInfo = new PageInfo<>();
+        sysRolePageListResPageInfo.setPageSize(pageInfo.getPageSize());
+        sysRolePageListResPageInfo.setPageNum(pageInfo.getPageNum());
+        List<RoleDO> roleDOS = pageInfo.getList();
+
+        if (CollectionUtils.isEmpty(roleDOS)) {
+            return sysRolePageListResPageInfo;
+        }
+        List<RoleDO> roleDOList = roleMapper.getRolesByUserId(redisUser.getBaseId());
+
+        Set<Long> roleIds = Sets.newHashSet();
+        //当前登录用户是否是管理员(老板)
+        boolean checkAdminRole = false;
+        if (CollectionUtils.isNotEmpty(roleDOList)) {
+            for (RoleDO roleDO : roleDOList) {
+                roleIds.add(roleDO.getId());
+                if (roleDO.getSysRoleType() == 0) {
+                    checkAdminRole = true;
+                }
+            }
+
+        }
+        List<SysRolePageListRes> sysRolePageListRes = Lists.newArrayList();
+        for (RoleDO roleDO : roleDOS) {
+            SysRolePageListRes rolePageListRes = new SysRolePageListRes();
+            BeanUtils.copyProperties(roleDO, rolePageListRes);
+            //管理员类型 隐藏
+            //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
+            if (roleDO.getSysRoleType() == 0) {
+                rolePageListRes.setEditButton(false);
+                rolePageListRes.setAuthorButton(false);
+            }
+            if (roleDO.getSysRoleType() == 1) {
+                rolePageListRes.setEditButton(false);
+                rolePageListRes.setAuthorButton(false);
+            }
+            // 角色列表包含自己角色则显示
+            if (roleIds.contains(roleDO.getId())) {
+                rolePageListRes.setEditButton(true);
+                rolePageListRes.setAuthorButton(true);
+            }
+            //如果是老板，则显示自己
+            if (checkAdminRole) {
+                rolePageListRes.setEditButton(true);
+                rolePageListRes.setAuthorButton(true);
+            }
+            //超级管理员，则显示全部
+            if(superAdmins.contains(redisUser.getSysUserPhone())){
+                rolePageListRes.setEditButton(true);
+                rolePageListRes.setAuthorButton(true);
+            }
+            sysRolePageListRes.add(rolePageListRes);
+        }
+        sysRolePageListResPageInfo.setList(sysRolePageListRes);
+        return sysRolePageListResPageInfo;
     }
 
     public RoleDO showRole(RoleReq roleReq) {

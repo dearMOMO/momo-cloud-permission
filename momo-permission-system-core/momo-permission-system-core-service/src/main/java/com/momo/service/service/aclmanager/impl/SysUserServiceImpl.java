@@ -67,7 +67,7 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
                     sysUserListRes.setEditButton(false);
                     sysUserListRes.setPwdButton(false);
                 }
-                //用户是自己登陆，则显示
+                //用户是自己登陆，则显示自己
                 if (sysUserListDO.getId().equals(redisUser.getBaseId())) {
                     sysUserListRes.setEditButton(true);
                     sysUserListRes.setPwdButton(true);

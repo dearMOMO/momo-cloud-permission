@@ -23,7 +23,7 @@ import java.util.List;
 public class SysUserListRes extends UserDO {
     //是否显示编辑按钮
     private boolean editButton = true;
-    //是否显示修改按钮
+    //是否显示修改密码按钮
     private boolean pwdButton = true;
 
 
