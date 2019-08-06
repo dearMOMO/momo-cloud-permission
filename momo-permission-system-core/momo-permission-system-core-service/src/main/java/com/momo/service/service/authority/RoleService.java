@@ -20,7 +20,6 @@ import com.momo.mapper.req.authority.RoleReq;
 import com.momo.mapper.req.sysmain.LoginAuthReq;
 import com.momo.mapper.req.sysmain.RedisUser;
 import com.momo.mapper.res.aclmanager.SysRolePageListRes;
-import com.momo.mapper.res.authority.AclLevelRes;
 import com.momo.mapper.res.authority.AclTreeRes;
 import com.momo.service.service.BaseService;
 import org.apache.commons.collections.CollectionUtils;
@@ -32,7 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * @program: momo-cloud-permission

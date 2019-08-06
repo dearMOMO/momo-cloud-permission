@@ -9,8 +9,11 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * Created by kanshunfu on 2019/01/07.
- */
+ * @program: momo-cloud-permission
+ * @description: 日期工具类
+ * @author: Jie Li
+ * @create: 2019-08-02 17:20
+ **/
 public class DateUtil {
     public static Date getDateTime() {
         return new Date();
@@ -658,28 +661,28 @@ public class DateUtil {
         return formatDate(new Date(), "yyyy-MM-dd");
 
     }
+
     /**
      * 毫秒转时间 //分钟
-     * */
-    public static String millToTime(long end ,long begin)
-    {
-        long time=end-begin;
-        long time1=time/1000;
-        long m=time1/60;
-        long m1=time1-m*60;
-        return m+"′"+m1+"″";
+     */
+    public static String millToTime(long end, long begin) {
+        long time = end - begin;
+        long time1 = time / 1000;
+        long m = time1 / 60;
+        long m1 = time1 - m * 60;
+        return m + "′" + m1 + "″";
     }
+
     /**
      * 毫秒转时间 //分钟
-     * */
-    public static String millToaTime(long end ,long begin)
-    {
-        long time=end-begin;
-        long time1=time/1000;
-        long n=time1/3600;
-        long m=(time1-n*3600)/60;
-        long m1=time1-(n*3600+m*60);
-        return n+":"+m+"′"+m1+"″";
+     */
+    public static String millToaTime(long end, long begin) {
+        long time = end - begin;
+        long time1 = time / 1000;
+        long n = time1 / 3600;
+        long m = (time1 - n * 3600) / 60;
+        long m1 = time1 - (n * 3600 + m * 60);
+        return n + ":" + m + "′" + m1 + "″";
 
     }
 

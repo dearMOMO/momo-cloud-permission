@@ -3,10 +3,17 @@ package com.momo.service.service.aclmanager.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.momo.common.util.DateUtil;
+import com.momo.common.util.Encrypt;
+import com.momo.common.util.StrUtil;
+import com.momo.common.util.snowFlake.SnowFlake;
 import com.momo.mapper.dataobject.RoleDO;
 import com.momo.mapper.dataobject.UserAccountPwdDO;
+import com.momo.mapper.dataobject.UserDO;
 import com.momo.mapper.dataobject.manual.SysUserListDO;
+import com.momo.mapper.mapper.manual.UserAccountPwdMapper;
 import com.momo.mapper.mapper.manual.UserMapper;
+import com.momo.mapper.req.aclmanager.SysUserAddRes;
 import com.momo.mapper.req.aclmanager.SysUserListReq;
 import com.momo.mapper.req.sysmain.RedisUser;
 import com.momo.mapper.res.aclmanager.SysUserListRes;
@@ -35,8 +42,44 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private UserAccountPwdMapper userAccountPwdMapper;
     @Value("${momo.superAdmins}")
     private String superAdmins = "";
+    private SnowFlake snowFlake = new SnowFlake(1, 1);
+
+    @Override
+    public String sysUserAdd(SysUserAddRes sysUserAddRes) {
+        RedisUser redisUser = this.redisUser();
+        UserDO userDO = new UserDO();
+        BeanUtils.copyProperties(sysUserAddRes, userDO);
+        Long id = snowFlake.nextId();
+        userDO.setId(id);
+        userDO.setSysUserEmail(sysUserAddRes.getSysUserLoginName());
+        userDO.setUuid(StrUtil.genUUID());
+        userDO.setGroupId(redisUser.getGroupId());
+        userDO.setCreateBy(redisUser.getSysUserName());
+        userDO.setUpdateBy(redisUser.getSysUserName());
+        userDO.setCreateTime(DateUtil.getDateTime());
+        userDO.setUpdateTime(DateUtil.getDateTime());
+        userMapper.insertSelective(userDO);
+        UserAccountPwdDO userAccountPwdDO = new UserAccountPwdDO();
+        BeanUtils.copyProperties(sysUserAddRes, userAccountPwdDO);
+        userAccountPwdDO.setId(snowFlake.nextId());
+        String salt = StrUtil.genUUID();
+        userAccountPwdDO.setSysUserAuthSalt(salt);
+        String pwd = Encrypt.SHA512AndSHA256(sysUserAddRes.getSysUserPwd(), salt);
+        userAccountPwdDO.setSysUserPwd(pwd);
+        userAccountPwdDO.setGroupId(redisUser.getGroupId());
+        userAccountPwdDO.setCreateBy(redisUser.getSysUserName());
+        userAccountPwdDO.setUpdateBy(redisUser.getSysUserName());
+        userAccountPwdDO.setUuid(StrUtil.genUUID());
+        userAccountPwdDO.setSysUserId(id);
+        userAccountPwdDO.setCreateTime(DateUtil.getDateTime());
+        userAccountPwdDO.setUpdateTime(DateUtil.getDateTime());
+        userAccountPwdMapper.insertSelective(userAccountPwdDO);
+        return "新增用户成功";
+    }
 
     @Override
     public PageInfo<SysUserListRes> sysUserList(SysUserListReq sysUserListReq) {
@@ -79,7 +122,7 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
                     sysUserListRes.setRoleButton(true);
                 }
                 //超级管理员，则显示全部
-                if(superAdmins.contains(redisUser.getSysUserPhone())){
+                if (superAdmins.contains(redisUser.getSysUserPhone())) {
                     sysUserListRes.setEditButton(true);
                     sysUserListRes.setPwdButton(true);
                     sysUserListRes.setFlagButton(true);

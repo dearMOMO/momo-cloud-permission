@@ -1,6 +1,7 @@
 package com.momo.service.service.aclmanager;
 
 import com.github.pagehelper.PageInfo;
+import com.momo.mapper.req.aclmanager.SysUserAddRes;
 import com.momo.mapper.req.aclmanager.SysUserListReq;
 import com.momo.mapper.res.aclmanager.SysUserListRes;
 
@@ -18,4 +19,6 @@ public interface SysUserService {
      * @return
      */
     public PageInfo<SysUserListRes> sysUserList(SysUserListReq sysUserListReq);
+
+    public String sysUserAdd(SysUserAddRes sysUserAddRes);
 }

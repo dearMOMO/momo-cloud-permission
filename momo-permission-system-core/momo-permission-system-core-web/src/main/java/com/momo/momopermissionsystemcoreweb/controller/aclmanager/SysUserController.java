@@ -1,10 +1,12 @@
 package com.momo.momopermissionsystemcoreweb.controller.aclmanager;
 
 import com.momo.common.common.JSONResult;
+import com.momo.mapper.req.aclmanager.SysUserAddRes;
 import com.momo.mapper.req.aclmanager.SysUserListReq;
 import com.momo.service.service.aclmanager.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -29,6 +31,17 @@ public class SysUserController {
     @PostMapping("/sysUserList/v1")
     public JSONResult sysUserList(@RequestBody SysUserListReq sysUserListReq) {
         return JSONResult.ok(sysUserService.sysUserList(sysUserListReq));
+    }
+
+    /**
+     * 用户新增--账号密码
+     *
+     * @param sysUserAddRes
+     * @return
+     */
+    @PostMapping("/sysUserAdd/v1")
+    public JSONResult sysUserAdd(@Validated(SysUserAddRes.Add.class) @RequestBody SysUserAddRes sysUserAddRes) {
+        return JSONResult.ok(sysUserService.sysUserAdd(sysUserAddRes));
     }
 
 }

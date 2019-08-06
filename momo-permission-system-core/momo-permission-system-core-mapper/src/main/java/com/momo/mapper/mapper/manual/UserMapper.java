@@ -17,4 +17,6 @@ public interface UserMapper {
     List<SysUserListDO> pageSysUserList(@Param("groupId")Long groupId,@Param("sysUserName") String sysUserName, @Param("flag") Integer flag);
 
     UserDO getUserInfo(@Param("id") Long id);
+
+    int insertSelective(UserDO record);
 }

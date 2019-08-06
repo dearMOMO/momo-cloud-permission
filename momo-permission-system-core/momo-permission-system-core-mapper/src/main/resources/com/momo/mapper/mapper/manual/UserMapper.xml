@@ -130,4 +130,125 @@
         from sys_user
         where id = #{id,jdbcType=BIGINT}
     </select>
+    <insert id="insertSelective" parameterType="com.momo.mapper.dataobject.UserDO">
+        insert into sys_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="sysUserName != null">
+                sys_user_name,
+            </if>
+            <if test="uuid != null">
+                uuid,
+            </if>
+            <if test="sysUserPhone != null">
+                sys_user_phone,
+            </if>
+            <if test="sysUserEmail != null">
+                sys_user_email,
+            </if>
+            <if test="sysUserProvinceName != null">
+                sys_user_province_name,
+            </if>
+            <if test="sysUserProvince != null">
+                sys_user_province,
+            </if>
+            <if test="sysUserCityName != null">
+                sys_user_city_name,
+            </if>
+            <if test="sysUserCity != null">
+                sys_user_city,
+            </if>
+            <if test="sysUserAreaName != null">
+                sys_user_area_name,
+            </if>
+            <if test="sysUserArea != null">
+                sys_user_area,
+            </if>
+            <if test="groupId != null">
+                group_id,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="flag != null">
+                flag,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="sysUserName != null">
+                #{sysUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="uuid != null">
+                #{uuid,jdbcType=VARCHAR},
+            </if>
+            <if test="sysUserPhone != null">
+                #{sysUserPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="sysUserEmail != null">
+                #{sysUserEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="sysUserProvinceName != null">
+                #{sysUserProvinceName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysUserProvince != null">
+                #{sysUserProvince,jdbcType=BIGINT},
+            </if>
+            <if test="sysUserCityName != null">
+                #{sysUserCityName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysUserCity != null">
+                #{sysUserCity,jdbcType=BIGINT},
+            </if>
+            <if test="sysUserAreaName != null">
+                #{sysUserAreaName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysUserArea != null">
+                #{sysUserArea,jdbcType=BIGINT},
+            </if>
+            <if test="groupId != null">
+                #{groupId,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="flag != null">
+                #{flag,jdbcType=INTEGER},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=INTEGER},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
 </mapper>

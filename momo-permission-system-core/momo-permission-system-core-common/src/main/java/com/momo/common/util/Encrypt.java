@@ -24,7 +24,7 @@ public class Encrypt {
      * @param strText
      * @return
      */
-    public static String SHA256(final String strText) {
+    private static String SHA256(final String strText) {
         return SHA(strText, "SHA-256");
     }
 
@@ -34,7 +34,7 @@ public class Encrypt {
      * @param strText
      * @return
      */
-    public static String SHA512(final String strText) {
+    private static String SHA512(final String strText) {
         return SHA(strText, "SHA-512");
     }
 
