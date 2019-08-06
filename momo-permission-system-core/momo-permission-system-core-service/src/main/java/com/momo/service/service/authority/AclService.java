@@ -73,7 +73,8 @@ public class AclService extends BaseService {
             if (roleAclIdSet.contains(acl.getId())) {
                 dto.setChecked(true);
             }
-            if (acl.getSysAclType()==0 || acl.getSysAclType()==1){
+            //类型，0:目录 1：菜单，2：按钮，3：其他
+            if (acl.getSysAclType().equals(0)){
                 defaultexpandedKeys.add(acl.getUuid());
             }
             aclDtoList.add(dto);
