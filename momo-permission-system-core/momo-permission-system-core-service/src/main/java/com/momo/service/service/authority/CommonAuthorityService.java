@@ -10,6 +10,7 @@ import com.momo.mapper.mapper.manual.AuthorityMapper;
 import com.momo.mapper.req.sysmain.LoginAuthReq;
 import com.momo.mapper.req.sysmain.RedisUser;
 import com.momo.mapper.res.authority.AclLevelRes;
+import com.momo.mapper.res.authority.AclTreeRes;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,11 +32,11 @@ public class CommonAuthorityService {
     private AuthorityMapper authorityMapper;
 
     //为角色授权 权限 之前， 需要查看该角色拥有哪些权限点，以及当前登录用户可以操作哪些权限
-    public List<AclLevelRes> roleTree(LoginAuthReq loginAuthReq, RedisUser redisUser) {
+    public AclTreeRes roleTree(LoginAuthReq loginAuthReq, RedisUser redisUser) {
         // 1、当前用户已分配的权限点
         List<AclDO> userAclList = commonSysCoreService.getUserHavingAclList(loginAuthReq, redisUser);
         // 2、当前角色分配的权限点
-        List<AclDO> roleAclList = commonSysCoreService.getRoleAclList(Sets.newHashSet(loginAuthReq.getRoleId()),loginAuthReq.getAclPermissionType());
+        List<AclDO> roleAclList = commonSysCoreService.getRoleAclList(Sets.newHashSet(loginAuthReq.getRoleId()), loginAuthReq.getAclPermissionType());
         // 3、当前系统所有权限点
         List<AclLevelRes> aclDtoList = Lists.newArrayList();
         Set<Long> userAclIdSet = userAclList.stream().map(sysAcl -> sysAcl.getId()).collect(Collectors.toSet());
@@ -44,7 +45,8 @@ public class CommonAuthorityService {
         List<Long> adminRoles = authorityMapper.rolesAdminByGroupId(redisUser.getGroupId());
         Set<Long> adminRolesSet = adminRoles.stream().map(aLong -> aLong).collect(Collectors.toSet());
         //根据角色id获取权限ids
-        List<Long> aclIds = authorityMapper.aclsByRoleId(adminRolesSet,loginAuthReq.getAclPermissionType());
+        List<Long> aclIds = authorityMapper.aclsByRoleId(adminRolesSet, loginAuthReq.getAclPermissionType());
+        List<String> defaultexpandedKeys = Lists.newArrayList();
         //根据权限点的ids获取权限点列表
         List<AclDO> allAclList = authorityMapper.getAllAcl(null, aclIds);
         for (AclDO acl : allAclList) {
@@ -55,11 +57,17 @@ public class CommonAuthorityService {
             }
             if (roleAclIdSet.contains(acl.getId())) {
                 dto.setChecked(true);
+                defaultexpandedKeys.add(acl.getUuid());
             }
             aclDtoList.add(dto);
         }
-        return deptListToTree(aclDtoList);
+        AclTreeRes aclTreeRes = new AclTreeRes();
+        List<AclLevelRes> aclListToTree = deptListToTree(aclDtoList);
+        aclTreeRes.setDefaultexpandedKeys(defaultexpandedKeys);
+        aclTreeRes.setAclLevelRes(aclListToTree);
+        return aclTreeRes;
     }
+
     private List<AclLevelRes> deptListToTree(List<AclLevelRes> aclDtoList) {
         if (CollectionUtils.isEmpty(aclDtoList)) {
             return Lists.newArrayList();

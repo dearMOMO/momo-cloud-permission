@@ -10,6 +10,7 @@ import com.momo.mapper.mapper.manual.AuthorityMapper;
 import com.momo.mapper.req.sysmain.RedisUser;
 import com.momo.mapper.res.authority.AclLevelRes;
 import com.momo.mapper.req.sysmain.LoginAuthReq;
+import com.momo.mapper.res.authority.AclTreeRes;
 import com.momo.service.service.BaseService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,7 @@ public class AdminAuthorityService extends BaseService {
     }
 
     //为角色授权 权限 之前， 需要查看该角色拥有哪些权限点，以及当前登录用户可以操作哪些权限
-    public List<AclLevelRes> roleTree(LoginAuthReq loginAuthReq, RedisUser redisUser) {
+    public AclTreeRes roleTree(LoginAuthReq loginAuthReq, RedisUser redisUser) {
         // 1、当前用户已分配的权限点
         List<AclDO> userAclList = sysCoreService.getUserHavingAclList(loginAuthReq, redisUser);
         // 2、当前角色分配的权限点
@@ -77,11 +78,11 @@ public class AdminAuthorityService extends BaseService {
             aclDtoList.add(dto);
 //            }
         }
+        AclTreeRes aclTreeRes = new AclTreeRes();
         List<AclLevelRes> aclListToTree = aclListToTree(aclDtoList);
-        aclListToTree.forEach(aclLevelRes -> {
-            aclLevelRes.setDefaultexpandedKeys(defaultexpandedKeys);
-        });
-        return aclListToTree;
+        aclTreeRes.setDefaultexpandedKeys(defaultexpandedKeys);
+        aclTreeRes.setAclLevelRes(aclListToTree);
+        return aclTreeRes;
     }
 
     public List<AclLevelRes> aclListToTree(List<AclLevelRes> aclDtoList) {

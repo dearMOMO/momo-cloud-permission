@@ -21,6 +21,7 @@ import com.momo.mapper.req.sysmain.LoginAuthReq;
 import com.momo.mapper.req.sysmain.RedisUser;
 import com.momo.mapper.res.aclmanager.SysRolePageListRes;
 import com.momo.mapper.res.authority.AclLevelRes;
+import com.momo.mapper.res.authority.AclTreeRes;
 import com.momo.service.service.BaseService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
@@ -107,7 +108,7 @@ public class RoleService extends BaseService {
         return "为角色授权权限成功";
     }
 
-    public List<AclLevelRes> roleHaveAclTree(LoginAuthReq loginAuthReq) {
+    public AclTreeRes roleHaveAclTree(LoginAuthReq loginAuthReq) {
         RoleDO roleDO = roleMapper.selectByPrimaryUuid(loginAuthReq.getSysRoleUuid());
         if (null == roleDO) {
             throw BizException.fail("待授权的角色不存在");
@@ -115,11 +116,11 @@ public class RoleService extends BaseService {
         loginAuthReq.setRoleId(roleDO.getId());
         RedisUser redisUser = this.redisUser();
         if (redisUser.getGroupId().equals(1L)) {
-            List<AclLevelRes> list = adminAuthorityService.roleTree(loginAuthReq, redisUser);
-            return list;
+            AclTreeRes aclTreeRes = adminAuthorityService.roleTree(loginAuthReq, redisUser);
+            return aclTreeRes;
         } else {
-            List<AclLevelRes> list = commonAuthorityService.roleTree(loginAuthReq, redisUser);
-            return list;
+            AclTreeRes aclTreeRes = commonAuthorityService.roleTree(loginAuthReq, redisUser);
+            return aclTreeRes;
         }
     }
 
@@ -186,7 +187,7 @@ public class RoleService extends BaseService {
                 rolePageListRes.setFlagButton(true);
             }
             //超级管理员，则显示全部
-            if(superAdmins.contains(redisUser.getSysUserPhone())){
+            if (superAdmins.contains(redisUser.getSysUserPhone())) {
                 rolePageListRes.setEditButton(true);
                 rolePageListRes.setAuthorButton(true);
                 rolePageListRes.setFlagButton(true);

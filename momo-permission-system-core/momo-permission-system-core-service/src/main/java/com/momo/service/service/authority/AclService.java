@@ -72,6 +72,8 @@ public class AclService extends BaseService {
             }
             if (roleAclIdSet.contains(acl.getId())) {
                 dto.setChecked(true);
+            }
+            if (acl.getSysAclType()==0 || acl.getSysAclType()==1){
                 defaultexpandedKeys.add(acl.getUuid());
             }
             aclDtoList.add(dto);
@@ -80,9 +82,6 @@ public class AclService extends BaseService {
         AclTreeRes aclTreeRes = new AclTreeRes();
 
         List<AclLevelRes> aclListToTree = adminAuthorityService.aclListToTree(aclDtoList);
-        aclListToTree.forEach(aclLevelRes -> {
-            aclLevelRes.setDefaultexpandedKeys(defaultexpandedKeys);
-        });
         aclTreeRes.setAclLevelRes(aclListToTree);
         aclTreeRes.setDefaultexpandedKeys(defaultexpandedKeys);
         return aclTreeRes;
