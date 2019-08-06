@@ -3,6 +3,7 @@ package com.momo.service.service.aclmanager.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.momo.common.error.BizException;
 import com.momo.common.util.DateUtil;
 import com.momo.common.util.Encrypt;
 import com.momo.common.util.StrUtil;
@@ -50,6 +51,10 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
 
     @Override
     public String sysUserAdd(SysUserAddRes sysUserAddRes) {
+        UserAccountPwdDO exitsUserAccountPwdDO = userAccountPwdMapper.sysUserAccountLogin(sysUserAddRes.getSysUserLoginName());
+        if (exitsUserAccountPwdDO != null) {
+            throw BizException.fail("登录账号已存在");
+        }
         RedisUser redisUser = this.redisUser();
         UserDO userDO = new UserDO();
         BeanUtils.copyProperties(sysUserAddRes, userDO);
