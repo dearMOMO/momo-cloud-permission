@@ -25,6 +25,10 @@ public class SysUserListRes extends UserDO {
     private boolean editButton = true;
     //是否显示修改密码按钮
     private boolean pwdButton = true;
+    //是否显示状态按钮
+    private boolean flagButton = true;
+    //是否显示授权角色按钮
+    private boolean roleButton = true;
 
 
     //账号密码  是否绑定

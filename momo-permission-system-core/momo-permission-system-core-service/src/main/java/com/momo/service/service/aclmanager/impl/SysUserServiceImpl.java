@@ -62,20 +62,28 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
                 if (rolesSet.contains(0)) {
                     sysUserListRes.setEditButton(false);
                     sysUserListRes.setPwdButton(false);
+                    sysUserListRes.setFlagButton(false);
+                    sysUserListRes.setRoleButton(false);
                 }
                 if (rolesSet.contains(1)) {
                     sysUserListRes.setEditButton(false);
                     sysUserListRes.setPwdButton(false);
+                    sysUserListRes.setFlagButton(false);
+                    sysUserListRes.setRoleButton(false);
                 }
                 //用户是自己登陆，则显示自己
                 if (sysUserListDO.getId().equals(redisUser.getBaseId())) {
                     sysUserListRes.setEditButton(true);
                     sysUserListRes.setPwdButton(true);
+                    sysUserListRes.setFlagButton(true);
+                    sysUserListRes.setRoleButton(true);
                 }
                 //超级管理员，则显示全部
                 if(superAdmins.contains(redisUser.getSysUserPhone())){
                     sysUserListRes.setEditButton(true);
                     sysUserListRes.setPwdButton(true);
+                    sysUserListRes.setFlagButton(true);
+                    sysUserListRes.setRoleButton(true);
                 }
                 UserAccountPwdDO userAccountPwdDO = sysUserListDO.getUserAccountPwdDO();
                 //密码绑定

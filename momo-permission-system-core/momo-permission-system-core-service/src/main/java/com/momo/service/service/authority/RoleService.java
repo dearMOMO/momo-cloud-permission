@@ -166,25 +166,30 @@ public class RoleService extends BaseService {
             if (roleDO.getSysRoleType() == 0) {
                 rolePageListRes.setEditButton(false);
                 rolePageListRes.setAuthorButton(false);
+                rolePageListRes.setFlagButton(false);
             }
             if (roleDO.getSysRoleType() == 1) {
                 rolePageListRes.setEditButton(false);
                 rolePageListRes.setAuthorButton(false);
+                rolePageListRes.setFlagButton(false);
             }
             // 角色列表包含自己角色则显示
             if (roleIds.contains(roleDO.getId())) {
                 rolePageListRes.setEditButton(true);
                 rolePageListRes.setAuthorButton(true);
+                rolePageListRes.setFlagButton(true);
             }
             //如果是老板，则显示自己
             if (checkAdminRole) {
                 rolePageListRes.setEditButton(true);
                 rolePageListRes.setAuthorButton(true);
+                rolePageListRes.setFlagButton(true);
             }
             //超级管理员，则显示全部
             if(superAdmins.contains(redisUser.getSysUserPhone())){
                 rolePageListRes.setEditButton(true);
                 rolePageListRes.setAuthorButton(true);
+                rolePageListRes.setFlagButton(true);
             }
             sysRolePageListRes.add(rolePageListRes);
         }
