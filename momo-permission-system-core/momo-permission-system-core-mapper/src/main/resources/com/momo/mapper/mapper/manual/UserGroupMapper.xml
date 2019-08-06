@@ -24,6 +24,20 @@
     sys_create_account_num, sys_open_account_num, name_top, name_bottom, flag, del_flag,
     create_by, create_time, update_time, update_by
   </sql>
+    <select id="getUserGroupPage" parameterType="map" resultMap="BaseResultMap">
+        select
+        id, uuid, user_group_name, sys_account_start_time, sys_account_end_time, sys_open_day,
+        sys_create_account_num, sys_open_account_num, name_top, name_bottom, flag, del_flag,create_time
+        from sys_user_group
+        <trim prefix="where" prefixOverrides="and">
+            <if test="flag!=null">
+                and flag =#{flag}
+            </if>
+            <if test="userGroupName!=null and userGroupName.trim()!=null">
+              and  user_group_name like CONCAT('%',#{userGroupName},'%')
+            </if>
+        </trim>
+    </select>
     <select id="getUserGroupById" parameterType="map" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
