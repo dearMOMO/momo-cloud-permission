@@ -146,7 +146,7 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
         //超级管理员 编辑所有
         if (superAdmins.contains(redisUser.getSysUserPhone())) {
             userMapper.updateByPrimaryKeySelective(userDO);
-            return "编辑用户状态成功";
+            return "用户状态设置成功";
         } else {
             //普通管理员 按需来
             if (superAdmins.contains(userDODetail.getSysUserPhone())) {
@@ -159,7 +159,7 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
                 throw BizException.fail("管理员状态不允许编辑");
             }
             userMapper.updateByPrimaryKeySelective(userDO);
-            return "编辑用户状态成功";
+            return "用户状态设置成功";
         }
     }
 
