@@ -59,7 +59,7 @@ public class RoleService extends BaseService {
         if (null == userDO) {
             throw BizException.fail("待授权的用户不存在");
         }
-        List<Long> roles = batchRoleUserReq.getRoles();
+        List<Long> roles = batchRoleUserReq.getRoleIds();
         List<Long> originAclIdList = authorityMapper.rolesByUserId(userDO.getId());
         if (originAclIdList.size() == roles.size()) {
             Set<Long> originAclIdSet = Sets.newHashSet(originAclIdList);
