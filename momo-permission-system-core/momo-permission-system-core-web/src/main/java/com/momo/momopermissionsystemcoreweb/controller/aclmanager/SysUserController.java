@@ -66,4 +66,15 @@ public class SysUserController {
         return JSONResult.ok(sysUserService.sysUserModify(sysUserAddRes));
     }
 
+    /**
+     * 用户状态
+     *
+     * @param sysUserAddRes
+     * @return
+     */
+    @PostMapping("/sysUserStatus/v1")
+    public JSONResult sysUserStatus(@Validated(SysUserAddRes.Status.class) @RequestBody SysUserAddRes sysUserAddRes) {
+        return JSONResult.ok(sysUserService.sysUserModify(sysUserAddRes));
+    }
+
 }
