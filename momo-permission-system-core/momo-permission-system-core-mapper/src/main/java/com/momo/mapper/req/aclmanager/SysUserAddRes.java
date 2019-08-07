@@ -22,7 +22,7 @@ import javax.validation.constraints.NotNull;
 //@EqualsAndHashCode(callSuper = true, of = {"id"})
 public class SysUserAddRes extends BaseReq {
 
-    @NotBlank(message = "uuid必填", groups = {Detail.class, Status.class})
+    @NotBlank(message = "uuid必填", groups = {Detail.class, Status.class,Permission.class})
     private String uuid;
     /**
      * sysUserName 姓名.
@@ -51,7 +51,7 @@ public class SysUserAddRes extends BaseReq {
     /**
      * sysUserPwd 密码.
      */
-    @NotBlank(message = "密码必填", groups = {Add.class})
+    @NotBlank(message = "密码必填", groups = {Add.class,Permission.class})
     private String sysUserPwd;
     /**
      * remark 备注.

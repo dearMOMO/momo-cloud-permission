@@ -135,7 +135,7 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
     public String sysUserStatus(SysUserAddRes sysUserAddRes) {
         UserDO userDODetail = userMapper.uuid(sysUserAddRes.getUuid());
         if (null == userDODetail) {
-            throw BizException.fail("待编辑的用户不存在");
+            throw BizException.fail("待编辑的用户信息不存在");
         }
         RedisUser redisUser = this.redisUser();
         UserDO userDO = new UserDO();
@@ -146,20 +146,55 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
         //超级管理员 编辑所有
         if (superAdmins.contains(redisUser.getSysUserPhone())) {
             userMapper.updateByPrimaryKeySelective(userDO);
-            return "编辑用户成功";
+            return "编辑用户状态成功";
         } else {
             //普通管理员 按需来
             if (superAdmins.contains(userDODetail.getSysUserPhone())) {
-                throw BizException.fail("超级管理员信息不允许编辑");
+                throw BizException.fail("超级管理员状态不允许编辑");
             }
             List<RoleDO> roleDOS = roleMapper.getRolesByUserId(userDODetail.getId());
             //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
             Set<Integer> roleTypes = roleDOS.stream().map(roleDO -> roleDO.getSysRoleType()).collect(Collectors.toSet());
             if (roleTypes.contains(0) && !userDODetail.getId().equals(redisUser.getBaseId())) {
-                throw BizException.fail("管理员信息不允许编辑");
+                throw BizException.fail("管理员状态不允许编辑");
             }
             userMapper.updateByPrimaryKeySelective(userDO);
-            return "编辑用户成功";
+            return "编辑用户状态成功";
+        }
+    }
+
+    @Override
+    public String sysUserPwd(SysUserAddRes sysUserAddRes) {
+        UserDO userDODetail = userMapper.uuid(sysUserAddRes.getUuid());
+        if (null == userDODetail) {
+            throw BizException.fail("待编辑的用户不存在");
+        }
+        UserAccountPwdDO sysUserAccountByUserId = userAccountPwdMapper.sysUserAccountByUserId(userDODetail.getId());
+        UserAccountPwdDO userAccountPwdDO = new UserAccountPwdDO();
+        BeanUtils.copyProperties(sysUserAddRes, userAccountPwdDO);
+        String salt = StrUtil.genUUID();
+        userAccountPwdDO.setSysUserAuthSalt(salt);
+        String pwd = Encrypt.SHA512AndSHA256(sysUserAddRes.getSysUserPwd(), salt);
+        userAccountPwdDO.setSysUserPwd(pwd);
+        userAccountPwdDO.setId(sysUserAccountByUserId.getId());
+        RedisUser redisUser = this.redisUser();
+        //超级管理员 编辑所有
+        if (superAdmins.contains(redisUser.getSysUserPhone())) {
+            userAccountPwdMapper.updateByPrimaryKeySelective(userAccountPwdDO);
+            return "修改密码成功";
+        } else {
+            //普通管理员 按需来
+            if (superAdmins.contains(userDODetail.getSysUserPhone())) {
+                throw BizException.fail("超级管理员密码不允许编辑");
+            }
+            List<RoleDO> roleDOS = roleMapper.getRolesByUserId(userDODetail.getId());
+            //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
+            Set<Integer> roleTypes = roleDOS.stream().map(roleDO -> roleDO.getSysRoleType()).collect(Collectors.toSet());
+            if (roleTypes.contains(0) && !userDODetail.getId().equals(redisUser.getBaseId())) {
+                throw BizException.fail("管理员密码不允许编辑");
+            }
+            userAccountPwdMapper.updateByPrimaryKeySelective(userAccountPwdDO);
+            return "修改密码成功";
         }
     }
 

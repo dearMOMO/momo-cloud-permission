@@ -11,11 +11,12 @@ import java.security.NoSuchAlgorithmException;
  **/
 public class Encrypt {
     public static void main(String[] args) {
-        System.out.println(SHA512AndSHA256("123456","msnfhfy%$6"));
+        System.out.println(Encrypt.SHA512AndSHA256("1234567qwe", "ceb15d0f6d9445ec84303fb98575ea9f"));
+        System.out.println(Encrypt.SHA512AndSHA256("1", "ceb15d0f6d9445ec84303fb98575ea9f"));
     }
 
     public static String SHA512AndSHA256(final String msg, final String salt) {
-        return SHA512(SHA512(SHA256("msg" + salt) + "msg" + salt));
+        return SHA512(SHA512(SHA256(msg + salt) + msg + salt));
     }
 
     /**

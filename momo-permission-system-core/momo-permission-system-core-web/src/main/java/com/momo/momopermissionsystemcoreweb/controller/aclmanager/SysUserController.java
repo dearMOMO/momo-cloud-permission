@@ -77,4 +77,16 @@ public class SysUserController {
         return JSONResult.ok(sysUserService.sysUserStatus(sysUserAddRes));
     }
 
+
+    /**
+     * 用户密码
+     *
+     * @param sysUserAddRes
+     * @return
+     */
+    @PostMapping("/sysUserPwd/v1")
+    public JSONResult sysUserPwd(@Validated(SysUserAddRes.Permission.class) @RequestBody SysUserAddRes sysUserAddRes) {
+        return JSONResult.ok(sysUserService.sysUserPwd(sysUserAddRes));
+    }
+
 }
