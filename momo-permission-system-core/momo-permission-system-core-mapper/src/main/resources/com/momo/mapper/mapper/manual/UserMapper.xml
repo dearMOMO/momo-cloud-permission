@@ -251,4 +251,64 @@
             </if>
         </trim>
     </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.momo.mapper.dataobject.UserDO">
+        update sys_user
+        <set>
+            <if test="sysUserName != null">
+                sys_user_name = #{sysUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="uuid != null">
+                uuid = #{uuid,jdbcType=VARCHAR},
+            </if>
+            <if test="sysUserPhone != null">
+                sys_user_phone = #{sysUserPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="sysUserEmail != null">
+                sys_user_email = #{sysUserEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="sysUserProvinceName != null">
+                sys_user_province_name = #{sysUserProvinceName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysUserProvince != null">
+                sys_user_province = #{sysUserProvince,jdbcType=BIGINT},
+            </if>
+            <if test="sysUserCityName != null">
+                sys_user_city_name = #{sysUserCityName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysUserCity != null">
+                sys_user_city = #{sysUserCity,jdbcType=BIGINT},
+            </if>
+            <if test="sysUserAreaName != null">
+                sys_user_area_name = #{sysUserAreaName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysUserArea != null">
+                sys_user_area = #{sysUserArea,jdbcType=BIGINT},
+            </if>
+            <if test="groupId != null">
+                group_id = #{groupId,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="flag != null">
+                flag = #{flag,jdbcType=INTEGER},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=INTEGER},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
 </mapper>

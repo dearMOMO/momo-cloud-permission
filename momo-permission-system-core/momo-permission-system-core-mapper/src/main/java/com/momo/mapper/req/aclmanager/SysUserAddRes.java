@@ -21,6 +21,9 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 //@EqualsAndHashCode(callSuper = true, of = {"id"})
 public class SysUserAddRes extends BaseReq {
+
+    @NotBlank(message = "uuid必填", groups = {Detail.class, Status.class})
+    private String uuid;
     /**
      * sysUserName 姓名.
      */
@@ -37,18 +40,18 @@ public class SysUserAddRes extends BaseReq {
     /**
      * flag 是否被禁用  0否 1禁用.
      */
-    @NotNull(message = "状态必填", groups = {Add.class, Modify.class})
+    @NotNull(message = "状态必填", groups = {Add.class, Modify.class, Status.class})
     private Integer flag;
     /**
      * sysUserLoginName 登录名.
      */
-    @NotBlank(message = "登录名必填", groups = {Add.class, Modify.class})
+    @NotBlank(message = "登录名必填", groups = {Add.class})
     @Email(message = "邮箱格式不正确")
     private String sysUserLoginName;
     /**
      * sysUserPwd 密码.
      */
-    @NotBlank(message = "密码必填", groups = {Add.class, Modify.class})
+    @NotBlank(message = "密码必填", groups = {Add.class})
     private String sysUserPwd;
     /**
      * remark 备注.

@@ -44,4 +44,26 @@ public class SysUserController {
         return JSONResult.ok(sysUserService.sysUserAdd(sysUserAddRes));
     }
 
+    /**
+     * 查询用户详情
+     *
+     * @param sysUserAddRes
+     * @return
+     */
+    @PostMapping("/sysUserAdd/v1")
+    public JSONResult sysUserDetail(@Validated(SysUserAddRes.Detail.class) @RequestBody SysUserAddRes sysUserAddRes) {
+        return JSONResult.ok(sysUserService.sysUserDetail(sysUserAddRes));
+    }
+
+    /**
+     * 查询用户详情
+     *
+     * @param sysUserAddRes
+     * @return
+     */
+    @PostMapping("/sysUserModify/v1")
+    public JSONResult sysUserModify(@Validated(SysUserAddRes.Modify.class) @RequestBody SysUserAddRes sysUserAddRes) {
+        return JSONResult.ok(sysUserService.sysUserModify(sysUserAddRes));
+    }
+
 }

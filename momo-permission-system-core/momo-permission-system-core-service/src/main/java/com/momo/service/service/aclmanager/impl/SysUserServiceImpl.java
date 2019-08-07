@@ -87,6 +87,26 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
     }
 
     @Override
+    public UserDO sysUserDetail(SysUserAddRes sysUserAddRes) {
+        UserDO userDODetail= userMapper.uuid(sysUserAddRes.getUuid());
+        if (null==userDODetail){
+            throw BizException.fail("待查询的用户不存在");
+        }
+        userDODetail.setId(null);
+        return userDODetail;
+    }
+
+    @Override
+    public UserDO sysUserModify(SysUserAddRes sysUserAddRes) {
+        UserDO userDODetail= userMapper.uuid(sysUserAddRes.getUuid());
+        if (null==userDODetail){
+            throw BizException.fail("待编辑的用户不存在");
+        }
+
+        return null;
+    }
+
+    @Override
     public PageInfo<SysUserListRes> sysUserList(SysUserListReq sysUserListReq) {
         RedisUser redisUser = this.redisUser();
         PageHelper.startPage(sysUserListReq.getPageNum(), sysUserListReq.getPageSize(), "id desc");
