@@ -74,7 +74,7 @@ public class SysUserController {
      */
     @PostMapping("/sysUserStatus/v1")
     public JSONResult sysUserStatus(@Validated(SysUserAddRes.Status.class) @RequestBody SysUserAddRes sysUserAddRes) {
-        return JSONResult.ok(sysUserService.sysUserModify(sysUserAddRes));
+        return JSONResult.ok(sysUserService.sysUserStatus(sysUserAddRes));
     }
 
 }

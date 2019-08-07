@@ -132,6 +132,38 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
     }
 
     @Override
+    public String sysUserStatus(SysUserAddRes sysUserAddRes) {
+        UserDO userDODetail = userMapper.uuid(sysUserAddRes.getUuid());
+        if (null == userDODetail) {
+            throw BizException.fail("待编辑的用户不存在");
+        }
+        RedisUser redisUser = this.redisUser();
+        UserDO userDO = new UserDO();
+        userDO.setFlag(sysUserAddRes.getFlag());
+        userDO.setId(userDODetail.getId());
+        userDO.setUpdateBy(redisUser.getSysUserName());
+        userDO.setUpdateTime(DateUtil.getDateTime());
+        //超级管理员 编辑所有
+        if (superAdmins.contains(redisUser.getSysUserPhone())) {
+            userMapper.updateByPrimaryKeySelective(userDO);
+            return "编辑用户成功";
+        } else {
+            //普通管理员 按需来
+            if (superAdmins.contains(userDODetail.getSysUserPhone())) {
+                throw BizException.fail("超级管理员信息不允许编辑");
+            }
+            List<RoleDO> roleDOS = roleMapper.getRolesByUserId(userDODetail.getId());
+            //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
+            Set<Integer> roleTypes = roleDOS.stream().map(roleDO -> roleDO.getSysRoleType()).collect(Collectors.toSet());
+            if (roleTypes.contains(0) && !userDODetail.getId().equals(redisUser.getBaseId())) {
+                throw BizException.fail("管理员信息不允许编辑");
+            }
+            userMapper.updateByPrimaryKeySelective(userDO);
+            return "编辑用户成功";
+        }
+    }
+
+    @Override
     public PageInfo<SysUserListRes> sysUserList(SysUserListReq sysUserListReq) {
         RedisUser redisUser = this.redisUser();
         PageHelper.startPage(sysUserListReq.getPageNum(), sysUserListReq.getPageSize(), "id desc");
