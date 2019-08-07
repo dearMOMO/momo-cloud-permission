@@ -22,7 +22,7 @@ public class RoleReq extends BaseReq {
     /**
      * uuid UUID.
      */
-    @NotBlank(message = "uuid必填",groups = {Modify.class,Status.class,Detail.class})
+    @NotBlank(message = "uuid必填",groups = {Modify.class,Status.class,Detail.class,Permission.class})
     private String uuid;
     /**
      * compId 企业id.

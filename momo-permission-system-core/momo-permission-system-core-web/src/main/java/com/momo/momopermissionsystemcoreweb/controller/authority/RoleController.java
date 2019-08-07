@@ -61,8 +61,8 @@ public class RoleController {
         return JSONResult.ok(roleService.roleHaveAclTree(loginAuthReq));
     }
 
-    @PostMapping("/selectRole/v1")
-    public JSONResult selectRole() {
-        return JSONResult.ok(roleService.selectRole());
+    @PostMapping("/userCheckRoles/v1")
+    public JSONResult userCheckRoles(@Validated(RoleReq.Permission.class) @RequestBody RoleReq roleReq) {
+        return JSONResult.ok(roleService.userCheckedRoles(roleReq));
     }
 }

@@ -19,6 +19,7 @@ import com.momo.mapper.req.authority.BatchRoleUserReq;
 import com.momo.mapper.req.authority.RoleReq;
 import com.momo.mapper.req.sysmain.LoginAuthReq;
 import com.momo.mapper.req.sysmain.RedisUser;
+import com.momo.mapper.res.aclmanager.SysRoleCheckedRes;
 import com.momo.mapper.res.aclmanager.SysRolePageListRes;
 import com.momo.mapper.res.authority.AclTreeRes;
 import com.momo.service.service.BaseService;
@@ -31,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @program: momo-cloud-permission
@@ -204,12 +206,37 @@ public class RoleService extends BaseService {
         return roleDO;
     }
 
-    public List<RoleDO> selectRole() {
+    public SysRoleCheckedRes userCheckedRoles(RoleReq roleReq) {
+        UserDO userDO = userMapper.uuid(roleReq.getUuid());
+        if (null == userDO) {
+            throw BizException.fail("带授权的用户不存在");
+        }
         RoleDO selfRoleDO = new RoleDO();
         RedisUser redisUser = this.redisUser();
         selfRoleDO.setGroupId(redisUser.getGroupId());
+        //企业下所有角色
         List<RoleDO> selfRoleDOS = roleMapper.roleList(selfRoleDO);
-        return selfRoleDOS;
+
+        //选择用户所拥有的角色
+        List<RoleDO> roleDOList = roleMapper.getRolesByUserId(userDO.getId());
+        Set<Long> roleSet = Sets.newHashSet();
+        //已选中列表
+        if (CollectionUtils.isNotEmpty(roleDOList)) {
+            roleSet = roleDOList.stream().map(roleDO -> roleDO.getId()).collect(Collectors.toSet());
+        }
+        SysRoleCheckedRes roleCheckedRes = new SysRoleCheckedRes();
+        List<SysRoleCheckedRes> sysRoleCheckedRes = Lists.newArrayList();
+        selfRoleDOS.forEach(roleDO -> {
+            SysRoleCheckedRes sysRoleChecke = new SysRoleCheckedRes();
+            BeanUtils.copyProperties(roleDO, sysRoleChecke);
+            if (roleDO.getFlag() == 0) {
+                sysRoleChecke.setDisabled(true);
+            }
+            sysRoleCheckedRes.add(sysRoleChecke);
+        });
+        roleCheckedRes.setRoles(sysRoleCheckedRes);
+        roleCheckedRes.setCheckList(roleSet);
+        return roleCheckedRes;
     }
 
     @Transactional
