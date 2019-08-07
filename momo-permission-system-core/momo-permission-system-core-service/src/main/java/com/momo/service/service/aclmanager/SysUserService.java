@@ -26,5 +26,5 @@ public interface SysUserService {
 
     public UserDO sysUserDetail(SysUserAddRes sysUserAddRes);
 
-    public UserDO sysUserModify(SysUserAddRes sysUserAddRes);
+    public String sysUserModify(SysUserAddRes sysUserAddRes);
 }

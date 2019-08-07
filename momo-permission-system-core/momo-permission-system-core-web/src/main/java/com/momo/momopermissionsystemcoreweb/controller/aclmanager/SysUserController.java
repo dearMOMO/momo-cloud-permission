@@ -50,13 +50,13 @@ public class SysUserController {
      * @param sysUserAddRes
      * @return
      */
-    @PostMapping("/sysUserAdd/v1")
+    @PostMapping("/sysUserDetail/v1")
     public JSONResult sysUserDetail(@Validated(SysUserAddRes.Detail.class) @RequestBody SysUserAddRes sysUserAddRes) {
         return JSONResult.ok(sysUserService.sysUserDetail(sysUserAddRes));
     }
 
     /**
-     * 查询用户详情
+     * 编辑
      *
      * @param sysUserAddRes
      * @return

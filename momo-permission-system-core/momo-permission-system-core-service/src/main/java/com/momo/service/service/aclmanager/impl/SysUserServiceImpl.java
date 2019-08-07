@@ -12,6 +12,7 @@ import com.momo.mapper.dataobject.RoleDO;
 import com.momo.mapper.dataobject.UserAccountPwdDO;
 import com.momo.mapper.dataobject.UserDO;
 import com.momo.mapper.dataobject.manual.SysUserListDO;
+import com.momo.mapper.mapper.manual.RoleMapper;
 import com.momo.mapper.mapper.manual.UserAccountPwdMapper;
 import com.momo.mapper.mapper.manual.UserMapper;
 import com.momo.mapper.req.aclmanager.SysUserAddRes;
@@ -45,6 +46,8 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
     private UserMapper userMapper;
     @Autowired
     private UserAccountPwdMapper userAccountPwdMapper;
+    @Autowired
+    private RoleMapper roleMapper;
     @Value("${momo.superAdmins}")
     private String superAdmins = "";
     private SnowFlake snowFlake = new SnowFlake(1, 1);
@@ -88,8 +91,8 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
 
     @Override
     public UserDO sysUserDetail(SysUserAddRes sysUserAddRes) {
-        UserDO userDODetail= userMapper.uuid(sysUserAddRes.getUuid());
-        if (null==userDODetail){
+        UserDO userDODetail = userMapper.uuid(sysUserAddRes.getUuid());
+        if (null == userDODetail) {
             throw BizException.fail("待查询的用户不存在");
         }
         userDODetail.setId(null);
@@ -97,13 +100,35 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
     }
 
     @Override
-    public UserDO sysUserModify(SysUserAddRes sysUserAddRes) {
-        UserDO userDODetail= userMapper.uuid(sysUserAddRes.getUuid());
-        if (null==userDODetail){
+    public String sysUserModify(SysUserAddRes sysUserAddRes) {
+        UserDO userDODetail = userMapper.uuid(sysUserAddRes.getUuid());
+        if (null == userDODetail) {
             throw BizException.fail("待编辑的用户不存在");
         }
-
-        return null;
+        RedisUser redisUser = this.redisUser();
+        UserDO userDO = new UserDO();
+        BeanUtils.copyProperties(sysUserAddRes, userDO);
+        userDO.setId(userDODetail.getId());
+        userDO.setUpdateBy(redisUser.getSysUserName());
+        userDO.setUpdateTime(DateUtil.getDateTime());
+        //超级管理员 编辑所有
+        if (superAdmins.contains(redisUser.getSysUserPhone())) {
+            userMapper.updateByPrimaryKeySelective(userDO);
+            return "编辑用户成功";
+        } else {
+            //普通管理员 按需来
+            if (superAdmins.contains(userDODetail.getSysUserPhone())) {
+                throw BizException.fail("超级管理员信息不允许编辑");
+            }
+            List<RoleDO> roleDOS = roleMapper.getRolesByUserId(userDODetail.getId());
+            //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
+            Set<Integer> roleTypes = roleDOS.stream().map(roleDO -> roleDO.getSysRoleType()).collect(Collectors.toSet());
+            if (roleTypes.contains(0) && !userDODetail.getId().equals(redisUser.getBaseId())) {
+                throw BizException.fail("管理员信息不允许编辑");
+            }
+            userMapper.updateByPrimaryKeySelective(userDO);
+            return "编辑用户成功";
+        }
     }
 
     @Override
