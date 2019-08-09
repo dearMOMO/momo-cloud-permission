@@ -107,7 +107,8 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
         }
         RedisUser redisUser = this.redisUser();
         UserDO userDO = new UserDO();
-        BeanUtils.copyProperties(sysUserAddRes, userDO);
+        userDO.setSysUserName(sysUserAddRes.getSysUserName());
+        userDO.setFlag(sysUserAddRes.getFlag());
         userDO.setId(userDODetail.getId());
         userDO.setUpdateBy(redisUser.getSysUserName());
         userDO.setUpdateTime(DateUtil.getDateTime());
@@ -171,7 +172,7 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
         }
         UserAccountPwdDO sysUserAccountByUserId = userAccountPwdMapper.sysUserAccountByUserId(userDODetail.getId());
         UserAccountPwdDO userAccountPwdDO = new UserAccountPwdDO();
-        BeanUtils.copyProperties(sysUserAddRes, userAccountPwdDO);
+        userAccountPwdDO.setSysUserPwd(sysUserAddRes.getSysUserPwd());
         String salt = StrUtil.genUUID();
         userAccountPwdDO.setSysUserAuthSalt(salt);
         String pwd = Encrypt.SHA512AndSHA256(sysUserAddRes.getSysUserPwd(), salt);
