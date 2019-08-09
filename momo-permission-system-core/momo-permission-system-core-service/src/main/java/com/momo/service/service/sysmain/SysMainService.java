@@ -69,11 +69,11 @@ public class SysMainService extends BaseService {
         //剔除超级管理员限制
         if (!superAdmins.contains(userAccountPwdDO.getSysUserLoginName())) {
             //删除状态(0-正常，1-删除)
-            if (1 == userAccountPwdDO.getDelFlag()) {
+            if (userAccountPwdDO.getDelFlag().equals(1)) {
                 throw BizException.fail("您的账户已被删除，请联系管理员");
             }
             //状态 0启用  1禁用
-            if (1 == userAccountPwdDO.getFlag()) {
+            if (userAccountPwdDO.getFlag().equals(1)) {
                 throw BizException.fail("您的账户已被禁用，请联系管理员");
             }
         }
@@ -87,13 +87,13 @@ public class SysMainService extends BaseService {
             if (null == userGroupDO) {
                 throw BizException.fail("您所在的用户组不存在");
             }
-            if (1 == userGroupDO.getFlag()) {
+            if (userGroupDO.getFlag().equals(1)) {
                 throw BizException.fail("您所在的用户组已被禁用");
             }
-            if (1 == userGroupDO.getDelFlag()) {
+            if (userGroupDO.getDelFlag().equals(1)) {
                 throw BizException.fail("您所在的用户组已被删除");
             }
-            if (1 != userGroupDO.getId() && DateUtils.timeDifference(userGroupDO.getSysAccountEndTime())) {
+            if (userGroupDO.getId().equals(1L) && DateUtils.timeDifference(userGroupDO.getSysAccountEndTime())) {
                 throw BizException.fail("您所在的用户组时间已到期,请续约后在次登录");
             }
         }
@@ -115,7 +115,7 @@ public class SysMainService extends BaseService {
         Integer loginNumber = userAccountPwdDO.getSysLoginNumber();
         if (loginNumber.equals(0)) {
             throw BizException.fail("您已被限制登陆，请联系管理员");
-        } else if (loginNumber != -1) {//限制登录次数
+        } else if (!loginNumber.equals(-1) ) {//限制登录次数
             //redis  key--》用户id     v----》 List<String> String=uuid
             //redis  key--》uuid     v----》 token
             Object listUuid = redisUtil.get(RedisKeyEnum.REDIS_KEY_USER_ID.getKey() + userDO.getId());

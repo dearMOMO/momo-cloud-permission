@@ -164,12 +164,12 @@ public class RoleService extends BaseService {
             BeanUtils.copyProperties(roleDO, rolePageListRes);
             //管理员类型 隐藏
             //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
-            if (roleDO.getSysRoleType() == 0) {
+            if (roleDO.getSysRoleType().equals(0)) {
                 rolePageListRes.setEditButton(false);
                 rolePageListRes.setAuthorButton(false);
                 rolePageListRes.setFlagButton(false);
             }
-            if (roleDO.getSysRoleType() == 1) {
+            if (roleDO.getSysRoleType().equals(1)) {
                 rolePageListRes.setEditButton(false);
                 rolePageListRes.setAuthorButton(false);
                 rolePageListRes.setFlagButton(false);
