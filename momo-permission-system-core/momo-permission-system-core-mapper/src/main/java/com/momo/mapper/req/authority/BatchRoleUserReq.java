@@ -3,8 +3,6 @@ package com.momo.mapper.req.authority;
 import com.google.common.collect.Lists;
 import com.momo.common.error.BaseReq;
 import com.momo.mapper.dataobject.AclDO;
-import com.momo.mapper.dataobject.RoleAclDO;
-import com.momo.mapper.dataobject.RoleDO;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
