@@ -245,12 +245,15 @@ public class RoleService extends BaseService {
         if (checkRoleName(roleReq.getSysRoleName(), null, redisUser.getGroupId())) {
             throw BizException.fail("角色名称已存在");
         }
-        //角色的类型，0：管理员角色，1：普通用户 2其他
-        if (roleReq.getSysRoleType().equals(0)) {
-            if (checkAdminRole("0", null, redisUser.getGroupId())) {
-                throw BizException.fail("管理员角色已存在");
+        if (!redisUser.getGroupId().equals(1L)) {
+            //角色的类型，0：管理员角色，1：普通用户 2其他
+            if (roleReq.getSysRoleType().equals(0)) {
+                if (checkAdminRole("0", null, redisUser.getGroupId())) {
+                    throw BizException.fail("管理员角色已存在");
+                }
             }
         }
+
 
         RoleDO record = new RoleDO();
         BeanUtils.copyProperties(roleReq, record);
@@ -276,25 +279,25 @@ public class RoleService extends BaseService {
         if (checkRoleName(roleReq.getSysRoleName(), selfRoleDO.getId(), redisUser.getGroupId())) {
             throw BizException.fail("角色名称已存在");
         }
-        //角色的类型，0：管理员角色，1：普通用户 2其他
-        if (roleReq.getSysRoleType().equals(0)) {
-            if (checkAdminRole("0", null, redisUser.getGroupId())) {
-                throw BizException.fail("管理员角色已存在");
-            }
-        }
+
         //非总部，不可以操作管理员敏感权限
         if (!redisUser.getGroupId().equals(1L)) {
-            if (!redisUser.getGroupId().equals(1L)) {
-                //角色的类型，0：管理员角色，1：普通用户 2其他
-                //屏蔽非总部操作第三方管理员角色
-                if (selfRoleDO.getSysRoleType().equals(0) && roleReq.getSysRoleType().equals(1)) {
-                    throw BizException.fail("您无权限操作管理员角色类型");
+            //角色的类型，0：管理员角色，1：普通用户 2其他
+            if (roleReq.getSysRoleType().equals(0)) {
+                if (checkAdminRole("0", null, redisUser.getGroupId())) {
+                    throw BizException.fail("管理员角色已存在");
                 }
-                //屏蔽非总部操作第三方管理员角色状态
-                //状态 0启用  1禁用
-                if ((selfRoleDO.getSysRoleType().equals(0) && roleReq.getFlag().equals(1))) {
-                    throw BizException.fail("您无权限操作管理员角色状态");
-                }
+            }
+
+            //角色的类型，0：管理员角色，1：普通用户 2其他
+            //屏蔽非总部操作第三方管理员角色
+            if (selfRoleDO.getSysRoleType().equals(0) && roleReq.getSysRoleType().equals(1)) {
+                throw BizException.fail("您无权限操作管理员角色类型");
+            }
+            //屏蔽非总部操作第三方管理员角色状态
+            //状态 0启用  1禁用
+            if ((selfRoleDO.getSysRoleType().equals(0) && roleReq.getFlag().equals(1))) {
+                throw BizException.fail("您无权限操作管理员角色状态");
             }
         }
         RoleDO record = new RoleDO();
