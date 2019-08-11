@@ -8,10 +8,7 @@ import com.momo.common.error.BizException;
 import com.momo.common.util.DateUtil;
 import com.momo.common.util.StrUtil;
 import com.momo.common.util.snowFlake.SnowFlake;
-import com.momo.mapper.dataobject.RoleAclDO;
-import com.momo.mapper.dataobject.RoleDO;
-import com.momo.mapper.dataobject.RoleUserDO;
-import com.momo.mapper.dataobject.UserDO;
+import com.momo.mapper.dataobject.*;
 import com.momo.mapper.mapper.manual.AuthorityMapper;
 import com.momo.mapper.mapper.manual.RoleMapper;
 import com.momo.mapper.mapper.manual.UserMapper;
@@ -86,11 +83,11 @@ public class RoleService extends BaseService {
         if (!redisUser.getGroupId().equals(1L) && "0".equals(roleDO.getSysRoleType())) {
             throw BizException.fail("您无权限操作");
         }
-        List<RoleAclDO> roleAclDOS = batchRoleUserReq.getAcls();
+        List<AclDO> aclDOS = batchRoleUserReq.getAcls();
         List<Long> acls = Lists.newArrayList();
-        if (CollectionUtils.isNotEmpty(roleAclDOS)) {
-            roleAclDOS.forEach(roleAclDO -> {
-                acls.add(roleAclDO.getSysAclId());
+        if (CollectionUtils.isNotEmpty(aclDOS)) {
+            aclDOS.forEach(roleAclDO -> {
+                acls.add(roleAclDO.getId());
             });
         }
         List<Long> originAclIdList = authorityMapper.aclsByRoleId(Sets.newHashSet(roleDO.getId()), null);
@@ -104,7 +101,7 @@ public class RoleService extends BaseService {
                 return "为角色授权权限成功";
             }
         }
-        updateRoleAcls(roleDO.getId(), roleAclDOS, redisUser, roleDO.getGroupId(), acls, roleDO.getSysRoleType(), alcIds);
+        updateRoleAcls(roleDO.getId(), aclDOS, redisUser, roleDO.getGroupId(), acls, roleDO.getSysRoleType(), alcIds);
         return "为角色授权权限成功";
     }
 
@@ -208,7 +205,7 @@ public class RoleService extends BaseService {
 
     public boolean showAdminRoleButton() {
         RedisUser redisUser = this.redisUser();
-        if (redisUser.getGroupId().equals(1L)){
+        if (redisUser.getGroupId().equals(1L)) {
             return true;
         }
         return false;
@@ -343,7 +340,7 @@ public class RoleService extends BaseService {
     }
 
     @Transactional
-    public void updateRoleAcls(Long roleId, List<RoleAclDO> aclIdList, RedisUser redisUser, Long groupId, List<Long> acls, Integer roleType, List<Long> alcIds) {
+    public void updateRoleAcls(Long roleId, List<AclDO> aclIdList, RedisUser redisUser, Long groupId, List<Long> acls, Integer roleType, List<Long> alcIds) {
         roleMapper.deleteRoleAclsByRoleId(roleId);
         //角色的类型，0：管理员角色，1：普通用户 2其他
         if (roleType.equals(0)) {
@@ -354,12 +351,12 @@ public class RoleService extends BaseService {
             return;
         }
         List<RoleAclDO> roleUserList = Lists.newArrayList();
-        for (RoleAclDO aclId : aclIdList) {
+        for (AclDO aclId : aclIdList) {
             RoleAclDO roleUserDO = new RoleAclDO();
             roleUserDO.setId(snowFlake.nextId());
             roleUserDO.setDelFlag(0);
             roleUserDO.setGroupId(groupId);
-            roleUserDO.setSysAclId(aclId.getSysAclId());
+            roleUserDO.setSysAclId(aclId.getId());
             roleUserDO.setSysRoleId(roleId);
             roleUserDO.setSysAclPermissionType(aclId.getSysAclPermissionType());
             roleUserDO.setUuid(StrUtil.genUUID());

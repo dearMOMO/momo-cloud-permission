@@ -2,7 +2,9 @@ package com.momo.mapper.req.authority;
 
 import com.google.common.collect.Lists;
 import com.momo.common.error.BaseReq;
+import com.momo.mapper.dataobject.AclDO;
 import com.momo.mapper.dataobject.RoleAclDO;
+import com.momo.mapper.dataobject.RoleDO;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -27,6 +29,6 @@ public class BatchRoleUserReq extends BaseReq {
     //##########        权限列表给角色
     @NotBlank(message = "角色uuid 必填", groups = {Permission.class})
     private String roleUuid;
-    private List<RoleAclDO> acls = Lists.newArrayList();
+    private List<AclDO> acls = Lists.newArrayList();
 
 }
