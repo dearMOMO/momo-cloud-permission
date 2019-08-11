@@ -206,6 +206,14 @@ public class RoleService extends BaseService {
         return roleDO;
     }
 
+    public boolean showAdminRoleButton() {
+        RedisUser redisUser = this.redisUser();
+        if (redisUser.getGroupId().equals(1L)){
+            return true;
+        }
+        return false;
+    }
+
     public SysRoleCheckedRes userCheckedRoles(RoleReq roleReq) {
         UserDO userDO = userMapper.uuid(roleReq.getUuid());
         if (null == userDO) {

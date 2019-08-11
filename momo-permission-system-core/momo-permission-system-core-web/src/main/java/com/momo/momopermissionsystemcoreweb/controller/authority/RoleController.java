@@ -31,6 +31,11 @@ public class RoleController {
         return JSONResult.ok(roleService.showRole(roleReq));
     }
 
+    @RequestMapping("/showAdminRoleButton/v1")
+    public JSONResult showAdminRoleButton() {
+        return JSONResult.ok(roleService.showAdminRoleButton());
+    }
+
     @RequestMapping("/modify/v1")
     public JSONResult modify(@Validated(RoleReq.Modify.class) @RequestBody RoleReq roleReq) {
         return JSONResult.ok(roleService.updateByPrimaryKeySelective(roleReq));
