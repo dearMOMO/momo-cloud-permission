@@ -30,7 +30,9 @@
     sys_acl_seq, sys_acl_code, remark, flag, del_flag, create_by, create_time, update_time,
     update_by
     </sql>
-
+    <select id="checkAclPermissionType" parameterType="map" resultType="int">
+        select count(id) from sys_acl where sys_acl_parent_id=0 and sys_acl_permission_type=#{sys_acl_permission_type}
+    </select>
     <select id="getChildAclModuleListByLevel" parameterType="map" resultMap="BaseResultMap">
         SELECT
            id, uuid, sys_acl_action, sys_acl_router, sys_acl_name, sys_acl_component_name, sys_acl_parent_id,

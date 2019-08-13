@@ -109,6 +109,10 @@ public class AclService extends BaseService {
 
     @Transactional
     public String saveSys(AclReq aclReq) {
+        int checkAclPermissionType=aclMapper.checkAclPermissionType(aclReq.getSysAclPermissionType());
+        if (checkAclPermissionType>0){
+            throw BizException.fail("菜单系统类型 值 已存在");
+        }
         RedisUser redisUser = this.redisUser();
         AclDO record = new AclDO();
         BeanUtils.copyProperties(aclReq, record);

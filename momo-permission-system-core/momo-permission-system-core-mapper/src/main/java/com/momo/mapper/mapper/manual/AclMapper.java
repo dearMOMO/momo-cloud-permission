@@ -45,4 +45,10 @@ public interface AclMapper {
 
     List<AclDO> aclUuids(@Param("uuids")Set<String> uuids);
 
+    /**
+     * 检查 菜单系统类型  是否存在
+     * @return
+     */
+    int checkAclPermissionType(@Param("sys_acl_permission_type")Long sys_acl_permission_type);
+
 }
