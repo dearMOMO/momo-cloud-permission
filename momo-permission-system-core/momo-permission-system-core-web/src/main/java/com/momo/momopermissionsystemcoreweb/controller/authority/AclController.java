@@ -34,6 +34,11 @@ public class AclController {
         return JSONResult.ok(aclService.insertSelective(aclReq));
     }
 
+    @RequestMapping("/saveSys/v1")
+    public JSONResult saveSys(@Validated(AclReq.Permission.class) @RequestBody AclReq aclReq) {
+        return JSONResult.ok(aclService.saveSys(aclReq));
+    }
+
     @RequestMapping("/modify/v1")
     public JSONResult modify(@Validated(AclReq.Modify.class) @RequestBody AclReq aclReq) {
         return JSONResult.ok(aclService.updateByPrimaryKeySelective(aclReq));

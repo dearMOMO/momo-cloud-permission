@@ -2,6 +2,7 @@ package com.momo.mapper.req.authority;
 
 import com.momo.common.error.BaseReq;
 import lombok.*;
+import org.springframework.format.annotation.NumberFormat;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -23,12 +24,12 @@ public class AclReq extends BaseReq {
     /**
      * sysAclModuleType 菜单系统类型 1 系统管理 2资产管理.
      */
-    @NotNull(message = "菜单系统类型 必填", groups = {save.class, Modify.class})
+    @NotNull(message = "菜单系统类型 必填", groups = {save.class, Modify.class,Permission.class})
     private Long sysAclPermissionType;
     /**
      * sysAclModuleParentId 上级权限id.
      */
-    @NotNull(message = "上级权限id 必填", groups = {save.class, Modify.class})
+    @NotNull(message = "上级权限id 必填", groups = {save.class, Modify.class,Permission.class})
     private Long sysAclParentId;
     /**
      * remark 备注.
@@ -52,14 +53,14 @@ public class AclReq extends BaseReq {
     /**
      * sysAclName 权限名称.
      */
-    @NotBlank(message = "权限名称 必填", groups = {save.class, Modify.class})
+    @NotBlank(message = "权限名称 必填", groups = {save.class, Modify.class,Permission.class})
     private String sysAclName;
     /**
      * sysAclType 类型，1：菜单，2：按钮，3：其他.
      */
-    @NotNull(message = "类型，1：菜单，2：按钮，3：其他 必填", groups = {save.class, Modify.class})
-    @Max(value = 1,message = "权限类型：最大值为1")
-    @Min(value = 0,message = "权限类型：最小值为0")
+    @NotNull(message = "类型，1：菜单，2：按钮，3：其他 必填", groups = {save.class, Modify.class,Permission.class})
+    @Max(value = 3,message = "权限类型：最大值为1")
+    @Min(value = -1,message = "权限类型：最小值为-1")
     private Integer sysAclType;
     /**
      * sysAclUuid 唯一，32位字符串，查询用.
@@ -69,7 +70,7 @@ public class AclReq extends BaseReq {
     /**
      * flag 状态 0启用  1禁用.
      */
-    @NotNull(message = "状态 0启用  1禁用 必填", groups = {save.class,Status.class, Modify.class})
+    @NotNull(message = "状态 0启用  1禁用 必填", groups = {save.class,Status.class, Modify.class,Permission.class})
     @Max(value = 1,message = "状态：最大值为1")
     @Min(value = 0,message = "状态：最小值为0")
     private Integer flag;
@@ -86,7 +87,7 @@ public class AclReq extends BaseReq {
     /**
      * sysAclSeq 权限在当前模块下的顺序，由小到大.
      */
-    @NotNull(message = "权限在当前模块下的顺序，由小到大 必填", groups = {save.class, Modify.class})
+    @NotNull(message = "权限在当前模块下的顺序，由小到大 必填", groups = {save.class, Modify.class,Permission.class})
     @Min(value = 0,message = "排序：最小值为0")
     private Integer sysAclSeq;
 

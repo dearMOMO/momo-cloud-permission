@@ -74,7 +74,7 @@ public class AclService extends BaseService {
                 dto.setChecked(true);
             }
             //类型，0:目录 1：菜单，2：按钮，3：其他
-            if (acl.getSysAclType().equals(0)){
+            if (acl.getSysAclType().equals(0)) {
                 defaultexpandedKeys.add(acl.getUuid());
             }
             aclDtoList.add(dto);
@@ -93,6 +93,22 @@ public class AclService extends BaseService {
         if (checkUrl(aclReq.getSysAclUrl(), aclReq.getSysAclPermissionType(), null)) {
             throw BizException.fail("url重复");
         }
+        RedisUser redisUser = this.redisUser();
+        AclDO record = new AclDO();
+        BeanUtils.copyProperties(aclReq, record);
+        record.setSysAclLevel(LevelUtil.calculateLevel(getLevel(aclReq.getSysAclParentId()), aclReq.getSysAclParentId()));
+        record.setCreateBy(redisUser.getSysUserName());
+        record.setUpdateBy(redisUser.getSysUserName());
+        record.setCreateTime(DateUtil.getDateTime());
+        record.setUpdateTime(DateUtil.getDateTime());
+        record.setUuid(StrUtil.genUUID());
+        record.setId(snowFlake.nextId());
+        aclMapper.insertSelective(record);
+        return "新增权限成功";
+    }
+
+    @Transactional
+    public String saveSys(AclReq aclReq) {
         RedisUser redisUser = this.redisUser();
         AclDO record = new AclDO();
         BeanUtils.copyProperties(aclReq, record);
