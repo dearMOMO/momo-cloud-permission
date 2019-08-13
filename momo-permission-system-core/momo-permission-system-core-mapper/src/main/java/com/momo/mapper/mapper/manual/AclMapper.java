@@ -4,6 +4,7 @@ import com.momo.mapper.dataobject.AclDO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Set;
 
 
 public interface AclMapper {
@@ -41,5 +42,7 @@ public interface AclMapper {
      * @return
      */
     public int batchUpdateLevel(@Param("sysAclModuleList") List<AclDO> aclModuleDOS);
+
+    List<AclDO> aclUuids(@Param("uuids")Set<String> uuids);
 
 }
