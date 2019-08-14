@@ -3,8 +3,8 @@ package com.momo.service.service.aclmanager.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.momo.common.util.DateUtils;
 import com.momo.common.error.BizException;
-import com.momo.common.util.DateUtil;
 import com.momo.common.util.Encrypt;
 import com.momo.common.util.StrUtil;
 import com.momo.common.util.snowFlake.SnowFlake;
@@ -68,8 +68,8 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
         userDO.setGroupId(redisUser.getGroupId());
         userDO.setCreateBy(redisUser.getSysUserName());
         userDO.setUpdateBy(redisUser.getSysUserName());
-        userDO.setCreateTime(DateUtil.getDateTime());
-        userDO.setUpdateTime(DateUtil.getDateTime());
+        userDO.setCreateTime(DateUtils.getDateTime());
+        userDO.setUpdateTime(DateUtils.getDateTime());
         userMapper.insertSelective(userDO);
         UserAccountPwdDO userAccountPwdDO = new UserAccountPwdDO();
         BeanUtils.copyProperties(sysUserAddReq, userAccountPwdDO);
@@ -83,8 +83,8 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
         userAccountPwdDO.setUpdateBy(redisUser.getSysUserName());
         userAccountPwdDO.setUuid(StrUtil.genUUID());
         userAccountPwdDO.setSysUserId(id);
-        userAccountPwdDO.setCreateTime(DateUtil.getDateTime());
-        userAccountPwdDO.setUpdateTime(DateUtil.getDateTime());
+        userAccountPwdDO.setCreateTime(DateUtils.getDateTime());
+        userAccountPwdDO.setUpdateTime(DateUtils.getDateTime());
         userAccountPwdMapper.insertSelective(userAccountPwdDO);
         return "新增用户成功";
     }
@@ -111,7 +111,7 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
         userDO.setFlag(sysUserAddReq.getFlag());
         userDO.setId(userDODetail.getId());
         userDO.setUpdateBy(redisUser.getSysUserName());
-        userDO.setUpdateTime(DateUtil.getDateTime());
+        userDO.setUpdateTime(DateUtils.getDateTime());
         //超级管理员 编辑所有
         if (superAdmins.contains(redisUser.getSysUserPhone())) {
             userMapper.updateByPrimaryKeySelective(userDO);
@@ -143,7 +143,7 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
         userDO.setFlag(sysUserAddReq.getFlag());
         userDO.setId(userDODetail.getId());
         userDO.setUpdateBy(redisUser.getSysUserName());
-        userDO.setUpdateTime(DateUtil.getDateTime());
+        userDO.setUpdateTime(DateUtils.getDateTime());
         //超级管理员 编辑所有
         if (superAdmins.contains(redisUser.getSysUserPhone())) {
             userMapper.updateByPrimaryKeySelective(userDO);

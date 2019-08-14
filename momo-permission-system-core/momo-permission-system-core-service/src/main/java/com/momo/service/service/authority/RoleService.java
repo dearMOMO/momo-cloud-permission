@@ -4,8 +4,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.momo.common.util.DateUtils;
 import com.momo.common.error.BizException;
-import com.momo.common.util.DateUtil;
 import com.momo.common.util.StrUtil;
 import com.momo.common.util.snowFlake.SnowFlake;
 import com.momo.mapper.dataobject.*;
@@ -273,8 +273,8 @@ public class RoleService extends BaseService {
         BeanUtils.copyProperties(roleReq, record);
         record.setCreateBy(redisUser.getSysUserName());
         record.setUpdateBy(redisUser.getSysUserName());
-        record.setCreateTime(DateUtil.getDateTime());
-        record.setUpdateTime(DateUtil.getDateTime());
+        record.setCreateTime(DateUtils.getDateTime());
+        record.setUpdateTime(DateUtils.getDateTime());
         record.setUuid(StrUtil.genUUID());
         record.setGroupId(redisUser.getGroupId());
         record.setId(snowFlake.nextId());
@@ -317,7 +317,7 @@ public class RoleService extends BaseService {
         RoleDO record = new RoleDO();
         BeanUtils.copyProperties(roleReq, record);
         record.setUpdateBy(redisUser.getSysUserName());
-        record.setUpdateTime(DateUtil.getDateTime());
+        record.setUpdateTime(DateUtils.getDateTime());
         record.setId(selfRoleDO.getId());
         roleMapper.updateByPrimaryKeySelective(record);
         return "编辑角色成功";
@@ -342,7 +342,7 @@ public class RoleService extends BaseService {
             record.setFlag(0);
         }
         record.setUpdateBy(redisUser.getSysUserName());
-        record.setUpdateTime(DateUtil.getDateTime());
+        record.setUpdateTime(DateUtils.getDateTime());
         record.setId(selfRoleDO.getId());
         roleMapper.updateByPrimaryKeySelective(record);
         return "变更角色状态成功";
@@ -371,8 +371,8 @@ public class RoleService extends BaseService {
             roleUserDO.setUuid(StrUtil.genUUID());
             roleUserDO.setCreateBy(redisUser.getSysUserName());
             roleUserDO.setUpdateBy(redisUser.getSysUserName());
-            roleUserDO.setUpdateTime(DateUtil.getDateTime());
-            roleUserDO.setCreateTime(DateUtil.getDateTime());
+            roleUserDO.setUpdateTime(DateUtils.getDateTime());
+            roleUserDO.setCreateTime(DateUtils.getDateTime());
             roleUserList.add(roleUserDO);
         }
         roleMapper.batchInsertRoleAcls(roleUserList);
@@ -392,10 +392,10 @@ public class RoleService extends BaseService {
             roleUserDO.setRoleId(aclId);
             roleUserDO.setGroupId(groupId);
             roleUserDO.setUserId(userId);
-            roleUserDO.setCreateTime(DateUtil.getDateTime());
+            roleUserDO.setCreateTime(DateUtils.getDateTime());
             roleUserDO.setCreateBy(redisUser.getSysUserName());
             roleUserDO.setUpdateBy(redisUser.getSysUserName());
-            roleUserDO.setUpdateTime(DateUtil.getDateTime());
+            roleUserDO.setUpdateTime(DateUtils.getDateTime());
             roleUserList.add(roleUserDO);
         }
         roleMapper.batchInsertUserRoles(roleUserList);

@@ -1,8 +1,8 @@
 package com.momo.service.async;
 
 import com.alibaba.fastjson.JSONObject;
+import com.momo.common.util.DateUtils;
 import com.momo.common.common.UserAgentGetter;
-import com.momo.common.util.DateUtil;
 import com.momo.mapper.dataobject.LoginLogDO;
 import com.momo.mapper.mapper.manual.LoginLogMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,7 @@ public class LoginLogAsync {
     @Async("threadPoolTaskExecutor")
     public void loginLog(LoginLogDO entity, HttpServletRequest request){
         UserAgentGetter userAgentGetter = new UserAgentGetter(request);
-        entity.setCreateTime(DateUtil.getDateTime());
+        entity.setCreateTime(DateUtils.getDateTime());
         entity.setUserIp(userAgentGetter.getIpAddr());
         entity.setUserLoginDevice(userAgentGetter.getDevice());
         entity.setUserLoginSys(userAgentGetter.getOS());

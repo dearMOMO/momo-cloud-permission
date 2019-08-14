@@ -1,8 +1,8 @@
 package com.momo.service.service.authority;
 
 import com.google.common.collect.Lists;
+import com.momo.common.util.DateUtils;
 import com.momo.common.error.BizException;
-import com.momo.common.util.DateUtil;
 import com.momo.common.util.LevelUtil;
 import com.momo.common.util.StrUtil;
 import com.momo.common.util.snowFlake.SnowFlake;
@@ -101,8 +101,8 @@ public class AclService extends BaseService {
         record.setSysAclLevel(level);
         record.setCreateBy(redisUser.getSysUserName());
         record.setUpdateBy(redisUser.getSysUserName());
-        record.setCreateTime(DateUtil.getDateTime());
-        record.setUpdateTime(DateUtil.getDateTime());
+        record.setCreateTime(DateUtils.getDateTime());
+        record.setUpdateTime(DateUtils.getDateTime());
         record.setUuid(StrUtil.genUUID());
         record.setId(snowFlake.nextId());
         aclMapper.insertSelective(record);
@@ -128,8 +128,8 @@ public class AclService extends BaseService {
         record.setSysAclLevel(LevelUtil.calculateLevel(getLevel(aclReq.getSysAclParentId()), aclReq.getSysAclParentId()));
         record.setCreateBy(redisUser.getSysUserName());
         record.setUpdateBy(redisUser.getSysUserName());
-        record.setCreateTime(DateUtil.getDateTime());
-        record.setUpdateTime(DateUtil.getDateTime());
+        record.setCreateTime(DateUtils.getDateTime());
+        record.setUpdateTime(DateUtils.getDateTime());
         record.setUuid(StrUtil.genUUID());
         record.setId(snowFlake.nextId());
         aclMapper.insertSelective(record);
@@ -156,7 +156,7 @@ public class AclService extends BaseService {
         RedisUser redisUser = this.redisUser();
         after.setSysAclLevel(LevelUtil.calculateLevel(getLevel(aclReq.getSysAclParentId()), aclReq.getSysAclParentId()));
         after.setUpdateBy(redisUser.getSysUserName());
-        after.setUpdateTime(DateUtil.getDateTime());
+        after.setUpdateTime(DateUtils.getDateTime());
         after.setId(before.getId());
         updateWithChild(before, after);
 
@@ -198,7 +198,7 @@ public class AclService extends BaseService {
         }
         RedisUser redisUser = this.redisUser();
         record.setUpdateBy(redisUser.getSysUserName());
-        record.setUpdateTime(DateUtil.getDateTime());
+        record.setUpdateTime(DateUtils.getDateTime());
         record.setId(selfAclDO.getId());
         aclMapper.updateByPrimaryKeySelective(record);
         return "更新权限状态成功";

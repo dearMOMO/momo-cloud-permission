@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.momo.common.common.DateUtils;
+import com.momo.common.util.DateUtils;
 import com.momo.common.common.JSONResult;
 import com.momo.common.error.BizException;
 import com.momo.common.error.RedisKeyEnum;

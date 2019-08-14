@@ -7,7 +7,7 @@ import com.momo.momopermissiongateway.common.RedisUser;
 import com.momo.momopermissiongateway.configuration.JwtProperties;
 import com.momo.momopermissiongateway.exception.RedisKeyEnum;
 import com.momo.momopermissiongateway.res.JwtResponse;
-import com.momo.momopermissiongateway.utils.DateUtil;
+import com.momo.momopermissiongateway.utils.DateUtils;
 import com.momo.momopermissiongateway.utils.JwtTokenUtil;
 import com.momo.momopermissiongateway.utils.RedisUtil;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -79,7 +79,8 @@ public class TokenFilter implements GlobalFilter, Ordered {
                 //第三方
                 //jwt 失效时间
                 Date getExpirationDateFromToken = jwtTokenUtil.getExpirationDateFromToken(String.valueOf(sessionJwt));
-                long remainingMinutes = DateUtil.getMinuteDifference(getExpirationDateFromToken, DateUtil.getCurrentTime());
+                long remainingMinutes = DateUtils.getMinuteDifference(getExpirationDateFromToken, DateUtils.getDateTime()
+                );
                 //刷新JTW
                 if (remainingMinutes <= EXPIREDJWT) {
                     // randomKey和token已经生成完毕

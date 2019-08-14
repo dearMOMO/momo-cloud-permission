@@ -2,9 +2,8 @@ package com.momo.service.service.aclmanager.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.momo.common.common.DateUtils;
+import com.momo.common.util.DateUtils;
 import com.momo.common.error.BizException;
-import com.momo.common.util.DateUtil;
 import com.momo.mapper.dataobject.UserGroupDO;
 import com.momo.mapper.mapper.manual.UserGroupMapper;
 import com.momo.mapper.req.aclmanager.SysUserGroupReq;
@@ -63,7 +62,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         userGroupDO.setSysAccountStartTime(startTime);
         userGroupDO.setSysAccountEndTime(endTime);
         userGroupDO.setUpdateBy(redisUser.getSysUserName());
-        userGroupDO.setUpdateTime(DateUtil.getDateTime());
+        userGroupDO.setUpdateTime(DateUtils.getDateTime());
         userGroupMapper.insertSelective(userGroupDO);
 
         return "编辑企业信息成功";
@@ -81,9 +80,9 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         userGroupDO.setSysAccountStartTime(startTime);
         userGroupDO.setSysAccountEndTime(endTime);
         userGroupDO.setUpdateBy(redisUser.getSysUserName());
-        userGroupDO.setUpdateTime(DateUtil.getDateTime());
+        userGroupDO.setUpdateTime(DateUtils.getDateTime());
         userGroupDO.setCreateBy(redisUser.getSysUserName());
-        userGroupDO.setCreateTime(DateUtil.getDateTime());
+        userGroupDO.setCreateTime(DateUtils.getDateTime());
         userGroupMapper.insertSelective(userGroupDO);
 
         return "新增企业信息成功";
@@ -102,7 +101,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         userGroupDO.setId(uuid.getId());
         userGroupDO.setFlag(sysUserGroupReq.getFlag());
         userGroupDO.setUpdateBy(redisUser.getSysUserName());
-        userGroupDO.setUpdateTime(DateUtil.getDateTime());
+        userGroupDO.setUpdateTime(DateUtils.getDateTime());
         userGroupMapper.insertSelective(userGroupDO);
         return "状态设置成功";
     }
