@@ -51,6 +51,7 @@ public interface AclMapper {
      */
     int checkAclPermissionType(@Param("sys_acl_permission_code")String sys_acl_permission_code);
 
-    int checkchildAcl(@Param("sys_acl_level")String sys_acl_level);
+    int checkChildAcl(@Param("sys_acl_level")String sys_acl_level);
+    int checkAclSysName(@Param("id")Long id,@Param("sys_acl_name")String sys_acl_name,@Param("sys_acl_level")String sys_acl_level);
 
 }

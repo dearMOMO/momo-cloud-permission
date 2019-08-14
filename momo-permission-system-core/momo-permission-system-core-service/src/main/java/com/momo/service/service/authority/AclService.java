@@ -94,10 +94,11 @@ public class AclService extends BaseService {
         if (checkUrl(aclReq.getSysAclUrl(), aclReq.getSysAclPermissionCode(), null)) {
             throw BizException.fail("url重复");
         }
+        String level = LevelUtil.calculateLevel(getLevel(aclReq.getSysAclParentId()), aclReq.getSysAclParentId());
         RedisUser redisUser = this.redisUser();
         AclDO record = new AclDO();
         BeanUtils.copyProperties(aclReq, record);
-        record.setSysAclLevel(LevelUtil.calculateLevel(getLevel(aclReq.getSysAclParentId()), aclReq.getSysAclParentId()));
+        record.setSysAclLevel(level);
         record.setCreateBy(redisUser.getSysUserName());
         record.setUpdateBy(redisUser.getSysUserName());
         record.setCreateTime(DateUtil.getDateTime());
@@ -113,6 +114,10 @@ public class AclService extends BaseService {
         int checkAclPermissionType = aclMapper.checkAclPermissionType(aclReq.getSysAclPermissionCode());
         if (checkAclPermissionType > 0) {
             throw BizException.fail("菜单系统类型 值 已存在");
+        }
+        int checkAclSysName = aclMapper.checkAclSysName(null, aclReq.getSysAclName(), "0");
+        if (checkAclSysName > 0) {
+            throw BizException.fail("菜单名称已存在");
         }
         RedisUser redisUser = this.redisUser();
         AclDO record = new AclDO();
@@ -164,11 +169,11 @@ public class AclService extends BaseService {
             throw BizException.fail("待查询的权限不存在");
         }
         AclDetailRes aclDetailRes = new AclDetailRes();
-        BeanUtils.copyProperties(aclDO,aclDetailRes);
+        BeanUtils.copyProperties(aclDO, aclDetailRes);
         //类型，-1系统 0:目录 1：菜单，2：按钮，3：其他
         if (aclDO.getSysAclType().equals(-1)) {
             //是否有孩子
-            int count = aclMapper.checkchildAcl(LevelUtil.calculateLevel(aclDO.getSysAclLevel(), aclDO.getId()));
+            int count = aclMapper.checkChildAcl(LevelUtil.calculateLevel(aclDO.getSysAclLevel(), aclDO.getId()));
             if (count == 0) {
                 aclDetailRes.setDisabledAclSysCode(false);
             }
