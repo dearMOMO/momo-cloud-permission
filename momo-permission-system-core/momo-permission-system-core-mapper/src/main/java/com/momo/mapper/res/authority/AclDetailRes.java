@@ -22,5 +22,5 @@ import lombok.*;
 //@EqualsAndHashCode(callSuper = true, of = {"id"})
 public class AclDetailRes extends AclDO {
     //是否可以编辑系统码
-    private boolean showAclSysCode = true;
+    private boolean disabledAclSysCode = true;
 }

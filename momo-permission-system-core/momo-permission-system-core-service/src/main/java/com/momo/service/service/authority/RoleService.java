@@ -367,7 +367,7 @@ public class RoleService extends BaseService {
             roleUserDO.setGroupId(groupId);
             roleUserDO.setSysAclId(aclId.getId());
             roleUserDO.setSysRoleId(roleId);
-            roleUserDO.setSysAclPermissionType(aclId.getSysAclPermissionType());
+            roleUserDO.setSysAclPermissionCode(aclId.getSysAclPermissionCode());
             roleUserDO.setUuid(StrUtil.genUUID());
             roleUserDO.setCreateBy(redisUser.getSysUserName());
             roleUserDO.setUpdateBy(redisUser.getSysUserName());

@@ -161,15 +161,14 @@ public class AclService extends BaseService {
             throw BizException.fail("待查询的权限不存在");
         }
         AclDetailRes aclDetailRes = new AclDetailRes();
+        BeanUtils.copyProperties(aclDO,aclDetailRes);
         //类型，-1系统 0:目录 1：菜单，2：按钮，3：其他
         if (aclDO.getSysAclType().equals(-1)) {
             //是否有孩子
             int count = aclMapper.checkchildAcl(LevelUtil.calculateLevel(aclDO.getSysAclLevel(), aclDO.getId()));
             if (count == 0) {
-                aclDetailRes.setShowAclSysCode(false);
+                aclDetailRes.setDisabledAclSysCode(false);
             }
-        } else {
-            aclDetailRes.setShowAclSysCode(false);
         }
 
         return aclDetailRes;
