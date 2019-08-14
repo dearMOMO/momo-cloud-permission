@@ -24,8 +24,8 @@ public class AclReq extends BaseReq {
     /**
      * sysAclModuleType 菜单系统类型 1 系统管理 2资产管理.
      */
-    @NotNull(message = "菜单系统类型 必填", groups = {save.class, Modify.class,Permission.class})
-    private Long sysAclPermissionType;
+    @NotBlank(message = "菜单系统类型 必填", groups = {save.class, Modify.class,Permission.class})
+    private String sysAclPermissionCode;
     /**
      * sysAclModuleParentId 上级权限id.
      */
@@ -65,7 +65,7 @@ public class AclReq extends BaseReq {
     /**
      * sysAclUuid 唯一，32位字符串，查询用.
      */
-    @NotBlank(message = "uuid 必填", groups = {Status.class, Modify.class})
+    @NotBlank(message = "uuid 必填", groups = {Status.class, Modify.class,Detail.class})
     private String uuid;
     /**
      * flag 状态 0启用  1禁用.

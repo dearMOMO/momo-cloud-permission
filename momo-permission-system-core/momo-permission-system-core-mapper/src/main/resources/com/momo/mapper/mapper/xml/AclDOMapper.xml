@@ -5,7 +5,6 @@
     <resultMap id="BaseResultMap"  type="com.momo.mapper.dataobject.AclDO">
         <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
         <result column="SYS_ACL_PARENT_ID" property="sysAclParentId" jdbcType="BIGINT" javaType="Long"/>
-        <result column="SYS_ACL_PERMISSION_TYPE" property="sysAclPermissionType" jdbcType="BIGINT" javaType="Long"/>
         <result column="UUID" property="uuid" jdbcType="VARCHAR" javaType="String"/>
         <result column="REMARK" property="remark" jdbcType="VARCHAR" javaType="String"/>
         <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
@@ -18,6 +17,7 @@
         <result column="SYS_ACL_ACTION" property="sysAclAction" jdbcType="VARCHAR" javaType="String"/>
         <result column="SYS_ACL_ROUTER" property="sysAclRouter" jdbcType="VARCHAR" javaType="String"/>
         <result column="SYS_ACL_COMPONENT_NAME" property="sysAclComponentName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SYS_ACL_PERMISSION_CODE" property="sysAclPermissionCode" jdbcType="VARCHAR" javaType="String"/>
         <result column="FLAG" property="flag" jdbcType="INTEGER" javaType="Integer"/>
         <result column="DEL_FLAG" property="delFlag" jdbcType="INTEGER" javaType="Integer"/>
         <result column="SYS_ACL_SEQ" property="sysAclSeq" jdbcType="INTEGER" javaType="Integer"/>

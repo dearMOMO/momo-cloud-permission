@@ -10,7 +10,7 @@
         <result column="sys_acl_component_name" jdbcType="VARCHAR" property="sysAclComponentName" />
         <result column="sys_acl_parent_id" jdbcType="BIGINT" property="sysAclParentId" />
         <result column="sys_acl_level" jdbcType="VARCHAR" property="sysAclLevel" />
-        <result column="sys_acl_permission_type" jdbcType="BIGINT" property="sysAclPermissionType" />
+        <result column="sys_acl_permission_code" jdbcType="VARCHAR" property="sysAclPermissionCode" />
         <result column="sys_acl_url" jdbcType="VARCHAR" property="sysAclUrl" />
         <result column="sys_acl_type" jdbcType="INTEGER" property="sysAclType" />
         <result column="sys_acl_icon" jdbcType="VARCHAR" property="sysAclIcon" />
@@ -26,17 +26,20 @@
     </resultMap>
     <sql id="Base_Column_List">
         id, uuid, sys_acl_action, sys_acl_router, sys_acl_name, sys_acl_component_name, sys_acl_parent_id,
-    sys_acl_level, sys_acl_permission_type, sys_acl_url, sys_acl_type, sys_acl_icon,
+    sys_acl_level, sys_acl_permission_code, sys_acl_url, sys_acl_type, sys_acl_icon,
     sys_acl_seq, sys_acl_code, remark, flag, del_flag, create_by, create_time, update_time,
     update_by
     </sql>
+    <select id="checkchildAcl" parameterType="map" resultType="int">
+        select count(id) from sys_acl where sys_acl_level like CONCAT('%',#{sys_acl_level})
+    </select>
     <select id="checkAclPermissionType" parameterType="map" resultType="int">
-        select count(id) from sys_acl where sys_acl_parent_id=0 and sys_acl_permission_type=#{sys_acl_permission_type}
+        select count(id) from sys_acl where sys_acl_parent_id=0 and sys_acl_permission_code=#{sys_acl_permission_code}
     </select>
     <select id="getChildAclModuleListByLevel" parameterType="map" resultMap="BaseResultMap">
         SELECT
            id, uuid, sys_acl_action, sys_acl_router, sys_acl_name, sys_acl_component_name, sys_acl_parent_id,
-    sys_acl_level, sys_acl_permission_type, sys_acl_url, sys_acl_type, sys_acl_icon,
+    sys_acl_level, sys_acl_permission_code, sys_acl_url, sys_acl_type, sys_acl_icon,
     sys_acl_seq, sys_acl_code, remark, flag, del_flag, create_by, create_time, update_time,
     update_by
         FROM sys_acl WHERE sys_acl_module_level LIKE CONCAT(#{aclModuleLevel},'%')
@@ -44,7 +47,7 @@
     <select id="aclUuids" parameterType="map" resultMap="BaseResultMap">
         SELECT
            id, uuid, sys_acl_action, sys_acl_router, sys_acl_name, sys_acl_component_name, sys_acl_parent_id,
-    sys_acl_level, sys_acl_permission_type, sys_acl_url, sys_acl_type, sys_acl_icon,
+    sys_acl_level, sys_acl_permission_code, sys_acl_url, sys_acl_type, sys_acl_icon,
     sys_acl_seq, sys_acl_code, remark, flag, del_flag, create_by, create_time, update_time,
     update_by
         FROM sys_acl WHERE uuid IN
@@ -56,7 +59,7 @@
     <select id="checkUrl" parameterType="map" resultType="integer">
         SELECT COUNT(id)
         from sys_acl
-        where sys_acl_url=#{url,jdbcType=VARCHAR} and sys_acl_permission_type=#{permissionType,jdbcType=VARCHAR}
+        where sys_acl_url=#{url,jdbcType=VARCHAR} and sys_acl_permission_code=#{sys_acl_permission_code,jdbcType=VARCHAR}
         <if test="id!=null">
             and   id!=#{id,jdbcType=BIGINT}
         </if>
@@ -81,6 +84,7 @@
         </foreach>
     </update>
     <insert id="insertSelective" parameterType="com.momo.mapper.dataobject.AclDO">
+        insert into sys_acl
         insert into sys_acl
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -107,8 +111,8 @@
             <if test="sysAclLevel != null">
                 sys_acl_level,
             </if>
-            <if test="sysAclPermissionType != null">
-                sys_acl_permission_type,
+            <if test="sysAclPermissionCode != null">
+                sys_acl_permission_code,
             </if>
             <if test="sysAclUrl != null">
                 sys_acl_url,
@@ -172,8 +176,8 @@
             <if test="sysAclLevel != null">
                 #{sysAclLevel,jdbcType=VARCHAR},
             </if>
-            <if test="sysAclPermissionType != null">
-                #{sysAclPermissionType,jdbcType=BIGINT},
+            <if test="sysAclPermissionCode != null">
+                #{sysAclPermissionCode,jdbcType=VARCHAR},
             </if>
             <if test="sysAclUrl != null">
                 #{sysAclUrl,jdbcType=VARCHAR},
@@ -237,8 +241,8 @@
             <if test="sysAclLevel != null">
                 sys_acl_level = #{sysAclLevel,jdbcType=VARCHAR},
             </if>
-            <if test="sysAclPermissionType != null">
-                sys_acl_permission_type = #{sysAclPermissionType,jdbcType=BIGINT},
+            <if test="sysAclPermissionCode != null">
+                sys_acl_permission_code = #{sysAclPermissionCode,jdbcType=VARCHAR},
             </if>
             <if test="sysAclUrl != null">
                 sys_acl_url = #{sysAclUrl,jdbcType=VARCHAR},

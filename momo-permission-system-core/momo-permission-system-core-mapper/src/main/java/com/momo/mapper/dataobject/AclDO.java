@@ -16,10 +16,6 @@ public class AclDO{
      */
     private Long sysAclParentId;
     /**
-     * sysAclPermissionType 菜单系统类型 .
-     */
-    private Long sysAclPermissionType;
-    /**
      * uuid 唯一，32位字符串，查询用.
      */
     private String uuid;
@@ -68,6 +64,10 @@ public class AclDO{
      */
     private String sysAclComponentName;
     /**
+     * sysAclPermissionCode 菜单系统类型 .
+     */
+    private String sysAclPermissionCode;
+    /**
      * flag 状态 0启用  1禁用.
      */
     private Integer flag;
@@ -80,7 +80,7 @@ public class AclDO{
      */
     private Integer sysAclSeq;
     /**
-     * sysAclType 类型，1：菜单，2：按钮，3：其他.
+     * sysAclType 类型，-1系统 0:目录 1：菜单，2：按钮，3：其他.
      */
     private Integer sysAclType;
     /**
@@ -122,22 +122,6 @@ public class AclDO{
      */
     public Long getSysAclParentId(){
         return sysAclParentId;
-    }
-
-    /**
-     * Set sysAclPermissionType 菜单系统类型 .
-     */
-    public void setSysAclPermissionType(Long sysAclPermissionType){
-        this.sysAclPermissionType = sysAclPermissionType;
-    }
-
-    /**
-     * Get sysAclPermissionType 菜单系统类型 .
-     *
-     * @return the string
-     */
-    public Long getSysAclPermissionType(){
-        return sysAclPermissionType;
     }
 
     /**
@@ -333,6 +317,22 @@ public class AclDO{
     }
 
     /**
+     * Set sysAclPermissionCode 菜单系统类型 .
+     */
+    public void setSysAclPermissionCode(String sysAclPermissionCode){
+        this.sysAclPermissionCode = sysAclPermissionCode;
+    }
+
+    /**
+     * Get sysAclPermissionCode 菜单系统类型 .
+     *
+     * @return the string
+     */
+    public String getSysAclPermissionCode(){
+        return sysAclPermissionCode;
+    }
+
+    /**
      * Set flag 状态 0启用  1禁用.
      */
     public void setFlag(Integer flag){
@@ -381,14 +381,14 @@ public class AclDO{
     }
 
     /**
-     * Set sysAclType 类型，1：菜单，2：按钮，3：其他.
+     * Set sysAclType 类型，-1系统 0:目录 1：菜单，2：按钮，3：其他.
      */
     public void setSysAclType(Integer sysAclType){
         this.sysAclType = sysAclType;
     }
 
     /**
-     * Get sysAclType 类型，1：菜单，2：按钮，3：其他.
+     * Get sysAclType 类型，-1系统 0:目录 1：菜单，2：按钮，3：其他.
      *
      * @return the string
      */

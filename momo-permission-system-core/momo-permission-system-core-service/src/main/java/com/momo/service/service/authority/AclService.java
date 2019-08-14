@@ -14,6 +14,7 @@ import com.momo.mapper.mapper.manual.RoleMapper;
 import com.momo.mapper.req.authority.AclReq;
 import com.momo.mapper.req.sysmain.LoginAuthReq;
 import com.momo.mapper.req.sysmain.RedisUser;
+import com.momo.mapper.res.authority.AclDetailRes;
 import com.momo.mapper.res.authority.AclLevelRes;
 import com.momo.mapper.res.authority.AclTreeRes;
 import com.momo.service.service.BaseService;
@@ -90,7 +91,7 @@ public class AclService extends BaseService {
 
     @Transactional
     public String insertSelective(AclReq aclReq) {
-        if (checkUrl(aclReq.getSysAclUrl(), aclReq.getSysAclPermissionType(), null)) {
+        if (checkUrl(aclReq.getSysAclUrl(), aclReq.getSysAclPermissionCode(), null)) {
             throw BizException.fail("url重复");
         }
         RedisUser redisUser = this.redisUser();
@@ -109,8 +110,8 @@ public class AclService extends BaseService {
 
     @Transactional
     public String saveSys(AclReq aclReq) {
-        int checkAclPermissionType=aclMapper.checkAclPermissionType(aclReq.getSysAclPermissionType());
-        if (checkAclPermissionType>0){
+        int checkAclPermissionType = aclMapper.checkAclPermissionType(aclReq.getSysAclPermissionCode());
+        if (checkAclPermissionType > 0) {
             throw BizException.fail("菜单系统类型 值 已存在");
         }
         RedisUser redisUser = this.redisUser();
@@ -124,7 +125,7 @@ public class AclService extends BaseService {
         record.setUuid(StrUtil.genUUID());
         record.setId(snowFlake.nextId());
         aclMapper.insertSelective(record);
-        return "新增权限成功";
+        return "新增权限系统成功";
     }
 
     @Transactional
@@ -136,10 +137,10 @@ public class AclService extends BaseService {
         if (before.getId().equals(aclReq.getSysAclParentId())) {
             throw BizException.fail("无法将当前模块挂在自己模块下");
         }
-        if (!before.getSysAclPermissionType().equals(aclReq.getSysAclPermissionType())) {
+        if (!before.getSysAclPermissionCode().equals(aclReq.getSysAclPermissionCode())) {
             throw BizException.fail("无法跨模块编辑");
         }
-        if (checkUrl(aclReq.getSysAclUrl(), aclReq.getSysAclPermissionType(), before.getId())) {
+        if (checkUrl(aclReq.getSysAclUrl(), aclReq.getSysAclPermissionCode(), before.getId())) {
             throw BizException.fail("url重复");
         }
         AclDO after = new AclDO();
@@ -152,6 +153,26 @@ public class AclService extends BaseService {
         updateWithChild(before, after);
 
         return "编辑权限成功";
+    }
+
+    public AclDetailRes detail(AclReq aclReq) {
+        AclDO aclDO = aclMapper.selectByPrimaryUuid(aclReq.getUuid());
+        if (null == aclDO) {
+            throw BizException.fail("待查询的权限不存在");
+        }
+        AclDetailRes aclDetailRes = new AclDetailRes();
+        //类型，-1系统 0:目录 1：菜单，2：按钮，3：其他
+        if (aclDO.getSysAclType().equals(-1)) {
+            //是否有孩子
+            int count = aclMapper.checkchildAcl(LevelUtil.calculateLevel(aclDO.getSysAclLevel(), aclDO.getId()));
+            if (count == 0) {
+                aclDetailRes.setShowAclSysCode(false);
+            }
+        } else {
+            aclDetailRes.setShowAclSysCode(false);
+        }
+
+        return aclDetailRes;
     }
 
     public String updateStatus(AclReq aclReq) {
@@ -193,11 +214,11 @@ public class AclService extends BaseService {
 
             }
         }
-        after.setSysAclPermissionType(null);
+        after.setSysAclPermissionCode(null);
         aclMapper.updateByPrimaryKeySelective(after);
     }
 
-    private boolean checkUrl(String url, Long moduleType, Long id) {
+    private boolean checkUrl(String url, String moduleType, Long id) {
         return aclMapper.checkUrl(url, moduleType, id) > 0 ? true : false;
     }
 

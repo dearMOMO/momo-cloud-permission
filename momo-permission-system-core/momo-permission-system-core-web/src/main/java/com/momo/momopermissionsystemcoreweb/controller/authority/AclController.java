@@ -48,4 +48,9 @@ public class AclController {
     public JSONResult status(@Validated(AclReq.Status.class) @RequestBody AclReq aclReq) {
         return JSONResult.ok(aclService.updateStatus(aclReq));
     }
+
+    @RequestMapping("/detail/v1")
+    public JSONResult showAclSysCode(@Validated(AclReq.Detail.class) @RequestBody AclReq aclReq) {
+        return JSONResult.ok(aclService.detail(aclReq));
+    }
 }

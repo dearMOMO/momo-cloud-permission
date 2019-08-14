@@ -24,10 +24,6 @@ public class RoleAclDO{
      */
     private Long sysRoleId;
     /**
-     * sysAclPermissionType 权限系统类型.
-     */
-    private Long sysAclPermissionType;
-    /**
      * uuid 唯一，32位字符串，查询用.
      */
     private String uuid;
@@ -39,6 +35,10 @@ public class RoleAclDO{
      * updateBy 修改人.
      */
     private String updateBy;
+    /**
+     * sysAclPermissionCode 权限系统类型.
+     */
+    private String sysAclPermissionCode;
     /**
      * flag 是否被禁用  0否 1禁用.
      */
@@ -121,22 +121,6 @@ public class RoleAclDO{
     }
 
     /**
-     * Set sysAclPermissionType 权限系统类型.
-     */
-    public void setSysAclPermissionType(Long sysAclPermissionType){
-        this.sysAclPermissionType = sysAclPermissionType;
-    }
-
-    /**
-     * Get sysAclPermissionType 权限系统类型.
-     *
-     * @return the string
-     */
-    public Long getSysAclPermissionType(){
-        return sysAclPermissionType;
-    }
-
-    /**
      * Set uuid 唯一，32位字符串，查询用.
      */
     public void setUuid(String uuid){
@@ -182,6 +166,22 @@ public class RoleAclDO{
      */
     public String getUpdateBy(){
         return updateBy;
+    }
+
+    /**
+     * Set sysAclPermissionCode 权限系统类型.
+     */
+    public void setSysAclPermissionCode(String sysAclPermissionCode){
+        this.sysAclPermissionCode = sysAclPermissionCode;
+    }
+
+    /**
+     * Get sysAclPermissionCode 权限系统类型.
+     *
+     * @return the string
+     */
+    public String getSysAclPermissionCode(){
+        return sysAclPermissionCode;
     }
 
     /**

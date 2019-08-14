@@ -7,10 +7,10 @@
         <result column="GROUP_ID" property="groupId" jdbcType="BIGINT" javaType="Long"/>
         <result column="SYS_ACL_ID" property="sysAclId" jdbcType="BIGINT" javaType="Long"/>
         <result column="SYS_ROLE_ID" property="sysRoleId" jdbcType="BIGINT" javaType="Long"/>
-        <result column="SYS_ACL_PERMISSION_TYPE" property="sysAclPermissionType" jdbcType="BIGINT" javaType="Long"/>
         <result column="UUID" property="uuid" jdbcType="VARCHAR" javaType="String"/>
         <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
         <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SYS_ACL_PERMISSION_CODE" property="sysAclPermissionCode" jdbcType="VARCHAR" javaType="String"/>
         <result column="FLAG" property="flag" jdbcType="INTEGER" javaType="Integer"/>
         <result column="DEL_FLAG" property="delFlag" jdbcType="INTEGER" javaType="Integer"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>

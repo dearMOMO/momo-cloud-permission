@@ -7,11 +7,11 @@
         <result column="uuid" jdbcType="VARCHAR" property="uuid" />
         <result column="sys_acl_action" jdbcType="VARCHAR" property="sysAclAction" />
         <result column="sys_acl_router" jdbcType="VARCHAR" property="sysAclRouter" />
-        <result column="sys_acl_component_name" jdbcType="VARCHAR" property="sysAclComponentName" />
         <result column="sys_acl_name" jdbcType="VARCHAR" property="sysAclName" />
+        <result column="sys_acl_component_name" jdbcType="VARCHAR" property="sysAclComponentName" />
         <result column="sys_acl_parent_id" jdbcType="BIGINT" property="sysAclParentId" />
         <result column="sys_acl_level" jdbcType="VARCHAR" property="sysAclLevel" />
-        <result column="sys_acl_permission_type" jdbcType="BIGINT" property="sysAclPermissionType" />
+        <result column="sys_acl_permission_code" jdbcType="VARCHAR" property="sysAclPermissionCode" />
         <result column="sys_acl_url" jdbcType="VARCHAR" property="sysAclUrl" />
         <result column="sys_acl_type" jdbcType="INTEGER" property="sysAclType" />
         <result column="sys_acl_icon" jdbcType="VARCHAR" property="sysAclIcon" />
@@ -52,13 +52,13 @@
     <select id="getAllAcl" parameterType="map" resultMap="getAllAcl">
         SELECT
         id, uuid, sys_acl_action, sys_acl_router, sys_acl_name, sys_acl_component_name, sys_acl_parent_id,
-        sys_acl_level, sys_acl_permission_type, sys_acl_url, sys_acl_type, sys_acl_icon,
+        sys_acl_level, sys_acl_permission_code, sys_acl_url, sys_acl_type, sys_acl_icon,
         sys_acl_seq, sys_acl_code, remark, flag, del_flag, create_by, create_time, update_time,
         update_by
         FROM  sys_acl
         <trim prefixOverrides="and" prefix="where">
             <if test="aclPermissionType!=null">
-                AND sys_acl_permission_type = #{aclPermissionType,jdbcType=BIGINT}
+                AND sys_acl_permission_code = #{sys_acl_permission_code,jdbcType=BIGINT}
             </if>
             <if test="userAclIdList!=null and userAclIdList.size()!=0">
                 AND id IN
@@ -72,8 +72,8 @@
         SELECT
         sys_acl_id
         FROM sys_role_acl WHERE
-        <if test="sys_acl_permission_type!=null">
-            sys_acl_permission_type=#{sys_acl_permission_type} AND
+        <if test="sys_acl_permission_code!=null">
+            sys_acl_permission_code=#{sys_acl_permission_code} AND
         </if>
         sys_role_id IN
         <foreach collection="roleIds" close=")" item="item" open="(" separator=",">
