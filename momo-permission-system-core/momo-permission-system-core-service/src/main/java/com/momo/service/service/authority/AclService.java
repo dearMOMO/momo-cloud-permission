@@ -173,6 +173,8 @@ public class AclService extends BaseService {
                 aclDetailRes.setDisabledAclSysCode(false);
             }
         }
+        aclDetailRes.setIdStr(String.valueOf(aclDO.getId()));
+        aclDetailRes.setSetSysAclParentIdStr(String.valueOf(aclDO.getSysAclParentId()));
 
         return aclDetailRes;
     }

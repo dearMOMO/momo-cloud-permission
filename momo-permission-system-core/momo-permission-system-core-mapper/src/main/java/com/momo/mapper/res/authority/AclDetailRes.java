@@ -21,6 +21,8 @@ import lombok.*;
 @AllArgsConstructor
 //@EqualsAndHashCode(callSuper = true, of = {"id"})
 public class AclDetailRes extends AclDO {
+    private String idStr;
+    private String setSysAclParentIdStr;
     //是否可以编辑系统码
     private boolean disabledAclSysCode = true;
 }
