@@ -57,7 +57,7 @@
         update_by
         FROM  sys_acl
         <trim prefixOverrides="and" prefix="where">
-            <if test="aclPermissionType!=null">
+            <if test="sys_acl_permission_code!=null">
                 AND sys_acl_permission_code = #{sys_acl_permission_code,jdbcType=BIGINT}
             </if>
             <if test="userAclIdList!=null and userAclIdList.size()!=0">

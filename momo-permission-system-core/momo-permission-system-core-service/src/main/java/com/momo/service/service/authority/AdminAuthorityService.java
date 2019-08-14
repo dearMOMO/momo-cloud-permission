@@ -71,7 +71,7 @@ public class AdminAuthorityService extends BaseService {
             }
             if (roleAclIdSet.contains(acl.getId())) {
                 dto.setChecked(true);
-                defaultexpandedKeys.add(acl.getUuid());
+                defaultexpandedKeys.add(String.valueOf(acl.getId()));
             }
             aclDtoList.add(dto);
 //            }

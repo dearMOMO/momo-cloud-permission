@@ -76,7 +76,7 @@ public class AclService extends BaseService {
             }
             //类型，0:目录 1：菜单，2：按钮，3：其他
             if (acl.getSysAclType().equals(0)) {
-                defaultexpandedKeys.add(acl.getUuid());
+                defaultexpandedKeys.add(String.valueOf(acl.getId()));
             }
             aclDtoList.add(dto);
 //            }
@@ -117,6 +117,9 @@ public class AclService extends BaseService {
         RedisUser redisUser = this.redisUser();
         AclDO record = new AclDO();
         BeanUtils.copyProperties(aclReq, record);
+        record.setSysAclParentId(0L);
+        //类型，-1系统 0:目录 1：菜单，2：按钮，3：其他
+        record.setSysAclType(-1);
         record.setSysAclLevel(LevelUtil.calculateLevel(getLevel(aclReq.getSysAclParentId()), aclReq.getSysAclParentId()));
         record.setCreateBy(redisUser.getSysUserName());
         record.setUpdateBy(redisUser.getSysUserName());

@@ -23,6 +23,8 @@ import java.util.List;
 public class AclLevelRes extends AclDO {
 
     private String label;
+    private String idStr;
+    private String sysAclParentIdStr;
 
     private List<AclLevelRes> children = Lists.newArrayList();
     //默认选中/展开
@@ -39,6 +41,8 @@ public class AclLevelRes extends AclDO {
         AclLevelRes dto = new AclLevelRes();
         BeanUtils.copyProperties(acl, dto);
         dto.setLabel(acl.getSysAclName());
+        dto.setIdStr(String.valueOf(acl.getId()));
+        dto.setSysAclParentIdStr(String.valueOf(acl.getSysAclParentId()));
         return dto;
     }
 }
