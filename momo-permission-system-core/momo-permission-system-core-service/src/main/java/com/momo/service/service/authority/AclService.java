@@ -74,7 +74,7 @@ public class AclService extends BaseService {
             if (roleAclIdSet.contains(acl.getId())) {
                 dto.setChecked(true);
             }
-            //类型，0:目录 1：菜单，2：按钮，3：其他
+            //类型，-1系统 0:目录 1：菜单，2：按钮，3：其他
             if (acl.getSysAclType().equals(0)) {
                 defaultexpandedKeys.add(String.valueOf(acl.getId()));
             }
