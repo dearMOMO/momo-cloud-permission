@@ -11,5 +11,11 @@ public interface UserGroupMapper {
 
     UserGroupDO getUserGroupById(@Param("id") Long id);
 
-    List<UserGroupDO> getUserGroupPage(@Param("userGroupName")String userGroupName,@Param("flag")Integer flag);
+    UserGroupDO uuid(@Param("uuid") String uuid);
+
+    List<UserGroupDO> getUserGroupPage(@Param("userGroupName") String userGroupName, @Param("flag") Integer flag);
+
+    int insertSelective(UserGroupDO userGroupDO);
+
+    int updateByPrimaryKeySelective(UserGroupDO userGroupDO);
 }

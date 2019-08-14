@@ -15,7 +15,7 @@ import com.momo.mapper.dataobject.manual.SysUserListDO;
 import com.momo.mapper.mapper.manual.RoleMapper;
 import com.momo.mapper.mapper.manual.UserAccountPwdMapper;
 import com.momo.mapper.mapper.manual.UserMapper;
-import com.momo.mapper.req.aclmanager.SysUserAddRes;
+import com.momo.mapper.req.aclmanager.SysUserAddReq;
 import com.momo.mapper.req.aclmanager.SysUserListReq;
 import com.momo.mapper.req.sysmain.RedisUser;
 import com.momo.mapper.res.aclmanager.SysUserListRes;
@@ -53,17 +53,17 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
     private SnowFlake snowFlake = new SnowFlake(1, 1);
 
     @Override
-    public String sysUserAdd(SysUserAddRes sysUserAddRes) {
-        UserAccountPwdDO exitsUserAccountPwdDO = userAccountPwdMapper.sysUserAccountLogin(sysUserAddRes.getSysUserLoginName());
+    public String sysUserAdd(SysUserAddReq sysUserAddReq) {
+        UserAccountPwdDO exitsUserAccountPwdDO = userAccountPwdMapper.sysUserAccountLogin(sysUserAddReq.getSysUserLoginName());
         if (exitsUserAccountPwdDO != null) {
             throw BizException.fail("登录账号已存在");
         }
         RedisUser redisUser = this.redisUser();
         UserDO userDO = new UserDO();
-        BeanUtils.copyProperties(sysUserAddRes, userDO);
+        BeanUtils.copyProperties(sysUserAddReq, userDO);
         Long id = snowFlake.nextId();
         userDO.setId(id);
-        userDO.setSysUserEmail(sysUserAddRes.getSysUserLoginName());
+        userDO.setSysUserEmail(sysUserAddReq.getSysUserLoginName());
         userDO.setUuid(StrUtil.genUUID());
         userDO.setGroupId(redisUser.getGroupId());
         userDO.setCreateBy(redisUser.getSysUserName());
@@ -72,11 +72,11 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
         userDO.setUpdateTime(DateUtil.getDateTime());
         userMapper.insertSelective(userDO);
         UserAccountPwdDO userAccountPwdDO = new UserAccountPwdDO();
-        BeanUtils.copyProperties(sysUserAddRes, userAccountPwdDO);
+        BeanUtils.copyProperties(sysUserAddReq, userAccountPwdDO);
         userAccountPwdDO.setId(snowFlake.nextId());
         String salt = StrUtil.genUUID();
         userAccountPwdDO.setSysUserAuthSalt(salt);
-        String pwd = Encrypt.SHA512AndSHA256(sysUserAddRes.getSysUserPwd(), salt);
+        String pwd = Encrypt.SHA512AndSHA256(sysUserAddReq.getSysUserPwd(), salt);
         userAccountPwdDO.setSysUserPwd(pwd);
         userAccountPwdDO.setGroupId(redisUser.getGroupId());
         userAccountPwdDO.setCreateBy(redisUser.getSysUserName());
@@ -90,8 +90,8 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
     }
 
     @Override
-    public UserDO sysUserDetail(SysUserAddRes sysUserAddRes) {
-        UserDO userDODetail = userMapper.uuid(sysUserAddRes.getUuid());
+    public UserDO sysUserDetail(SysUserAddReq sysUserAddReq) {
+        UserDO userDODetail = userMapper.uuid(sysUserAddReq.getUuid());
         if (null == userDODetail) {
             throw BizException.fail("待查询的用户不存在");
         }
@@ -100,15 +100,15 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
     }
 
     @Override
-    public String sysUserModify(SysUserAddRes sysUserAddRes) {
-        UserDO userDODetail = userMapper.uuid(sysUserAddRes.getUuid());
+    public String sysUserModify(SysUserAddReq sysUserAddReq) {
+        UserDO userDODetail = userMapper.uuid(sysUserAddReq.getUuid());
         if (null == userDODetail) {
             throw BizException.fail("待编辑的用户不存在");
         }
         RedisUser redisUser = this.redisUser();
         UserDO userDO = new UserDO();
-        userDO.setSysUserName(sysUserAddRes.getSysUserName());
-        userDO.setFlag(sysUserAddRes.getFlag());
+        userDO.setSysUserName(sysUserAddReq.getSysUserName());
+        userDO.setFlag(sysUserAddReq.getFlag());
         userDO.setId(userDODetail.getId());
         userDO.setUpdateBy(redisUser.getSysUserName());
         userDO.setUpdateTime(DateUtil.getDateTime());
@@ -133,14 +133,14 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
     }
 
     @Override
-    public String sysUserStatus(SysUserAddRes sysUserAddRes) {
-        UserDO userDODetail = userMapper.uuid(sysUserAddRes.getUuid());
+    public String sysUserStatus(SysUserAddReq sysUserAddReq) {
+        UserDO userDODetail = userMapper.uuid(sysUserAddReq.getUuid());
         if (null == userDODetail) {
             throw BizException.fail("待编辑的用户信息不存在");
         }
         RedisUser redisUser = this.redisUser();
         UserDO userDO = new UserDO();
-        userDO.setFlag(sysUserAddRes.getFlag());
+        userDO.setFlag(sysUserAddReq.getFlag());
         userDO.setId(userDODetail.getId());
         userDO.setUpdateBy(redisUser.getSysUserName());
         userDO.setUpdateTime(DateUtil.getDateTime());
@@ -165,17 +165,17 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
     }
 
     @Override
-    public String sysUserPwd(SysUserAddRes sysUserAddRes) {
-        UserDO userDODetail = userMapper.uuid(sysUserAddRes.getUuid());
+    public String sysUserPwd(SysUserAddReq sysUserAddReq) {
+        UserDO userDODetail = userMapper.uuid(sysUserAddReq.getUuid());
         if (null == userDODetail) {
             throw BizException.fail("待编辑的用户不存在");
         }
         UserAccountPwdDO sysUserAccountByUserId = userAccountPwdMapper.sysUserAccountByUserId(userDODetail.getId());
         UserAccountPwdDO userAccountPwdDO = new UserAccountPwdDO();
-        userAccountPwdDO.setSysUserPwd(sysUserAddRes.getSysUserPwd());
+        userAccountPwdDO.setSysUserPwd(sysUserAddReq.getSysUserPwd());
         String salt = StrUtil.genUUID();
         userAccountPwdDO.setSysUserAuthSalt(salt);
-        String pwd = Encrypt.SHA512AndSHA256(sysUserAddRes.getSysUserPwd(), salt);
+        String pwd = Encrypt.SHA512AndSHA256(sysUserAddReq.getSysUserPwd(), salt);
         userAccountPwdDO.setSysUserPwd(pwd);
         userAccountPwdDO.setId(sysUserAccountByUserId.getId());
         RedisUser redisUser = this.redisUser();

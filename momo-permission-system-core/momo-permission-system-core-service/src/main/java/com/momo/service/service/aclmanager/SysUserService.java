@@ -2,7 +2,7 @@ package com.momo.service.service.aclmanager;
 
 import com.github.pagehelper.PageInfo;
 import com.momo.mapper.dataobject.UserDO;
-import com.momo.mapper.req.aclmanager.SysUserAddRes;
+import com.momo.mapper.req.aclmanager.SysUserAddReq;
 import com.momo.mapper.req.aclmanager.SysUserListReq;
 import com.momo.mapper.res.aclmanager.SysUserListRes;
 
@@ -22,13 +22,13 @@ public interface SysUserService {
      */
     public PageInfo<SysUserListRes> sysUserList(SysUserListReq sysUserListReq);
 
-    public String sysUserAdd(SysUserAddRes sysUserAddRes);
+    public String sysUserAdd(SysUserAddReq sysUserAddReq);
 
-    public UserDO sysUserDetail(SysUserAddRes sysUserAddRes);
+    public UserDO sysUserDetail(SysUserAddReq sysUserAddReq);
 
-    public String sysUserModify(SysUserAddRes sysUserAddRes);
+    public String sysUserModify(SysUserAddReq sysUserAddReq);
 
-    public String sysUserStatus(SysUserAddRes sysUserAddRes);
+    public String sysUserStatus(SysUserAddReq sysUserAddReq);
 
-    public String sysUserPwd(SysUserAddRes sysUserAddRes);
+    public String sysUserPwd(SysUserAddReq sysUserAddReq);
 }

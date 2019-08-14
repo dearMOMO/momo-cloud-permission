@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 //@EqualsAndHashCode(callSuper = true, of = {"id"})
-public class SysUserAddRes extends BaseReq {
+public class SysUserAddReq extends BaseReq {
 
     @NotBlank(message = "uuid必填", groups = {Detail.class, Status.class,Permission.class})
     private String uuid;

@@ -85,16 +85,16 @@ public class SysMainService extends BaseService {
         if (!superAdmins.contains(userAccountPwdDO.getSysUserLoginName())) {
             UserGroupDO userGroupDO = userGroupMapper.getUserGroupById(userAccountPwdDO.getGroupId());
             if (null == userGroupDO) {
-                throw BizException.fail("您所在的用户组不存在");
+                throw BizException.fail("您所在的企业不存在");
             }
             if (userGroupDO.getFlag().equals(1)) {
-                throw BizException.fail("您所在的用户组已被禁用");
+                throw BizException.fail("您所在的企业已被禁用");
             }
             if (userGroupDO.getDelFlag().equals(1)) {
-                throw BizException.fail("您所在的用户组已被删除");
+                throw BizException.fail("您所在的企业已被删除");
             }
             if (userGroupDO.getId().equals(1L) && DateUtils.timeDifference(userGroupDO.getSysAccountEndTime())) {
-                throw BizException.fail("您所在的用户组时间已到期,请续约后在次登录");
+                throw BizException.fail("您所在的企业会员已到期,请续约后在次登录");
             }
         }
 

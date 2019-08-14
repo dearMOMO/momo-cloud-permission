@@ -44,4 +44,164 @@
         from sys_user_group
         where id = #{id,jdbcType=BIGINT}
     </select>
+    <select id="uuid" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_user_group
+        where uuid = #{uuid,jdbcType=VARCHAR}
+    </select>
+    <insert id="insertSelective" parameterType="com.momo.mapper.dataobject.UserGroupDO">
+        insert into sys_user_group
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="uuid != null">
+                uuid,
+            </if>
+            <if test="userGroupName != null">
+                user_group_name,
+            </if>
+            <if test="sysAccountStartTime != null">
+                sys_account_start_time,
+            </if>
+            <if test="sysAccountEndTime != null">
+                sys_account_end_time,
+            </if>
+            <if test="sysOpenDay != null">
+                sys_open_day,
+            </if>
+            <if test="sysCreateAccountNum != null">
+                sys_create_account_num,
+            </if>
+            <if test="sysOpenAccountNum != null">
+                sys_open_account_num,
+            </if>
+            <if test="nameTop != null">
+                name_top,
+            </if>
+            <if test="nameBottom != null">
+                name_bottom,
+            </if>
+            <if test="flag != null">
+                flag,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="uuid != null">
+                #{uuid,jdbcType=VARCHAR},
+            </if>
+            <if test="userGroupName != null">
+                #{userGroupName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAccountStartTime != null">
+                #{sysAccountStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sysAccountEndTime != null">
+                #{sysAccountEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sysOpenDay != null">
+                #{sysOpenDay,jdbcType=INTEGER},
+            </if>
+            <if test="sysCreateAccountNum != null">
+                #{sysCreateAccountNum,jdbcType=INTEGER},
+            </if>
+            <if test="sysOpenAccountNum != null">
+                #{sysOpenAccountNum,jdbcType=INTEGER},
+            </if>
+            <if test="nameTop != null">
+                #{nameTop,jdbcType=VARCHAR},
+            </if>
+            <if test="nameBottom != null">
+                #{nameBottom,jdbcType=VARCHAR},
+            </if>
+            <if test="flag != null">
+                #{flag,jdbcType=INTEGER},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=INTEGER},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.momo.mapper.dataobject.UserGroupDO">
+        update sys_user_group
+        <set>
+            <if test="uuid != null">
+                uuid = #{uuid,jdbcType=VARCHAR},
+            </if>
+            <if test="userGroupName != null">
+                user_group_name = #{userGroupName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAccountStartTime != null">
+                sys_account_start_time = #{sysAccountStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sysAccountEndTime != null">
+                sys_account_end_time = #{sysAccountEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sysOpenDay != null">
+                sys_open_day = #{sysOpenDay,jdbcType=INTEGER},
+            </if>
+            <if test="sysCreateAccountNum != null">
+                sys_create_account_num = #{sysCreateAccountNum,jdbcType=INTEGER},
+            </if>
+            <if test="sysOpenAccountNum != null">
+                sys_open_account_num = #{sysOpenAccountNum,jdbcType=INTEGER},
+            </if>
+            <if test="nameTop != null">
+                name_top = #{nameTop,jdbcType=VARCHAR},
+            </if>
+            <if test="nameBottom != null">
+                name_bottom = #{nameBottom,jdbcType=VARCHAR},
+            </if>
+            <if test="flag != null">
+                flag = #{flag,jdbcType=INTEGER},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=INTEGER},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
 </mapper>

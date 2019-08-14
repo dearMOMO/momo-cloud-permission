@@ -1,7 +1,7 @@
 package com.momo.momopermissionsystemcoreweb.controller.aclmanager;
 
 import com.momo.common.common.JSONResult;
-import com.momo.mapper.req.aclmanager.SysUserAddRes;
+import com.momo.mapper.req.aclmanager.SysUserAddReq;
 import com.momo.mapper.req.aclmanager.SysUserListReq;
 import com.momo.service.service.aclmanager.SysUserService;
 import lombok.extern.slf4j.Slf4j;
@@ -36,57 +36,57 @@ public class SysUserController {
     /**
      * 用户新增--账号密码
      *
-     * @param sysUserAddRes
+     * @param sysUserAddReq
      * @return
      */
     @PostMapping("/sysUserAdd/v1")
-    public JSONResult sysUserAdd(@Validated(SysUserAddRes.Add.class) @RequestBody SysUserAddRes sysUserAddRes) {
-        return JSONResult.ok(sysUserService.sysUserAdd(sysUserAddRes));
+    public JSONResult sysUserAdd(@Validated(SysUserAddReq.Add.class) @RequestBody SysUserAddReq sysUserAddReq) {
+        return JSONResult.ok(sysUserService.sysUserAdd(sysUserAddReq));
     }
 
     /**
      * 查询用户详情
      *
-     * @param sysUserAddRes
+     * @param sysUserAddReq
      * @return
      */
     @PostMapping("/sysUserDetail/v1")
-    public JSONResult sysUserDetail(@Validated(SysUserAddRes.Detail.class) @RequestBody SysUserAddRes sysUserAddRes) {
-        return JSONResult.ok(sysUserService.sysUserDetail(sysUserAddRes));
+    public JSONResult sysUserDetail(@Validated(SysUserAddReq.Detail.class) @RequestBody SysUserAddReq sysUserAddReq) {
+        return JSONResult.ok(sysUserService.sysUserDetail(sysUserAddReq));
     }
 
     /**
      * 编辑
      *
-     * @param sysUserAddRes
+     * @param sysUserAddReq
      * @return
      */
     @PostMapping("/sysUserModify/v1")
-    public JSONResult sysUserModify(@Validated(SysUserAddRes.Modify.class) @RequestBody SysUserAddRes sysUserAddRes) {
-        return JSONResult.ok(sysUserService.sysUserModify(sysUserAddRes));
+    public JSONResult sysUserModify(@Validated(SysUserAddReq.Modify.class) @RequestBody SysUserAddReq sysUserAddReq) {
+        return JSONResult.ok(sysUserService.sysUserModify(sysUserAddReq));
     }
 
     /**
      * 用户状态
      *
-     * @param sysUserAddRes
+     * @param sysUserAddReq
      * @return
      */
     @PostMapping("/sysUserStatus/v1")
-    public JSONResult sysUserStatus(@Validated(SysUserAddRes.Status.class) @RequestBody SysUserAddRes sysUserAddRes) {
-        return JSONResult.ok(sysUserService.sysUserStatus(sysUserAddRes));
+    public JSONResult sysUserStatus(@Validated(SysUserAddReq.Status.class) @RequestBody SysUserAddReq sysUserAddReq) {
+        return JSONResult.ok(sysUserService.sysUserStatus(sysUserAddReq));
     }
 
 
     /**
      * 用户密码
      *
-     * @param sysUserAddRes
+     * @param sysUserAddReq
      * @return
      */
     @PostMapping("/sysUserPwd/v1")
-    public JSONResult sysUserPwd(@Validated(SysUserAddRes.Permission.class) @RequestBody SysUserAddRes sysUserAddRes) {
-        return JSONResult.ok(sysUserService.sysUserPwd(sysUserAddRes));
+    public JSONResult sysUserPwd(@Validated(SysUserAddReq.Permission.class) @RequestBody SysUserAddReq sysUserAddReq) {
+        return JSONResult.ok(sysUserService.sysUserPwd(sysUserAddReq));
     }
 
 }
