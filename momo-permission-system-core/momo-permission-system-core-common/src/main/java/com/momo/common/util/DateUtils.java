@@ -178,6 +178,7 @@ public class DateUtils {
     public static Date getCurrentTime() {
         return new Date();
     }
+
     public static long getMinuteDifference(Date endDate, Date nowDate) {
 
         long nd = 1000 * 24 * 60 * 60;
@@ -1407,16 +1408,19 @@ public class DateUtils {
         long sec = diff % nd % nh % nm / ns;
 
         if (mh != 0) {
-            return mh + "月" + (day - mh * 30) + "天" + hour + "小时" + min + "分钟";
+            return mh + "月" + (day - mh * 30) + "天" + hour + "小时" + min + "分钟" + sec + "秒";
         }
         if (day != 0) {
-            return day + "天" + hour + "小时" + min + "分钟";
+            return day + "天" + hour + "小时" + min + "分钟" + sec + "秒";
         }
         if (hour != 0) {
-            return hour + "小时" + min + "分钟";
+            return hour + "小时" + min + "分钟" + sec + "秒";
         }
         if (min != 0) {
-            return min + "分钟";
+            return min + "分钟" + sec + "秒";
+        }
+        if (sec != 0) {
+            return sec + "秒";
         }
         return "";
     }

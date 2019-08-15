@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.momo.mapper.dataobject.UserGroupDO;
 import com.momo.mapper.req.aclmanager.SysUserGroupReq;
 import com.momo.mapper.req.aclmanager.UserGroupPageReq;
+import com.momo.mapper.res.aclmanager.SysUserGroupPageRes;
 
 /**
  * @program: momo-cloud-permission
@@ -13,7 +14,7 @@ import com.momo.mapper.req.aclmanager.UserGroupPageReq;
  **/
 public interface SysEnterpriseService {
     //企业分页
-    public PageInfo<UserGroupDO> getUserGroupPage(UserGroupPageReq userGroupPageReq);
+    public PageInfo<SysUserGroupPageRes> getUserGroupPage(UserGroupPageReq userGroupPageReq);
 
     UserGroupDO detail(UserGroupPageReq userGroupPageReq);
     String modify(SysUserGroupReq sysUserGroupReq);

@@ -2,6 +2,7 @@ package com.momo.service.service.aclmanager.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.momo.common.util.DateUtils;
 import com.momo.common.error.BizException;
 import com.momo.mapper.dataobject.UserGroupDO;
@@ -9,12 +10,14 @@ import com.momo.mapper.mapper.manual.UserGroupMapper;
 import com.momo.mapper.req.aclmanager.SysUserGroupReq;
 import com.momo.mapper.req.aclmanager.UserGroupPageReq;
 import com.momo.mapper.req.sysmain.RedisUser;
+import com.momo.mapper.res.aclmanager.SysUserGroupPageRes;
 import com.momo.service.service.BaseService;
 import com.momo.service.service.aclmanager.SysEnterpriseService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -31,11 +34,41 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
     @Autowired
     private UserGroupMapper userGroupMapper;
 
-    public PageInfo<UserGroupDO> getUserGroupPage(UserGroupPageReq userGroupPageReq) {
+    public PageInfo<SysUserGroupPageRes> getUserGroupPage(UserGroupPageReq userGroupPageReq) {
         PageHelper.startPage(userGroupPageReq.getPageNum(), userGroupPageReq.getPageSize(), "id desc");
         List<UserGroupDO> getUserGroupPage = userGroupMapper.getUserGroupPage(userGroupPageReq.getUserGroupName(), userGroupPageReq.getFlag());
         PageInfo<UserGroupDO> pageInfo = new PageInfo<>(getUserGroupPage);
-        return pageInfo;
+        List<UserGroupDO> userGroupDOS = pageInfo.getList();
+        List<SysUserGroupPageRes> sysUserGroupPageRes = Lists.newArrayList();
+        if (!CollectionUtils.isEmpty(userGroupDOS)) {
+            userGroupDOS.forEach(userGroupDO -> {
+                SysUserGroupPageRes sysUserGroupPag = new SysUserGroupPageRes();
+                BeanUtils.copyProperties(userGroupDO, sysUserGroupPag);
+                if (null != userGroupDO.getSysAccountEndTime() && null != userGroupDO.getSysAccountStartTime()) {
+                    ////第一个大于第二个的情况小返回false
+                    //相等 false
+                    // 未过期
+                    if (DateUtils.compareDate(userGroupDO.getSysAccountStartTime(), userGroupDO.getSysAccountEndTime())) {
+                        String expireDtStr = DateUtils.getDatePoorTwo(userGroupDO.getSysAccountEndTime(), userGroupDO.getSysAccountStartTime());
+                        sysUserGroupPag.setExpireDtStr(expireDtStr);
+                    } else {
+                        sysUserGroupPag.setExpireIs(true);
+                        String expireDtStr = DateUtils.getDatePoorTwo(userGroupDO.getSysAccountStartTime(), userGroupDO.getSysAccountEndTime());
+                        sysUserGroupPag.setExpireDtStr(expireDtStr);
+                    }
+
+                }else{
+                    sysUserGroupPag.setExpireIs(true);
+                }
+
+                sysUserGroupPageRes.add(sysUserGroupPag);
+            });
+        }
+        PageInfo<SysUserGroupPageRes> sysUserGroupPageResPageInfo = new PageInfo<SysUserGroupPageRes>(sysUserGroupPageRes);
+        sysUserGroupPageResPageInfo.setTotal(pageInfo.getTotal());
+        sysUserGroupPageResPageInfo.setPageNum(pageInfo.getPageNum());
+        sysUserGroupPageResPageInfo.setPageSize(pageInfo.getPageSize());
+        return sysUserGroupPageResPageInfo;
     }
 
     @Override

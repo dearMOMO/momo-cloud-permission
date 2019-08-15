@@ -26,7 +26,7 @@ public class SysEnterpriseController {
     @Autowired
     private SysEnterpriseService sysEnterpriseService;
 
-    @RequestMapping("/getUserGroupPage/v1")
+    @RequestMapping("/sysUserGroupPage/v1")
     public JSONResult getUserGroupPage(@RequestBody UserGroupPageReq userGroupPageReq) {
         return JSONResult.ok(sysEnterpriseService.getUserGroupPage(userGroupPageReq));
     }
