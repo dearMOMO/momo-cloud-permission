@@ -255,7 +255,13 @@
           SELECT role_id FROM sys_role_user WHERE user_id =#{userId}
         )
     </select>
-
+    <select id="getVipAdminRole" parameterType="map" resultMap="BaseResultMap">
+         SELECT
+        id, uuid, sys_role_name, sys_role_type, group_id, remark, flag, del_flag,
+        create_time
+        FROM sys_role
+        WHERE group_id=#{groupId,jdbcType=BIGINT} and sys_role_type=#{roleType,jdbcType=VARCHAR}
+    </select>
 
 
 </mapper>

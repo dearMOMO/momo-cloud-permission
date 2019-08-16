@@ -36,6 +36,11 @@ public class SysEnterpriseController {
         return JSONResult.ok(sysEnterpriseService.detail(userGroupPageReq));
     }
 
+    @RequestMapping("/aclDetail/v1")
+    public JSONResult aclDetail(@Validated(UserGroupPageReq.Permission.class) @RequestBody UserGroupPageReq userGroupPageReq) {
+        return JSONResult.ok(sysEnterpriseService.aclDetail(userGroupPageReq));
+    }
+
     @RequestMapping("/modify/v1")
     public JSONResult modify(@Validated(SysUserGroupReq.Modify.class) @RequestBody SysUserGroupReq sysUserGroupReq) {
         return JSONResult.ok(sysEnterpriseService.modify(sysUserGroupReq));

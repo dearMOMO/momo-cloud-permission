@@ -111,4 +111,13 @@ public interface RoleMapper {
      */
     public List<RoleDO> getRolesByUserId(@Param("userId") Long userId);
 
+    /**
+     * 根据组织id 和管理员角色 查询第三方组织的管理员信息
+     *
+     * @param groupId
+     * @param roleType 角色的类型，0：管理员角色，1：普通用户 2其他
+     * @return
+     */
+    RoleDO getVipAdminRole(@Param("groupId") Long groupId, @Param("roleType") Integer roleType);
+
 }

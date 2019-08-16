@@ -20,7 +20,7 @@ import javax.validation.constraints.NotBlank;
 //@EqualsAndHashCode(callSuper = true, of = {"id"})
 public class UserGroupPageReq extends BaseReq {
 
-    @NotBlank(message = "企业uuid 必填",groups = {Detail.class})
+    @NotBlank(message = "企业uuid 必填",groups = {Detail.class,Permission.class})
     private String uuid;
     //企业名称
     private String userGroupName;

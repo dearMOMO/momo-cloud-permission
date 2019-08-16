@@ -5,14 +5,20 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.momo.common.util.DateUtils;
 import com.momo.common.error.BizException;
+import com.momo.mapper.dataobject.RoleDO;
 import com.momo.mapper.dataobject.UserGroupDO;
+import com.momo.mapper.mapper.manual.RoleMapper;
 import com.momo.mapper.mapper.manual.UserGroupMapper;
 import com.momo.mapper.req.aclmanager.SysUserGroupReq;
 import com.momo.mapper.req.aclmanager.UserGroupPageReq;
+import com.momo.mapper.req.sysmain.LoginAuthReq;
 import com.momo.mapper.req.sysmain.RedisUser;
 import com.momo.mapper.res.aclmanager.SysUserGroupPageRes;
+import com.momo.mapper.res.authority.AclTreeRes;
 import com.momo.service.service.BaseService;
 import com.momo.service.service.aclmanager.SysEnterpriseService;
+import com.momo.service.service.authority.AdminAuthorityService;
+import com.momo.service.service.authority.CommonAuthorityService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +39,12 @@ import java.util.List;
 public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpriseService {
     @Autowired
     private UserGroupMapper userGroupMapper;
+    @Autowired
+    private RoleMapper roleMapper;
+    @Autowired
+    private AdminAuthorityService adminAuthorityService;
+    @Autowired
+    private CommonAuthorityService commonAuthorityService;
 
     public PageInfo<SysUserGroupPageRes> getUserGroupPage(UserGroupPageReq userGroupPageReq) {
         PageHelper.startPage(userGroupPageReq.getPageNum(), userGroupPageReq.getPageSize(), "id desc");
@@ -57,7 +69,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
                         sysUserGroupPag.setExpireDtStr(expireDtStr);
                     }
 
-                }else{
+                } else {
                     sysUserGroupPag.setExpireIs(true);
                 }
 
@@ -78,6 +90,29 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
             throw BizException.fail("待编辑的企业不存在");
         }
         return uuid;
+    }
+
+    @Override
+    public AclTreeRes aclDetail(UserGroupPageReq userGroupPageReq) {
+        UserGroupDO uuid = userGroupMapper.uuid(userGroupPageReq.getUuid());
+        if (uuid == null) {
+            throw BizException.fail("待授权的企业不存在");
+        }
+        //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
+        RoleDO getVipAdminRole = roleMapper.getVipAdminRole(uuid.getId(), 0);
+        if (null == getVipAdminRole) {
+            throw BizException.fail("请先为企业设置一个管理员用户");
+        }
+        RedisUser redisUser = this.redisUser();
+        LoginAuthReq loginAuthReq = new LoginAuthReq();
+        loginAuthReq.setRoleId(getVipAdminRole.getId());
+        if (redisUser.getGroupId().equals(1L)) {
+            AclTreeRes aclTreeRes = adminAuthorityService.roleTree(loginAuthReq, redisUser);
+            return aclTreeRes;
+        } else {
+            AclTreeRes aclTreeRes = commonAuthorityService.roleTree(loginAuthReq, redisUser);
+            return aclTreeRes;
+        }
     }
 
     @Override
