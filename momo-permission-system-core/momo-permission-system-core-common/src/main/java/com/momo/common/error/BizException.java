@@ -35,8 +35,12 @@ public class BizException extends RuntimeException {
         this.message = message;
     }
 
-    public synchronized static BizException fail(String message) {
+    public static BizException fail(String message) {
         return BizException.builder().message(message).error(ErrorEnum.ERROR_BIZ_FAIL).build();
+    }
+
+    public static BizException failHandler(String message) {
+        return BizException.builder().message(message).error(ErrorEnum.ERROR_BIZ_FAIL_HANDLER).build();
     }
 
     public ErrorEnum getError() {

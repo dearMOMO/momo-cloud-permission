@@ -15,6 +15,7 @@ public enum ErrorEnum {
     RES_CODE_SYS_INVALID_TICKET(2, 2, "用户身份过期"),
     SYSTEM_ERROR(10000, 10000, "系统错误"),//
     ERROR_BIZ_FAIL(10000, 10001, "业务失败"),
+    ERROR_BIZ_FAIL_HANDLER(10000, -1, "业务失败"),
     ERROR_BIZ_UNIQUE_REQ_ID(10000, 10002, "唯一性约束重复"),
     SERVICE_ERROR(10000, 90001, "服务错误"),
 

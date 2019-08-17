@@ -36,6 +36,17 @@ public class SysMainController {
     }
 
     /**
+     * 用户退出
+     *
+     * @return
+     */
+    @PostMapping("/logout/v1")
+    public JSONResult logout() {
+        String msg = sysMainService.logout();
+        return JSONResult.ok(msg);
+    }
+
+    /**
      * 获取用户信息
      *
      * @return

@@ -28,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -61,7 +62,7 @@ public class SysMainService extends BaseService {
 
     public String userLogin(SysUserLoginReq sysUserLoginReq, HttpServletRequest request) {
         //todo 验证码
-//        checkVerificationCode(sysUserLoginReq);
+        checkVerificationCode(sysUserLoginReq);
         UserAccountPwdDO userAccountPwdDO = userAccountPwdMapper.sysUserAccountLogin(sysUserLoginReq.getSysUserLoginName());
         if (null == userAccountPwdDO) {
             throw BizException.fail("用户名或者密码错误");
@@ -115,7 +116,7 @@ public class SysMainService extends BaseService {
         Integer loginNumber = userAccountPwdDO.getSysLoginNumber();
         if (loginNumber.equals(0)) {
             throw BizException.fail("您已被限制登陆，请联系管理员");
-        } else if (!loginNumber.equals(-1) ) {//限制登录次数
+        } else if (!loginNumber.equals(-1)) {//限制登录次数
             //redis  key--》用户id     v----》 List<String> String=uuid
             //redis  key--》uuid     v----》 token
             Object listUuid = redisUtil.get(RedisKeyEnum.REDIS_KEY_USER_ID.getKey() + userDO.getId());
@@ -173,6 +174,26 @@ public class SysMainService extends BaseService {
         return userInfoRes;
     }
 
+    public String logout() {
+        RedisUser redisUser = this.redisUser();
+        redisUtil.del(RedisKeyEnum.REDIS_KEY_USER_INFO.getKey() + redisUser.getRedisUserKey());
+        Object listUuid = redisUtil.get(RedisKeyEnum.REDIS_KEY_USER_ID.getKey() + redisUser.getBaseId());
+        if (null != listUuid) {
+            List<String> listRedis = Lists.newArrayList();
+            List<String> list = JSON.parseObject((String) listUuid, new TypeReference<List<String>>() {
+            });
+            list.forEach(s -> {
+                if (!s.equals(redisUser.getRedisUserKey())){
+                    listRedis.add(s);
+                }
+            });
+            if (listRedis.size()!=list.size()&&!CollectionUtils.isEmpty(listRedis)){
+                redisUtil.set(RedisKeyEnum.REDIS_KEY_USER_ID.getKey() + redisUser.getBaseId(), JSONObject.toJSONString(listRedis), RedisKeyEnum.REDIS_KEY_USER_ID.getExpireTime());
+            }
+        }
+        return "安全退出成功";
+    }
+
     public JSONResult createVerificationCode() {
         try {
             SpecCaptcha specCaptcha = new SpecCaptcha();
@@ -209,12 +230,12 @@ public class SysMainService extends BaseService {
         String key = "verUUidCode:" + sysUserLoginReq.getVerUUidCode();
         boolean existsKey = redisUtil.hasKey(key);
         if (!existsKey) {//
-            throw BizException.fail("验证码已失效");
+            throw BizException.failHandler("验证码已失效");
         }
         String verUUidCode = (String) redisUtil.get(key);
         String aa = sysUserLoginReq.getVerificationCode().toLowerCase().trim();
         if (!aa.equals(verUUidCode.toLowerCase().trim())) {
-            throw BizException.fail("验证码不正确");
+            throw BizException.failHandler("验证码不正确");
         }
     }
 }
