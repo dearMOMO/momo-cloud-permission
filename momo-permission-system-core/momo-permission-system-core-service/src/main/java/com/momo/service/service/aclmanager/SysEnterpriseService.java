@@ -1,9 +1,12 @@
 package com.momo.service.service.aclmanager;
 
 import com.github.pagehelper.PageInfo;
+import com.momo.mapper.dataobject.RoleDO;
 import com.momo.mapper.dataobject.UserGroupDO;
+import com.momo.mapper.req.aclmanager.SysEnterpriseRoleReq;
 import com.momo.mapper.req.aclmanager.SysUserGroupReq;
 import com.momo.mapper.req.aclmanager.UserGroupPageReq;
+import com.momo.mapper.res.aclmanager.SysEnterpriseRoleRes;
 import com.momo.mapper.res.aclmanager.SysUserGroupPageRes;
 import com.momo.mapper.res.authority.AclTreeRes;
 
@@ -21,7 +24,11 @@ public interface SysEnterpriseService {
 
     AclTreeRes aclDetail(UserGroupPageReq userGroupPageReq);
 
+    String aclsToEnterprise(UserGroupPageReq userGroupPageReq);
+
     String modify(SysUserGroupReq sysUserGroupReq);
+
+    SysEnterpriseRoleRes role(SysEnterpriseRoleReq sysEnterpriseRoleReq);
 
     String save(SysUserGroupReq sysUserGroupReq);
 

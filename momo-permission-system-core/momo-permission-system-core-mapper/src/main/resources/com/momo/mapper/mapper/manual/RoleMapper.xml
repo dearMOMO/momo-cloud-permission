@@ -2,18 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.mapper.manual.RoleMapper">
     <resultMap id="BaseResultMap" type="com.momo.mapper.dataobject.RoleDO">
-        <id column="id" jdbcType="BIGINT" property="id" />
-        <result column="uuid" jdbcType="VARCHAR" property="uuid" />
-        <result column="sys_role_name" jdbcType="VARCHAR" property="sysRoleName" />
-        <result column="sys_role_type" jdbcType="INTEGER" property="sysRoleType" />
-        <result column="group_id" jdbcType="BIGINT" property="groupId" />
-        <result column="remark" jdbcType="VARCHAR" property="remark" />
-        <result column="flag" jdbcType="INTEGER" property="flag" />
-        <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
-        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="uuid" jdbcType="VARCHAR" property="uuid"/>
+        <result column="sys_role_name" jdbcType="VARCHAR" property="sysRoleName"/>
+        <result column="sys_role_type" jdbcType="INTEGER" property="sysRoleType"/>
+        <result column="group_id" jdbcType="BIGINT" property="groupId"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="flag" jdbcType="INTEGER" property="flag"/>
+        <result column="del_flag" jdbcType="INTEGER" property="delFlag"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
     </resultMap>
     <sql id="Base_Column_List">
         id, uuid, sys_role_name, sys_role_type, group_id, remark, flag, del_flag, create_by,
@@ -23,35 +23,28 @@
         delete from sys_role_acl
         where sys_role_id = #{roleId,jdbcType=BIGINT}
     </delete>
-    <delete id="deleteRoleAclsAdmin" parameterType="map">
-        delete from sys_role_acl
-        where comp_id = #{groupId,jdbcType=BIGINT} and sys_acl_id IN
-        <foreach collection="aclIds" item="item" separator="," open="(" close=")">
-            #{item,jdbcType=BIGINT}
-        </foreach>
-    </delete>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from sys_role
         where id = #{id,jdbcType=BIGINT}
     </select>
     <select id="roleList" parameterType="map" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from sys_role
         <trim prefix="where" prefixOverrides="and">
             <if test="flag!=null">
-                AND  flag=#{flag,jdbcType=INTEGER}
+                AND flag=#{flag,jdbcType=INTEGER}
             </if>
             <if test="sysRoleName!=null and sysRoleName.trim()!=''">
-                AND  sys_role_name LIKE CONCAT ('%',#{sysRoleName,jdbcType=VARCHAR},'%')
+                AND sys_role_name LIKE CONCAT ('%',#{sysRoleName,jdbcType=VARCHAR},'%')
             </if>
             <if test="sysRoleType!=null">
-                AND  sys_role_type=#{sysRoleType,jdbcType=VARCHAR}
+                AND sys_role_type=#{sysRoleType,jdbcType=VARCHAR}
             </if>
             <if test="groupId!=null">
-                AND  group_id=#{groupId,jdbcType=BIGINT}
+                AND group_id=#{groupId,jdbcType=BIGINT}
             </if>
         </trim>
     </select>
@@ -64,7 +57,7 @@
     </select>
     <select id="selectByPrimaryUuid" parameterType="string" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from sys_role
         where uuid = #{uuid,jdbcType=VARCHAR}
     </select>
@@ -75,10 +68,10 @@
         where
         sys_role_name=#{roleName}
         <if test="id!=null">
-            and  id != #{id,jdbcType=BIGINT}
+            and id != #{id,jdbcType=BIGINT}
         </if>
         <if test="groupId!=null">
-            and  group_id = #{groupId,jdbcType=BIGINT}
+            and group_id = #{groupId,jdbcType=BIGINT}
         </if>
     </select>
     <select id="checkAdminRole" parameterType="map" resultType="integer">
@@ -93,7 +86,7 @@
                 AND comp_id=#{compId,jdbcType=BIGINT}
             </if>
             <if test="id!=null">
-                AND   id != #{id,jdbcType=BIGINT}
+                AND id != #{id,jdbcType=BIGINT}
             </if>
         </trim>
     </select>
@@ -102,13 +95,14 @@
         where user_id = #{userId,jdbcType=BIGINT}
     </delete>
     <insert id="batchInsertRoleAcls" parameterType="map">
-        <foreach collection="roleAcls" item="item"  separator=";">
+        <foreach collection="roleAcls" item="item" separator=";">
             insert into sys_role_acl (id, uuid, sys_role_id,
             sys_acl_id, sys_acl_permission_type, group_id,
             del_flag, create_by, create_time,
             update_time, update_by)
             values ( #{item.id,jdbcType=BIGINT},#{item.uuid,jdbcType=VARCHAR}, #{item.sysRoleId,jdbcType=BIGINT},
-            #{item.sysAclId,jdbcType=BIGINT}, #{item.sysAclPermissionType,jdbcType=BIGINT}, #{item.groupId,jdbcType=BIGINT},
+            #{item.sysAclId,jdbcType=BIGINT}, #{item.sysAclPermissionType,jdbcType=BIGINT},
+            #{item.groupId,jdbcType=BIGINT},
             #{item.delFlag,jdbcType=CHAR}, #{item.createBy,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP},
             #{item.updateTime,jdbcType=TIMESTAMP}, #{item.updateBy,jdbcType=VARCHAR})
         </foreach>
@@ -118,7 +112,7 @@
             insert into sys_role_user ( id,role_id, user_id,
             group_id, create_by, create_time,
             update_time, update_by)
-            values (#{item.id,jdbcType=BIGINT},  #{item.roleId,jdbcType=BIGINT},
+            values (#{item.id,jdbcType=BIGINT}, #{item.roleId,jdbcType=BIGINT},
             #{item.userId,jdbcType=BIGINT}, #{item.groupId,jdbcType=BIGINT},
             #{item.createBy,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP},
             #{item.updateTime,jdbcType=TIMESTAMP}, #{item.updateBy,jdbcType=VARCHAR})
@@ -262,6 +256,25 @@
         FROM sys_role
         WHERE group_id=#{groupId,jdbcType=BIGINT} and sys_role_type=#{roleType,jdbcType=VARCHAR}
     </select>
-
+    <select id="getRoleListByEnterpriseId" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        id, uuid, sys_role_name, sys_role_type, group_id, remark, flag, del_flag,
+        create_time
+        FROM sys_role
+        <trim prefix="where" prefixOverrides="and">
+            <if test="groupId!=null">
+                and group_id =#{groupId}
+            </if>
+            <if test="flag!=null">
+                and flag = #{flag}
+            </if>
+            <if test="roleType!=null">
+                and sys_role_type = #{roleType}
+            </if>
+            <if test="sysRoleName!=null and sysRoleName.trim()!=''">
+                and sys_role_name LIKE CONCAT('%',#{sysRoleName},'%')
+            </if>
+        </trim>
+    </select>
 
 </mapper>

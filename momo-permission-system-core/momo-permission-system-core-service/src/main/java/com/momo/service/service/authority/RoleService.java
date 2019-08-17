@@ -87,7 +87,35 @@ public class RoleService extends BaseService {
         if (!redisUser.getGroupId().equals(1L) && roleDO.getSysRoleType().equals(0)) {
             throw BizException.fail("您无权限操作");
         }
+
         List<AclDO> getAcls = batchRoleUserReq.getAcls();
+        computeAclsToRole(getAcls, roleDO, redisUser);
+//        List<AclDO> aclDOS = Lists.newArrayList();
+//        if (CollectionUtils.isNotEmpty(getAcls)) {
+//            Set<String> aclsUuid = getAcls.stream().map(aclDO -> aclDO.getUuid()).collect(Collectors.toSet());
+//            aclDOS.addAll(aclMapper.aclUuids(aclsUuid));
+//        }
+//        List<Long> acls = Lists.newArrayList();
+//        if (CollectionUtils.isNotEmpty(aclDOS)) {
+//            aclDOS.forEach(roleAclDO -> {
+//                acls.add(roleAclDO.getId());
+//            });
+//        }
+//        List<Long> originAclIdList = authorityMapper.aclsByRoleId(Sets.newHashSet(roleDO.getId()), null);
+//        List<Long> alcIds = Lists.newArrayList();
+//        if (originAclIdList.size() == acls.size()) {
+//            Set<Long> originAclIdSet = Sets.newHashSet(originAclIdList);
+//            Set<Long> aclIdSet = Sets.newHashSet(acls);
+//            originAclIdSet.removeAll(aclIdSet);
+//            alcIds.addAll(originAclIdSet);
+//            if (CollectionUtils.isEmpty(originAclIdSet)) {
+//                return "为角色授权权限成功";
+//            }
+//        }
+//        updateRoleAcls(roleDO.getId(), aclDOS, redisUser, roleDO.getGroupId(), acls, roleDO.getSysRoleType(), alcIds);
+        return "为角色授权权限成功";
+    }
+    public void computeAclsToRole(List<AclDO> getAcls,RoleDO roleDO,RedisUser redisUser){
         List<AclDO> aclDOS = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(getAcls)) {
             Set<String> aclsUuid = getAcls.stream().map(aclDO -> aclDO.getUuid()).collect(Collectors.toSet());
@@ -107,13 +135,11 @@ public class RoleService extends BaseService {
             originAclIdSet.removeAll(aclIdSet);
             alcIds.addAll(originAclIdSet);
             if (CollectionUtils.isEmpty(originAclIdSet)) {
-                return "为角色授权权限成功";
+                return ;
             }
         }
         updateRoleAcls(roleDO.getId(), aclDOS, redisUser, roleDO.getGroupId(), acls, roleDO.getSysRoleType(), alcIds);
-        return "为角色授权权限成功";
     }
-
     public AclTreeRes roleHaveAclTree(LoginAuthReq loginAuthReq) {
         RoleDO roleDO = roleMapper.selectByPrimaryUuid(loginAuthReq.getSysRoleUuid());
         if (null == roleDO) {
@@ -351,11 +377,6 @@ public class RoleService extends BaseService {
     @Transactional
     public void updateRoleAcls(Long roleId, List<AclDO> aclIdList, RedisUser redisUser, Long groupId, List<Long> acls, Integer roleType, List<Long> alcIds) {
         roleMapper.deleteRoleAclsByRoleId(roleId);
-        //角色的类型，0：管理员角色，1：普通用户 2其他
-        if (roleType.equals(0)) {
-            roleMapper.deleteRoleAclsAdmin(groupId, alcIds);
-        }
-
         if (CollectionUtils.isEmpty(aclIdList)) {
             return;
         }

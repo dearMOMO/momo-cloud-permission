@@ -1,6 +1,7 @@
 package com.momo.momopermissionsystemcoreweb.controller.aclmanager;
 
 import com.momo.common.common.JSONResult;
+import com.momo.mapper.req.aclmanager.SysEnterpriseRoleReq;
 import com.momo.mapper.req.aclmanager.SysUserGroupReq;
 import com.momo.mapper.req.aclmanager.UserGroupPageReq;
 import com.momo.service.service.aclmanager.SysEnterpriseService;
@@ -41,9 +42,19 @@ public class SysEnterpriseController {
         return JSONResult.ok(sysEnterpriseService.aclDetail(userGroupPageReq));
     }
 
+    @RequestMapping("/aclsToEnterprise/v1")
+    public JSONResult aclsToEnterprise(@Validated(UserGroupPageReq.Permission.class) @RequestBody UserGroupPageReq userGroupPageReq) {
+        return JSONResult.ok(sysEnterpriseService.aclsToEnterprise(userGroupPageReq));
+    }
+
     @RequestMapping("/modify/v1")
     public JSONResult modify(@Validated(SysUserGroupReq.Modify.class) @RequestBody SysUserGroupReq sysUserGroupReq) {
         return JSONResult.ok(sysEnterpriseService.modify(sysUserGroupReq));
+    }
+
+    @RequestMapping("/role/v1")
+    public JSONResult role(@Validated(SysEnterpriseRoleReq.Permission.class) @RequestBody SysEnterpriseRoleReq sysEnterpriseRoleReq) {
+        return JSONResult.ok(sysEnterpriseService.role(sysEnterpriseRoleReq));
     }
 
     @RequestMapping("/save/v1")

@@ -38,7 +38,7 @@ public interface RoleMapper {
      *
      * @param roleName
      * @param id
-     * @param compId
+     * @param groupId
      * @return
      */
     int checkRoleName(@Param("roleName") String roleName, @Param("id") Long id, @Param("groupId") Long groupId);
@@ -61,14 +61,6 @@ public interface RoleMapper {
      */
     int deleteRoleAclsByRoleId(@Param("roleId") Long roleId);
 
-    /**
-     * 权限回收 管理员角色变更时，相应的自家用户权限也要抹除掉
-     *
-     * @param groupId
-     * @param roleId
-     * @return
-     */
-    int deleteRoleAclsAdmin(@Param("groupId") Long groupId, @Param("aclIds") List<Long> roleId);
 
     /**
      * 批量新增角色和权限关系
@@ -120,4 +112,6 @@ public interface RoleMapper {
      */
     RoleDO getVipAdminRole(@Param("groupId") Long groupId, @Param("roleType") Integer roleType);
 
+
+    List<RoleDO> getRoleListByEnterpriseId(@Param("groupId") Long groupId, @Param("roleType") Integer roleType,@Param("flag")Integer flag,@Param("sysRoleName")String sysRoleName);
 }
