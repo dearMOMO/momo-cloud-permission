@@ -20,8 +20,9 @@ import java.util.Set;
 @AllArgsConstructor
 //@EqualsAndHashCode(callSuper = true, of = {"id"})
 public class SysRoleCheckedRes extends RoleDO {
+    private String idStr;
     //选中列表
-    private Set<Long> checkList;
+    private Set<String> checkList;
     //是否禁用
     private boolean disabled = false;
     //角色列表

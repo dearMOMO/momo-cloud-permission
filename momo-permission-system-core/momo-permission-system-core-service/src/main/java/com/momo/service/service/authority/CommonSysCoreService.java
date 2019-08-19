@@ -24,6 +24,9 @@ public class CommonSysCoreService {
     private AuthorityMapper authorityMapper;
 
     public List<AclDO> getRoleAclList(Set<Long> roleIds, Long aclPermissionType) {
+        if (org.apache.commons.collections.CollectionUtils.isEmpty(roleIds)) {
+            return Lists.newArrayList();
+        }
         List<Long> aclIdList = authorityMapper.aclsByRoleId(roleIds, aclPermissionType);
         if (CollectionUtils.isEmpty(aclIdList)) {
             return Lists.newArrayList();

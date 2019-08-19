@@ -6,6 +6,7 @@ import com.momo.mapper.dataobject.AclDO;
 import com.momo.mapper.mapper.manual.AuthorityMapper;
 import com.momo.mapper.req.sysmain.RedisUser;
 import com.momo.mapper.req.sysmain.LoginAuthReq;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,9 @@ public class AdminSysCoreService {
     private AuthorityMapper authorityMapper;
 
     public List<AclDO> getRoleAclList(Set<Long> roleIds, Long aclPermissionType) {
+        if (org.apache.commons.collections.CollectionUtils.isEmpty(roleIds)) {
+            return Lists.newArrayList();
+        }
         //根据角色id获取权限点ids
         List<Long> aclIdList = authorityMapper.aclsByRoleId(roleIds, aclPermissionType);
         if (org.apache.commons.collections.CollectionUtils.isEmpty(aclIdList)) {
@@ -53,7 +57,7 @@ public class AdminSysCoreService {
         Set<Long> finalRoleIds = Sets.newHashSet();
         //根据角色ids获取角色列表 临时启用和禁用角色
         //是否被禁用  0否 1禁用
-        List<Long> roleIds = authorityMapper.rolesByRoleId(userRoleIdList, "0");
+        List<Long> roleIds = authorityMapper.rolesByRoleId(userRoleIdList, 0);
         if (CollectionUtils.isEmpty(roleIds)) {
             return Lists.newArrayList();
         }
@@ -95,6 +99,9 @@ public class AdminSysCoreService {
     public boolean isSuperAdmin(RedisUser redisUser) {
         // 这里是我自己定义了一个假的超级管理员规则，实际中要根据项目进行修改
         // 可以是配置文件获取，可以指定某个用户，也可以指定某个角色
+        if (StringUtils.isBlank(redisUser.getSysUserPhone())) {
+            return false;
+        }
         if (superAdmins.trim().contains(redisUser.getSysUserPhone())) {
             return true;
         }

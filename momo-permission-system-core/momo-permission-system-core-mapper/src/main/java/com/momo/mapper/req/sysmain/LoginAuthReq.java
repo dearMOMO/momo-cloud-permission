@@ -23,7 +23,7 @@ public class LoginAuthReq extends BaseReq {
     @NotNull(message = "动态权限菜单的权限类型 必填",groups = {Permission.class})
     private Long aclPermissionType;
     @NotBlank(message = "角色UUID必填",groups = {Detail.class})
-    private String sysRoleUuid;
+    private String uuid;
     //角色ID
     private Long roleId;
 }

@@ -90,32 +90,10 @@ public class RoleService extends BaseService {
 
         List<AclDO> getAcls = batchRoleUserReq.getAcls();
         computeAclsToRole(getAcls, roleDO, redisUser);
-//        List<AclDO> aclDOS = Lists.newArrayList();
-//        if (CollectionUtils.isNotEmpty(getAcls)) {
-//            Set<String> aclsUuid = getAcls.stream().map(aclDO -> aclDO.getUuid()).collect(Collectors.toSet());
-//            aclDOS.addAll(aclMapper.aclUuids(aclsUuid));
-//        }
-//        List<Long> acls = Lists.newArrayList();
-//        if (CollectionUtils.isNotEmpty(aclDOS)) {
-//            aclDOS.forEach(roleAclDO -> {
-//                acls.add(roleAclDO.getId());
-//            });
-//        }
-//        List<Long> originAclIdList = authorityMapper.aclsByRoleId(Sets.newHashSet(roleDO.getId()), null);
-//        List<Long> alcIds = Lists.newArrayList();
-//        if (originAclIdList.size() == acls.size()) {
-//            Set<Long> originAclIdSet = Sets.newHashSet(originAclIdList);
-//            Set<Long> aclIdSet = Sets.newHashSet(acls);
-//            originAclIdSet.removeAll(aclIdSet);
-//            alcIds.addAll(originAclIdSet);
-//            if (CollectionUtils.isEmpty(originAclIdSet)) {
-//                return "为角色授权权限成功";
-//            }
-//        }
-//        updateRoleAcls(roleDO.getId(), aclDOS, redisUser, roleDO.getGroupId(), acls, roleDO.getSysRoleType(), alcIds);
         return "为角色授权权限成功";
     }
-    public void computeAclsToRole(List<AclDO> getAcls,RoleDO roleDO,RedisUser redisUser){
+
+    public void computeAclsToRole(List<AclDO> getAcls, RoleDO roleDO, RedisUser redisUser) {
         List<AclDO> aclDOS = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(getAcls)) {
             Set<String> aclsUuid = getAcls.stream().map(aclDO -> aclDO.getUuid()).collect(Collectors.toSet());
@@ -135,13 +113,14 @@ public class RoleService extends BaseService {
             originAclIdSet.removeAll(aclIdSet);
             alcIds.addAll(originAclIdSet);
             if (CollectionUtils.isEmpty(originAclIdSet)) {
-                return ;
+                return;
             }
         }
         updateRoleAcls(roleDO.getId(), aclDOS, redisUser, roleDO.getGroupId(), acls, roleDO.getSysRoleType(), alcIds);
     }
+
     public AclTreeRes roleHaveAclTree(LoginAuthReq loginAuthReq) {
-        RoleDO roleDO = roleMapper.selectByPrimaryUuid(loginAuthReq.getSysRoleUuid());
+        RoleDO roleDO = roleMapper.selectByPrimaryUuid(loginAuthReq.getUuid());
         if (null == roleDO) {
             throw BizException.fail("待授权的角色不存在");
         }
@@ -259,21 +238,22 @@ public class RoleService extends BaseService {
 
         //选择用户所拥有的角色
         List<RoleDO> roleDOList = roleMapper.getRolesByUserId(userDO.getId());
-        Set<Long> roleSet = Sets.newHashSet();
+        Set<String> roleSet = Sets.newHashSet();
         //已选中列表
         if (CollectionUtils.isNotEmpty(roleDOList)) {
-            roleSet = roleDOList.stream().map(roleDO -> roleDO.getId()).collect(Collectors.toSet());
+            roleSet = roleDOList.stream().map(roleDO -> String.valueOf(roleDO.getId())).collect(Collectors.toSet());
         }
         SysRoleCheckedRes roleCheckedRes = new SysRoleCheckedRes();
         List<SysRoleCheckedRes> sysRoleCheckedRes = Lists.newArrayList();
-        selfRoleDOS.forEach(roleDO -> {
+        for (RoleDO roleDO : selfRoleDOS) {
             SysRoleCheckedRes sysRoleChecke = new SysRoleCheckedRes();
             BeanUtils.copyProperties(roleDO, sysRoleChecke);
+            sysRoleChecke.setIdStr(String.valueOf(roleDO.getId()));
             if (roleDO.getFlag() == 0) {
                 sysRoleChecke.setDisabled(true);
             }
             sysRoleCheckedRes.add(sysRoleChecke);
-        });
+        }
         roleCheckedRes.setRoles(sysRoleCheckedRes);
         roleCheckedRes.setCheckList(roleSet);
         return roleCheckedRes;
@@ -410,6 +390,7 @@ public class RoleService extends BaseService {
         for (Long aclId : roleIdList) {
             RoleUserDO roleUserDO = new RoleUserDO();
             roleUserDO.setId(snowFlake.nextId());
+            roleUserDO.setUuid(StrUtil.genUUID());
             roleUserDO.setRoleId(aclId);
             roleUserDO.setGroupId(groupId);
             roleUserDO.setUserId(userId);

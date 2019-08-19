@@ -37,7 +37,7 @@ public interface AuthorityMapper {
      * @param roleId
      * @return
      */
-    List<Long> rolesByRoleId(@Param("roleIds") List<Long> roleId, @Param("roleStatus") String roleStatus);
+    List<Long> rolesByRoleId(@Param("roleIds") List<Long> roleId, @Param("flag") Integer flag);
 
 
     /**
