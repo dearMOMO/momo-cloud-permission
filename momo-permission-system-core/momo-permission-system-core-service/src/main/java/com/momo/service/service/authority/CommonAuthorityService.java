@@ -51,8 +51,11 @@ public class CommonAuthorityService {
                 dto.setDisabled(false);
             }
             if (roleAclIdSet.contains(acl.getId())) {
-                dto.setChecked(true);
-                defaultexpandedKeys.add(String.valueOf(acl.getId()));
+                //类型，-1系统 0:目录 1：菜单，2：按钮，3：其他
+                if (acl.getSysAclType().equals(1) || acl.getSysAclType().equals(2) || acl.getSysAclType().equals(3)) {
+                    dto.setChecked(true);
+                    defaultexpandedKeys.add(String.valueOf(acl.getId()));
+                }
             }
             aclDtoList.add(dto);
         }
