@@ -34,11 +34,23 @@
             <if test="userLoginBrowser != null">
                 user_login_browser,
             </if>
+            <if test="tenantId != null">
+                tenant_id,
+            </if>
+            <if test="flag != null">
+                flag,
+            </if>
             <if test="createTime != null">
                 create_time,
             </if>
-            <if test="groupId != null">
-                group_id,
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -72,11 +84,23 @@
             <if test="userLoginBrowser != null">
                 #{userLoginBrowser,jdbcType=VARCHAR},
             </if>
+            <if test="tenantId != null">
+                #{tenantId,jdbcType=BIGINT},
+            </if>
+            <if test="flag != null">
+                #{flag,jdbcType=INTEGER},
+            </if>
             <if test="createTime != null">
                 #{createTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="groupId != null">
-                #{groupId,jdbcType=BIGINT},
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>

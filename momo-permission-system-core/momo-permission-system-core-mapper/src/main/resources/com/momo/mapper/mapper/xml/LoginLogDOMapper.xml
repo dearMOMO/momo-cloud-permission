@@ -5,7 +5,7 @@
     <resultMap id="BaseResultMap"  type="com.momo.mapper.dataobject.LoginLogDO">
         <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
         <result column="USER_ID" property="userId" jdbcType="BIGINT" javaType="Long"/>
-        <result column="GROUP_ID" property="groupId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="TENANT_ID" property="tenantId" jdbcType="BIGINT" javaType="Long"/>
         <result column="UUID" property="uuid" jdbcType="VARCHAR" javaType="String"/>
         <result column="USER_IP" property="userIp" jdbcType="VARCHAR" javaType="String"/>
         <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>

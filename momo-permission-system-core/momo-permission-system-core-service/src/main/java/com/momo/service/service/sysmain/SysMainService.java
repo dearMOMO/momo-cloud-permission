@@ -84,7 +84,7 @@ public class SysMainService extends BaseService {
         }
         //剔除超级管理员限制
         if (!superAdmins.contains(userAccountPwdDO.getSysUserLoginName())) {
-            UserGroupDO userGroupDO = userGroupMapper.getUserGroupById(userAccountPwdDO.getGroupId());
+            UserGroupDO userGroupDO = userGroupMapper.getUserGroupById(userAccountPwdDO.getTenantId());
             if (null == userGroupDO) {
                 throw BizException.fail("您所在的企业不存在");
             }
@@ -103,7 +103,7 @@ public class SysMainService extends BaseService {
         String redisUserKey = StrUtil.genUUID();
         RedisUser redisUser = RedisUser.builder().redisUserKey(redisUserKey).loginType(1)
                 .sysUserLoginName(userAccountPwdDO.getSysUserLoginName()).sysUserPhone(userDO.getSysUserPhone())
-                .groupId(userAccountPwdDO.getGroupId()).sysUserName(userDO.getSysUserName())
+                .tenantId(userAccountPwdDO.getTenantId()).sysUserName(userDO.getSysUserName())
                 .baseId(userDO.getId()).pwdId(userAccountPwdDO.getId())
                 .sysLoginNumber(userAccountPwdDO.getSysLoginNumber()).sysUserName(userDO.getSysUserName()).build();
 
@@ -154,7 +154,7 @@ public class SysMainService extends BaseService {
             redisUtil.set(RedisKeyEnum.REDIS_KEY_USER_INFO.getKey() + redisUserKey, token, RedisKeyEnum.REDIS_KEY_USER_INFO.getExpireTime());
         }
         LoginLogDO entity = new LoginLogDO();
-        entity.setGroupId(redisUser.getGroupId());
+        entity.setTenantId(redisUser.getTenantId());
         entity.setUserLoginName(redisUser.getSysUserLoginName());
         entity.setUserUserName(userDO.getSysUserName());
         entity.setUserLoginType(1);
@@ -183,11 +183,11 @@ public class SysMainService extends BaseService {
             List<String> list = JSON.parseObject((String) listUuid, new TypeReference<List<String>>() {
             });
             list.forEach(s -> {
-                if (!s.equals(redisUser.getRedisUserKey())){
+                if (!s.equals(redisUser.getRedisUserKey())) {
                     listRedis.add(s);
                 }
             });
-            if (listRedis.size()!=list.size()&&!CollectionUtils.isEmpty(listRedis)){
+            if (listRedis.size() != list.size() && !CollectionUtils.isEmpty(listRedis)) {
                 redisUtil.set(RedisKeyEnum.REDIS_KEY_USER_ID.getKey() + redisUser.getBaseId(), JSONObject.toJSONString(listRedis), RedisKeyEnum.REDIS_KEY_USER_ID.getExpireTime());
             }
         }

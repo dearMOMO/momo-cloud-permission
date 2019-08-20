@@ -13,7 +13,7 @@
         <result column="sys_user_city" jdbcType="BIGINT" property="sysUserCity" />
         <result column="sys_user_area_name" jdbcType="VARCHAR" property="sysUserAreaName" />
         <result column="sys_user_area" jdbcType="BIGINT" property="sysUserArea" />
-        <result column="group_id" jdbcType="BIGINT" property="groupId" />
+        <result column="tenant_id" jdbcType="BIGINT" property="tenantId" />
         <result column="remark" jdbcType="VARCHAR" property="remark" />
         <result column="flag" jdbcType="INTEGER" property="flag" />
         <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
@@ -34,7 +34,7 @@
         <result column="sys_user_city" jdbcType="BIGINT" property="sysUserCity" />
         <result column="sys_user_area_name" jdbcType="VARCHAR" property="sysUserAreaName" />
         <result column="sys_user_area" jdbcType="BIGINT" property="sysUserArea" />
-        <result column="group_id" jdbcType="BIGINT" property="groupId" />
+        <result column="tenant_id" jdbcType="BIGINT" property="tenantId" />
         <result column="remark" jdbcType="VARCHAR" property="remark" />
         <result column="flag" jdbcType="INTEGER" property="flag" />
         <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
@@ -50,7 +50,7 @@
         <result column="uuid" jdbcType="VARCHAR" property="uuid" />
         <result column="sys_role_name" jdbcType="VARCHAR" property="sysRoleName" />
         <result column="sys_role_type" jdbcType="INTEGER" property="sysRoleType" />
-        <result column="group_id" jdbcType="BIGINT" property="groupId" />
+        <result column="tenant_id" jdbcType="BIGINT" property="tenantId" />
         <result column="remark" jdbcType="VARCHAR" property="remark" />
         <result column="flag" jdbcType="INTEGER" property="flag" />
         <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
@@ -67,7 +67,7 @@
         <result column="sys_login_number" jdbcType="INTEGER" property="sysLoginNumber" />
         <result column="sys_user_auth_salt" jdbcType="VARCHAR" property="sysUserAuthSalt" />
         <result column="sys_user_id" jdbcType="BIGINT" property="sysUserId" />
-        <result column="group_id" jdbcType="BIGINT" property="groupId" />
+        <result column="tenant_id" jdbcType="BIGINT" property="tenantId" />
         <result column="remark" jdbcType="VARCHAR" property="remark" />
         <result column="flag" jdbcType="INTEGER" property="flag" />
         <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
@@ -80,7 +80,7 @@
     <sql id="Base_Column_List">
     id, sys_user_name, uuid, sys_user_phone, sys_user_email, sys_user_province_name,
     sys_user_province, sys_user_city_name, sys_user_city, sys_user_area_name, sys_user_area,
-    group_id, remark, flag, del_flag, create_by, create_time, update_time,
+    tenant_id, remark, flag, del_flag, create_by, create_time, update_time,
     update_by
   </sql>
 
@@ -89,8 +89,8 @@
         id, sys_user_name, uuid, sys_user_phone, sys_user_email, remark,update_by,create_time,flag
         from sys_user
         <trim prefixOverrides="and" prefix="where">
-            <if test="groupId!=null">
-                and group_id = #{groupId}
+            <if test="tenantId!=null">
+                and tenant_id = #{tenantId}
             </if>
             <if test="flag!=null">
                 and flag = #{flag}
@@ -166,8 +166,8 @@
             <if test="sysUserArea != null">
                 sys_user_area,
             </if>
-            <if test="groupId != null">
-                group_id,
+            <if test="tenantId != null">
+                tenant_id,
             </if>
             <if test="remark != null">
                 remark,
@@ -284,8 +284,8 @@
             <if test="sysUserArea != null">
                 sys_user_area = #{sysUserArea,jdbcType=BIGINT},
             </if>
-            <if test="groupId != null">
-                group_id = #{groupId,jdbcType=BIGINT},
+            <if test="tenantId != null">
+                tenant_id = #{tenantId,jdbcType=BIGINT},
             </if>
             <if test="remark != null">
                 remark = #{remark,jdbcType=VARCHAR},

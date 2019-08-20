@@ -65,7 +65,7 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
         userDO.setId(id);
         userDO.setSysUserEmail(sysUserAddReq.getSysUserLoginName());
         userDO.setUuid(StrUtil.genUUID());
-        userDO.setGroupId(redisUser.getGroupId());
+        userDO.setTenantId(redisUser.getTenantId());
         userDO.setCreateBy(redisUser.getSysUserName());
         userDO.setUpdateBy(redisUser.getSysUserName());
         userDO.setCreateTime(DateUtils.getDateTime());
@@ -78,7 +78,7 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
         userAccountPwdDO.setSysUserAuthSalt(salt);
         String pwd = Encrypt.SHA512AndSHA256(sysUserAddReq.getSysUserPwd(), salt);
         userAccountPwdDO.setSysUserPwd(pwd);
-        userAccountPwdDO.setGroupId(redisUser.getGroupId());
+        userAccountPwdDO.setTenantId(redisUser.getTenantId());
         userAccountPwdDO.setCreateBy(redisUser.getSysUserName());
         userAccountPwdDO.setUpdateBy(redisUser.getSysUserName());
         userAccountPwdDO.setUuid(StrUtil.genUUID());
@@ -203,7 +203,7 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
     public PageInfo<SysUserListRes> sysUserList(SysUserListReq sysUserListReq) {
         RedisUser redisUser = this.redisUser();
         PageHelper.startPage(sysUserListReq.getPageNum(), sysUserListReq.getPageSize(), "id desc");
-        List<SysUserListDO> pageSysUserList = userMapper.pageSysUserList(redisUser.getGroupId(), sysUserListReq.getSysUserName(), sysUserListReq.getFlag());
+        List<SysUserListDO> pageSysUserList = userMapper.pageSysUserList(redisUser.getTenantId(), sysUserListReq.getSysUserName(), sysUserListReq.getFlag());
         PageInfo<SysUserListDO> pageInfo = new PageInfo<>(pageSysUserList);
         List<SysUserListRes> resList = Lists.newArrayList();
         List<SysUserListDO> doList = pageInfo.getList();

@@ -72,7 +72,7 @@ public class RoleService extends BaseService {
             }
         }
         RedisUser redisUser = this.redisUser();
-        updateUserRoles(userDO.getId(), roles, redisUser, userDO.getGroupId());
+        updateUserRoles(userDO.getId(), roles, redisUser, userDO.getTenantId());
         return "为用户授权角色成功";
     }
 
@@ -84,7 +84,7 @@ public class RoleService extends BaseService {
         RedisUser redisUser = this.redisUser();
         //屏蔽非总部操作第三方管理员角色
         //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
-        if (!redisUser.getGroupId().equals(1L) && roleDO.getSysRoleType().equals(0)) {
+        if (!redisUser.getTenantId().equals(1L) && roleDO.getSysRoleType().equals(0)) {
             throw BizException.fail("您无权限操作");
         }
 
@@ -116,7 +116,7 @@ public class RoleService extends BaseService {
                 return;
             }
         }
-        updateRoleAcls(roleDO.getId(), aclDOS, redisUser, roleDO.getGroupId(), acls, roleDO.getSysRoleType(), alcIds);
+        updateRoleAcls(roleDO.getId(), aclDOS, redisUser, roleDO.getTenantId(), acls, roleDO.getSysRoleType(), alcIds);
     }
 
     public AclTreeRes roleHaveAclTree(LoginAuthReq loginAuthReq) {
@@ -126,7 +126,7 @@ public class RoleService extends BaseService {
         }
         loginAuthReq.setRoleId(roleDO.getId());
         RedisUser redisUser = this.redisUser();
-        if (redisUser.getGroupId().equals(1L)) {
+        if (redisUser.getTenantId().equals(1L)) {
             AclTreeRes aclTreeRes = adminAuthorityService.roleTree(loginAuthReq, redisUser);
             return aclTreeRes;
         } else {
@@ -143,7 +143,7 @@ public class RoleService extends BaseService {
         RoleDO selfRoleDO = new RoleDO();
         BeanUtils.copyProperties(roleReq, selfRoleDO);
         RedisUser redisUser = this.redisUser();
-        selfRoleDO.setGroupId(redisUser.getGroupId());
+        selfRoleDO.setTenantId(redisUser.getTenantId());
         PageHelper.startPage(roleReq.getPageNum(), roleReq.getPageSize(), "id desc");
         List<RoleDO> selfRoleDOS = roleMapper.roleList(selfRoleDO);
         PageInfo<RoleDO> pageInfo = new PageInfo<>(selfRoleDOS);
@@ -219,7 +219,7 @@ public class RoleService extends BaseService {
 
     public boolean showAdminRoleButton() {
         RedisUser redisUser = this.redisUser();
-        if (redisUser.getGroupId().equals(1L)) {
+        if (redisUser.getTenantId().equals(1L)) {
             return true;
         }
         return false;
@@ -232,7 +232,7 @@ public class RoleService extends BaseService {
         }
         RoleDO selfRoleDO = new RoleDO();
         RedisUser redisUser = this.redisUser();
-        selfRoleDO.setGroupId(redisUser.getGroupId());
+        selfRoleDO.setTenantId(redisUser.getTenantId());
         //企业下所有角色
         List<RoleDO> selfRoleDOS = roleMapper.roleList(selfRoleDO);
 
@@ -262,13 +262,13 @@ public class RoleService extends BaseService {
     @Transactional
     public String insertSelective(RoleReq roleReq) {
         RedisUser redisUser = this.redisUser();
-        if (checkRoleName(roleReq.getSysRoleName(), null, redisUser.getGroupId())) {
+        if (checkRoleName(roleReq.getSysRoleName(), null, redisUser.getTenantId())) {
             throw BizException.fail("角色名称已存在");
         }
-        if (!redisUser.getGroupId().equals(1L)) {
+        if (!redisUser.getTenantId().equals(1L)) {
             //角色的类型，0：管理员角色，1：普通用户 2其他
             if (roleReq.getSysRoleType().equals(0)) {
-                if (checkAdminRole("0", null, redisUser.getGroupId())) {
+                if (checkAdminRole("0", null, redisUser.getTenantId())) {
                     throw BizException.fail("管理员角色已存在");
                 }
             }
@@ -282,7 +282,7 @@ public class RoleService extends BaseService {
         record.setCreateTime(DateUtils.getDateTime());
         record.setUpdateTime(DateUtils.getDateTime());
         record.setUuid(StrUtil.genUUID());
-        record.setGroupId(redisUser.getGroupId());
+        record.setTenantId(redisUser.getTenantId());
         record.setId(snowFlake.nextId());
         roleMapper.insertSelective(record);
 
@@ -296,15 +296,15 @@ public class RoleService extends BaseService {
             throw BizException.fail("待编辑的角色不存在");
         }
         RedisUser redisUser = this.redisUser();
-        if (checkRoleName(roleReq.getSysRoleName(), selfRoleDO.getId(), redisUser.getGroupId())) {
+        if (checkRoleName(roleReq.getSysRoleName(), selfRoleDO.getId(), redisUser.getTenantId())) {
             throw BizException.fail("角色名称已存在");
         }
 
         //非总部，不可以操作管理员敏感权限
-        if (!redisUser.getGroupId().equals(1L)) {
+        if (!redisUser.getTenantId().equals(1L)) {
             //角色的类型，0：管理员角色，1：普通用户 2其他
             if (roleReq.getSysRoleType().equals(0)) {
-                if (checkAdminRole("0", null, redisUser.getGroupId())) {
+                if (checkAdminRole("0", null, redisUser.getTenantId())) {
                     throw BizException.fail("管理员角色已存在");
                 }
             }
@@ -337,7 +337,7 @@ public class RoleService extends BaseService {
         }
         RedisUser redisUser = this.redisUser();
         //非总部，不可以操作管理员敏感权限
-        if (!redisUser.getGroupId().equals(1L) && selfRoleDO.getSysRoleType().equals(0)) {
+        if (!redisUser.getTenantId().equals(1L) && selfRoleDO.getSysRoleType().equals(0)) {
             throw BizException.fail("您无权限操作");
         }
         RoleDO record = new RoleDO();
@@ -365,7 +365,7 @@ public class RoleService extends BaseService {
             RoleAclDO roleUserDO = new RoleAclDO();
             roleUserDO.setId(snowFlake.nextId());
             roleUserDO.setDelFlag(0);
-            roleUserDO.setGroupId(groupId);
+            roleUserDO.setTenantId(groupId);
             roleUserDO.setSysAclId(aclId.getId());
             roleUserDO.setSysRoleId(roleId);
             roleUserDO.setSysAclPermissionCode(aclId.getSysAclPermissionCode());
@@ -392,7 +392,7 @@ public class RoleService extends BaseService {
             roleUserDO.setId(snowFlake.nextId());
             roleUserDO.setUuid(StrUtil.genUUID());
             roleUserDO.setRoleId(aclId);
-            roleUserDO.setGroupId(groupId);
+            roleUserDO.setTenantId(groupId);
             roleUserDO.setUserId(userId);
             roleUserDO.setCreateTime(DateUtils.getDateTime());
             roleUserDO.setCreateBy(redisUser.getSysUserName());

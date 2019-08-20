@@ -37,7 +37,7 @@ public class CommonAuthorityService {
         Set<Long> userAclIdSet = userAclList.stream().map(sysAcl -> sysAcl.getId()).collect(Collectors.toSet());
         Set<Long> roleAclIdSet = roleAclList.stream().map(sysAcl -> sysAcl.getId()).collect(Collectors.toSet());
         //获取第三方管理员角色列表
-        List<Long> adminRoles = authorityMapper.rolesAdminByGroupId(redisUser.getGroupId());
+        List<Long> adminRoles = authorityMapper.rolesAdminByGroupId(redisUser.getTenantId());
         Set<Long> adminRolesSet = adminRoles.stream().map(aLong -> aLong).collect(Collectors.toSet());
         //根据角色id获取权限ids
         List<Long> aclIds = authorityMapper.aclsByRoleId(adminRolesSet, loginAuthReq.getAclPermissionType());

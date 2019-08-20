@@ -12,13 +12,13 @@ public class RoleAclDO{
      */
     private Long id;
     /**
-     * groupId 第三方组 kagome-momo-open-source默认为1.
-     */
-    private Long groupId;
-    /**
      * sysAclId 权限id.
      */
     private Long sysAclId;
+    /**
+     * tenantId 租户id.
+     */
+    private Long tenantId;
     /**
      * sysRoleId 角色id.
      */
@@ -73,22 +73,6 @@ public class RoleAclDO{
     }
 
     /**
-     * Set groupId 第三方组 kagome-momo-open-source默认为1.
-     */
-    public void setGroupId(Long groupId){
-        this.groupId = groupId;
-    }
-
-    /**
-     * Get groupId 第三方组 kagome-momo-open-source默认为1.
-     *
-     * @return the string
-     */
-    public Long getGroupId(){
-        return groupId;
-    }
-
-    /**
      * Set sysAclId 权限id.
      */
     public void setSysAclId(Long sysAclId){
@@ -102,6 +86,22 @@ public class RoleAclDO{
      */
     public Long getSysAclId(){
         return sysAclId;
+    }
+
+    /**
+     * Set tenantId 租户id.
+     */
+    public void setTenantId(Long tenantId){
+        this.tenantId = tenantId;
+    }
+
+    /**
+     * Get tenantId 租户id.
+     *
+     * @return the string
+     */
+    public Long getTenantId(){
+        return tenantId;
     }
 
     /**

@@ -4,8 +4,8 @@
     <!-- 自动生成,请修改 SYS_ROLE_ACL.xml -->
     <resultMap id="BaseResultMap"  type="com.momo.mapper.dataobject.RoleAclDO">
         <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
-        <result column="GROUP_ID" property="groupId" jdbcType="BIGINT" javaType="Long"/>
         <result column="SYS_ACL_ID" property="sysAclId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="TENANT_ID" property="tenantId" jdbcType="BIGINT" javaType="Long"/>
         <result column="SYS_ROLE_ID" property="sysRoleId" jdbcType="BIGINT" javaType="Long"/>
         <result column="UUID" property="uuid" jdbcType="VARCHAR" javaType="String"/>
         <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>

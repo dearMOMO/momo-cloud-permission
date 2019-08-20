@@ -51,8 +51,8 @@ public interface AuthorityMapper {
     /**
      * 根据组的id 得到管理员ids
      *
-     * @param groupId
+     * @param tenantId
      * @return
      */
-    List<Long> rolesAdminByGroupId(@Param("groupId") Long groupId);
+    List<Long> rolesAdminByGroupId(@Param("tenantId") Long tenantId);
 }

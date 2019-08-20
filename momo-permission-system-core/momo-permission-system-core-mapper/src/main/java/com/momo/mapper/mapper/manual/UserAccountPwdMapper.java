@@ -8,7 +8,10 @@ public interface UserAccountPwdMapper {
 
 
     UserAccountPwdDO sysUserAccountLogin(@Param("sysUserLoginName") String sysUserLoginName);
+
     UserAccountPwdDO sysUserAccountByUserId(@Param("userId") Long userId);
+
     int insertSelective(UserAccountPwdDO userAccountPwdDO);
+
     int updateByPrimaryKeySelective(UserAccountPwdDO userAccountPwdDO);
 }

@@ -76,5 +76,6 @@ public class SysUserGroupReq extends BaseReq {
      */
     @NotBlank(message = "账号开通时间 必填", groups = {Detail.class, Modify.class})
     private String sysAccountStartTime;
+
     private String remark;
 }

@@ -4,7 +4,7 @@
     <!-- 自动生成,请修改 SYS_USER.xml -->
     <resultMap id="BaseResultMap"  type="com.momo.mapper.dataobject.UserDO">
         <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
-        <result column="GROUP_ID" property="groupId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="TENANT_ID" property="tenantId" jdbcType="BIGINT" javaType="Long"/>
         <result column="SYS_USER_AREA" property="sysUserArea" jdbcType="BIGINT" javaType="Long"/>
         <result column="SYS_USER_CITY" property="sysUserCity" jdbcType="BIGINT" javaType="Long"/>
         <result column="SYS_USER_PROVINCE" property="sysUserProvince" jdbcType="BIGINT" javaType="Long"/>

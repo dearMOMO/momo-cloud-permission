@@ -12,9 +12,9 @@ public class UserAccountPwdDO{
      */
     private Long id;
     /**
-     * groupId 第三方组 kagome-momo-open-source默认为1.
+     * tenantId 租户id.
      */
-    private Long groupId;
+    private Long tenantId;
     /**
      * sysUserId 关联用户表id.
      */
@@ -85,19 +85,19 @@ public class UserAccountPwdDO{
     }
 
     /**
-     * Set groupId 第三方组 kagome-momo-open-source默认为1.
+     * Set tenantId 租户id.
      */
-    public void setGroupId(Long groupId){
-        this.groupId = groupId;
+    public void setTenantId(Long tenantId){
+        this.tenantId = tenantId;
     }
 
     /**
-     * Get groupId 第三方组 kagome-momo-open-source默认为1.
+     * Get tenantId 租户id.
      *
      * @return the string
      */
-    public Long getGroupId(){
-        return groupId;
+    public Long getTenantId(){
+        return tenantId;
     }
 
     /**

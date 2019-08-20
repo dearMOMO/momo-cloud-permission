@@ -8,7 +8,7 @@
         <result column="sys_user_pwd" jdbcType="VARCHAR" property="sysUserPwd" />
         <result column="sys_user_auth_salt" jdbcType="VARCHAR" property="sysUserAuthSalt" />
         <result column="sys_user_id" jdbcType="BIGINT" property="sysUserId" />
-        <result column="group_id" jdbcType="BIGINT" property="groupId" />
+        <result column="tenant_id" jdbcType="BIGINT" property="tenantId" />
         <result column="remark" jdbcType="VARCHAR" property="remark" />
         <result column="flag" jdbcType="INTEGER" property="flag" />
         <result column="sys_login_number" jdbcType="INTEGER" property="sysLoginNumber" />
@@ -19,7 +19,7 @@
         <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
     </resultMap>
     <sql id="Base_Column_List">
-    id, uuid, sys_user_login_name, sys_user_pwd, sys_user_auth_salt, sys_user_id, group_id,
+    id, uuid, sys_user_login_name, sys_user_pwd, sys_user_auth_salt, sys_user_id, tenant_id,
     remark,sys_login_number, flag, del_flag, create_by, create_time, update_time, update_by
   </sql>
     <select id="sysUserAccountLogin" parameterType="map" resultMap="BaseResultMap">
@@ -58,8 +58,8 @@
             <if test="sysUserId != null">
                 sys_user_id,
             </if>
-            <if test="groupId != null">
-                group_id,
+            <if test="tenantId != null">
+                tenant_id,
             </if>
             <if test="remark != null">
                 remark,
@@ -152,8 +152,8 @@
             <if test="sysUserId != null">
                 sys_user_id = #{sysUserId,jdbcType=BIGINT},
             </if>
-            <if test="groupId != null">
-                group_id = #{groupId,jdbcType=BIGINT},
+            <if test="tenantId != null">
+                tenant_id = #{tenantId,jdbcType=BIGINT},
             </if>
             <if test="remark != null">
                 remark = #{remark,jdbcType=VARCHAR},

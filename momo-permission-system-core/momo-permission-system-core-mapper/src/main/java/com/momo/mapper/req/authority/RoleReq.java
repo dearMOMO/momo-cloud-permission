@@ -25,9 +25,9 @@ public class RoleReq extends BaseReq {
     @NotBlank(message = "uuid必填",groups = {Modify.class,Status.class,Detail.class,Permission.class})
     private String uuid;
     /**
-     * compId 企业id.
+     * compId 租户id.
      */
-    private Long groupId;
+    private Long tenantId;
     /**
      * flag 状态 0启用  1禁用.
      */

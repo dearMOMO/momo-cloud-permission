@@ -122,7 +122,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         RedisUser redisUser = this.redisUser();
         LoginAuthReq loginAuthReq = new LoginAuthReq();
         loginAuthReq.setRoleId(getVipAdminRole.getId());
-        if (redisUser.getGroupId().equals(1L)) {
+        if (redisUser.getTenantId().equals(1L)) {
             AclTreeRes aclTreeRes = adminAuthorityService.roleTree(loginAuthReq, redisUser);
             return aclTreeRes;
         } else {
@@ -145,7 +145,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         RedisUser redisUser = this.redisUser();
         //屏蔽非总部操作第三方管理员角色
         //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
-        if (!redisUser.getGroupId().equals(1L) && roleDO.getSysRoleType().equals(0)) {
+        if (!redisUser.getTenantId().equals(1L) && roleDO.getSysRoleType().equals(0)) {
             throw BizException.fail("您无权限操作");
         }
         List<AclDO> getAcls = userGroupPageReq.getAcls();
