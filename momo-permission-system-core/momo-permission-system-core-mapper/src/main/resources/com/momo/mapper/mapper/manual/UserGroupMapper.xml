@@ -13,6 +13,7 @@
         <result column="name_top" jdbcType="VARCHAR" property="nameTop" />
         <result column="name_bottom" jdbcType="VARCHAR" property="nameBottom" />
         <result column="flag" jdbcType="INTEGER" property="flag" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
         <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
         <result column="create_by" jdbcType="VARCHAR" property="createBy" />
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -21,13 +22,25 @@
     </resultMap>
     <sql id="Base_Column_List">
     id, uuid, user_group_name, sys_account_start_time, sys_account_end_time, sys_open_day,
-    sys_create_account_num, sys_open_account_num, name_top, name_bottom, flag, del_flag,
-    create_by, create_time, update_time, update_by
+    sys_create_account_num, sys_open_account_num, name_top, name_bottom, flag, remark,
+    del_flag, create_by, create_time, update_time, update_by
   </sql>
+    <select id="checkNameExists" parameterType="map" resultType="int">
+        select count(id) from sys_user_group
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id!=null">
+                and id !=#{id}
+            </if>
+            <if test="user_group_name!=null and user_group_name!=''">
+                and user_group_name=#{user_group_name}
+            </if>
+        </trim>
+    </select>
     <select id="getUserGroupPage" parameterType="map" resultMap="BaseResultMap">
         select
         id, uuid, user_group_name, sys_account_start_time, sys_account_end_time, sys_open_day,
-        sys_create_account_num, sys_open_account_num, name_top, name_bottom, flag, del_flag,create_time
+        sys_create_account_num, sys_open_account_num, name_top, name_bottom, flag, remark,
+        del_flag, create_by, create_time, update_time, update_by
         from sys_user_group
         <trim prefix="where" prefixOverrides="and">
             <if test="flag!=null">
@@ -86,6 +99,9 @@
             <if test="flag != null">
                 flag,
             </if>
+            <if test="remark != null">
+                remark,
+            </if>
             <if test="delFlag != null">
                 del_flag,
             </if>
@@ -136,6 +152,9 @@
             <if test="flag != null">
                 #{flag,jdbcType=INTEGER},
             </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
             <if test="delFlag != null">
                 #{delFlag,jdbcType=INTEGER},
             </if>
@@ -185,6 +204,9 @@
             </if>
             <if test="flag != null">
                 flag = #{flag,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
             </if>
             <if test="delFlag != null">
                 del_flag = #{delFlag,jdbcType=INTEGER},

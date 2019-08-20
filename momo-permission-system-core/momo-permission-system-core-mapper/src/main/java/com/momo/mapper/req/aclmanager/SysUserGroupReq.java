@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * @ProjectName: momo-cloud-permission
@@ -28,7 +29,7 @@ public class SysUserGroupReq extends BaseReq {
     /**
      * uuid uuid.
      */
-    @NotBlank(message = "uuid必填",groups = {Detail.class,Modify.class,Status.class})
+    @NotBlank(message = "uuid必填", groups = {Detail.class, Modify.class, Status.class})
     private String uuid;
     /**
      * nameTop 顶部名称.
@@ -41,12 +42,12 @@ public class SysUserGroupReq extends BaseReq {
     /**
      * userGroupName 用户组名称/第三方公司名称.
      */
-    @NotBlank(message = "企业名称必填",groups = {Detail.class,Modify.class})
+    @NotBlank(message = "企业名称必填", groups = {Detail.class, Modify.class})
     private String userGroupName;
     /**
      * flag 状态 0启用  1禁用.
      */
-    @NotBlank(message = "状态 必填",groups = {Detail.class,Modify.class,Status.class})
+    @NotNull(message = "状态 必填", groups = {Detail.class, Modify.class, Status.class})
     private Integer flag;
     /**
      * delFlag 删除状态(0-正常，1-删除).
@@ -68,11 +69,12 @@ public class SysUserGroupReq extends BaseReq {
     /**
      * sysAccountEndTime 账号结束时间.
      */
-    @NotBlank(message = "账号结束时间必填",groups = {Detail.class,Modify.class})
+    @NotBlank(message = "账号结束时间必填", groups = {Detail.class, Modify.class})
     private String sysAccountEndTime;
     /**
      * sysAccountStartTime 账号开通时间 (不传值，默认系统时间).
      */
-    @NotBlank(message = "账号开通时间 必填",groups = {Detail.class,Modify.class})
+    @NotBlank(message = "账号开通时间 必填", groups = {Detail.class, Modify.class})
     private String sysAccountStartTime;
+    private String remark;
 }

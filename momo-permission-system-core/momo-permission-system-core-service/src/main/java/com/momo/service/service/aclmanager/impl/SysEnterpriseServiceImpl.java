@@ -6,6 +6,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.momo.common.util.DateUtils;
 import com.momo.common.error.BizException;
+import com.momo.common.util.StrUtil;
+import com.momo.common.util.snowFlake.SnowFlake;
 import com.momo.mapper.dataobject.AclDO;
 import com.momo.mapper.dataobject.RoleDO;
 import com.momo.mapper.dataobject.UserGroupDO;
@@ -55,6 +57,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
     private CommonAuthorityService commonAuthorityService;
     @Autowired
     private RoleService roleService;
+    private SnowFlake snowFlake = new SnowFlake(1L, 1L);
     @Value("${momo.superAdmins}")
     private String superAdmins = "";
 
@@ -156,6 +159,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         if (uuid == null) {
             throw BizException.fail("待编辑的企业不存在");
         }
+        checkNameExists(uuid.getUserGroupName(), uuid.getId());
         RedisUser redisUser = this.redisUser();
         Date startTime = DateUtils.stringToDate(sysUserGroupReq.getSysAccountStartTime());
         Date endTime = DateUtils.stringToDate(sysUserGroupReq.getSysAccountEndTime());
@@ -166,9 +170,16 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         userGroupDO.setSysAccountEndTime(endTime);
         userGroupDO.setUpdateBy(redisUser.getSysUserName());
         userGroupDO.setUpdateTime(DateUtils.getDateTime());
-        userGroupMapper.insertSelective(userGroupDO);
+        userGroupMapper.updateByPrimaryKeySelective(userGroupDO);
 
         return "编辑企业信息成功";
+    }
+
+    public void checkNameExists(String user_group_name, Long id) {
+        int checkNameExists = userGroupMapper.checkNameExists(user_group_name, id);
+        if (checkNameExists > 0) {
+            throw BizException.fail("企业已被注册");
+        }
     }
 
     @Override
@@ -180,7 +191,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         PageHelper.startPage(sysEnterpriseRoleReq.getPageNum(), sysEnterpriseRoleReq.getPageSize(), "id desc");
         List<RoleDO> getRoleListByEnterpriseId = roleMapper.getRoleListByEnterpriseId(userGroupDO.getId(), sysEnterpriseRoleReq.getRoleType(), sysEnterpriseRoleReq.getFlag(), sysEnterpriseRoleReq.getSysRoleName());
         PageInfo<RoleDO> pageInfo = new PageInfo<>(getRoleListByEnterpriseId);
-        SysEnterpriseRoleRes sysEnterpriseRoleResFinal =new SysEnterpriseRoleRes();
+        SysEnterpriseRoleRes sysEnterpriseRoleResFinal = new SysEnterpriseRoleRes();
         sysEnterpriseRoleResFinal.setSysEnterpriseName(userGroupDO.getUserGroupName());
         PageInfo<SysEnterpriseRoleRes> sysRolePageListResPageInfo = new PageInfo<>();
         sysRolePageListResPageInfo.setPageSize(pageInfo.getPageSize());
@@ -248,13 +259,14 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
 
     @Override
     public String save(SysUserGroupReq sysUserGroupReq) {
-        UserGroupDO uuid = userGroupMapper.uuid(sysUserGroupReq.getUuid());
+        checkNameExists(sysUserGroupReq.getUserGroupName(), null);
         RedisUser redisUser = this.redisUser();
         Date startTime = DateUtils.stringToDate(sysUserGroupReq.getSysAccountStartTime());
         Date endTime = DateUtils.stringToDate(sysUserGroupReq.getSysAccountEndTime());
         UserGroupDO userGroupDO = new UserGroupDO();
         BeanUtils.copyProperties(sysUserGroupReq, userGroupDO);
-        userGroupDO.setId(uuid.getId());
+        userGroupDO.setUuid(StrUtil.genUUID());
+        userGroupDO.setId(snowFlake.nextId());
         userGroupDO.setSysAccountStartTime(startTime);
         userGroupDO.setSysAccountEndTime(endTime);
         userGroupDO.setUpdateBy(redisUser.getSysUserName());

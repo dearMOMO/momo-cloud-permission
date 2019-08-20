@@ -5,6 +5,7 @@
     <resultMap id="BaseResultMap"  type="com.momo.mapper.dataobject.UserGroupDO">
         <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
         <result column="UUID" property="uuid" jdbcType="VARCHAR" javaType="String"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR" javaType="String"/>
         <result column="NAME_TOP" property="nameTop" jdbcType="VARCHAR" javaType="String"/>
         <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
         <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>

@@ -18,4 +18,6 @@ public interface UserGroupMapper {
     int insertSelective(UserGroupDO userGroupDO);
 
     int updateByPrimaryKeySelective(UserGroupDO userGroupDO);
+
+    int checkNameExists(@Param("user_group_name") String user_group_name, @Param("id") Long id);
 }

@@ -16,6 +16,10 @@ public class UserGroupDO{
      */
     private String uuid;
     /**
+     * remark 备注.
+     */
+    private String remark;
+    /**
      * nameTop 顶部名称.
      */
     private String nameTop;
@@ -102,6 +106,22 @@ public class UserGroupDO{
      */
     public String getUuid(){
         return uuid;
+    }
+
+    /**
+     * Set remark 备注.
+     */
+    public void setRemark(String remark){
+        this.remark = remark;
+    }
+
+    /**
+     * Get remark 备注.
+     *
+     * @return the string
+     */
+    public String getRemark(){
+        return remark;
     }
 
     /**
