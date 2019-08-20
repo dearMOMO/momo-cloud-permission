@@ -71,7 +71,7 @@
             and id != #{id,jdbcType=BIGINT}
         </if>
         <if test="tenantId!=null">
-            and tenantId = #{tenantId,jdbcType=BIGINT}
+            and tenant_id = #{tenantId,jdbcType=BIGINT}
         </if>
     </select>
     <select id="checkAdminRole" parameterType="map" resultType="integer">
@@ -82,8 +82,8 @@
             <if test="roleType!=null">
                 AND role_type=#{roleType,jdbcType=VARCHAR}
             </if>
-            <if test="compId!=null">
-                AND comp_id=#{compId,jdbcType=BIGINT}
+            <if test="tenantId!=null">
+                AND tenant_id=#{tenantId,jdbcType=BIGINT}
             </if>
             <if test="id!=null">
                 AND id != #{id,jdbcType=BIGINT}
@@ -263,7 +263,7 @@
         FROM sys_role
         <trim prefix="where" prefixOverrides="and">
             <if test="tenantId!=null">
-                and tenantId =#{tenantId}
+                and tenant_id =#{tenantId}
             </if>
             <if test="flag!=null">
                 and flag = #{flag}

@@ -38,20 +38,20 @@ public interface RoleMapper {
      *
      * @param roleName
      * @param id
-     * @param groupId
+     * @param tenantId
      * @return
      */
-    int checkRoleName(@Param("roleName") String roleName, @Param("id") Long id, @Param("groupId") Long groupId);
+    int checkRoleName(@Param("roleName") String roleName, @Param("id") Long id, @Param("tenantId") Long tenantId);
 
     /**
      * 校验管理员数量
      *
      * @param id
      * @param roleType
-     * @param compId
+     * @param tenantId
      * @return
      */
-    int checkAdminRole(@Param("id") Long id, @Param("roleType") String roleType, @Param("compId") Long compId);
+    int checkAdminRole(@Param("id") Long id, @Param("roleType") String roleType, @Param("tenantId") Long tenantId);
 
     /**
      * 删除角色和权限点的关系

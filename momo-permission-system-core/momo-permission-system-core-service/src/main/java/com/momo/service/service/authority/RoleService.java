@@ -403,8 +403,8 @@ public class RoleService extends BaseService {
         roleMapper.batchInsertUserRoles(roleUserList);
     }
 
-    public boolean checkRoleName(String roleName, Long id, Long compId) {
-        return roleMapper.checkRoleName(roleName, id, compId) > 0 ? true : false;
+    public boolean checkRoleName(String roleName, Long id, Long tenantId) {
+        return roleMapper.checkRoleName(roleName, id, tenantId) > 0 ? true : false;
     }
 
     public boolean checkAdminRole(String roleType, Long id, Long compId) {

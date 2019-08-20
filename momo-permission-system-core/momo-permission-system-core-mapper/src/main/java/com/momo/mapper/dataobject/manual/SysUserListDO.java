@@ -22,7 +22,7 @@ import java.util.List;
 //@EqualsAndHashCode(callSuper = true, of = {"id"})
 public class SysUserListDO extends UserDO {
     //密码绑定
-    private UserAccountPwdDO  userAccountPwdDO;
+    private UserAccountPwdDO userAccountPwdDO;
     //用户所拥有的角色
     private List<RoleDO> roles;
 
