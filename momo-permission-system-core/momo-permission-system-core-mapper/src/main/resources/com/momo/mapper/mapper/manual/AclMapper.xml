@@ -56,7 +56,7 @@
     sys_acl_level, sys_acl_permission_code, sys_acl_url, sys_acl_type, sys_acl_icon,
     sys_acl_seq, sys_acl_code, remark, flag, del_flag, create_by, create_time, update_time,
     update_by
-        FROM sys_acl WHERE sys_acl_module_level LIKE CONCAT(#{aclModuleLevel},'%')
+        FROM sys_acl WHERE sys_acl_level LIKE CONCAT(#{sysAclLevel},'%')
     </select>
     <select id="aclUuids" parameterType="map" resultMap="BaseResultMap">
         SELECT

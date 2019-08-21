@@ -30,10 +30,10 @@ public interface AclMapper {
     /**
      * 查询子孙level
      *
-     * @param aclModuleLevel
+     * @param sysAclLevel
      * @return
      */
-    public List<AclDO> getChildAclModuleListByLevel(@Param("aclModuleLevel") String aclModuleLevel);
+    public List<AclDO> getChildAclModuleListByLevel(@Param("sysAclLevel") String sysAclLevel);
 
     /**
      * 批量更新 level

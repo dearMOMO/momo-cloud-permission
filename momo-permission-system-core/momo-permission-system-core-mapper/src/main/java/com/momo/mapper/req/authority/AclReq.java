@@ -29,8 +29,6 @@ public class AclReq extends BaseReq {
     /**
      * sysAclModuleParentId 上级权限id.
      */
-//    @NotNull(message = "上级权限id 必填", groups = {save.class, Modify.class,Permission.class})
-    private Long sysAclParentId;
     @NotNull(message = "上级权限id 必填", groups = {save.class, Modify.class,Permission.class})
     private Long sysAclParentIdStr;
     /**
