@@ -1425,6 +1425,45 @@ public class DateUtils {
         return "";
     }
 
+    public static String getDatePoorTwo_V2(Date endDate, Date nowDate) {
+
+        long nymh = 1000 * 24 * 60 * 60 * 30 * 12L;
+        long nmh = 1000 * 24 * 60 * 60 * 30L;
+        long nd = 1000 * 24 * 60 * 60L;
+        long nh = 1000 * 60 * 60L;
+        long nm = 1000 * 60L;
+        long ns = 1000;
+        // 获得两个时间的毫秒时间差异
+        long diff = endDate.getTime() - nowDate.getTime();
+        long diffTwo = (endDate.getTime() - nowDate.getTime()) / 1000;
+        // 计算差多少天
+        long mh = diff / nmh;
+        long day = diff / nd;
+        // 计算差多少小时
+        long hour = diff % nd / nh;
+        // 计算差多少分钟
+        long min = diff % nd % nh / nm;
+        // 计算差多少秒//输出结果
+        long sec = diff % nd % nh % nm / ns;
+
+        if (mh != 0) {
+            return mh + "月" + (day - mh * 30) + "天" + hour + "小时" + min + "分钟" + sec + "秒";
+        }
+        if (day != 0) {
+            return day + "天" + hour + "小时" + min + "分钟" + sec + "秒";
+        }
+        if (hour != 0) {
+            return hour + "小时" + min + "分钟" + sec + "秒";
+        }
+        if (min != 0) {
+            return min + "分钟" + sec + "秒";
+        }
+        if (sec != 0) {
+            return sec + "秒";
+        }
+        return "";
+    }
+
     /**
      * 获取日期年份
      *

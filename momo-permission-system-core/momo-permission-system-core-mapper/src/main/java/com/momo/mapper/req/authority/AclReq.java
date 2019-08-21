@@ -29,7 +29,7 @@ public class AclReq extends BaseReq {
     /**
      * sysAclModuleParentId 上级权限id.
      */
-    @NotNull(message = "上级权限id 必填", groups = {save.class, Modify.class,Permission.class})
+//    @NotNull(message = "上级权限id 必填", groups = {save.class, Modify.class,Permission.class})
     private Long sysAclParentId;
     @NotNull(message = "上级权限id 必填", groups = {save.class, Modify.class,Permission.class})
     private Long sysAclParentIdStr;
@@ -42,7 +42,7 @@ public class AclReq extends BaseReq {
     /**
      * sysAclUrl 请求的url, 可以填正则表达式.
      */
-    @NotBlank(message = "请求的url 必填", groups = {save.class, Modify.class})
+//    @NotBlank(message = "请求的url 必填", groups = {save.class, Modify.class})
     private String sysAclUrl;
     /**
      * sysAclCode 权限码.
@@ -58,9 +58,9 @@ public class AclReq extends BaseReq {
     @NotBlank(message = "权限名称 必填", groups = {save.class, Modify.class,Permission.class})
     private String sysAclName;
     /**
-     * sysAclType 类型，1：菜单，2：按钮，3：其他.
+     * 类型，-1系统 0:目录 1：菜单，2：按钮，3：其他
      */
-    @NotNull(message = "类型，1：菜单，2：按钮，3：其他 必填", groups = {save.class, Modify.class,Permission.class})
+    @NotNull(message = "类型，类型，-1系统 0:目录 1：菜单，2：按钮，3：其他 必填", groups = {save.class, Modify.class,Permission.class})
     @Max(value = 3,message = "权限类型：最大值为1")
     @Min(value = -1,message = "权限类型：最小值为-1")
     private Integer sysAclType;
@@ -79,12 +79,12 @@ public class AclReq extends BaseReq {
     /**
      * sysAclAction 按钮动作类型(交给前端处理）.
      */
-    @NotBlank(message = "按钮动作类型 必填", groups = {save.class, Modify.class})
+//    @NotBlank(message = "按钮动作类型 必填", groups = {save.class, Modify.class})
     private String sysAclAction;
     /**
      * sysAclRouter 所属页面(交给前端处理).
      */
-    @NotBlank(message = "所属页面 必填", groups = {save.class, Modify.class})
+//    @NotBlank(message = "所属页面 必填", groups = {save.class, Modify.class})
     private String sysAclRouter;
     /**
      * sysAclSeq 权限在当前模块下的顺序，由小到大.

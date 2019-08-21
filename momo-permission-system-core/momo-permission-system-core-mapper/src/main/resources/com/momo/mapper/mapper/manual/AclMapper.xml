@@ -99,7 +99,6 @@
     </update>
     <insert id="insertSelective" parameterType="com.momo.mapper.dataobject.AclDO">
         insert into sys_acl
-        insert into sys_acl
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,

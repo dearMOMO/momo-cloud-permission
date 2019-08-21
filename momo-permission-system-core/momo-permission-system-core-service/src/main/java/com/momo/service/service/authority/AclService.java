@@ -94,10 +94,13 @@ public class AclService extends BaseService {
         if (checkUrl(aclReq.getSysAclUrl(), aclReq.getSysAclPermissionCode(), null)) {
             throw BizException.fail("url重复");
         }
-        String level = LevelUtil.calculateLevel(getLevel(aclReq.getSysAclParentId()), aclReq.getSysAclParentId());
+
+        String level = LevelUtil.calculateLevel(getLevel(aclReq.getSysAclParentIdStr()), aclReq.getSysAclParentIdStr());
+        checkAclSysName(null, aclReq.getSysAclName(), level);
         RedisUser redisUser = this.redisUser();
         AclDO record = new AclDO();
         BeanUtils.copyProperties(aclReq, record);
+        record.setSysAclParentId(aclReq.getSysAclParentIdStr());
         record.setSysAclLevel(level);
         record.setCreateBy(redisUser.getSysUserName());
         record.setUpdateBy(redisUser.getSysUserName());
@@ -115,10 +118,7 @@ public class AclService extends BaseService {
         if (checkAclPermissionType > 0) {
             throw BizException.fail("菜单系统类型 值 已存在");
         }
-        int checkAclSysName = aclMapper.checkAclSysName(null, aclReq.getSysAclName(), "0");
-        if (checkAclSysName > 0) {
-            throw BizException.fail("菜单名称已存在");
-        }
+        checkAclSysName(null, aclReq.getSysAclName(), "0");
         RedisUser redisUser = this.redisUser();
         AclDO record = new AclDO();
         BeanUtils.copyProperties(aclReq, record);
@@ -237,5 +237,12 @@ public class AclService extends BaseService {
             return null;
         }
         return aclModule.getSysAclLevel();
+    }
+
+    private void checkAclSysName(Long id, String sys_acl_name, String sys_acl_level) {
+        int checkAclSysName = aclMapper.checkAclSysName(id, sys_acl_name, sys_acl_level);
+        if (checkAclSysName > 0) {
+            throw BizException.fail("菜单名称已存在");
+        }
     }
 }
