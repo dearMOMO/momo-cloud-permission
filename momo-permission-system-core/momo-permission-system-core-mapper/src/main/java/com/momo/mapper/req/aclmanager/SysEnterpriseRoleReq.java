@@ -25,10 +25,10 @@ import javax.validation.constraints.NotNull;
 //@EqualsAndHashCode(callSuper = true, of = {"id"})
 public class SysEnterpriseRoleReq extends BaseReq {
 
-    @NotBlank(message = "enterpriseUuid必填", groups = {Modify.class, Status.class, Detail.class, Permission.class, save.class})
+    @NotBlank(message = "enterpriseUuid必填", groups = {Modify.class, Status.class, Detail.class, Permission.class, save.class, Query.class})
     private String enterpriseUuid;
 
-    @NotBlank(message = "uuid必填", groups = {Modify.class, Status.class, Detail.class, Permission.class, save.class})
+    @NotBlank(message = "uuid必填", groups = {Modify.class, Status.class, Detail.class, Permission.class, Query.class})
     private String uuid;
     /**
      * compId 租户id.
@@ -50,4 +50,6 @@ public class SysEnterpriseRoleReq extends BaseReq {
      */
     @NotNull(message = "角色的类型 必填", groups = {save.class, Modify.class})
     private Integer sysRoleType;
+
+    private String remark;
 }

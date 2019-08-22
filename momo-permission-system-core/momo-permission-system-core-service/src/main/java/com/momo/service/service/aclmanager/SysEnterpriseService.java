@@ -36,6 +36,8 @@ public interface SysEnterpriseService {
 
     String roleAdd(SysEnterpriseRoleReq sysEnterpriseRoleReq);
 
+    String roleStatus(SysEnterpriseRoleReq sysEnterpriseRoleReq);
+
     RoleDO roleDetail(SysEnterpriseRoleReq sysEnterpriseRoleReq);
 
     String roleModify(SysEnterpriseRoleReq sysEnterpriseRoleReq);

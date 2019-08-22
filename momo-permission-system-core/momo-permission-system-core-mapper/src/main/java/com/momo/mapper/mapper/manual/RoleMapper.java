@@ -47,11 +47,11 @@ public interface RoleMapper {
      * 校验管理员数量
      *
      * @param id
-     * @param roleType
+     * @param sysRoleType
      * @param tenantId
      * @return
      */
-    int checkAdminRole(@Param("id") Long id, @Param("roleType") String roleType, @Param("tenantId") Long tenantId);
+    int checkAdminRole(@Param("id") Long id, @Param("sysRoleType") Integer sysRoleType, @Param("tenantId") Long tenantId);
 
     /**
      * 删除角色和权限点的关系

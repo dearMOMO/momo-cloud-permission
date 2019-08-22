@@ -150,7 +150,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         }
         List<AclDO> getAcls = userGroupPageReq.getAcls();
         roleService.computeAclsToRole(getAcls, roleDO, redisUser);
-        return "未企业授权成功";
+        return "为企业授权成功";
     }
 
     @Override
@@ -184,7 +184,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
 
     @Override
     public SysEnterpriseRoleRes roleList(SysEnterpriseRoleReq sysEnterpriseRoleReq) {
-        UserGroupDO userGroupDO = userGroupMapper.uuid(sysEnterpriseRoleReq.getUuid());
+        UserGroupDO userGroupDO = userGroupMapper.uuid(sysEnterpriseRoleReq.getEnterpriseUuid());
         if (userGroupDO == null) {
             throw BizException.fail("企业不存在");
         }
@@ -199,6 +199,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         List<RoleDO> roleDOS = pageInfo.getList();
 
         if (org.apache.commons.collections.CollectionUtils.isEmpty(roleDOS)) {
+            sysEnterpriseRoleResFinal.setSysEnterpriseRoleResPageInfo(sysRolePageListResPageInfo);
             return sysEnterpriseRoleResFinal;
         }
         RedisUser redisUser = this.redisUser();
@@ -309,7 +310,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         if (!redisUser.getTenantId().equals(1L)) {
             //角色的类型，0：管理员角色，1：普通用户 2其他
             if (sysEnterpriseRoleReq.getSysRoleType().equals(0)) {
-                if (checkAdminRole("0", null, redisUser.getTenantId())) {
+                if (checkAdminRole(0, null, redisUser.getTenantId())) {
                     throw BizException.fail("管理员角色已存在");
                 }
             }
@@ -330,6 +331,32 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
     }
 
     @Override
+    public String roleStatus(SysEnterpriseRoleReq sysEnterpriseRoleReq) {
+        RedisUser redisUser = this.redisUser();
+        if (!redisUser.getTenantId().equals(1L)) {
+            throw BizException.fail("您无权限操作");
+        }
+        UserGroupDO uuid = userGroupMapper.uuid(sysEnterpriseRoleReq.getEnterpriseUuid());
+        if (uuid == null) {
+            throw BizException.fail("角色所在的企业不存在");
+        }
+        RoleDO roleDO = roleMapper.selectByPrimaryUuid(sysEnterpriseRoleReq.getUuid());
+        if (null == roleDO) {
+            throw BizException.fail("待编辑的角色不存在");
+        }
+        RoleDO record = new RoleDO();
+        BeanUtils.copyProperties(sysEnterpriseRoleReq, record);
+        record.setTenantId(null);
+        //是否被禁用  0否 1禁用
+        record.setFlag(sysEnterpriseRoleReq.getFlag().equals(0) ? 1 : 0);
+        record.setUpdateBy(redisUser.getSysUserName());
+        record.setUpdateTime(DateUtils.getDateTime());
+        record.setId(roleDO.getId());
+        roleMapper.updateByPrimaryKeySelective(record);
+        return "设置角色状态成功";
+    }
+
+    @Override
     public RoleDO roleDetail(SysEnterpriseRoleReq sysEnterpriseRoleReq) {
         UserGroupDO uuid = userGroupMapper.uuid(sysEnterpriseRoleReq.getEnterpriseUuid());
         if (uuid == null) {
@@ -346,7 +373,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         return roleMapper.checkRoleName(roleName, id, tenantId) > 0 ? true : false;
     }
 
-    public boolean checkAdminRole(String roleType, Long id, Long compId) {
+    public boolean checkAdminRole(Integer roleType, Long id, Long compId) {
         return roleMapper.checkAdminRole(id, roleType, compId) > 0 ? true : false;
     }
 
@@ -365,28 +392,29 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
             throw BizException.fail("角色名称已存在");
         }
 
+        //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
+        if (sysEnterpriseRoleReq.getSysRoleType().equals(0)) {
+            if (checkAdminRole(0, roleDO.getId(), redisUser.getTenantId())) {
+                throw BizException.fail("管理员角色已存在");
+            }
+        }
+
         //非总部，不可以操作管理员敏感权限
         if (!redisUser.getTenantId().equals(1L)) {
             //角色的类型，0：管理员角色，1：普通用户 2其他
-            if (sysEnterpriseRoleReq.getSysRoleType().equals(0)) {
-                if (checkAdminRole("0", null, redisUser.getTenantId())) {
-                    throw BizException.fail("管理员角色已存在");
-                }
-            }
-
-            //角色的类型，0：管理员角色，1：普通用户 2其他
             //屏蔽非总部操作第三方管理员角色
-            if (roleDO.getSysRoleType().equals(0) && sysEnterpriseRoleReq.getSysRoleType().equals(1)) {
+            if (roleDO.getSysRoleType().equals(0) && !sysEnterpriseRoleReq.getSysRoleType().equals(0)) {
                 throw BizException.fail("您无权限操作管理员角色类型");
             }
             //屏蔽非总部操作第三方管理员角色状态
             //状态 0启用  1禁用
-            if ((roleDO.getSysRoleType().equals(0) && sysEnterpriseRoleReq.getFlag().equals(1))) {
+            if (roleDO.getSysRoleType().equals(0) && sysEnterpriseRoleReq.getFlag().equals(1)) {
                 throw BizException.fail("您无权限操作管理员角色状态");
             }
         }
         RoleDO record = new RoleDO();
         BeanUtils.copyProperties(sysEnterpriseRoleReq, record);
+        record.setTenantId(null);
         record.setUpdateBy(redisUser.getSysUserName());
         record.setUpdateTime(DateUtils.getDateTime());
         record.setId(roleDO.getId());
@@ -405,7 +433,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
             throw BizException.fail("待编辑的角色不存在");
         }
         LoginAuthReq loginAuthReq = new LoginAuthReq();
-
+        loginAuthReq.setRoleId(roleDO.getId());
         RedisUser redisUser = this.redisUser();
         if (redisUser.getTenantId().equals(1L)) {
             AclTreeRes aclTreeRes = adminAuthorityService.roleTree(loginAuthReq, redisUser);

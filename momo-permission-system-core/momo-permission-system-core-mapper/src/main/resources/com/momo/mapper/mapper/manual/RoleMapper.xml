@@ -79,8 +79,8 @@
         COUNT(id)
         from sys_role
         <trim prefixOverrides="and" prefix="where">
-            <if test="roleType!=null">
-                AND role_type=#{roleType,jdbcType=VARCHAR}
+            <if test="sysRoleType!=null">
+                AND sys_role_type=#{sysRoleType,jdbcType=VARCHAR}
             </if>
             <if test="tenantId!=null">
                 AND tenant_id=#{tenantId,jdbcType=BIGINT}

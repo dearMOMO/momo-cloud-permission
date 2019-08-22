@@ -63,8 +63,13 @@ public class SysEnterpriseController {
     }
 
     @RequestMapping("/roleList/v1")
-    public JSONResult roleList(@Validated(SysEnterpriseRoleReq.Permission.class) @RequestBody SysEnterpriseRoleReq sysEnterpriseRoleReq) {
+    public JSONResult roleList(@Validated(SysEnterpriseRoleReq.Query.class) @RequestBody SysEnterpriseRoleReq sysEnterpriseRoleReq) {
         return JSONResult.ok(sysEnterpriseService.roleList(sysEnterpriseRoleReq));
+    }
+
+    @RequestMapping("/roleStatus/v1")
+    public JSONResult roleStatus(@Validated(SysEnterpriseRoleReq.Status.class) @RequestBody SysEnterpriseRoleReq sysEnterpriseRoleReq) {
+        return JSONResult.ok(sysEnterpriseService.roleStatus(sysEnterpriseRoleReq));
     }
 
     @RequestMapping("/roleAdd/v1")
