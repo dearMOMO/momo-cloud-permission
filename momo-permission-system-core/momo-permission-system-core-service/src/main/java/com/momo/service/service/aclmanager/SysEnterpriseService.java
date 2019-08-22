@@ -28,9 +28,17 @@ public interface SysEnterpriseService {
 
     String modify(SysUserGroupReq sysUserGroupReq);
 
-    SysEnterpriseRoleRes role(SysEnterpriseRoleReq sysEnterpriseRoleReq);
+    SysEnterpriseRoleRes roleList(SysEnterpriseRoleReq sysEnterpriseRoleReq);
 
     String save(SysUserGroupReq sysUserGroupReq);
 
     String status(SysUserGroupReq sysUserGroupReq);
+
+    String roleAdd(SysEnterpriseRoleReq sysEnterpriseRoleReq);
+
+    RoleDO roleDetail(SysEnterpriseRoleReq sysEnterpriseRoleReq);
+
+    String roleModify(SysEnterpriseRoleReq sysEnterpriseRoleReq);
+
+    AclTreeRes roleHaveAclTree(SysEnterpriseRoleReq sysEnterpriseRoleReq);
 }

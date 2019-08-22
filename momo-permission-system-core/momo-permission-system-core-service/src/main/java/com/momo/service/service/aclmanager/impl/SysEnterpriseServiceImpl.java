@@ -183,13 +183,13 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
     }
 
     @Override
-    public SysEnterpriseRoleRes role(SysEnterpriseRoleReq sysEnterpriseRoleReq) {
+    public SysEnterpriseRoleRes roleList(SysEnterpriseRoleReq sysEnterpriseRoleReq) {
         UserGroupDO userGroupDO = userGroupMapper.uuid(sysEnterpriseRoleReq.getUuid());
         if (userGroupDO == null) {
             throw BizException.fail("企业不存在");
         }
         PageHelper.startPage(sysEnterpriseRoleReq.getPageNum(), sysEnterpriseRoleReq.getPageSize(), "id desc");
-        List<RoleDO> getRoleListByEnterpriseId = roleMapper.getRoleListByEnterpriseId(userGroupDO.getId(), sysEnterpriseRoleReq.getRoleType(), sysEnterpriseRoleReq.getFlag(), sysEnterpriseRoleReq.getSysRoleName());
+        List<RoleDO> getRoleListByEnterpriseId = roleMapper.getRoleListByEnterpriseId(userGroupDO.getId(), sysEnterpriseRoleReq.getSysRoleType(), sysEnterpriseRoleReq.getFlag(), sysEnterpriseRoleReq.getSysRoleName());
         PageInfo<RoleDO> pageInfo = new PageInfo<>(getRoleListByEnterpriseId);
         SysEnterpriseRoleRes sysEnterpriseRoleResFinal = new SysEnterpriseRoleRes();
         sysEnterpriseRoleResFinal.setSysEnterpriseName(userGroupDO.getUserGroupName());
@@ -294,5 +294,125 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         userGroupDO.setUpdateTime(DateUtils.getDateTime());
         userGroupMapper.insertSelective(userGroupDO);
         return "状态设置成功";
+    }
+
+    @Override
+    public String roleAdd(SysEnterpriseRoleReq sysEnterpriseRoleReq) {
+        UserGroupDO uuid = userGroupMapper.uuid(sysEnterpriseRoleReq.getEnterpriseUuid());
+        if (uuid == null) {
+            throw BizException.fail("角色所在的企业不存在");
+        }
+        RedisUser redisUser = this.redisUser();
+        if (checkRoleName(sysEnterpriseRoleReq.getSysRoleName(), null, redisUser.getTenantId())) {
+            throw BizException.fail("角色名称已存在");
+        }
+        if (!redisUser.getTenantId().equals(1L)) {
+            //角色的类型，0：管理员角色，1：普通用户 2其他
+            if (sysEnterpriseRoleReq.getSysRoleType().equals(0)) {
+                if (checkAdminRole("0", null, redisUser.getTenantId())) {
+                    throw BizException.fail("管理员角色已存在");
+                }
+            }
+        }
+
+        RoleDO record = new RoleDO();
+        BeanUtils.copyProperties(sysEnterpriseRoleReq, record);
+        record.setCreateBy(redisUser.getSysUserName());
+        record.setUpdateBy(redisUser.getSysUserName());
+        record.setCreateTime(DateUtils.getDateTime());
+        record.setUpdateTime(DateUtils.getDateTime());
+        record.setUuid(StrUtil.genUUID());
+        record.setTenantId(uuid.getId());
+        record.setId(snowFlake.nextId());
+        roleMapper.insertSelective(record);
+
+        return "新增角色成功";
+    }
+
+    @Override
+    public RoleDO roleDetail(SysEnterpriseRoleReq sysEnterpriseRoleReq) {
+        UserGroupDO uuid = userGroupMapper.uuid(sysEnterpriseRoleReq.getEnterpriseUuid());
+        if (uuid == null) {
+            throw BizException.fail("角色所在的企业不存在");
+        }
+        RoleDO roleDO = roleMapper.selectByPrimaryUuid(sysEnterpriseRoleReq.getUuid());
+        if (null == roleDO) {
+            throw BizException.fail("待编辑的角色不存在");
+        }
+        return roleDO;
+    }
+
+    public boolean checkRoleName(String roleName, Long id, Long tenantId) {
+        return roleMapper.checkRoleName(roleName, id, tenantId) > 0 ? true : false;
+    }
+
+    public boolean checkAdminRole(String roleType, Long id, Long compId) {
+        return roleMapper.checkAdminRole(id, roleType, compId) > 0 ? true : false;
+    }
+
+    @Override
+    public String roleModify(SysEnterpriseRoleReq sysEnterpriseRoleReq) {
+        UserGroupDO uuid = userGroupMapper.uuid(sysEnterpriseRoleReq.getEnterpriseUuid());
+        if (uuid == null) {
+            throw BizException.fail("角色所在的企业不存在");
+        }
+        RoleDO roleDO = roleMapper.selectByPrimaryUuid(sysEnterpriseRoleReq.getUuid());
+        if (null == roleDO) {
+            throw BizException.fail("待编辑的角色不存在");
+        }
+        RedisUser redisUser = this.redisUser();
+        if (checkRoleName(sysEnterpriseRoleReq.getSysRoleName(), roleDO.getId(), redisUser.getTenantId())) {
+            throw BizException.fail("角色名称已存在");
+        }
+
+        //非总部，不可以操作管理员敏感权限
+        if (!redisUser.getTenantId().equals(1L)) {
+            //角色的类型，0：管理员角色，1：普通用户 2其他
+            if (sysEnterpriseRoleReq.getSysRoleType().equals(0)) {
+                if (checkAdminRole("0", null, redisUser.getTenantId())) {
+                    throw BizException.fail("管理员角色已存在");
+                }
+            }
+
+            //角色的类型，0：管理员角色，1：普通用户 2其他
+            //屏蔽非总部操作第三方管理员角色
+            if (roleDO.getSysRoleType().equals(0) && sysEnterpriseRoleReq.getSysRoleType().equals(1)) {
+                throw BizException.fail("您无权限操作管理员角色类型");
+            }
+            //屏蔽非总部操作第三方管理员角色状态
+            //状态 0启用  1禁用
+            if ((roleDO.getSysRoleType().equals(0) && sysEnterpriseRoleReq.getFlag().equals(1))) {
+                throw BizException.fail("您无权限操作管理员角色状态");
+            }
+        }
+        RoleDO record = new RoleDO();
+        BeanUtils.copyProperties(sysEnterpriseRoleReq, record);
+        record.setUpdateBy(redisUser.getSysUserName());
+        record.setUpdateTime(DateUtils.getDateTime());
+        record.setId(roleDO.getId());
+        roleMapper.updateByPrimaryKeySelective(record);
+        return "编辑角色成功";
+    }
+
+    @Override
+    public AclTreeRes roleHaveAclTree(SysEnterpriseRoleReq sysEnterpriseRoleReq) {
+        UserGroupDO uuid = userGroupMapper.uuid(sysEnterpriseRoleReq.getEnterpriseUuid());
+        if (uuid == null) {
+            throw BizException.fail("角色所在的企业不存在");
+        }
+        RoleDO roleDO = roleMapper.selectByPrimaryUuid(sysEnterpriseRoleReq.getUuid());
+        if (null == roleDO) {
+            throw BizException.fail("待编辑的角色不存在");
+        }
+        LoginAuthReq loginAuthReq = new LoginAuthReq();
+
+        RedisUser redisUser = this.redisUser();
+        if (redisUser.getTenantId().equals(1L)) {
+            AclTreeRes aclTreeRes = adminAuthorityService.roleTree(loginAuthReq, redisUser);
+            return aclTreeRes;
+        } else {
+            AclTreeRes aclTreeRes = commonAuthorityService.roleTree(loginAuthReq, redisUser);
+            return aclTreeRes;
+        }
     }
 }

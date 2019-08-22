@@ -52,11 +52,6 @@ public class SysEnterpriseController {
         return JSONResult.ok(sysEnterpriseService.modify(sysUserGroupReq));
     }
 
-    @RequestMapping("/role/v1")
-    public JSONResult role(@Validated(SysEnterpriseRoleReq.Permission.class) @RequestBody SysEnterpriseRoleReq sysEnterpriseRoleReq) {
-        return JSONResult.ok(sysEnterpriseService.role(sysEnterpriseRoleReq));
-    }
-
     @RequestMapping("/save/v1")
     public JSONResult save(@Validated(SysUserGroupReq.save.class) @RequestBody SysUserGroupReq sysUserGroupReq) {
         return JSONResult.ok(sysEnterpriseService.save(sysUserGroupReq));
@@ -67,4 +62,28 @@ public class SysEnterpriseController {
         return JSONResult.ok(sysEnterpriseService.status(sysUserGroupReq));
     }
 
+    @RequestMapping("/roleList/v1")
+    public JSONResult roleList(@Validated(SysEnterpriseRoleReq.Permission.class) @RequestBody SysEnterpriseRoleReq sysEnterpriseRoleReq) {
+        return JSONResult.ok(sysEnterpriseService.roleList(sysEnterpriseRoleReq));
+    }
+
+    @RequestMapping("/roleAdd/v1")
+    public JSONResult roleAdd(@Validated(SysEnterpriseRoleReq.save.class) @RequestBody SysEnterpriseRoleReq sysEnterpriseRoleReq) {
+        return JSONResult.ok(sysEnterpriseService.roleAdd(sysEnterpriseRoleReq));
+    }
+
+    @RequestMapping("/roleModify/v1")
+    public JSONResult roleModify(@Validated(SysEnterpriseRoleReq.Modify.class) @RequestBody SysEnterpriseRoleReq sysEnterpriseRoleReq) {
+        return JSONResult.ok(sysEnterpriseService.roleModify(sysEnterpriseRoleReq));
+    }
+
+    @RequestMapping("/roleDetail/v1")
+    public JSONResult roleDetail(@Validated(SysEnterpriseRoleReq.Detail.class) @RequestBody SysEnterpriseRoleReq sysEnterpriseRoleReq) {
+        return JSONResult.ok(sysEnterpriseService.roleDetail(sysEnterpriseRoleReq));
+    }
+
+    @RequestMapping("/roleHaveAclTree/v1")
+    public JSONResult roleHaveAclTree(@Validated(SysEnterpriseRoleReq.Permission.class) @RequestBody SysEnterpriseRoleReq sysEnterpriseRoleReq) {
+        return JSONResult.ok(sysEnterpriseService.roleHaveAclTree(sysEnterpriseRoleReq));
+    }
 }
