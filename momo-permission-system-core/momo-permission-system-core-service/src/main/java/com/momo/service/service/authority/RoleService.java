@@ -249,10 +249,17 @@ public class RoleService extends BaseService {
             SysRoleCheckedRes sysRoleChecke = new SysRoleCheckedRes();
             BeanUtils.copyProperties(roleDO, sysRoleChecke);
             sysRoleChecke.setIdStr(String.valueOf(roleDO.getId()));
-            if (roleDO.getFlag() == 0) {
+            //是否被禁用  0否 1禁用
+            if (roleDO.getFlag().equals(1)) {
                 sysRoleChecke.setDisabled(true);
             }
-            sysRoleCheckedRes.add(sysRoleChecke);
+            //非总部为企业授权，则屏蔽管理员(老板)角色
+            //角色的类型，0：管理员(老板)，1：管理员(员工)  2:普通员工 3:其他
+            //防止将 管理员(老板)角色 授权给多个用户，造成系统混乱
+            if (!redisUser.getTenantId().equals(1L) && !roleDO.getSysRoleType().equals(0)){
+                sysRoleCheckedRes.add(sysRoleChecke);
+            }
+
         }
         roleCheckedRes.setRoles(sysRoleCheckedRes);
         roleCheckedRes.setCheckList(roleSet);

@@ -2,12 +2,16 @@ package com.momo.service.service.aclmanager;
 
 import com.github.pagehelper.PageInfo;
 import com.momo.mapper.dataobject.RoleDO;
+import com.momo.mapper.dataobject.UserDO;
 import com.momo.mapper.dataobject.UserGroupDO;
 import com.momo.mapper.req.aclmanager.SysEnterpriseRoleReq;
+import com.momo.mapper.req.aclmanager.SysEnterpriseUserReq;
 import com.momo.mapper.req.aclmanager.SysUserGroupReq;
 import com.momo.mapper.req.aclmanager.UserGroupPageReq;
 import com.momo.mapper.res.aclmanager.SysEnterpriseRoleRes;
+import com.momo.mapper.res.aclmanager.SysRoleCheckedRes;
 import com.momo.mapper.res.aclmanager.SysUserGroupPageRes;
+import com.momo.mapper.res.aclmanager.SysUserListRes;
 import com.momo.mapper.res.authority.AclTreeRes;
 
 /**
@@ -28,11 +32,13 @@ public interface SysEnterpriseService {
 
     String modify(SysUserGroupReq sysUserGroupReq);
 
-    SysEnterpriseRoleRes roleList(SysEnterpriseRoleReq sysEnterpriseRoleReq);
-
     String save(SysUserGroupReq sysUserGroupReq);
 
     String status(SysUserGroupReq sysUserGroupReq);
+
+    //########################      企业角色相关      #################################
+
+    SysEnterpriseRoleRes roleList(SysEnterpriseRoleReq sysEnterpriseRoleReq);
 
     String roleAdd(SysEnterpriseRoleReq sysEnterpriseRoleReq);
 
@@ -43,4 +49,23 @@ public interface SysEnterpriseService {
     String roleModify(SysEnterpriseRoleReq sysEnterpriseRoleReq);
 
     AclTreeRes roleHaveAclTree(SysEnterpriseRoleReq sysEnterpriseRoleReq);
+
+    //########################      企业用户相关      #################################
+
+    SysUserListRes userList(SysEnterpriseUserReq sysEnterpriseUserReq);
+
+    String userAdd(SysEnterpriseUserReq sysEnterpriseUserReq);
+
+    UserDO userDetail(SysEnterpriseUserReq sysEnterpriseUserReq);
+
+    String userModify(SysEnterpriseUserReq sysEnterpriseUserReq);
+
+    SysRoleCheckedRes userCheckRoles(SysEnterpriseUserReq sysEnterpriseUserReq);
+
+    String rolesToUser(SysEnterpriseUserReq sysEnterpriseUserReq);
+
+    String userStatus(SysEnterpriseUserReq sysEnterpriseUserReq);
+
+    String sysUserPwd(SysEnterpriseUserReq sysEnterpriseUserReq);
+
 }

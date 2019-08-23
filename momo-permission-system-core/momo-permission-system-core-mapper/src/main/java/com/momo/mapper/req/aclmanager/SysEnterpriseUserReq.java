@@ -1,18 +1,25 @@
 package com.momo.mapper.req.aclmanager;
 
+import com.google.common.collect.Lists;
 import com.momo.common.error.BaseReq;
+import com.momo.mapper.dataobject.AclDO;
 import lombok.*;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
- * @program: momo-cloud-permission
- * @description: TODO
- * @author: Jie Li
- * @create: 2019-08-06 19:55
- **/
+ * @ProjectName: momo-cloud-permission
+ * @Package: com.momo.mapper.req.aclmanager
+ * @Description: TODO
+ * @Author: Jie Li
+ * @CreateDate: 2019/8/23 0023 13:24
+ * @UpdateDate: 2019/8/23 0023 13:24
+ * @Version: 1.0
+ * <p>Copyright: Copyright (c) 2019</p>
+ */
 @Getter
 @Setter
 @ToString
@@ -20,10 +27,15 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 //@EqualsAndHashCode(callSuper = true, of = {"id"})
-public class SysUserAddReq extends BaseReq {
+public class SysEnterpriseUserReq extends BaseReq {
+    @NotBlank(message = "enterpriseUuid必填", groups = {Modify.class, Status.class, Detail.class, Permission.class, Add.class, Query.class, Author.class})
+    private String enterpriseUuid;
 
-    @NotBlank(message = "uuid必填", groups = {Detail.class, Status.class,Permission.class,Modify.class})
+    @NotBlank(message = "uuid必填", groups = {Modify.class, Status.class, Detail.class, Permission.class, Add.class, Author.class})
     private String uuid;
+
+    private List<AclDO> acls = Lists.newArrayList();
+    private List<Long> roleIds = Lists.newArrayList();
     /**
      * sysUserName 姓名.
      */
@@ -51,7 +63,7 @@ public class SysUserAddReq extends BaseReq {
     /**
      * sysUserPwd 密码.
      */
-    @NotBlank(message = "密码必填", groups = {Add.class,Permission.class})
+    @NotBlank(message = "密码必填", groups = {Add.class, Permission.class})
     private String sysUserPwd;
     /**
      * remark 备注.

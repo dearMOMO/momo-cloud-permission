@@ -1,5 +1,6 @@
 package com.momo.mapper.res.aclmanager;
 
+import com.github.pagehelper.PageInfo;
 import com.momo.mapper.dataobject.RoleDO;
 import com.momo.mapper.dataobject.UserDO;
 import lombok.*;
@@ -32,7 +33,7 @@ public class SysUserListRes extends UserDO {
 
 
     //账号密码  是否绑定
-    private boolean pwdBinding=false;
+    private boolean pwdBinding = false;
     //账号密码  是否被禁用  0否 1禁用
     private Integer pwdBindingFlag;
     //账号密码  绑定名称
@@ -41,7 +42,7 @@ public class SysUserListRes extends UserDO {
     private Date pwdBindingDate;
 
     //账号密码  是否绑定
-    private boolean wxBinding=false;
+    private boolean wxBinding = false;
     //微信  是否被禁用  0否 1禁用
     private Integer wxBindingFlag;
     private String wxBindingName;
@@ -50,4 +51,9 @@ public class SysUserListRes extends UserDO {
 
     //角色列表
     private List<RoleDO> roles;
+
+    //企业用户分页列表
+    private PageInfo<SysUserListRes> sysUserListResPageInfo;
+    //企业名称
+    private String sysEnterpriseName;
 }

@@ -1,7 +1,9 @@
 package com.momo.momopermissionsystemcoreweb.controller.aclmanager;
 
 import com.momo.common.common.JSONResult;
+import com.momo.common.error.BaseReq;
 import com.momo.mapper.req.aclmanager.SysEnterpriseRoleReq;
+import com.momo.mapper.req.aclmanager.SysEnterpriseUserReq;
 import com.momo.mapper.req.aclmanager.SysUserGroupReq;
 import com.momo.mapper.req.aclmanager.UserGroupPageReq;
 import com.momo.service.service.aclmanager.SysEnterpriseService;
@@ -61,6 +63,7 @@ public class SysEnterpriseController {
     public JSONResult status(@Validated(SysUserGroupReq.Status.class) @RequestBody SysUserGroupReq sysUserGroupReq) {
         return JSONResult.ok(sysEnterpriseService.status(sysUserGroupReq));
     }
+    //########################      企业角色相关      #################################
 
     @RequestMapping("/roleList/v1")
     public JSONResult roleList(@Validated(SysEnterpriseRoleReq.Query.class) @RequestBody SysEnterpriseRoleReq sysEnterpriseRoleReq) {
@@ -90,5 +93,47 @@ public class SysEnterpriseController {
     @RequestMapping("/roleHaveAclTree/v1")
     public JSONResult roleHaveAclTree(@Validated(SysEnterpriseRoleReq.Permission.class) @RequestBody SysEnterpriseRoleReq sysEnterpriseRoleReq) {
         return JSONResult.ok(sysEnterpriseService.roleHaveAclTree(sysEnterpriseRoleReq));
+    }
+
+    //########################      企业用户相关      #################################
+
+    @RequestMapping("/userList/v1")
+    public JSONResult userList(@Validated(SysEnterpriseUserReq.Query.class) @RequestBody SysEnterpriseUserReq sysEnterpriseUserReq) {
+        return JSONResult.ok(sysEnterpriseService.userList(sysEnterpriseUserReq));
+    }
+
+    @RequestMapping("/userAdd/v1")
+    public JSONResult userAdd(@Validated(SysEnterpriseUserReq.save.class) @RequestBody SysEnterpriseUserReq sysEnterpriseUserReq) {
+        return JSONResult.ok(sysEnterpriseService.userAdd(sysEnterpriseUserReq));
+    }
+
+    @RequestMapping("/userDetail/v1")
+    public JSONResult userDetail(@Validated(SysEnterpriseUserReq.Detail.class) @RequestBody SysEnterpriseUserReq sysEnterpriseUserReq) {
+        return JSONResult.ok(sysEnterpriseService.userDetail(sysEnterpriseUserReq));
+    }
+
+    @RequestMapping("/userModify/v1")
+    public JSONResult userModify(@Validated(SysEnterpriseUserReq.Modify.class) @RequestBody SysEnterpriseUserReq sysEnterpriseUserReq) {
+        return JSONResult.ok(sysEnterpriseService.userModify(sysEnterpriseUserReq));
+    }
+
+    @RequestMapping("/userCheckRoles/v1")
+    public JSONResult userCheckRoles(@Validated(SysEnterpriseUserReq.Detail.class) @RequestBody SysEnterpriseUserReq sysEnterpriseUserReq) {
+        return JSONResult.ok(sysEnterpriseService.userCheckRoles(sysEnterpriseUserReq));
+    }
+
+    @RequestMapping("/rolesToUser/v1")
+    public JSONResult rolesToUser(@Validated(SysEnterpriseUserReq.Author.class) @RequestBody SysEnterpriseUserReq sysEnterpriseUserReq) {
+        return JSONResult.ok(sysEnterpriseService.rolesToUser(sysEnterpriseUserReq));
+    }
+
+    @RequestMapping("/userStatus/v1")
+    public JSONResult userStatus(@Validated(SysEnterpriseUserReq.Status.class) @RequestBody SysEnterpriseUserReq sysEnterpriseUserReq) {
+        return JSONResult.ok(sysEnterpriseService.userStatus(sysEnterpriseUserReq));
+    }
+
+    @RequestMapping("/sysUserPwd/v1")
+    public JSONResult sysUserPwd(@Validated(SysEnterpriseUserReq.Permission.class) @RequestBody SysEnterpriseUserReq sysEnterpriseUserReq) {
+        return JSONResult.ok(sysEnterpriseService.sysUserPwd(sysEnterpriseUserReq));
     }
 }

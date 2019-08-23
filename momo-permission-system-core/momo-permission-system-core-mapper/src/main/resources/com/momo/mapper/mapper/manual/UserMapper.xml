@@ -225,8 +225,8 @@
             <if test="sysUserArea != null">
                 #{sysUserArea,jdbcType=BIGINT},
             </if>
-            <if test="groupId != null">
-                #{groupId,jdbcType=BIGINT},
+            <if test="tenantId != null">
+                #{tenantId,jdbcType=BIGINT},
             </if>
             <if test="remark != null">
                 #{remark,jdbcType=VARCHAR},

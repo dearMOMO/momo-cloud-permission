@@ -6,21 +6,19 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.momo.common.util.DateUtils;
 import com.momo.common.error.BizException;
+import com.momo.common.util.Encrypt;
 import com.momo.common.util.StrUtil;
 import com.momo.common.util.snowFlake.SnowFlake;
-import com.momo.mapper.dataobject.AclDO;
-import com.momo.mapper.dataobject.RoleDO;
-import com.momo.mapper.dataobject.UserGroupDO;
-import com.momo.mapper.mapper.manual.RoleMapper;
-import com.momo.mapper.mapper.manual.UserGroupMapper;
+import com.momo.mapper.dataobject.*;
+import com.momo.mapper.dataobject.manual.SysUserListDO;
+import com.momo.mapper.mapper.manual.*;
 import com.momo.mapper.req.aclmanager.SysEnterpriseRoleReq;
+import com.momo.mapper.req.aclmanager.SysEnterpriseUserReq;
 import com.momo.mapper.req.aclmanager.SysUserGroupReq;
 import com.momo.mapper.req.aclmanager.UserGroupPageReq;
 import com.momo.mapper.req.sysmain.LoginAuthReq;
 import com.momo.mapper.req.sysmain.RedisUser;
-import com.momo.mapper.res.aclmanager.SysEnterpriseRoleRes;
-import com.momo.mapper.res.aclmanager.SysRolePageListRes;
-import com.momo.mapper.res.aclmanager.SysUserGroupPageRes;
+import com.momo.mapper.res.aclmanager.*;
 import com.momo.mapper.res.authority.AclTreeRes;
 import com.momo.service.service.BaseService;
 import com.momo.service.service.aclmanager.SysEnterpriseService;
@@ -32,11 +30,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @program: momo-cloud-permission
@@ -55,6 +55,12 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
     private AdminAuthorityService adminAuthorityService;
     @Autowired
     private CommonAuthorityService commonAuthorityService;
+    @Autowired
+    private AuthorityMapper authorityMapper;
+    @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private UserAccountPwdMapper userAccountPwdMapper;
     @Autowired
     private RoleService roleService;
     private SnowFlake snowFlake = new SnowFlake(1L, 1L);
@@ -131,6 +137,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         }
     }
 
+    @Transactional
     @Override
     public String aclsToEnterprise(UserGroupPageReq userGroupPageReq) {
         UserGroupDO uuid = userGroupMapper.uuid(userGroupPageReq.getUuid());
@@ -153,6 +160,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         return "为企业授权成功";
     }
 
+    @Transactional
     @Override
     public String modify(SysUserGroupReq sysUserGroupReq) {
         UserGroupDO uuid = userGroupMapper.uuid(sysUserGroupReq.getUuid());
@@ -258,6 +266,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         return sysEnterpriseRoleResFinal;
     }
 
+    @Transactional
     @Override
     public String save(SysUserGroupReq sysUserGroupReq) {
         checkNameExists(sysUserGroupReq.getUserGroupName(), null);
@@ -279,6 +288,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         return "新增企业信息成功";
     }
 
+    @Transactional
     @Override
     public String status(SysUserGroupReq sysUserGroupReq) {
         UserGroupDO uuid = userGroupMapper.uuid(sysUserGroupReq.getUuid());
@@ -297,6 +307,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         return "状态设置成功";
     }
 
+    @Transactional
     @Override
     public String roleAdd(SysEnterpriseRoleReq sysEnterpriseRoleReq) {
         UserGroupDO uuid = userGroupMapper.uuid(sysEnterpriseRoleReq.getEnterpriseUuid());
@@ -330,6 +341,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         return "新增角色成功";
     }
 
+    @Transactional
     @Override
     public String roleStatus(SysEnterpriseRoleReq sysEnterpriseRoleReq) {
         RedisUser redisUser = this.redisUser();
@@ -377,6 +389,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         return roleMapper.checkAdminRole(id, roleType, compId) > 0 ? true : false;
     }
 
+    @Transactional
     @Override
     public String roleModify(SysEnterpriseRoleReq sysEnterpriseRoleReq) {
         UserGroupDO uuid = userGroupMapper.uuid(sysEnterpriseRoleReq.getEnterpriseUuid());
@@ -442,5 +455,335 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
             AclTreeRes aclTreeRes = commonAuthorityService.roleTree(loginAuthReq, redisUser);
             return aclTreeRes;
         }
+    }
+
+    @Override
+    public SysUserListRes userList(SysEnterpriseUserReq sysEnterpriseUserReq) {
+        UserGroupDO uuid = userGroupMapper.uuid(sysEnterpriseUserReq.getEnterpriseUuid());
+        if (uuid == null) {
+            throw BizException.fail("用户所在的企业不存在");
+        }
+        SysUserListRes sysUserListResFianl = new SysUserListRes();
+        sysUserListResFianl.setSysEnterpriseName(uuid.getUserGroupName());
+        RedisUser redisUser = this.redisUser();
+        PageHelper.startPage(sysEnterpriseUserReq.getPageNum(), sysEnterpriseUserReq.getPageSize(), "id desc");
+        List<SysUserListDO> pageSysUserList = userMapper.pageSysUserList(uuid.getId(), sysEnterpriseUserReq.getSysUserName(), sysEnterpriseUserReq.getFlag());
+        PageInfo<SysUserListDO> pageInfo = new PageInfo<>(pageSysUserList);
+        List<SysUserListRes> resList = Lists.newArrayList();
+        List<SysUserListDO> doList = pageInfo.getList();
+
+        PageInfo<SysUserListRes> pageInfoRes = new PageInfo<>();
+        pageInfoRes.setPageNum(pageInfo.getPageNum());
+        pageInfoRes.setPageSize(pageInfo.getPageSize());
+        pageInfoRes.setTotal(pageInfo.getTotal());
+        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(doList)) {
+            doList.forEach(sysUserListDO -> {
+                SysUserListRes sysUserListRes = new SysUserListRes();
+                BeanUtils.copyProperties(sysUserListDO, sysUserListRes);
+                //管理员按钮是否显示
+                List<RoleDO> roles = sysUserListDO.getRoles();
+                Set<Integer> rolesSet = roles.stream().map(roleDO -> roleDO.getSysRoleType()).collect(Collectors.toSet());
+                //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
+                if (rolesSet.contains(0)) {
+                    sysUserListRes.setEditButton(false);
+                    sysUserListRes.setPwdButton(false);
+                    sysUserListRes.setFlagButton(false);
+                    sysUserListRes.setRoleButton(false);
+                }
+                if (rolesSet.contains(1)) {
+                    sysUserListRes.setEditButton(false);
+                    sysUserListRes.setPwdButton(false);
+                    sysUserListRes.setFlagButton(false);
+                    sysUserListRes.setRoleButton(false);
+                }
+                //用户是自己登陆，则显示自己
+                if (sysUserListDO.getId().equals(redisUser.getBaseId())) {
+                    sysUserListRes.setEditButton(true);
+                    sysUserListRes.setPwdButton(true);
+                    sysUserListRes.setFlagButton(true);
+                    sysUserListRes.setRoleButton(true);
+                }
+                //超级管理员，则显示全部
+                if (superAdmins.contains(redisUser.getSysUserPhone())) {
+                    sysUserListRes.setEditButton(true);
+                    sysUserListRes.setPwdButton(true);
+                    sysUserListRes.setFlagButton(true);
+                    sysUserListRes.setRoleButton(true);
+                }
+                UserAccountPwdDO userAccountPwdDO = sysUserListDO.getUserAccountPwdDO();
+                //密码绑定
+                if (null != userAccountPwdDO) {
+                    sysUserListRes.setPwdBinding(true);
+                    sysUserListRes.setPwdBindingName(userAccountPwdDO.getSysUserLoginName());
+                    sysUserListRes.setPwdBindingFlag(userAccountPwdDO.getFlag());
+                    sysUserListRes.setPwdBindingDate(userAccountPwdDO.getCreateTime());
+                }
+                resList.add(sysUserListRes);
+            });
+            pageInfoRes.setList(resList);
+
+            sysUserListResFianl.setSysUserListResPageInfo(pageInfoRes);
+            return sysUserListResFianl;
+        }
+        sysUserListResFianl.setSysUserListResPageInfo(pageInfoRes);
+        return sysUserListResFianl;
+    }
+
+    @Transactional
+    @Override
+    public String userAdd(SysEnterpriseUserReq sysEnterpriseUserReq) {
+        UserGroupDO uuid = userGroupMapper.uuid(sysEnterpriseUserReq.getEnterpriseUuid());
+        if (uuid == null) {
+            throw BizException.fail("用户所在的企业不存在");
+        }
+        UserAccountPwdDO exitsUserAccountPwdDO = userAccountPwdMapper.sysUserAccountLogin(sysEnterpriseUserReq.getSysUserLoginName());
+        if (exitsUserAccountPwdDO != null) {
+            throw BizException.fail("登录账号已存在");
+        }
+        RedisUser redisUser = this.redisUser();
+        UserDO userDO = new UserDO();
+        BeanUtils.copyProperties(sysEnterpriseUserReq, userDO);
+        Long id = snowFlake.nextId();
+        userDO.setId(id);
+        userDO.setSysUserEmail(sysEnterpriseUserReq.getSysUserLoginName());
+        userDO.setUuid(StrUtil.genUUID());
+        userDO.setTenantId(uuid.getId());
+        userDO.setCreateBy(redisUser.getSysUserName());
+        userDO.setUpdateBy(redisUser.getSysUserName());
+        userDO.setCreateTime(DateUtils.getDateTime());
+        userDO.setUpdateTime(DateUtils.getDateTime());
+        userMapper.insertSelective(userDO);
+        UserAccountPwdDO userAccountPwdDO = new UserAccountPwdDO();
+        BeanUtils.copyProperties(sysEnterpriseUserReq, userAccountPwdDO);
+        userAccountPwdDO.setId(snowFlake.nextId());
+        String salt = StrUtil.genUUID();
+        userAccountPwdDO.setSysUserAuthSalt(salt);
+        String pwd = Encrypt.SHA512AndSHA256(sysEnterpriseUserReq.getSysUserPwd(), salt);
+        userAccountPwdDO.setSysUserPwd(pwd);
+        userAccountPwdDO.setTenantId(uuid.getId());
+        userAccountPwdDO.setCreateBy(redisUser.getSysUserName());
+        userAccountPwdDO.setUpdateBy(redisUser.getSysUserName());
+        userAccountPwdDO.setUuid(StrUtil.genUUID());
+        userAccountPwdDO.setSysUserId(id);
+        userAccountPwdDO.setCreateTime(DateUtils.getDateTime());
+        userAccountPwdDO.setUpdateTime(DateUtils.getDateTime());
+        userAccountPwdMapper.insertSelective(userAccountPwdDO);
+        return "新增企业用户成功";
+    }
+
+    @Override
+    public UserDO userDetail(SysEnterpriseUserReq sysEnterpriseUserReq) {
+        UserGroupDO uuid = userGroupMapper.uuid(sysEnterpriseUserReq.getEnterpriseUuid());
+        if (uuid == null) {
+            throw BizException.fail("用户所在的企业不存在");
+        }
+        UserDO userDODetail = userMapper.uuid(sysEnterpriseUserReq.getUuid());
+        if (null == userDODetail) {
+            throw BizException.fail("待查询的用户不存在");
+        }
+        userDODetail.setId(null);
+        return userDODetail;
+    }
+
+    @Override
+    public String userModify(SysEnterpriseUserReq sysEnterpriseUserReq) {
+        UserGroupDO uuid = userGroupMapper.uuid(sysEnterpriseUserReq.getEnterpriseUuid());
+        if (uuid == null) {
+            throw BizException.fail("用户所在的企业不存在");
+        }
+        UserDO userDODetail = userMapper.uuid(sysEnterpriseUserReq.getUuid());
+        if (null == userDODetail) {
+            throw BizException.fail("待编辑的用户不存在");
+        }
+        RedisUser redisUser = this.redisUser();
+        UserDO userDO = new UserDO();
+        BeanUtils.copyProperties(sysEnterpriseUserReq, userDO);
+        userDO.setSysUserName(sysEnterpriseUserReq.getSysUserName());
+        userDO.setFlag(sysEnterpriseUserReq.getFlag());
+        userDO.setId(userDODetail.getId());
+        userDO.setUpdateBy(redisUser.getSysUserName());
+        userDO.setUpdateTime(DateUtils.getDateTime());
+        //超级管理员 编辑所有
+        if (superAdmins.contains(redisUser.getSysUserPhone())) {
+            userMapper.updateByPrimaryKeySelective(userDO);
+            return "编辑用户信息成功";
+        } else {
+            //普通管理员 按需来
+            if (superAdmins.contains(userDODetail.getSysUserPhone())) {
+                throw BizException.fail("超级管理员信息不允许编辑");
+            }
+            List<RoleDO> roleDOS = roleMapper.getRolesByUserId(userDODetail.getId());
+            //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
+            Set<Integer> roleTypes = roleDOS.stream().map(roleDO -> roleDO.getSysRoleType()).collect(Collectors.toSet());
+            if (roleTypes.contains(0) && !userDODetail.getId().equals(redisUser.getBaseId())) {
+                throw BizException.fail("管理员信息不允许编辑");
+            }
+            userMapper.updateByPrimaryKeySelective(userDO);
+            return "编辑用户信息成功";
+        }
+    }
+
+    @Override
+    public SysRoleCheckedRes userCheckRoles(SysEnterpriseUserReq sysEnterpriseUserReq) {
+        UserGroupDO uuid = userGroupMapper.uuid(sysEnterpriseUserReq.getEnterpriseUuid());
+        if (uuid == null) {
+            throw BizException.fail("用户所在的企业不存在");
+        }
+        UserDO userDO = userMapper.uuid(sysEnterpriseUserReq.getUuid());
+        if (null == userDO) {
+            throw BizException.fail("带授权的用户不存在");
+        }
+        RoleDO roleDODb = new RoleDO();
+        RedisUser redisUser = this.redisUser();
+        roleDODb.setTenantId(uuid.getId());
+        //企业下所有角色
+        List<RoleDO> selfRoleDOS = roleMapper.roleList(roleDODb);
+
+        //选择用户所拥有的角色
+        List<RoleDO> roleDOList = roleMapper.getRolesByUserId(userDO.getId());
+        Set<String> roleSet = Sets.newHashSet();
+        //已选中列表
+        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(roleDOList)) {
+            roleSet = roleDOList.stream().map(roleDO -> String.valueOf(roleDO.getId())).collect(Collectors.toSet());
+        }
+        SysRoleCheckedRes roleCheckedRes = new SysRoleCheckedRes();
+        List<SysRoleCheckedRes> sysRoleCheckedRes = Lists.newArrayList();
+        for (RoleDO roleDO : selfRoleDOS) {
+            SysRoleCheckedRes sysRoleChecke = new SysRoleCheckedRes();
+            BeanUtils.copyProperties(roleDO, sysRoleChecke);
+            sysRoleChecke.setIdStr(String.valueOf(roleDO.getId()));
+            //是否被禁用  0否 1禁用
+            if (roleDO.getFlag().equals(1)) {
+                sysRoleChecke.setDisabled(true);
+            }
+            sysRoleCheckedRes.add(sysRoleChecke);
+        }
+        roleCheckedRes.setRoles(sysRoleCheckedRes);
+        roleCheckedRes.setCheckList(roleSet);
+        return roleCheckedRes;
+    }
+
+    @Override
+    public String rolesToUser(SysEnterpriseUserReq sysEnterpriseUserReq) {
+        UserGroupDO uuid = userGroupMapper.uuid(sysEnterpriseUserReq.getEnterpriseUuid());
+        if (uuid == null) {
+            throw BizException.fail("用户所在的企业不存在");
+        }
+        UserDO userDO = userMapper.uuid(sysEnterpriseUserReq.getUuid());
+        if (null == userDO) {
+            throw BizException.fail("待授权的用户不存在");
+        }
+        List<Long> roles = sysEnterpriseUserReq.getRoleIds();
+        List<Long> originAclIdList = authorityMapper.rolesByUserId(userDO.getId());
+        if (originAclIdList.size() == roles.size()) {
+            Set<Long> originAclIdSet = Sets.newHashSet(originAclIdList);
+            Set<Long> aclIdSet = Sets.newHashSet(roles);
+            originAclIdSet.removeAll(aclIdSet);
+            if (org.apache.commons.collections.CollectionUtils.isEmpty(originAclIdSet)) {
+                return "为企业用户授权角色成功";
+            }
+        }
+        RedisUser redisUser = this.redisUser();
+        updateUserRoles(userDO.getId(), roles, redisUser, userDO.getTenantId());
+        return "为企业用户授权角色成功";
+    }
+
+    @Override
+    public String userStatus(SysEnterpriseUserReq sysEnterpriseUserReq) {
+        UserGroupDO uuid = userGroupMapper.uuid(sysEnterpriseUserReq.getEnterpriseUuid());
+        if (uuid == null) {
+            throw BizException.fail("用户所在的企业不存在");
+        }
+        UserDO userDODetail = userMapper.uuid(sysEnterpriseUserReq.getUuid());
+        if (null == userDODetail) {
+            throw BizException.fail("待编辑的用户信息不存在");
+        }
+        RedisUser redisUser = this.redisUser();
+        UserDO userDO = new UserDO();
+        userDO.setFlag(sysEnterpriseUserReq.getFlag());
+        userDO.setId(userDODetail.getId());
+        userDO.setUpdateBy(redisUser.getSysUserName());
+        userDO.setUpdateTime(DateUtils.getDateTime());
+        //超级管理员 编辑所有
+        if (superAdmins.contains(redisUser.getSysUserPhone())) {
+            userMapper.updateByPrimaryKeySelective(userDO);
+            return "用户状态设置成功";
+        } else {
+            //普通管理员 按需来
+            if (superAdmins.contains(userDODetail.getSysUserPhone())) {
+                throw BizException.fail("超级管理员状态不允许编辑");
+            }
+            List<RoleDO> roleDOS = roleMapper.getRolesByUserId(userDODetail.getId());
+            //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
+            Set<Integer> roleTypes = roleDOS.stream().map(roleDO -> roleDO.getSysRoleType()).collect(Collectors.toSet());
+            if (roleTypes.contains(0) && !userDODetail.getId().equals(redisUser.getBaseId())) {
+                throw BizException.fail("管理员状态不允许编辑");
+            }
+            userMapper.updateByPrimaryKeySelective(userDO);
+            return "用户状态设置成功";
+        }
+    }
+
+    @Override
+    public String sysUserPwd(SysEnterpriseUserReq sysEnterpriseUserReq) {
+        UserGroupDO uuid = userGroupMapper.uuid(sysEnterpriseUserReq.getEnterpriseUuid());
+        if (uuid == null) {
+            throw BizException.fail("用户所在的企业不存在");
+        }
+        UserDO userDODetail = userMapper.uuid(sysEnterpriseUserReq.getUuid());
+        if (null == userDODetail) {
+            throw BizException.fail("待编辑的用户不存在");
+        }
+        UserAccountPwdDO sysUserAccountByUserId = userAccountPwdMapper.sysUserAccountByUserId(userDODetail.getId());
+        UserAccountPwdDO userAccountPwdDO = new UserAccountPwdDO();
+        userAccountPwdDO.setSysUserPwd(sysEnterpriseUserReq.getSysUserPwd());
+        String salt = StrUtil.genUUID();
+        userAccountPwdDO.setSysUserAuthSalt(salt);
+        String pwd = Encrypt.SHA512AndSHA256(sysEnterpriseUserReq.getSysUserPwd(), salt);
+        userAccountPwdDO.setSysUserPwd(pwd);
+        userAccountPwdDO.setId(sysUserAccountByUserId.getId());
+        RedisUser redisUser = this.redisUser();
+        //超级管理员 编辑所有
+        if (superAdmins.contains(redisUser.getSysUserPhone())) {
+            userAccountPwdMapper.updateByPrimaryKeySelective(userAccountPwdDO);
+            return "修改密码成功";
+        } else {
+            //普通管理员 按需来
+            if (superAdmins.contains(userDODetail.getSysUserPhone())) {
+                throw BizException.fail("超级管理员密码不允许编辑");
+            }
+            List<RoleDO> roleDOS = roleMapper.getRolesByUserId(userDODetail.getId());
+            //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
+            Set<Integer> roleTypes = roleDOS.stream().map(roleDO -> roleDO.getSysRoleType()).collect(Collectors.toSet());
+            if (roleTypes.contains(0) && !userDODetail.getId().equals(redisUser.getBaseId())) {
+                throw BizException.fail("管理员密码不允许编辑");
+            }
+            userAccountPwdMapper.updateByPrimaryKeySelective(userAccountPwdDO);
+            return "修改密码成功";
+        }
+    }
+
+    @Transactional
+    public void updateUserRoles(Long userId, List<Long> roleIdList, RedisUser redisUser, Long tenantId) {
+        roleMapper.deleteUserRolesByUserId(userId);
+
+        if (org.apache.commons.collections.CollectionUtils.isEmpty(roleIdList)) {
+            return;
+        }
+        List<RoleUserDO> roleUserList = Lists.newArrayList();
+        for (Long aclId : roleIdList) {
+            RoleUserDO roleUserDO = new RoleUserDO();
+            roleUserDO.setId(snowFlake.nextId());
+            roleUserDO.setUuid(StrUtil.genUUID());
+            roleUserDO.setRoleId(aclId);
+            roleUserDO.setTenantId(tenantId);
+            roleUserDO.setUserId(userId);
+            roleUserDO.setCreateTime(DateUtils.getDateTime());
+            roleUserDO.setCreateBy(redisUser.getSysUserName());
+            roleUserDO.setUpdateBy(redisUser.getSysUserName());
+            roleUserDO.setUpdateTime(DateUtils.getDateTime());
+            roleUserList.add(roleUserDO);
+        }
+        roleMapper.batchInsertUserRoles(roleUserList);
     }
 }

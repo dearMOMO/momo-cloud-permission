@@ -27,6 +27,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -52,6 +53,7 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
     private String superAdmins = "";
     private SnowFlake snowFlake = new SnowFlake(1, 1);
 
+    @Transactional
     @Override
     public String sysUserAdd(SysUserAddReq sysUserAddReq) {
         UserAccountPwdDO exitsUserAccountPwdDO = userAccountPwdMapper.sysUserAccountLogin(sysUserAddReq.getSysUserLoginName());
@@ -99,6 +101,7 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
         return userDODetail;
     }
 
+    @Transactional
     @Override
     public String sysUserModify(SysUserAddReq sysUserAddReq) {
         UserDO userDODetail = userMapper.uuid(sysUserAddReq.getUuid());
@@ -107,6 +110,7 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
         }
         RedisUser redisUser = this.redisUser();
         UserDO userDO = new UserDO();
+        BeanUtils.copyProperties(sysUserAddReq,userDO);
         userDO.setSysUserName(sysUserAddReq.getSysUserName());
         userDO.setFlag(sysUserAddReq.getFlag());
         userDO.setId(userDODetail.getId());
@@ -115,7 +119,7 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
         //超级管理员 编辑所有
         if (superAdmins.contains(redisUser.getSysUserPhone())) {
             userMapper.updateByPrimaryKeySelective(userDO);
-            return "编辑用户成功";
+            return "编辑用户信息成功";
         } else {
             //普通管理员 按需来
             if (superAdmins.contains(userDODetail.getSysUserPhone())) {
@@ -128,10 +132,11 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
                 throw BizException.fail("管理员信息不允许编辑");
             }
             userMapper.updateByPrimaryKeySelective(userDO);
-            return "编辑用户成功";
+            return "编辑用户信息成功";
         }
     }
 
+    @Transactional
     @Override
     public String sysUserStatus(SysUserAddReq sysUserAddReq) {
         UserDO userDODetail = userMapper.uuid(sysUserAddReq.getUuid());
@@ -164,6 +169,7 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
         }
     }
 
+    @Transactional
     @Override
     public String sysUserPwd(SysUserAddReq sysUserAddReq) {
         UserDO userDODetail = userMapper.uuid(sysUserAddReq.getUuid());

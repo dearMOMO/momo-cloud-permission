@@ -78,4 +78,8 @@ public class BaseReq implements Serializable {
     public interface Permission {
 
     }
+
+    public interface Author {
+
+    }
 }

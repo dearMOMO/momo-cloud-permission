@@ -28,7 +28,7 @@ public class SysEnterpriseRoleReq extends BaseReq {
     @NotBlank(message = "enterpriseUuid必填", groups = {Modify.class, Status.class, Detail.class, Permission.class, save.class, Query.class})
     private String enterpriseUuid;
 
-    @NotBlank(message = "uuid必填", groups = {Modify.class, Status.class, Detail.class, Permission.class, Query.class})
+    @NotBlank(message = "uuid必填", groups = {Modify.class, Status.class, Detail.class, Permission.class})
     private String uuid;
     /**
      * compId 租户id.
