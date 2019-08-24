@@ -1,14 +1,17 @@
-# momo-cloud-permission
 
-#### 介绍
-权限管理系统V2
+ #  **kagome-momo-open-source** 
 
-#### 软件架构
-软件架构说明
+
+![输入图片说明](https://gitee.com/momoriven/momo-images/raw/master/doc/momo-cloud-permission/images/spring%20cloud%20%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E5%9B%BE.png "spring cloud 微服务.png")
+## postman API接口文档
+https://documenter.getpostman.com/view/5247645/S17ow97k
+## [静态资源-Vue](https://gitee.com/momoriven/kagome-momo-open-source-vue)
+#### 软件架构说明
 
 
 #### 安装教程
 
+1. xxxx
 2. xxxx
 3. xxxx
 
