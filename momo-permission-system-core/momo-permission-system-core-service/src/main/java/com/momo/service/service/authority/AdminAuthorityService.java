@@ -125,7 +125,7 @@ public class AdminAuthorityService extends BaseService {
             List<AclLevelRes> tempDeptList = (List<AclLevelRes>) levelDeptMap.get(nextLevel);
             if (CollectionUtils.isNotEmpty(tempDeptList)) {
                 // 排序
-                Collections.sort(tempDeptList, deptSeqComparator);
+                tempDeptList.sort(deptSeqComparator);
                 // 设置下一层部门
                 deptLevelDto.setChildren(tempDeptList);
                 // 进入到下一层处理

@@ -61,6 +61,16 @@
         from sys_role
         where uuid = #{uuid,jdbcType=VARCHAR}
     </select>
+    <select id="selectByPrimaryUuids" parameterType="string" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_role
+        where uuid IN
+        <foreach collection="uuids" item="item" separator="," open="(" close=")">
+            #{item,jdbcType=VARCHAR}
+        </foreach>
+
+    </select>
     <select id="checkRoleName" parameterType="map" resultType="integer">
         select
         COUNT(id)
@@ -109,10 +119,10 @@
     </insert>
     <insert id="batchInsertUserRoles" parameterType="map">
         <foreach collection="roleUsers" item="item" separator=";">
-            insert into sys_role_user ( id,role_id, user_id,
+            insert into sys_role_user ( id,uuid,role_id, user_id,
             tenant_id, create_by, create_time,
             update_time, update_by)
-            values (#{item.id,jdbcType=BIGINT}, #{item.roleId,jdbcType=BIGINT},
+            values (#{item.id,jdbcType=BIGINT},#{item.uuid,jdbcType=VARCHAR}, #{item.roleId,jdbcType=BIGINT},
             #{item.userId,jdbcType=BIGINT}, #{item.tenantId,jdbcType=BIGINT},
             #{item.createBy,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP},
             #{item.updateTime,jdbcType=TIMESTAMP}, #{item.updateBy,jdbcType=VARCHAR})
@@ -247,7 +257,7 @@
        SELECT id, uuid, sys_role_name, sys_role_type, tenant_id, flag, del_flag
         FROM sys_role WHERE id IN (
           SELECT role_id FROM sys_role_user WHERE user_id =#{userId}
-        )
+        ) and flag=#{flag}
     </select>
     <select id="getVipAdminRole" parameterType="map" resultMap="BaseResultMap">
          SELECT

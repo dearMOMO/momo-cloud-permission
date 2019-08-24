@@ -6,6 +6,7 @@ import com.momo.mapper.dataobject.RoleUserDO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Set;
 
 
 public interface RoleMapper {
@@ -14,6 +15,8 @@ public interface RoleMapper {
     RoleDO selectByPrimaryKey(Long id);
 
     RoleDO selectByPrimaryUuid(String uuid);
+
+    List<RoleDO> selectByPrimaryUuids(@Param("uuids") Set<String> uuid);
 
     int updateByPrimaryKeySelective(RoleDO record);
 
@@ -99,9 +102,10 @@ public interface RoleMapper {
      * 根据用户id得到角色列表
      *
      * @param userId
+     * @param flag
      * @return
      */
-    public List<RoleDO> getRolesByUserId(@Param("userId") Long userId);
+    public List<RoleDO> getRolesByUserId(@Param("userId") Long userId,@Param("flag")Integer flag);
 
     /**
      * 根据组织id 和管理员角色 查询第三方组织的管理员信息
@@ -113,5 +117,5 @@ public interface RoleMapper {
     RoleDO getVipAdminRole(@Param("tenantId") Long tenantId, @Param("roleType") Integer roleType);
 
 
-    List<RoleDO> getRoleListByEnterpriseId(@Param("tenantId") Long tenantId, @Param("roleType") Integer roleType,@Param("flag")Integer flag,@Param("sysRoleName")String sysRoleName);
+    List<RoleDO> getRoleListByEnterpriseId(@Param("tenantId") Long tenantId, @Param("roleType") Integer roleType, @Param("flag") Integer flag, @Param("sysRoleName") String sysRoleName);
 }

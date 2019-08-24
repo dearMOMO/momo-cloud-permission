@@ -125,5 +125,7 @@ momo:
     name: kagome # 用户名
     password: kagome123456 #密码
   #系统初始化超级管理员
-  superAdmins: 15050451502;
+  superAdmins: #List
+    - 15050451502
+    - momo
 #################  cloud 项目初始化参数 end  ############################

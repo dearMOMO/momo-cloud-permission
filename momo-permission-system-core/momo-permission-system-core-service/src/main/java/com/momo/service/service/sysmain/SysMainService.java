@@ -24,6 +24,7 @@ import com.momo.mapper.req.sysmain.SysUserLoginReq;
 import com.momo.mapper.res.sysmain.UserInfoRes;
 import com.momo.service.async.LoginLogAsync;
 import com.momo.service.service.BaseService;
+import com.momo.service.service.SuperAdminsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -57,8 +58,8 @@ public class SysMainService extends BaseService {
     @Autowired
     private UserGroupMapper userGroupMapper;
     private SnowFlake snowFlake = new SnowFlake(1, 1);
-    @Value("${momo.superAdmins}")
-    private String superAdmins = "";
+    @Autowired
+    private SuperAdminsService superAdminsService;
 
     public String userLogin(SysUserLoginReq sysUserLoginReq, HttpServletRequest request) {
         //todo 验证码
@@ -68,7 +69,7 @@ public class SysMainService extends BaseService {
             throw BizException.fail("用户名或者密码错误");
         }
         //剔除超级管理员限制
-        if (!superAdmins.contains(userAccountPwdDO.getSysUserLoginName())) {
+        if (!superAdminsService.checkIsSuperAdmin(userAccountPwdDO.getSysUserLoginName())) {
             //删除状态(0-正常，1-删除)
             if (userAccountPwdDO.getDelFlag().equals(1)) {
                 throw BizException.fail("您的账户已被删除，请联系管理员");
@@ -83,7 +84,7 @@ public class SysMainService extends BaseService {
             throw BizException.fail("用户名或者密码错误");
         }
         //剔除超级管理员限制
-        if (!superAdmins.contains(userAccountPwdDO.getSysUserLoginName())) {
+        if (!superAdminsService.checkIsSuperAdmin(userAccountPwdDO.getSysUserLoginName())) {
             UserGroupDO userGroupDO = userGroupMapper.getUserGroupById(userAccountPwdDO.getTenantId());
             if (null == userGroupDO) {
                 throw BizException.fail("您所在的企业不存在");

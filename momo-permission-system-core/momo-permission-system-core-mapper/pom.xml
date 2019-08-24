@@ -22,6 +22,11 @@
         <artifactId>lombok</artifactId>
         <scope>provided</scope>
     </dependency>
+    <!--工具类-->
+    <dependency>
+        <groupId>commons-collections</groupId>
+        <artifactId>commons-collections</artifactId>
+    </dependency>
     <dependency>
         <groupId>com.momo</groupId>
         <artifactId>momo-permission-system-core-common</artifactId>

@@ -6,6 +6,7 @@ import com.momo.mapper.dataobject.AclDO;
 import com.momo.mapper.mapper.manual.AuthorityMapper;
 import com.momo.mapper.req.sysmain.RedisUser;
 import com.momo.mapper.req.sysmain.LoginAuthReq;
+import com.momo.service.service.SuperAdminsService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,8 +25,8 @@ import java.util.stream.Collectors;
  **/
 @Service
 public class AdminSysCoreService {
-    @Value("${momo.superAdmins}")
-    private String superAdmins = "";
+    @Autowired
+    private SuperAdminsService superAdminsService;
     @Autowired
     private AuthorityMapper authorityMapper;
 
@@ -102,7 +103,7 @@ public class AdminSysCoreService {
         if (StringUtils.isBlank(redisUser.getSysUserPhone())) {
             return false;
         }
-        if (superAdmins.trim().contains(redisUser.getSysUserPhone())) {
+        if (superAdminsService.checkIsSuperAdmin(redisUser.getSysUserPhone())) {
             return true;
         }
         return false;

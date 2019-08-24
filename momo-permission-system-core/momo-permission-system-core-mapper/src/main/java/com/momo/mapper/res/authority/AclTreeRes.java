@@ -20,6 +20,7 @@ import java.util.Map;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+//@EqualsAndHashCode(callSuper = true, of = {"id"})
 public class AclTreeRes {
     //权限树
     private List<AclLevelRes> aclLevelRes;

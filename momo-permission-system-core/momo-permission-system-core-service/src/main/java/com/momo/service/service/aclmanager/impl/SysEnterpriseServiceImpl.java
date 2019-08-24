@@ -21,6 +21,7 @@ import com.momo.mapper.req.sysmain.RedisUser;
 import com.momo.mapper.res.aclmanager.*;
 import com.momo.mapper.res.authority.AclTreeRes;
 import com.momo.service.service.BaseService;
+import com.momo.service.service.SuperAdminsService;
 import com.momo.service.service.aclmanager.SysEnterpriseService;
 import com.momo.service.service.authority.AdminAuthorityService;
 import com.momo.service.service.authority.CommonAuthorityService;
@@ -64,8 +65,8 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
     @Autowired
     private RoleService roleService;
     private SnowFlake snowFlake = new SnowFlake(1L, 1L);
-    @Value("${momo.superAdmins}")
-    private String superAdmins = "";
+    @Autowired
+    private SuperAdminsService superAdminsService;
 
 
     public PageInfo<SysUserGroupPageRes> getUserGroupPage(UserGroupPageReq userGroupPageReq) {
@@ -254,7 +255,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
                 sysEnterpriseRoleRes.setFlagButton(true);
             }
             //超级管理员，则显示全部
-            if (superAdmins.contains(redisUser.getSysUserPhone())) {
+            if (superAdminsService.checkIsSuperAdmin(redisUser.getSysUserPhone())) {
                 sysEnterpriseRoleRes.setEditButton(true);
                 sysEnterpriseRoleRes.setAuthorButton(true);
                 sysEnterpriseRoleRes.setFlagButton(true);
@@ -504,7 +505,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
                     sysUserListRes.setRoleButton(true);
                 }
                 //超级管理员，则显示全部
-                if (superAdmins.contains(redisUser.getSysUserPhone())) {
+                if (superAdminsService.checkIsSuperAdmin(redisUser.getSysUserPhone())) {
                     sysUserListRes.setEditButton(true);
                     sysUserListRes.setPwdButton(true);
                     sysUserListRes.setFlagButton(true);
@@ -604,12 +605,12 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         userDO.setUpdateBy(redisUser.getSysUserName());
         userDO.setUpdateTime(DateUtils.getDateTime());
         //超级管理员 编辑所有
-        if (superAdmins.contains(redisUser.getSysUserPhone())) {
+        if (superAdminsService.checkIsSuperAdmin(redisUser.getSysUserPhone())) {
             userMapper.updateByPrimaryKeySelective(userDO);
             return "编辑用户信息成功";
         } else {
             //普通管理员 按需来
-            if (superAdmins.contains(userDODetail.getSysUserPhone())) {
+            if (superAdminsService.checkIsSuperAdmin(userDODetail.getSysUserPhone())) {
                 throw BizException.fail("超级管理员信息不允许编辑");
             }
             List<RoleDO> roleDOS = roleMapper.getRolesByUserId(userDODetail.getId());
@@ -705,12 +706,12 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         userDO.setUpdateBy(redisUser.getSysUserName());
         userDO.setUpdateTime(DateUtils.getDateTime());
         //超级管理员 编辑所有
-        if (superAdmins.contains(redisUser.getSysUserPhone())) {
+        if (superAdminsService.checkIsSuperAdmin(redisUser.getSysUserPhone())) {
             userMapper.updateByPrimaryKeySelective(userDO);
             return "用户状态设置成功";
         } else {
             //普通管理员 按需来
-            if (superAdmins.contains(userDODetail.getSysUserPhone())) {
+            if (superAdminsService.checkIsSuperAdmin(userDODetail.getSysUserPhone())) {
                 throw BizException.fail("超级管理员状态不允许编辑");
             }
             List<RoleDO> roleDOS = roleMapper.getRolesByUserId(userDODetail.getId());
@@ -744,12 +745,12 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         userAccountPwdDO.setId(sysUserAccountByUserId.getId());
         RedisUser redisUser = this.redisUser();
         //超级管理员 编辑所有
-        if (superAdmins.contains(redisUser.getSysUserPhone())) {
+        if (superAdminsService.checkIsSuperAdmin(redisUser.getSysUserPhone())) {
             userAccountPwdMapper.updateByPrimaryKeySelective(userAccountPwdDO);
             return "修改密码成功";
         } else {
             //普通管理员 按需来
-            if (superAdmins.contains(userDODetail.getSysUserPhone())) {
+            if (superAdminsService.checkIsSuperAdmin(userDODetail.getSysUserPhone())) {
                 throw BizException.fail("超级管理员密码不允许编辑");
             }
             List<RoleDO> roleDOS = roleMapper.getRolesByUserId(userDODetail.getId());
