@@ -130,11 +130,9 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         LoginAuthReq loginAuthReq = new LoginAuthReq();
         loginAuthReq.setRoleId(getVipAdminRole.getId());
         if (redisUser.getTenantId().equals(1L)) {
-            AclTreeRes aclTreeRes = adminAuthorityService.roleTree(loginAuthReq, redisUser);
-            return aclTreeRes;
+            return adminAuthorityService.roleTree(loginAuthReq, redisUser);
         } else {
-            AclTreeRes aclTreeRes = commonAuthorityService.roleTree(loginAuthReq, redisUser);
-            return aclTreeRes;
+            return commonAuthorityService.roleTree(loginAuthReq, redisUser);
         }
     }
 
@@ -212,7 +210,8 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
             return sysEnterpriseRoleResFinal;
         }
         RedisUser redisUser = this.redisUser();
-        List<RoleDO> roleDOList = roleMapper.getRolesByUserId(redisUser.getBaseId());
+        //是否被禁用  0否 1禁用
+        List<RoleDO> roleDOList = roleMapper.getRolesByUserId(redisUser.getBaseId(), 0);
         Set<Long> roleIds = Sets.newHashSet();
         //当前登录用户是否是管理员(老板)
         boolean checkAdminRole = false;
@@ -383,11 +382,11 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
     }
 
     public boolean checkRoleName(String roleName, Long id, Long tenantId) {
-        return roleMapper.checkRoleName(roleName, id, tenantId) > 0 ? true : false;
+        return roleMapper.checkRoleName(roleName, id, tenantId) > 0;
     }
 
     public boolean checkAdminRole(Integer roleType, Long id, Long compId) {
-        return roleMapper.checkAdminRole(id, roleType, compId) > 0 ? true : false;
+        return roleMapper.checkAdminRole(id, roleType, compId) > 0;
     }
 
     @Transactional
@@ -483,7 +482,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
                 BeanUtils.copyProperties(sysUserListDO, sysUserListRes);
                 //管理员按钮是否显示
                 List<RoleDO> roles = sysUserListDO.getRoles();
-                Set<Integer> rolesSet = roles.stream().map(roleDO -> roleDO.getSysRoleType()).collect(Collectors.toSet());
+                Set<Integer> rolesSet = roles.stream().map(RoleDO::getSysRoleType).collect(Collectors.toSet());
                 //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
                 if (rolesSet.contains(0)) {
                     sysUserListRes.setEditButton(false);
@@ -613,9 +612,10 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
             if (superAdminsService.checkIsSuperAdmin(userDODetail.getSysUserPhone())) {
                 throw BizException.fail("超级管理员信息不允许编辑");
             }
-            List<RoleDO> roleDOS = roleMapper.getRolesByUserId(userDODetail.getId());
+            //是否被禁用  0否 1禁用
+            List<RoleDO> roleDOS = roleMapper.getRolesByUserId(userDODetail.getId(), 0);
             //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
-            Set<Integer> roleTypes = roleDOS.stream().map(roleDO -> roleDO.getSysRoleType()).collect(Collectors.toSet());
+            Set<Integer> roleTypes = roleDOS.stream().map(RoleDO::getSysRoleType).collect(Collectors.toSet());
             if (roleTypes.contains(0) && !userDODetail.getId().equals(redisUser.getBaseId())) {
                 throw BizException.fail("管理员信息不允许编辑");
             }
@@ -641,7 +641,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         List<RoleDO> selfRoleDOS = roleMapper.roleList(roleDODb);
 
         //选择用户所拥有的角色
-        List<RoleDO> roleDOList = roleMapper.getRolesByUserId(userDO.getId());
+        List<RoleDO> roleDOList = roleMapper.getRolesByUserId(userDO.getId(), null);
         Set<String> roleSet = Sets.newHashSet();
         //已选中列表
         if (org.apache.commons.collections.CollectionUtils.isNotEmpty(roleDOList)) {
@@ -714,9 +714,9 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
             if (superAdminsService.checkIsSuperAdmin(userDODetail.getSysUserPhone())) {
                 throw BizException.fail("超级管理员状态不允许编辑");
             }
-            List<RoleDO> roleDOS = roleMapper.getRolesByUserId(userDODetail.getId());
+            List<RoleDO> roleDOS = roleMapper.getRolesByUserId(userDODetail.getId(),0);
             //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
-            Set<Integer> roleTypes = roleDOS.stream().map(roleDO -> roleDO.getSysRoleType()).collect(Collectors.toSet());
+            Set<Integer> roleTypes = roleDOS.stream().map(RoleDO::getSysRoleType).collect(Collectors.toSet());
             if (roleTypes.contains(0) && !userDODetail.getId().equals(redisUser.getBaseId())) {
                 throw BizException.fail("管理员状态不允许编辑");
             }
@@ -753,9 +753,9 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
             if (superAdminsService.checkIsSuperAdmin(userDODetail.getSysUserPhone())) {
                 throw BizException.fail("超级管理员密码不允许编辑");
             }
-            List<RoleDO> roleDOS = roleMapper.getRolesByUserId(userDODetail.getId());
+            List<RoleDO> roleDOS = roleMapper.getRolesByUserId(userDODetail.getId(),0);
             //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
-            Set<Integer> roleTypes = roleDOS.stream().map(roleDO -> roleDO.getSysRoleType()).collect(Collectors.toSet());
+            Set<Integer> roleTypes = roleDOS.stream().map(RoleDO::getSysRoleType).collect(Collectors.toSet());
             if (roleTypes.contains(0) && !userDODetail.getId().equals(redisUser.getBaseId())) {
                 throw BizException.fail("管理员密码不允许编辑");
             }

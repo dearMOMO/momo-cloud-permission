@@ -53,7 +53,8 @@ public class AclService extends BaseService {
         RedisUser redisUser = this.redisUser();
         // 1、当前用户已分配的权限点
         List<AclDO> userAclList = sysCoreService.getUserHavingAclList(new LoginAuthReq(), redisUser);
-        List<RoleDO> getRolesByUserId = roleMapper.getRolesByUserId(redisUser.getBaseId());
+        //是否被禁用  0否 1禁用
+        List<RoleDO> getRolesByUserId = roleMapper.getRolesByUserId(redisUser.getBaseId(),0);
         Set<Long> roleIds = getRolesByUserId.stream().map(roleDO -> roleDO.getId()).collect(Collectors.toSet());
         // 2、当前角色分配的权限点
         List<AclDO> roleAclList = sysCoreService.getRoleAclList(roleIds, null);

@@ -20,15 +20,15 @@ public interface SysUserService {
      * @param sysUserListReq
      * @return
      */
-    public PageInfo<SysUserListRes> sysUserList(SysUserListReq sysUserListReq);
+    PageInfo<SysUserListRes> sysUserList(SysUserListReq sysUserListReq);
 
-    public String sysUserAdd(SysUserAddReq sysUserAddReq);
+    String sysUserAdd(SysUserAddReq sysUserAddReq);
 
-    public UserDO sysUserDetail(SysUserAddReq sysUserAddReq);
+    UserDO sysUserDetail(SysUserAddReq sysUserAddReq);
 
-    public String sysUserModify(SysUserAddReq sysUserAddReq);
+    String sysUserModify(SysUserAddReq sysUserAddReq);
 
-    public String sysUserStatus(SysUserAddReq sysUserAddReq);
+    String sysUserStatus(SysUserAddReq sysUserAddReq);
 
-    public String sysUserPwd(SysUserAddReq sysUserAddReq);
+    String sysUserPwd(SysUserAddReq sysUserAddReq);
 }

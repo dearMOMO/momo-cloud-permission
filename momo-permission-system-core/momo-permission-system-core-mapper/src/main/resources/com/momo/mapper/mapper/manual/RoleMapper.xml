@@ -257,7 +257,10 @@
        SELECT id, uuid, sys_role_name, sys_role_type, tenant_id, flag, del_flag
         FROM sys_role WHERE id IN (
           SELECT role_id FROM sys_role_user WHERE user_id =#{userId}
-        ) and flag=#{flag}
+        )
+        <if test="flag!=null">
+            and flag=#{flag}
+        </if>
     </select>
     <select id="getVipAdminRole" parameterType="map" resultMap="BaseResultMap">
          SELECT

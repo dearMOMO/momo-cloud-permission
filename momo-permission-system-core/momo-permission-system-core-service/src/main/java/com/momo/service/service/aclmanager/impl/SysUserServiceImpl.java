@@ -111,7 +111,7 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
         }
         RedisUser redisUser = this.redisUser();
         UserDO userDO = new UserDO();
-        BeanUtils.copyProperties(sysUserAddReq,userDO);
+        BeanUtils.copyProperties(sysUserAddReq, userDO);
         userDO.setSysUserName(sysUserAddReq.getSysUserName());
         userDO.setFlag(sysUserAddReq.getFlag());
         userDO.setId(userDODetail.getId());
@@ -126,7 +126,8 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
             if (superAdminsService.checkIsSuperAdmin(userDODetail.getSysUserPhone())) {
                 throw BizException.fail("超级管理员信息不允许编辑");
             }
-            List<RoleDO> roleDOS = roleMapper.getRolesByUserId(userDODetail.getId());
+            //是否被禁用  0否 1禁用
+            List<RoleDO> roleDOS = roleMapper.getRolesByUserId(userDODetail.getId(), 0);
             //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
             Set<Integer> roleTypes = roleDOS.stream().map(roleDO -> roleDO.getSysRoleType()).collect(Collectors.toSet());
             if (roleTypes.contains(0) && !userDODetail.getId().equals(redisUser.getBaseId())) {
@@ -159,7 +160,8 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
             if (superAdminsService.checkIsSuperAdmin(userDODetail.getSysUserPhone())) {
                 throw BizException.fail("超级管理员状态不允许编辑");
             }
-            List<RoleDO> roleDOS = roleMapper.getRolesByUserId(userDODetail.getId());
+            //是否被禁用  0否 1禁用
+            List<RoleDO> roleDOS = roleMapper.getRolesByUserId(userDODetail.getId(), 0);
             //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
             Set<Integer> roleTypes = roleDOS.stream().map(roleDO -> roleDO.getSysRoleType()).collect(Collectors.toSet());
             if (roleTypes.contains(0) && !userDODetail.getId().equals(redisUser.getBaseId())) {
@@ -195,7 +197,8 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
             if (superAdminsService.checkIsSuperAdmin(userDODetail.getSysUserPhone())) {
                 throw BizException.fail("超级管理员密码不允许编辑");
             }
-            List<RoleDO> roleDOS = roleMapper.getRolesByUserId(userDODetail.getId());
+            //是否被禁用  0否 1禁用
+            List<RoleDO> roleDOS = roleMapper.getRolesByUserId(userDODetail.getId(), 0);
             //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
             Set<Integer> roleTypes = roleDOS.stream().map(roleDO -> roleDO.getSysRoleType()).collect(Collectors.toSet());
             if (roleTypes.contains(0) && !userDODetail.getId().equals(redisUser.getBaseId())) {
@@ -260,6 +263,11 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
                     sysUserListRes.setPwdBindingName(userAccountPwdDO.getSysUserLoginName());
                     sysUserListRes.setPwdBindingFlag(userAccountPwdDO.getFlag());
                     sysUserListRes.setPwdBindingDate(userAccountPwdDO.getCreateTime());
+                }
+                //用户是自己登陆，则显示自己
+                if (sysUserListDO.getId().equals(redisUser.getBaseId())) {
+                    //屏蔽自己状态 按钮
+                    sysUserListRes.setFlagButton(false);
                 }
                 resList.add(sysUserListRes);
             });
