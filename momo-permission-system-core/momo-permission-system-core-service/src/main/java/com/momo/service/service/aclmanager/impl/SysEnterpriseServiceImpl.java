@@ -291,19 +291,15 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
     @Transactional
     @Override
     public String status(SysUserGroupReq sysUserGroupReq) {
-        UserGroupDO uuid = userGroupMapper.uuid(sysUserGroupReq.getUuid());
-        if (uuid == null) {
+        UserGroupDO userGroupDO = userGroupMapper.uuid(sysUserGroupReq.getUuid());
+        if (userGroupDO == null) {
             throw BizException.fail("待编辑的企业不存在");
         }
         RedisUser redisUser = this.redisUser();
-        Date startTime = DateUtils.stringToDate(sysUserGroupReq.getSysAccountStartTime());
-        Date endTime = DateUtils.stringToDate(sysUserGroupReq.getSysAccountEndTime());
-        UserGroupDO userGroupDO = new UserGroupDO();
-        userGroupDO.setId(uuid.getId());
         userGroupDO.setFlag(sysUserGroupReq.getFlag());
         userGroupDO.setUpdateBy(redisUser.getSysUserName());
         userGroupDO.setUpdateTime(DateUtils.getDateTime());
-        userGroupMapper.insertSelective(userGroupDO);
+        userGroupMapper.updateByPrimaryKeySelective(userGroupDO);
         return "状态设置成功";
     }
 
