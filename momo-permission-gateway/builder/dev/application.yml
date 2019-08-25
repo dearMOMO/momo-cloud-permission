@@ -163,4 +163,31 @@ momo:
   security:
     name: kagome # 用户名
     password: kagome123456 #密码
+  ignore-url: #忽略拦截URL
+    - /api/platform/sysMain/login/v1
+    - /api/platform/sysMain/images/captcha/v1
+    - /api/platform/role/userCheckRoles/v1
+  enterprise-url: 企业相关操作URL，只有MOMO企业下的员工才可以操作
+    - /api/platform/enterprise/sysUserGroupPage/v1
+    - /api/platform/enterprise/detail/v1
+    - /api/platform/enterprise/save/v1
+    - /api/platform/enterprise/modify/v1
+    - /api/platform/enterprise/aclsToEnterprise/v1
+    - /api/platform/enterprise/aclDetail/v1
+    - /api/platform/enterprise/role/v1
+    - /api/platform/enterprise/roleList/v1
+    - /api/platform/enterprise/roleDetail/v1
+    - /api/platform/enterprise/roleModify/v1
+    - /api/platform/enterprise/roleHaveAclTree/v1
+    - /api/platform/enterprise/aclsToEnterprise/v1
+    - /api/platform/enterprise/roleStatus/v1
+    - /api/platform/enterprise/userList/v1
+    - /api/platform/enterprise/roleAdd/v1
+    - /api/platform/enterprise/userAdd/v1
+    - /api/platform/enterprise/userDetail/v1
+    - /api/platform/enterprise/userModify/v1
+    - /api/platform/enterprise/userCheckRoles/v1
+    - /api/platform/enterprise/rolesToUser/v1
+    - /api/platform/enterprise/userStatus/v1
+    - /api/platform/enterprise/sysUserPwd/v1
 #################  cloud 项目初始化参数 end  ############################
