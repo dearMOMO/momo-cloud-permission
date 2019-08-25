@@ -28,12 +28,23 @@ import java.util.List;
 @AllArgsConstructor
 //@EqualsAndHashCode(of = {"id"})
 public class InterceptUrlConfiguration {
+    //忽略拦截URL
     private List<String> ignorerUrl = Lists.newArrayList();
 
-    public boolean checkIgnoreUrl(String sysUserPhone) {
-        if (StringUtils.isBlank(sysUserPhone)) {
-            return false;
+    //#企业相关操作URL，只有MOMO企业下的员工才可以操作
+    private List<String> enterpriseUrl = Lists.newArrayList();
+
+    public boolean checkIgnoreUrl(String gatewayUrl) {
+        if (StringUtils.isBlank(gatewayUrl)) {
+            return true;
         }
-        return ignorerUrl.contains(sysUserPhone);
+        return ignorerUrl.contains(gatewayUrl);
+    }
+
+    public boolean checkEnterpriseUrl(String gatewayUrl) {
+        if (StringUtils.isBlank(gatewayUrl)) {
+            return true;
+        }
+        return enterpriseUrl.contains(gatewayUrl);
     }
 }

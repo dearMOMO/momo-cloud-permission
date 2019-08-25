@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.momo.momopermissiongateway.common.RedisUser;
+import com.momo.momopermissiongateway.configuration.InterceptUrlConfiguration;
 import com.momo.momopermissiongateway.configuration.JwtProperties;
 import com.momo.momopermissiongateway.exception.RedisKeyEnum;
 import com.momo.momopermissiongateway.res.JwtResponse;
@@ -49,6 +50,8 @@ public class TokenFilter implements GlobalFilter, Ordered {
     private final static Long EXPIREDREDIS = 1800L;
     @Autowired
     private JwtProperties jwtProperties;
+    @Autowired
+    private InterceptUrlConfiguration interceptUrlConfiguration;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -59,7 +62,7 @@ public class TokenFilter implements GlobalFilter, Ordered {
         try {
             URI uri = serverHttpRequest.getURI();
             String path = uri.getPath();
-            if (jwtProperties.getIgnoreUrl().contains(path)){
+            if (interceptUrlConfiguration.checkIgnoreUrl(path)) {
                 return chain.filter(exchange);
             }
             if (StringUtils.isBlank(uuid)) {
@@ -76,6 +79,9 @@ public class TokenFilter implements GlobalFilter, Ordered {
                 String userInfo = jwtTokenUtil.getUsernameFromToken(authToken);
                 RedisUser redisUser = JSON.parseObject(userInfo, new TypeReference<RedisUser>() {
                 });
+                if (!redisUser.getTenantId().equals(1L) && interceptUrlConfiguration.checkEnterpriseUrl(path)) {
+                    return JwtResponse.jwtResponse(exchange, HttpStatus.UNAUTHORIZED.value(), "您无权限访问");
+                }
                 //第三方
                 //jwt 失效时间
                 Date getExpirationDateFromToken = jwtTokenUtil.getExpirationDateFromToken(String.valueOf(sessionJwt));
@@ -90,14 +96,14 @@ public class TokenFilter implements GlobalFilter, Ordered {
                     authToken = newToken;
                 }
                 //刷新Redis-token时间
-                Object o = redisUtil.getExpire(RedisKeyEnum.REDIS_KEY_USER_INFO.getKey() + redisUser.getRedisUserKey());
-                if ((Long) o <= EXPIREDREDIS) {
+                Long o = redisUtil.getExpire(RedisKeyEnum.REDIS_KEY_USER_INFO.getKey() + redisUser.getRedisUserKey());
+                if (o <= EXPIREDREDIS) {
                     //刷新redis时间
                     redisUtil.expire(RedisKeyEnum.REDIS_KEY_USER_INFO.getKey() + redisUser.getRedisUserKey(), RedisKeyEnum.REDIS_KEY_USER_INFO.getExpireTime());
                 }
                 //刷新Redis-userId时间
-                Object userId = redisUtil.getExpire(RedisKeyEnum.REDIS_KEY_USER_ID.getKey() + redisUser.getBaseId());
-                if ((Long) userId <= EXPIREDREDIS) {
+                Long userId = redisUtil.getExpire(RedisKeyEnum.REDIS_KEY_USER_ID.getKey() + redisUser.getBaseId());
+                if (userId <= EXPIREDREDIS) {
                     //刷新redis时间
                     redisUtil.expire(RedisKeyEnum.REDIS_KEY_USER_ID.getKey() + redisUser.getBaseId(), RedisKeyEnum.REDIS_KEY_USER_ID.getExpireTime());
                 }

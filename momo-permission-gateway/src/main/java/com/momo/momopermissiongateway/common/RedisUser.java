@@ -25,9 +25,9 @@ public class RedisUser {
     private Long pwdId;
 
     /**
-     * groupId 第三方组 小为默认为1
+     * 租户id
      */
-    private Long groupId;
+    private Long tenantId;
 
     /**
      * 用户基础表 姓名.
