@@ -24,7 +24,9 @@ import java.util.Map;
 public class AclTreeRes {
     //权限树
     private List<AclLevelRes> aclLevelRes;
-    //默认选中/展开
+    //默认展开
     private List<String> defaultexpandedKeys;
+    //默认选中
+    private List<String> defaultCheckedKeys;
 
 }

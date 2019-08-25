@@ -83,6 +83,6 @@
     <select id="rolesAdminByGroupId" parameterType="map" resultType="long">
         SELECT
         id
-        FROM sys_role WHERE tenant_id=#{tenantId} AND role_type='0'
+        FROM sys_role WHERE tenant_id=#{tenantId} AND sys_role_type=0
     </select>
 </mapper>

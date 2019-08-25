@@ -315,7 +315,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
             throw BizException.fail("角色所在的企业不存在");
         }
         RedisUser redisUser = this.redisUser();
-        if (checkRoleName(sysEnterpriseRoleReq.getSysRoleName(), null, redisUser.getTenantId())) {
+        if (checkRoleName(sysEnterpriseRoleReq.getSysRoleName(), null, uuid.getId())) {
             throw BizException.fail("角色名称已存在");
         }
         if (!redisUser.getTenantId().equals(1L)) {
@@ -401,13 +401,13 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
             throw BizException.fail("待编辑的角色不存在");
         }
         RedisUser redisUser = this.redisUser();
-        if (checkRoleName(sysEnterpriseRoleReq.getSysRoleName(), roleDO.getId(), redisUser.getTenantId())) {
+        if (checkRoleName(sysEnterpriseRoleReq.getSysRoleName(), roleDO.getId(), uuid.getId())) {
             throw BizException.fail("角色名称已存在");
         }
 
         //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
         if (sysEnterpriseRoleReq.getSysRoleType().equals(0)) {
-            if (checkAdminRole(0, roleDO.getId(), redisUser.getTenantId())) {
+            if (checkAdminRole(0, roleDO.getId(), uuid.getId())) {
                 throw BizException.fail("管理员角色已存在");
             }
         }

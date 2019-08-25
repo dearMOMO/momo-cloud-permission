@@ -68,8 +68,9 @@ public class SysMainService extends BaseService {
         if (null == userAccountPwdDO) {
             throw BizException.fail("用户名或者密码错误");
         }
+        boolean superAdmin = superAdminsService.checkIsSuperAdmin(userAccountPwdDO.getSysUserLoginName());
         //剔除超级管理员限制
-        if (!superAdminsService.checkIsSuperAdmin(userAccountPwdDO.getSysUserLoginName())) {
+        if (!superAdmin) {
             //删除状态(0-正常，1-删除)
             if (userAccountPwdDO.getDelFlag().equals(1)) {
                 throw BizException.fail("您的账户已被删除，请联系管理员");
@@ -84,7 +85,7 @@ public class SysMainService extends BaseService {
             throw BizException.fail("用户名或者密码错误");
         }
         //剔除超级管理员限制
-        if (!superAdminsService.checkIsSuperAdmin(userAccountPwdDO.getSysUserLoginName())) {
+        if (!superAdmin) {
             UserGroupDO userGroupDO = userGroupMapper.getUserGroupById(userAccountPwdDO.getTenantId());
             if (null == userGroupDO) {
                 throw BizException.fail("您所在的企业不存在");

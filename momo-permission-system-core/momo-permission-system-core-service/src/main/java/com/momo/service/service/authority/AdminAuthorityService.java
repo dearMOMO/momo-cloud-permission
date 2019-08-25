@@ -57,8 +57,8 @@ public class AdminAuthorityService extends BaseService {
         // 3、当前系统所有权限点
         List<AclLevelRes> aclDtoList = Lists.newArrayList();
 
-        Set<Long> userAclIdSet = userAclList.stream().map(sysAcl -> sysAcl.getId()).collect(Collectors.toSet());
-        Set<Long> roleAclIdSet = roleAclList.stream().map(sysAcl -> sysAcl.getId()).collect(Collectors.toSet());
+        Set<Long> userAclIdSet = userAclList.stream().map(AclDO::getId).collect(Collectors.toSet());
+        Set<Long> roleAclIdSet = roleAclList.stream().map(AclDO::getId).collect(Collectors.toSet());
         List<AclDO> allAclList = authorityMapper.getAllAcl(null, null);
         List<String> defaultexpandedKeys = Lists.newArrayList();
         for (AclDO acl : allAclList) {

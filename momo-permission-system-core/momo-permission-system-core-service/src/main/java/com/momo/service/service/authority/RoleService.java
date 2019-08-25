@@ -120,8 +120,18 @@ public class RoleService extends BaseService {
         if (!redisUser.getTenantId().equals(1L) && roleDO.getSysRoleType().equals(0)) {
             throw BizException.fail("您无权限操作");
         }
-
+        //当前登录用户所拥有的 角色
+        //是否被禁用  0否 1禁用
+        List<RoleDO> currentRoleDOList = roleMapper.getRolesByUserId(redisUser.getBaseId(), 0);
+        if (CollectionUtils.isNotEmpty(currentRoleDOList)) {
+            currentRoleDOList.forEach(currentRole -> {
+                if (currentRole.getId().equals(roleDO.getId())) {
+                    throw BizException.fail("您无法变更自己的权限");
+                }
+            });
+        }
         List<AclDO> getAcls = batchRoleUserReq.getAcls();
+
         computeAclsToRole(getAcls, roleDO, redisUser);
         return "为角色授权权限成功";
     }
@@ -209,16 +219,16 @@ public class RoleService extends BaseService {
         List<SysRolePageListRes> sysRolePageListRes = Lists.newArrayList();
         if (redisUser.getTenantId().equals(1L)) {
             boolean superAdmin = superAdminsService.checkIsSuperAdmin(redisUser.getSysUserPhone());
-            momoRoleList(sysRolePageListRes, roleDOS, roleIds, checkAdminRole, superAdmin,currentLoginRoleType);
+            momoRoleList(sysRolePageListRes, roleDOS, roleIds, checkAdminRole, superAdmin, currentLoginRoleType);
         } else {
-            vipRoleList(sysRolePageListRes, roleDOS, roleIds, checkAdminRole,currentLoginRoleType);
+            vipRoleList(sysRolePageListRes, roleDOS, roleIds, checkAdminRole, currentLoginRoleType);
         }
 
         sysRolePageListResPageInfo.setList(sysRolePageListRes);
         return sysRolePageListResPageInfo;
     }
 
-    private void vipRoleList(List<SysRolePageListRes> sysRolePageListRes, List<RoleDO> roleDOS, Set<Long> roleIds, boolean checkAdminRole,Set<Integer> currentLoginRoleType) {
+    private void vipRoleList(List<SysRolePageListRes> sysRolePageListRes, List<RoleDO> roleDOS, Set<Long> roleIds, boolean checkAdminRole, Set<Integer> currentLoginRoleType) {
         for (RoleDO aDo : roleDOS) {
             SysRolePageListRes rolePageListRes = new SysRolePageListRes();
             BeanUtils.copyProperties(aDo, rolePageListRes);
@@ -235,7 +245,7 @@ public class RoleService extends BaseService {
                 rolePageListRes.setFlagButton(false);
             }
             //当前登录用户所拥有的角色类型大于 角色列表  则显示
-            if (!CheckTwoSetSizeRes.CheckTwoSetSize(currentLoginRoleType, Sets.newHashSet(aDo.getSysRoleType()))){
+            if (!CheckTwoSetSizeRes.CheckTwoSetSize(currentLoginRoleType, Sets.newHashSet(aDo.getSysRoleType()))) {
                 rolePageListRes.setEditButton(true);
                 rolePageListRes.setAuthorButton(true);
                 rolePageListRes.setFlagButton(true);
@@ -252,11 +262,16 @@ public class RoleService extends BaseService {
                 rolePageListRes.setAuthorButton(true);
                 rolePageListRes.setFlagButton(true);
             }
+            //屏蔽管理员(老板)角色 和状态  按钮
+            if (aDo.getSysRoleType().equals(0)){
+                rolePageListRes.setAuthorButton(false);
+                rolePageListRes.setFlagButton(false);
+            }
             sysRolePageListRes.add(rolePageListRes);
         }
     }
 
-    private void momoRoleList(List<SysRolePageListRes> sysRolePageListRes, List<RoleDO> roleDOS, Set<Long> roleIds, boolean checkAdminRole, boolean superAdmin,Set<Integer> currentLoginRoleType) {
+    private void momoRoleList(List<SysRolePageListRes> sysRolePageListRes, List<RoleDO> roleDOS, Set<Long> roleIds, boolean checkAdminRole, boolean superAdmin, Set<Integer> currentLoginRoleType) {
         for (RoleDO aDo : roleDOS) {
             SysRolePageListRes rolePageListRes = new SysRolePageListRes();
             BeanUtils.copyProperties(aDo, rolePageListRes);
@@ -273,7 +288,7 @@ public class RoleService extends BaseService {
                 rolePageListRes.setFlagButton(false);
             }
             //当前登录用户所拥有的角色类型大于 角色列表  则显示
-            if (!CheckTwoSetSizeRes.CheckTwoSetSize(currentLoginRoleType, Sets.newHashSet(aDo.getSysRoleType()))){
+            if (!CheckTwoSetSizeRes.CheckTwoSetSize(currentLoginRoleType, Sets.newHashSet(aDo.getSysRoleType()))) {
                 rolePageListRes.setEditButton(true);
                 rolePageListRes.setAuthorButton(true);
                 rolePageListRes.setFlagButton(true);
@@ -441,15 +456,15 @@ public class RoleService extends BaseService {
             throw BizException.fail("角色名称已存在");
         }
 
-        //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
-        if (roleReq.getSysRoleType().equals(0)) {
-            if (checkAdminRole(0, roleDO.getId(), redisUser.getTenantId())) {
-                throw BizException.fail("管理员角色已存在");
-            }
-        }
 
         //非总部，不可以操作管理员敏感权限
         if (!redisUser.getTenantId().equals(1L)) {
+            //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
+            if (roleReq.getSysRoleType().equals(0)) {
+                if (checkAdminRole(0, roleDO.getId(), redisUser.getTenantId())) {
+                    throw BizException.fail("管理员角色已存在");
+                }
+            }
             //角色的类型，0：管理员角色，1：普通用户 2其他
             //屏蔽非总部操作第三方管理员角色
             if (roleDO.getSysRoleType().equals(0) && !roleReq.getSysRoleType().equals(0)) {
@@ -464,6 +479,7 @@ public class RoleService extends BaseService {
         RoleDO record = new RoleDO();
         BeanUtils.copyProperties(roleReq, record);
         record.setUpdateBy(redisUser.getSysUserName());
+        record.setTenantId(null);
         record.setUpdateTime(DateUtils.getDateTime());
         record.setId(roleDO.getId());
         roleMapper.updateByPrimaryKeySelective(record);
@@ -484,12 +500,13 @@ public class RoleService extends BaseService {
         RoleDO record = new RoleDO();
         //状态 0启用  1禁用
         if (roleReq.getFlag().equals(0)) {
-            record.setFlag(1);
-        } else if (roleReq.getFlag().equals(1)) {
             record.setFlag(0);
+        } else if (roleReq.getFlag().equals(1)) {
+            record.setFlag(1);
         }
         record.setUpdateBy(redisUser.getSysUserName());
         record.setUpdateTime(DateUtils.getDateTime());
+        record.setTenantId(null);
         record.setId(roleDO.getId());
         roleMapper.updateByPrimaryKeySelective(record);
         return "变更角色状态成功";
