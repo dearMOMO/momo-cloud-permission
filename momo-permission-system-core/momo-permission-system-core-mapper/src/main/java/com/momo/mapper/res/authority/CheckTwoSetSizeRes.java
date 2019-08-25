@@ -33,23 +33,23 @@ public class CheckTwoSetSizeRes {
     private Integer roleType;
 
     /**
-     * @param currentRoleType 1 当前登录用户所拥有的 角色类型
+     * @param currentLoginRoleType 1 当前登录用户所拥有的 角色类型
      * @param authorRoleType  2 为用户授权所拥有的 角色类型
      * @return
      */
-    public static boolean CheckTwoSetSize(Set<Integer> currentRoleType, Set<Integer> authorRoleType) {
-        if (CollectionUtils.isEmpty(currentRoleType)) {
+    public static boolean CheckTwoSetSize(Set<Integer> currentLoginRoleType, Set<Integer> authorRoleType) {
+        if (CollectionUtils.isEmpty(currentLoginRoleType)) {
             return true;
         }
         if (CollectionUtils.isEmpty(authorRoleType)) {
             return false;
         }
         //角色的类型，0：管理员(老板)，1：管理员(员工)  2:普通员工 3:其他
-        if (currentRoleType.contains(0)) {
+        if (currentLoginRoleType.contains(0)) {
             return false;
         }
         List<CheckTwoSetSizeRes> checkTwoSetSizeRes = Lists.newArrayList();
-        currentRoleType.forEach(integer -> {
+        currentLoginRoleType.forEach(integer -> {
             CheckTwoSetSizeRes setSizeRes = new CheckTwoSetSizeRes();
             setSizeRes.setWhichType(1);
             setSizeRes.setRoleType(integer);

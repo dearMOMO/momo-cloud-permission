@@ -72,9 +72,9 @@ public class RoleService extends BaseService {
             throw BizException.fail("您无法为自己授权角色");
         }
         //当前登录用户所拥有的 角色类型
-        Set<Integer> currentRoleType = Sets.newHashSet();
+        Set<Integer> currentLoginRoleType = Sets.newHashSet();
         if (CollectionUtils.isNotEmpty(currentRoleDOList)) {
-            currentRoleType = currentRoleDOList.stream().map(RoleDO::getSysRoleType).collect(Collectors.toSet());
+            currentLoginRoleType = currentRoleDOList.stream().map(RoleDO::getSysRoleType).collect(Collectors.toSet());
         }
         Set<Long> roleIdList = Sets.newHashSet();
         //为用户授权所拥有的 角色
@@ -91,7 +91,7 @@ public class RoleService extends BaseService {
             }
         }
         if (!superAdmin) {
-            if (CheckTwoSetSizeRes.CheckTwoSetSize(currentRoleType, authorRoleType)) {
+            if (CheckTwoSetSizeRes.CheckTwoSetSize(currentLoginRoleType, authorRoleType)) {
                 throw BizException.fail("您当前拥有的角色类型较低，请联系管理员进行授权");
             }
         }
@@ -191,19 +191,34 @@ public class RoleService extends BaseService {
         //是否被禁用  0否 1禁用
         List<RoleDO> roleDOList = roleMapper.getRolesByUserId(redisUser.getBaseId(), 0);
 
+        //当前登录用户所拥有的 角色类型
+        Set<Integer> currentLoginRoleType = Sets.newHashSet();
         Set<Long> roleIds = Sets.newHashSet();
         //当前登录用户是否是管理员(老板)
         boolean checkAdminRole = false;
         if (CollectionUtils.isNotEmpty(roleDOList)) {
             for (RoleDO aDo : roleDOList) {
                 roleIds.add(aDo.getId());
-                if (aDo.getSysRoleType() == 0) {
+                currentLoginRoleType.add(aDo.getSysRoleType());
+                if (aDo.getSysRoleType().equals(0)) {
                     checkAdminRole = true;
                 }
             }
 
         }
         List<SysRolePageListRes> sysRolePageListRes = Lists.newArrayList();
+        if (redisUser.getTenantId().equals(1L)) {
+            boolean superAdmin = superAdminsService.checkIsSuperAdmin(redisUser.getSysUserPhone());
+            momoRoleList(sysRolePageListRes, roleDOS, roleIds, checkAdminRole, superAdmin,currentLoginRoleType);
+        } else {
+            vipRoleList(sysRolePageListRes, roleDOS, roleIds, checkAdminRole,currentLoginRoleType);
+        }
+
+        sysRolePageListResPageInfo.setList(sysRolePageListRes);
+        return sysRolePageListResPageInfo;
+    }
+
+    private void vipRoleList(List<SysRolePageListRes> sysRolePageListRes, List<RoleDO> roleDOS, Set<Long> roleIds, boolean checkAdminRole,Set<Integer> currentLoginRoleType) {
         for (RoleDO aDo : roleDOS) {
             SysRolePageListRes rolePageListRes = new SysRolePageListRes();
             BeanUtils.copyProperties(aDo, rolePageListRes);
@@ -219,6 +234,50 @@ public class RoleService extends BaseService {
                 rolePageListRes.setAuthorButton(false);
                 rolePageListRes.setFlagButton(false);
             }
+            //当前登录用户所拥有的角色类型大于 角色列表  则显示
+            if (!CheckTwoSetSizeRes.CheckTwoSetSize(currentLoginRoleType, Sets.newHashSet(aDo.getSysRoleType()))){
+                rolePageListRes.setEditButton(true);
+                rolePageListRes.setAuthorButton(true);
+                rolePageListRes.setFlagButton(true);
+            }
+            // 角色列表包含自己角色则显示
+            if (roleIds.contains(aDo.getId())) {
+                rolePageListRes.setEditButton(true);
+                rolePageListRes.setAuthorButton(true);
+                rolePageListRes.setFlagButton(true);
+            }
+            //如果是老板，则全部显示
+            if (checkAdminRole) {
+                rolePageListRes.setEditButton(true);
+                rolePageListRes.setAuthorButton(true);
+                rolePageListRes.setFlagButton(true);
+            }
+            sysRolePageListRes.add(rolePageListRes);
+        }
+    }
+
+    private void momoRoleList(List<SysRolePageListRes> sysRolePageListRes, List<RoleDO> roleDOS, Set<Long> roleIds, boolean checkAdminRole, boolean superAdmin,Set<Integer> currentLoginRoleType) {
+        for (RoleDO aDo : roleDOS) {
+            SysRolePageListRes rolePageListRes = new SysRolePageListRes();
+            BeanUtils.copyProperties(aDo, rolePageListRes);
+            //管理员类型 隐藏
+            //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
+            if (aDo.getSysRoleType().equals(0)) {
+                rolePageListRes.setEditButton(false);
+                rolePageListRes.setAuthorButton(false);
+                rolePageListRes.setFlagButton(false);
+            }
+            if (aDo.getSysRoleType().equals(1)) {
+                rolePageListRes.setEditButton(false);
+                rolePageListRes.setAuthorButton(false);
+                rolePageListRes.setFlagButton(false);
+            }
+            //当前登录用户所拥有的角色类型大于 角色列表  则显示
+            if (!CheckTwoSetSizeRes.CheckTwoSetSize(currentLoginRoleType, Sets.newHashSet(aDo.getSysRoleType()))){
+                rolePageListRes.setEditButton(true);
+                rolePageListRes.setAuthorButton(true);
+                rolePageListRes.setFlagButton(true);
+            }
             // 角色列表包含自己角色则显示
             if (roleIds.contains(aDo.getId())) {
                 rolePageListRes.setEditButton(true);
@@ -232,15 +291,13 @@ public class RoleService extends BaseService {
                 rolePageListRes.setFlagButton(true);
             }
             //超级管理员，则显示全部
-            if (superAdminsService.checkIsSuperAdmin(redisUser.getSysUserPhone())) {
+            if (superAdmin) {
                 rolePageListRes.setEditButton(true);
                 rolePageListRes.setAuthorButton(true);
                 rolePageListRes.setFlagButton(true);
             }
             sysRolePageListRes.add(rolePageListRes);
         }
-        sysRolePageListResPageInfo.setList(sysRolePageListRes);
-        return sysRolePageListResPageInfo;
     }
 
     public RoleDO showRole(RoleReq roleReq) {
