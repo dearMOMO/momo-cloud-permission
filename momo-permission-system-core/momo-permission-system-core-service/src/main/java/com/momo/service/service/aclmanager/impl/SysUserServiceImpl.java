@@ -122,6 +122,9 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
             userMapper.updateByPrimaryKeySelective(userDO);
             return "编辑用户信息成功";
         } else {
+            if (userDODetail.getId().equals(redisUser.getBaseId()) && !userDODetail.getFlag().equals(sysUserAddReq.getFlag())) {
+                throw BizException.fail("您无法更改自己的用户状态");
+            }
             //普通管理员 按需来
             if (superAdminsService.checkIsSuperAdmin(userDODetail.getSysUserPhone())) {
                 throw BizException.fail("超级管理员信息不允许编辑");
