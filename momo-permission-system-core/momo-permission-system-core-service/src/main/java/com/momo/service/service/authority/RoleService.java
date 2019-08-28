@@ -136,6 +136,7 @@ public class RoleService extends BaseService {
         return "为角色授权权限成功";
     }
 
+    @Transactional
     public void computeAclsToRole(List<AclDO> getAcls, RoleDO roleDO, RedisUser redisUser) {
         List<AclDO> aclDOS = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(getAcls)) {

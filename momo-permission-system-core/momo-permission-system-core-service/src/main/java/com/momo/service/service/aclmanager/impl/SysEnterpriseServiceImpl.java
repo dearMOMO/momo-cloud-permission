@@ -16,6 +16,7 @@ import com.momo.mapper.req.aclmanager.SysEnterpriseRoleReq;
 import com.momo.mapper.req.aclmanager.SysEnterpriseUserReq;
 import com.momo.mapper.req.aclmanager.SysUserGroupReq;
 import com.momo.mapper.req.aclmanager.UserGroupPageReq;
+import com.momo.mapper.req.authority.BatchRoleUserReq;
 import com.momo.mapper.req.sysmain.LoginAuthReq;
 import com.momo.mapper.req.sysmain.RedisUser;
 import com.momo.mapper.res.aclmanager.*;
@@ -52,6 +53,8 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
     private UserGroupMapper userGroupMapper;
     @Autowired
     private RoleMapper roleMapper;
+    @Autowired
+    private AclMapper aclMapper;
     @Autowired
     private AdminAuthorityService adminAuthorityService;
     @Autowired
@@ -451,6 +454,88 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
             AclTreeRes aclTreeRes = commonAuthorityService.roleTree(loginAuthReq, redisUser);
             return aclTreeRes;
         }
+    }
+
+    @Override
+    public String aclsToRole(BatchRoleUserReq batchRoleUserReq) {
+        UserGroupDO uuid = userGroupMapper.uuid(batchRoleUserReq.getEnterpriseUuid());
+        if (uuid == null) {
+            throw BizException.fail("角色所在的企业不存在");
+        }
+        RoleDO roleDO = roleMapper.selectByPrimaryUuid(batchRoleUserReq.getRoleUuid());
+        if (null == roleDO) {
+            throw BizException.fail("待授权的角色不存在");
+        }
+        RedisUser redisUser = this.redisUser();
+        //屏蔽非总部操作第三方管理员角色
+        //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
+        if (!redisUser.getTenantId().equals(1L) && roleDO.getSysRoleType().equals(0)) {
+            throw BizException.fail("您无权限操作");
+        }
+        //当前登录用户所拥有的 角色
+        //是否被禁用  0否 1禁用
+        List<RoleDO> currentRoleDOList = roleMapper.getRolesByUserId(redisUser.getBaseId(), 0);
+        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(currentRoleDOList)) {
+            currentRoleDOList.forEach(currentRole -> {
+                if (currentRole.getId().equals(roleDO.getId())) {
+                    throw BizException.fail("您无法变更自己的权限");
+                }
+            });
+        }
+        List<AclDO> getAcls = batchRoleUserReq.getAcls();
+
+        computeAclsToRole(getAcls, roleDO, redisUser);
+        return "为角色授权权限成功";
+    }
+    @Transactional
+    public void computeAclsToRole(List<AclDO> getAcls, RoleDO roleDO, RedisUser redisUser) {
+        List<AclDO> aclDOS = Lists.newArrayList();
+        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(getAcls)) {
+            Set<String> aclsUuid = getAcls.stream().map(aclDO -> aclDO.getUuid()).collect(Collectors.toSet());
+            aclDOS.addAll(aclMapper.aclUuids(aclsUuid));
+        }
+        List<Long> acls = Lists.newArrayList();
+        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(aclDOS)) {
+            aclDOS.forEach(roleAclDO -> {
+                acls.add(roleAclDO.getId());
+            });
+        }
+        List<Long> originAclIdList = authorityMapper.aclsByRoleId(Sets.newHashSet(roleDO.getId()), null);
+        List<Long> alcIds = Lists.newArrayList();
+        if (originAclIdList.size() == acls.size()) {
+            Set<Long> originAclIdSet = Sets.newHashSet(originAclIdList);
+            Set<Long> aclIdSet = Sets.newHashSet(acls);
+            originAclIdSet.removeAll(aclIdSet);
+            alcIds.addAll(originAclIdSet);
+            if (org.apache.commons.collections.CollectionUtils.isEmpty(originAclIdSet)) {
+                return;
+            }
+        }
+        updateRoleAcls(roleDO.getId(), aclDOS, redisUser, roleDO.getTenantId(), acls, roleDO.getSysRoleType(), alcIds);
+    }
+    @Transactional
+    public void updateRoleAcls(Long roleId, List<AclDO> aclIdList, RedisUser redisUser, Long groupId, List<Long> acls, Integer roleType, List<Long> alcIds) {
+        roleMapper.deleteRoleAclsByRoleId(roleId);
+        if (org.apache.commons.collections.CollectionUtils.isEmpty(aclIdList)) {
+            return;
+        }
+        List<RoleAclDO> roleUserList = Lists.newArrayList();
+        for (AclDO aclId : aclIdList) {
+            RoleAclDO roleUserDO = new RoleAclDO();
+            roleUserDO.setId(snowFlake.nextId());
+            roleUserDO.setDelFlag(0);
+            roleUserDO.setTenantId(groupId);
+            roleUserDO.setSysAclId(aclId.getId());
+            roleUserDO.setSysRoleId(roleId);
+            roleUserDO.setSysAclPermissionCode(aclId.getSysAclPermissionCode());
+            roleUserDO.setUuid(StrUtil.genUUID());
+            roleUserDO.setCreateBy(redisUser.getSysUserName());
+            roleUserDO.setUpdateBy(redisUser.getSysUserName());
+            roleUserDO.setUpdateTime(DateUtils.getDateTime());
+            roleUserDO.setCreateTime(DateUtils.getDateTime());
+            roleUserList.add(roleUserDO);
+        }
+        roleMapper.batchInsertRoleAcls(roleUserList);
     }
 
     @Override

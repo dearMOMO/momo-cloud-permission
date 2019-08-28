@@ -20,6 +20,8 @@ import java.util.List;
 @AllArgsConstructor
 //@EqualsAndHashCode(of = {"id"})
 public class BatchRoleUserReq extends BaseReq {
+    @NotBlank(message = "enterpriseUuid必填", groups = {Author.class})
+    private String enterpriseUuid;
     //##########        角色列表给用户
     @NotBlank(message = "用户uuid 必填", groups = {Status.class})
     private String userUuid;
@@ -27,7 +29,7 @@ public class BatchRoleUserReq extends BaseReq {
     private List<RoleDO> roles = Lists.newArrayList();
 
     //##########        权限列表给角色
-    @NotBlank(message = "角色uuid 必填", groups = {Permission.class})
+    @NotBlank(message = "角色uuid 必填", groups = {Permission.class,Author.class})
     private String roleUuid;
     private List<AclDO> acls = Lists.newArrayList();
 

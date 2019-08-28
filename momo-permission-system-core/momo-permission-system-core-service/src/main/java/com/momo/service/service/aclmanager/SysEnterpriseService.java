@@ -8,6 +8,7 @@ import com.momo.mapper.req.aclmanager.SysEnterpriseRoleReq;
 import com.momo.mapper.req.aclmanager.SysEnterpriseUserReq;
 import com.momo.mapper.req.aclmanager.SysUserGroupReq;
 import com.momo.mapper.req.aclmanager.UserGroupPageReq;
+import com.momo.mapper.req.authority.BatchRoleUserReq;
 import com.momo.mapper.res.aclmanager.SysEnterpriseRoleRes;
 import com.momo.mapper.res.aclmanager.SysRoleCheckedRes;
 import com.momo.mapper.res.aclmanager.SysUserGroupPageRes;
@@ -49,6 +50,8 @@ public interface SysEnterpriseService {
     String roleModify(SysEnterpriseRoleReq sysEnterpriseRoleReq);
 
     AclTreeRes roleHaveAclTree(SysEnterpriseRoleReq sysEnterpriseRoleReq);
+
+    String aclsToRole(BatchRoleUserReq batchRoleUserReq);
 
     //########################      企业用户相关      #################################
 

@@ -6,6 +6,7 @@ import com.momo.mapper.req.aclmanager.SysEnterpriseRoleReq;
 import com.momo.mapper.req.aclmanager.SysEnterpriseUserReq;
 import com.momo.mapper.req.aclmanager.SysUserGroupReq;
 import com.momo.mapper.req.aclmanager.UserGroupPageReq;
+import com.momo.mapper.req.authority.BatchRoleUserReq;
 import com.momo.service.service.aclmanager.SysEnterpriseService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,6 +94,11 @@ public class SysEnterpriseController {
     @RequestMapping("/roleHaveAclTree/v1")
     public JSONResult roleHaveAclTree(@Validated(SysEnterpriseRoleReq.Permission.class) @RequestBody SysEnterpriseRoleReq sysEnterpriseRoleReq) {
         return JSONResult.ok(sysEnterpriseService.roleHaveAclTree(sysEnterpriseRoleReq));
+    }
+
+    @RequestMapping("/aclsToRole/v1")
+    public JSONResult aclsToRole(@Validated(BatchRoleUserReq.Author.class) @RequestBody BatchRoleUserReq batchRoleUserReq) {
+        return JSONResult.ok(sysEnterpriseService.aclsToRole(batchRoleUserReq));
     }
 
     //########################      企业用户相关      #################################
