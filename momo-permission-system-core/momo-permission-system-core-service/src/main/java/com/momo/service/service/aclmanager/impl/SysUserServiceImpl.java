@@ -234,30 +234,30 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
                 Set<Integer> rolesSet = roles.stream().map(roleDO -> roleDO.getSysRoleType()).collect(Collectors.toSet());
                 //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
                 if (rolesSet.contains(0)) {
-                    sysUserListRes.setEditButton(false);
-                    sysUserListRes.setPwdButton(false);
-                    sysUserListRes.setFlagButton(false);
-                    sysUserListRes.setRoleButton(false);
+                    sysUserListRes.setEditButtonShow(false);
+                    sysUserListRes.setPwdButtonShow(false);
+                    sysUserListRes.setDisabledFlagButtonShow(false);
+                    sysUserListRes.setRoleButtonShow(false);
                 }
                 if (rolesSet.contains(1)) {
-                    sysUserListRes.setEditButton(false);
-                    sysUserListRes.setPwdButton(false);
-                    sysUserListRes.setFlagButton(false);
-                    sysUserListRes.setRoleButton(false);
+                    sysUserListRes.setEditButtonShow(false);
+                    sysUserListRes.setPwdButtonShow(false);
+                    sysUserListRes.setDisabledFlagButtonShow(false);
+                    sysUserListRes.setRoleButtonShow(false);
                 }
                 //用户是自己登陆，则显示自己
                 if (sysUserListDO.getId().equals(redisUser.getBaseId())) {
-                    sysUserListRes.setEditButton(true);
-                    sysUserListRes.setPwdButton(true);
-                    sysUserListRes.setFlagButton(true);
-                    sysUserListRes.setRoleButton(true);
+                    sysUserListRes.setEditButtonShow(true);
+                    sysUserListRes.setPwdButtonShow(true);
+                    sysUserListRes.setDisabledFlagButtonShow(true);
+                    sysUserListRes.setRoleButtonShow(true);
                 }
                 //超级管理员，则显示全部
                 if (superAdminsService.checkIsSuperAdmin(redisUser.getSysUserPhone())) {
-                    sysUserListRes.setEditButton(true);
-                    sysUserListRes.setPwdButton(true);
-                    sysUserListRes.setFlagButton(true);
-                    sysUserListRes.setRoleButton(true);
+                    sysUserListRes.setEditButtonShow(true);
+                    sysUserListRes.setPwdButtonShow(true);
+                    sysUserListRes.setDisabledFlagButtonShow(true);
+                    sysUserListRes.setRoleButtonShow(true);
                 }
                 UserAccountPwdDO userAccountPwdDO = sysUserListDO.getUserAccountPwdDO();
                 //密码绑定
@@ -270,7 +270,7 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
                 //用户是自己登陆，则显示自己
                 if (sysUserListDO.getId().equals(redisUser.getBaseId())) {
                     //屏蔽自己状态 按钮
-                    sysUserListRes.setFlagButton(false);
+                    sysUserListRes.setDisabledFlagButtonShow(false);
                 }
                 resList.add(sysUserListRes);
             });

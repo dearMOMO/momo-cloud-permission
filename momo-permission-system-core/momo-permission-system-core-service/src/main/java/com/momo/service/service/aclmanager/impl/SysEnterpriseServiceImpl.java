@@ -234,32 +234,32 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
             //管理员类型 隐藏
             //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
             if (roleDO.getSysRoleType().equals(0)) {
-                sysEnterpriseRoleRes.setEditButton(false);
-                sysEnterpriseRoleRes.setAuthorButton(false);
-                sysEnterpriseRoleRes.setFlagButton(false);
+                sysEnterpriseRoleRes.setEditButtonShow(false);
+                sysEnterpriseRoleRes.setAuthorButtonShow(false);
+                sysEnterpriseRoleRes.setDisabledFlagButtonShow(false);
             }
             if (roleDO.getSysRoleType().equals(1)) {
-                sysEnterpriseRoleRes.setEditButton(false);
-                sysEnterpriseRoleRes.setAuthorButton(false);
-                sysEnterpriseRoleRes.setFlagButton(false);
+                sysEnterpriseRoleRes.setEditButtonShow(false);
+                sysEnterpriseRoleRes.setAuthorButtonShow(false);
+                sysEnterpriseRoleRes.setDisabledFlagButtonShow(false);
             }
             // 角色列表包含自己角色则显示
             if (roleIds.contains(roleDO.getId())) {
-                sysEnterpriseRoleRes.setEditButton(true);
-                sysEnterpriseRoleRes.setAuthorButton(true);
-                sysEnterpriseRoleRes.setFlagButton(true);
+                sysEnterpriseRoleRes.setEditButtonShow(true);
+                sysEnterpriseRoleRes.setAuthorButtonShow(true);
+                sysEnterpriseRoleRes.setDisabledFlagButtonShow(true);
             }
             //如果是老板，则显示自己
             if (checkAdminRole) {
-                sysEnterpriseRoleRes.setEditButton(true);
-                sysEnterpriseRoleRes.setAuthorButton(true);
-                sysEnterpriseRoleRes.setFlagButton(true);
+                sysEnterpriseRoleRes.setEditButtonShow(true);
+                sysEnterpriseRoleRes.setAuthorButtonShow(true);
+                sysEnterpriseRoleRes.setDisabledFlagButtonShow(true);
             }
             //超级管理员，则显示全部
             if (superAdminsService.checkIsSuperAdmin(redisUser.getSysUserPhone())) {
-                sysEnterpriseRoleRes.setEditButton(true);
-                sysEnterpriseRoleRes.setAuthorButton(true);
-                sysEnterpriseRoleRes.setFlagButton(true);
+                sysEnterpriseRoleRes.setEditButtonShow(true);
+                sysEnterpriseRoleRes.setAuthorButtonShow(true);
+                sysEnterpriseRoleRes.setDisabledFlagButtonShow(true);
             }
             enterpriseRoleResList.add(sysEnterpriseRoleRes);
         }
@@ -565,30 +565,30 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
                 Set<Integer> rolesSet = roles.stream().map(RoleDO::getSysRoleType).collect(Collectors.toSet());
                 //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
                 if (rolesSet.contains(0)) {
-                    sysUserListRes.setEditButton(false);
-                    sysUserListRes.setPwdButton(false);
-                    sysUserListRes.setFlagButton(false);
-                    sysUserListRes.setRoleButton(false);
+                    sysUserListRes.setEditButtonShow(false);
+                    sysUserListRes.setPwdButtonShow(false);
+                    sysUserListRes.setDisabledFlagButtonShow(false);
+                    sysUserListRes.setRoleButtonShow(false);
                 }
                 if (rolesSet.contains(1)) {
-                    sysUserListRes.setEditButton(false);
-                    sysUserListRes.setPwdButton(false);
-                    sysUserListRes.setFlagButton(false);
-                    sysUserListRes.setRoleButton(false);
+                    sysUserListRes.setEditButtonShow(false);
+                    sysUserListRes.setPwdButtonShow(false);
+                    sysUserListRes.setDisabledFlagButtonShow(false);
+                    sysUserListRes.setRoleButtonShow(false);
                 }
                 //用户是自己登陆，则显示自己
                 if (sysUserListDO.getId().equals(redisUser.getBaseId())) {
-                    sysUserListRes.setEditButton(true);
-                    sysUserListRes.setPwdButton(true);
-                    sysUserListRes.setFlagButton(true);
-                    sysUserListRes.setRoleButton(true);
+                    sysUserListRes.setEditButtonShow(true);
+                    sysUserListRes.setPwdButtonShow(true);
+                    sysUserListRes.setDisabledFlagButtonShow(true);
+                    sysUserListRes.setRoleButtonShow(true);
                 }
                 //超级管理员，则显示全部
                 if (superAdminsService.checkIsSuperAdmin(redisUser.getSysUserPhone())) {
-                    sysUserListRes.setEditButton(true);
-                    sysUserListRes.setPwdButton(true);
-                    sysUserListRes.setFlagButton(true);
-                    sysUserListRes.setRoleButton(true);
+                    sysUserListRes.setEditButtonShow(true);
+                    sysUserListRes.setPwdButtonShow(true);
+                    sysUserListRes.setDisabledFlagButtonShow(true);
+                    sysUserListRes.setRoleButtonShow(true);
                 }
                 UserAccountPwdDO userAccountPwdDO = sysUserListDO.getUserAccountPwdDO();
                 //密码绑定

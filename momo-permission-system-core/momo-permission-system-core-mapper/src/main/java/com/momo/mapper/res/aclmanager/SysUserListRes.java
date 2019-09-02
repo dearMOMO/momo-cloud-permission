@@ -23,13 +23,13 @@ import java.util.List;
 //@EqualsAndHashCode(callSuper = true, of = {"id"})
 public class SysUserListRes extends UserDO {
     //是否显示编辑按钮
-    private boolean editButton = true;
+    private boolean editButtonShow = true;
     //是否显示修改密码按钮
-    private boolean pwdButton = true;
+    private boolean pwdButtonShow = true;
     //是否显示状态按钮
     private boolean disabledFlagButtonShow = true;
     //是否显示授权角色按钮
-    private boolean roleButton = true;
+    private boolean roleButtonShow = true;
 
 
     //账号密码  是否绑定

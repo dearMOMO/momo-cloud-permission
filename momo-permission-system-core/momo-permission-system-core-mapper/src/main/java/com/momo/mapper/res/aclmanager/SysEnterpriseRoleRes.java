@@ -25,7 +25,7 @@ public class SysEnterpriseRoleRes extends RoleDO {
     //是否显示编辑按钮
     private boolean editButtonShow = true;
     //是否显示授权按钮
-    private boolean authorButton = true;
+    private boolean authorButtonShow = true;
     //是否显示状态按钮
     private boolean disabledFlagButtonShow = true;
     private PageInfo<SysEnterpriseRoleRes> sysEnterpriseRoleResPageInfo;

@@ -18,9 +18,9 @@ import lombok.*;
 //@EqualsAndHashCode(callSuper = true, of = {"id"})
 public class SysRolePageListRes extends RoleDO {
     //是否显示编辑按钮
-    private boolean editButton = true;
+    private boolean editButtonShow = true;
     //是否显示授权按钮
-    private boolean authorButton = true;
+    private boolean authorButtonShow = true;
     //是否显示状态按钮
     private boolean disabledFlagButtonShow = true;
 }

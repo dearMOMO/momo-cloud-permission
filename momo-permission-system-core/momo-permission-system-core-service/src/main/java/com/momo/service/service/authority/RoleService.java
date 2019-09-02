@@ -237,37 +237,37 @@ public class RoleService extends BaseService {
             //管理员类型 隐藏
             //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
             if (aDo.getSysRoleType().equals(0)) {
-                rolePageListRes.setEditButton(false);
-                rolePageListRes.setAuthorButton(false);
-                rolePageListRes.setFlagButton(false);
+                rolePageListRes.setEditButtonShow(false);
+                rolePageListRes.setAuthorButtonShow(false);
+                rolePageListRes.setDisabledFlagButtonShow(false);
             }
             if (aDo.getSysRoleType().equals(1)) {
-                rolePageListRes.setEditButton(false);
-                rolePageListRes.setAuthorButton(false);
-                rolePageListRes.setFlagButton(false);
+                rolePageListRes.setEditButtonShow(false);
+                rolePageListRes.setAuthorButtonShow(false);
+                rolePageListRes.setDisabledFlagButtonShow(false);
             }
             //当前登录用户所拥有的角色类型大于 角色列表  则显示
             if (!CheckTwoSetSizeRes.CheckTwoSetSize(currentLoginRoleType, Sets.newHashSet(aDo.getSysRoleType()))) {
-                rolePageListRes.setEditButton(true);
-                rolePageListRes.setAuthorButton(true);
-                rolePageListRes.setFlagButton(true);
+                rolePageListRes.setEditButtonShow(true);
+                rolePageListRes.setAuthorButtonShow(true);
+                rolePageListRes.setDisabledFlagButtonShow(true);
             }
             // 角色列表包含自己角色则显示
             if (roleIds.contains(aDo.getId())) {
-                rolePageListRes.setEditButton(true);
-                rolePageListRes.setAuthorButton(true);
-                rolePageListRes.setFlagButton(true);
+                rolePageListRes.setEditButtonShow(true);
+                rolePageListRes.setAuthorButtonShow(true);
+                rolePageListRes.setDisabledFlagButtonShow(true);
             }
             //如果是老板，则全部显示
             if (checkAdminRole) {
-                rolePageListRes.setEditButton(true);
-                rolePageListRes.setAuthorButton(true);
-                rolePageListRes.setFlagButton(true);
+                rolePageListRes.setEditButtonShow(true);
+                rolePageListRes.setAuthorButtonShow(true);
+                rolePageListRes.setDisabledFlagButtonShow(true);
             }
             //屏蔽管理员(老板)角色 和状态  按钮
             if (aDo.getSysRoleType().equals(0)){
-                rolePageListRes.setAuthorButton(false);
-                rolePageListRes.setFlagButton(false);
+                rolePageListRes.setAuthorButtonShow(false);
+                rolePageListRes.setDisabledFlagButtonShow(false);
             }
             sysRolePageListRes.add(rolePageListRes);
         }
@@ -280,38 +280,38 @@ public class RoleService extends BaseService {
             //管理员类型 隐藏
             //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
             if (aDo.getSysRoleType().equals(0)) {
-                rolePageListRes.setEditButton(false);
-                rolePageListRes.setAuthorButton(false);
-                rolePageListRes.setFlagButton(false);
+                rolePageListRes.setEditButtonShow(false);
+                rolePageListRes.setAuthorButtonShow(false);
+                rolePageListRes.setDisabledFlagButtonShow(false);
             }
             if (aDo.getSysRoleType().equals(1)) {
-                rolePageListRes.setEditButton(false);
-                rolePageListRes.setAuthorButton(false);
-                rolePageListRes.setFlagButton(false);
+                rolePageListRes.setEditButtonShow(false);
+                rolePageListRes.setAuthorButtonShow(false);
+                rolePageListRes.setDisabledFlagButtonShow(false);
             }
             //当前登录用户所拥有的角色类型大于 角色列表  则显示
             if (!CheckTwoSetSizeRes.CheckTwoSetSize(currentLoginRoleType, Sets.newHashSet(aDo.getSysRoleType()))) {
-                rolePageListRes.setEditButton(true);
-                rolePageListRes.setAuthorButton(true);
-                rolePageListRes.setFlagButton(true);
+                rolePageListRes.setEditButtonShow(true);
+                rolePageListRes.setAuthorButtonShow(true);
+                rolePageListRes.setDisabledFlagButtonShow(true);
             }
             // 角色列表包含自己角色则显示
             if (roleIds.contains(aDo.getId())) {
-                rolePageListRes.setEditButton(true);
-                rolePageListRes.setAuthorButton(true);
-                rolePageListRes.setFlagButton(true);
+                rolePageListRes.setEditButtonShow(true);
+                rolePageListRes.setAuthorButtonShow(true);
+                rolePageListRes.setDisabledFlagButtonShow(true);
             }
             //如果是老板，则显示自己
             if (checkAdminRole) {
-                rolePageListRes.setEditButton(true);
-                rolePageListRes.setAuthorButton(true);
-                rolePageListRes.setFlagButton(true);
+                rolePageListRes.setEditButtonShow(true);
+                rolePageListRes.setAuthorButtonShow(true);
+                rolePageListRes.setDisabledFlagButtonShow(true);
             }
             //超级管理员，则显示全部
             if (superAdmin) {
-                rolePageListRes.setEditButton(true);
-                rolePageListRes.setAuthorButton(true);
-                rolePageListRes.setFlagButton(true);
+                rolePageListRes.setEditButtonShow(true);
+                rolePageListRes.setAuthorButtonShow(true);
+                rolePageListRes.setDisabledFlagButtonShow(true);
             }
             sysRolePageListRes.add(rolePageListRes);
         }
