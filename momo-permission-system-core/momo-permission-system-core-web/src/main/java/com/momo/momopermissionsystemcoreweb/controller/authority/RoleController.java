@@ -31,9 +31,9 @@ public class RoleController {
         return JSONResult.ok(roleService.showRole(roleReq));
     }
 
-    @RequestMapping("/showAdminRoleButton/v1")
+    @RequestMapping("/disabledAdminRoleButton/v1")
     public JSONResult showAdminRoleButton() {
-        return JSONResult.ok(roleService.showAdminRoleButton());
+        return JSONResult.ok(roleService.disabledAdminRoleButton());
     }
 
     @RequestMapping("/modify/v1")

@@ -17,6 +17,7 @@ import com.momo.mapper.req.authority.BatchRoleUserReq;
 import com.momo.mapper.req.authority.RoleReq;
 import com.momo.mapper.req.sysmain.LoginAuthReq;
 import com.momo.mapper.req.sysmain.RedisUser;
+import com.momo.mapper.res.aclmanager.DisabledAdminRoleButtonRes;
 import com.momo.mapper.res.aclmanager.SysRoleCheckedRes;
 import com.momo.mapper.res.aclmanager.SysRolePageListRes;
 import com.momo.mapper.res.authority.AclTreeRes;
@@ -324,12 +325,14 @@ public class RoleService extends BaseService {
         return roleDO;
     }
 
-    public boolean showAdminRoleButton() {
+    public DisabledAdminRoleButtonRes disabledAdminRoleButton() {
         RedisUser redisUser = this.redisUser();
+        DisabledAdminRoleButtonRes disabledAdminRoleButtonRes=new DisabledAdminRoleButtonRes();
         if (redisUser.getTenantId().equals(1L)) {
-            return true;
+            disabledAdminRoleButtonRes.setDisabledAdminRoleButton(false);
+            return disabledAdminRoleButtonRes;
         }
-        return false;
+        return disabledAdminRoleButtonRes;
     }
 
     public SysRoleCheckedRes userCheckedRoles(RoleReq roleReq) {
