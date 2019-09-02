@@ -27,8 +27,8 @@ public class UserGroupPageReq extends BaseReq {
     private String uuid;
     //企业名称
     private String userGroupName;
-    //flag 状态 0启用  1禁用.
-    private Integer flag;
+    //disabledFlag 状态 0启用  1禁用.
+    private Integer disabledFlag;
     //权限列表
     private List<AclDO> acls = Lists.newArrayList();
 }

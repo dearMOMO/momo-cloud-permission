@@ -8,7 +8,7 @@
         <result column="sys_role_type" jdbcType="INTEGER" property="sysRoleType" />
         <result column="tenant_id" jdbcType="BIGINT" property="tenantId" />
         <result column="remark" jdbcType="VARCHAR" property="remark" />
-        <result column="flag" jdbcType="INTEGER" property="flag" />
+        <result column="disabled_flag" jdbcType="INTEGER" property="disabledFlag" />
         <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
         <result column="create_by" jdbcType="VARCHAR" property="createBy" />
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -16,7 +16,7 @@
         <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
     </resultMap>
     <sql id="Base_Column_List">
-        id, uuid, sys_role_name, sys_role_type, tenant_id, remark, flag, del_flag, create_by,
+        id, uuid, sys_role_name, sys_role_type, tenant_id, remark, disabled_flag, del_flag, create_by,
     create_time, update_time, update_by
     </sql>
     <delete id="deleteRoleAclsByRoleId" parameterType="java.lang.Long">
@@ -34,8 +34,8 @@
         <include refid="Base_Column_List"/>
         from sys_role
         <trim prefix="where" prefixOverrides="and">
-            <if test="flag!=null">
-                AND flag=#{flag,jdbcType=INTEGER}
+            <if test="disabledFlag!=null">
+                AND disabled_flag=#{disabledFlag,jdbcType=INTEGER}
             </if>
             <if test="sysRoleName!=null and sysRoleName.trim()!=''">
                 AND sys_role_name LIKE CONCAT ('%',#{sysRoleName,jdbcType=VARCHAR},'%')
@@ -53,7 +53,7 @@
         FROM sys_role WHERE id IN(
             SELECT role_id
         FROM sys_role_user WHERE user_id=#{userId,jdbcType=BIGINT}
-        ) and flag='0'
+        ) and disabled_flag='0'
     </select>
     <select id="selectByPrimaryUuid" parameterType="string" resultMap="BaseResultMap">
         select
@@ -149,8 +149,8 @@
             <if test="remark != null">
                 remark,
             </if>
-            <if test="flag != null">
-                flag,
+            <if test="disabledFlag != null">
+                disabled_flag,
             </if>
             <if test="delFlag != null">
                 del_flag,
@@ -187,8 +187,8 @@
             <if test="remark != null">
                 #{remark,jdbcType=VARCHAR},
             </if>
-            <if test="flag != null">
-                #{flag,jdbcType=INTEGER},
+            <if test="disabledFlag != null">
+                #{disabledFlag,jdbcType=INTEGER},
             </if>
             <if test="delFlag != null">
                 #{delFlag,jdbcType=INTEGER},
@@ -225,8 +225,8 @@
             <if test="remark != null">
                 remark = #{remark,jdbcType=VARCHAR},
             </if>
-            <if test="flag != null">
-                flag = #{flag,jdbcType=INTEGER},
+            <if test="disabledFlag != null">
+                disabled_flag = #{disabledFlag,jdbcType=INTEGER},
             </if>
             <if test="delFlag != null">
                 del_flag = #{delFlag,jdbcType=INTEGER},
@@ -248,38 +248,38 @@
     </update>
     <select id="getRoleById" parameterType="map" resultMap="BaseResultMap">
     SELECT
-         id, uuid, sys_role_name, sys_role_type, tenant_id, remark, flag, del_flag,
+         id, uuid, sys_role_name, sys_role_type, tenant_id, remark, disabled_flag, del_flag,
         create_time
          FROM sys_role
     WHERE id=#{id}
 </select>
     <select id="getRolesByUserId" resultMap="BaseResultMap">
-       SELECT id, uuid, sys_role_name, sys_role_type, tenant_id, flag, del_flag
+       SELECT id, uuid, sys_role_name, sys_role_type, tenant_id, disabled_flag, del_flag
         FROM sys_role WHERE id IN (
           SELECT role_id FROM sys_role_user WHERE user_id =#{userId}
         )
-        <if test="flag!=null">
-            and flag=#{flag}
+        <if test="disabledFlag!=null">
+            and disabled_flag=#{disabledFlag}
         </if>
     </select>
     <select id="getVipAdminRole" parameterType="map" resultMap="BaseResultMap">
          SELECT
-        id, uuid, sys_role_name, sys_role_type, tenant_id, remark, flag, del_flag,
+        id, uuid, sys_role_name, sys_role_type, tenant_id, remark, disabled_flag, del_flag,
         create_time
         FROM sys_role
         WHERE tenant_id=#{tenantId,jdbcType=BIGINT} and sys_role_type=#{roleType,jdbcType=VARCHAR}
     </select>
     <select id="getRoleListByEnterpriseId" parameterType="map" resultMap="BaseResultMap">
         SELECT
-        id, uuid, sys_role_name, sys_role_type, tenant_id, remark, flag, del_flag,
+        id, uuid, sys_role_name, sys_role_type, tenant_id, remark, disabled_flag, del_flag,
         create_time
         FROM sys_role
         <trim prefix="where" prefixOverrides="and">
             <if test="tenantId!=null">
                 and tenant_id =#{tenantId}
             </if>
-            <if test="flag!=null">
-                and flag = #{flag}
+            <if test="disabledFlag!=null">
+                and disabled_flag = #{disabledFlag}
             </if>
             <if test="roleType!=null">
                 and sys_role_type = #{roleType}

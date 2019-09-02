@@ -10,7 +10,7 @@
         <result column="sys_user_id" jdbcType="BIGINT" property="sysUserId" />
         <result column="tenant_id" jdbcType="BIGINT" property="tenantId" />
         <result column="remark" jdbcType="VARCHAR" property="remark" />
-        <result column="flag" jdbcType="INTEGER" property="flag" />
+        <result column="disabled_flag" jdbcType="INTEGER" property="disabledFlag" />
         <result column="sys_login_number" jdbcType="INTEGER" property="sysLoginNumber" />
         <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
         <result column="create_by" jdbcType="VARCHAR" property="createBy" />
@@ -20,7 +20,7 @@
     </resultMap>
     <sql id="Base_Column_List">
     id, uuid, sys_user_login_name, sys_user_pwd, sys_user_auth_salt, sys_user_id, tenant_id,
-    remark,sys_login_number, flag, del_flag, create_by, create_time, update_time, update_by
+    remark,sys_login_number, disabled_flag, del_flag, create_by, create_time, update_time, update_by
   </sql>
     <select id="sysUserAccountLogin" parameterType="map" resultMap="BaseResultMap">
         select
@@ -64,8 +64,8 @@
             <if test="remark != null">
                 remark,
             </if>
-            <if test="flag != null">
-                flag,
+            <if test="disabledFlag != null">
+                disabled_flag,
             </if>
             <if test="delFlag != null">
                 del_flag,
@@ -111,8 +111,8 @@
             <if test="remark != null">
                 #{remark,jdbcType=VARCHAR},
             </if>
-            <if test="flag != null">
-                #{flag,jdbcType=INTEGER},
+            <if test="disabledFlag != null">
+                #{disabledFlag,jdbcType=INTEGER},
             </if>
             <if test="delFlag != null">
                 #{delFlag,jdbcType=INTEGER},
@@ -158,8 +158,8 @@
             <if test="remark != null">
                 remark = #{remark,jdbcType=VARCHAR},
             </if>
-            <if test="flag != null">
-                flag = #{flag,jdbcType=INTEGER},
+            <if test="disabledFlag != null">
+                disabled_flag = #{disabledFlag,jdbcType=INTEGER},
             </if>
             <if test="delFlag != null">
                 del_flag = #{delFlag,jdbcType=INTEGER},

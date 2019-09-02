@@ -17,7 +17,7 @@
         <result column="sys_acl_seq" jdbcType="INTEGER" property="sysAclSeq" />
         <result column="sys_acl_code" jdbcType="VARCHAR" property="sysAclCode" />
         <result column="remark" jdbcType="VARCHAR" property="remark" />
-        <result column="flag" jdbcType="INTEGER" property="flag" />
+        <result column="disabled_flag" jdbcType="INTEGER" property="disabledFlag" />
         <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
         <result column="create_by" jdbcType="VARCHAR" property="createBy" />
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -27,7 +27,7 @@
     <sql id="Base_Column_List">
         id, uuid, sys_acl_action, sys_acl_router, sys_acl_name, sys_acl_component_name, sys_acl_parent_id,
     sys_acl_level, sys_acl_permission_code, sys_acl_url, sys_acl_type, sys_acl_icon,
-    sys_acl_seq, sys_acl_code, remark, flag, del_flag, create_by, create_time, update_time,
+    sys_acl_seq, sys_acl_code, remark, disabled_flag, del_flag, create_by, create_time, update_time,
     update_by
     </sql>
     <select id="checkChildAcl" parameterType="map" resultType="int">
@@ -54,7 +54,7 @@
         SELECT
            id, uuid, sys_acl_action, sys_acl_router, sys_acl_name, sys_acl_component_name, sys_acl_parent_id,
     sys_acl_level, sys_acl_permission_code, sys_acl_url, sys_acl_type, sys_acl_icon,
-    sys_acl_seq, sys_acl_code, remark, flag, del_flag, create_by, create_time, update_time,
+    sys_acl_seq, sys_acl_code, remark, disabled_flag, del_flag, create_by, create_time, update_time,
     update_by
         FROM sys_acl WHERE sys_acl_level LIKE CONCAT(#{sysAclLevel},'%')
     </select>
@@ -62,7 +62,7 @@
         SELECT
            id, uuid, sys_acl_action, sys_acl_router, sys_acl_name, sys_acl_component_name, sys_acl_parent_id,
     sys_acl_level, sys_acl_permission_code, sys_acl_url, sys_acl_type, sys_acl_icon,
-    sys_acl_seq, sys_acl_code, remark, flag, del_flag, create_by, create_time, update_time,
+    sys_acl_seq, sys_acl_code, remark, disabled_flag, del_flag, create_by, create_time, update_time,
     update_by
         FROM sys_acl WHERE uuid IN
         <foreach collection="uuids" item="item" open="(" separator="," close=")">
@@ -145,8 +145,8 @@
             <if test="remark != null">
                 remark,
             </if>
-            <if test="flag != null">
-                flag,
+            <if test="disabledFlag != null">
+                disabled_flag,
             </if>
             <if test="delFlag != null">
                 del_flag,
@@ -210,8 +210,8 @@
             <if test="remark != null">
                 #{remark,jdbcType=VARCHAR},
             </if>
-            <if test="flag != null">
-                #{flag,jdbcType=INTEGER},
+            <if test="disabledFlag != null">
+                #{disabledFlag,jdbcType=INTEGER},
             </if>
             <if test="delFlag != null">
                 #{delFlag,jdbcType=INTEGER},
@@ -275,8 +275,8 @@
             <if test="remark != null">
                 remark = #{remark,jdbcType=VARCHAR},
             </if>
-            <if test="flag != null">
-                flag = #{flag,jdbcType=INTEGER},
+            <if test="disabledFlag != null">
+                disabled_flag = #{disabledFlag,jdbcType=INTEGER},
             </if>
             <if test="delFlag != null">
                 del_flag = #{delFlag,jdbcType=INTEGER},

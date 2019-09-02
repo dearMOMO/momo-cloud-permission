@@ -36,17 +36,17 @@ public class RoleDO{
      */
     private String sysRoleName;
     /**
-     * flag 是否被禁用  0否 1禁用.
-     */
-    private Integer flag;
-    /**
      * delFlag 删除状态(0-正常，1-删除).
      */
     private Integer delFlag;
     /**
-     * sysRoleType 角色的类型，0：管理员(老板)，1：管理员(员工) 2其他.
+     * sysRoleType 角色的类型，0：管理员(老板)，1：管理员(员工)  2:普通员工 3:其他.
      */
     private Integer sysRoleType;
+    /**
+     * disabledFlag 是否被禁用  0否 1禁用.
+     */
+    private Integer disabledFlag;
     /**
      * createTime 创建时间.
      */
@@ -169,22 +169,6 @@ public class RoleDO{
     }
 
     /**
-     * Set flag 是否被禁用  0否 1禁用.
-     */
-    public void setFlag(Integer flag){
-        this.flag = flag;
-    }
-
-    /**
-     * Get flag 是否被禁用  0否 1禁用.
-     *
-     * @return the string
-     */
-    public Integer getFlag(){
-        return flag;
-    }
-
-    /**
      * Set delFlag 删除状态(0-正常，1-删除).
      */
     public void setDelFlag(Integer delFlag){
@@ -201,19 +185,35 @@ public class RoleDO{
     }
 
     /**
-     * Set sysRoleType 角色的类型，0：管理员(老板)，1：管理员(员工) 2其他.
+     * Set sysRoleType 角色的类型，0：管理员(老板)，1：管理员(员工)  2:普通员工 3:其他.
      */
     public void setSysRoleType(Integer sysRoleType){
         this.sysRoleType = sysRoleType;
     }
 
     /**
-     * Get sysRoleType 角色的类型，0：管理员(老板)，1：管理员(员工) 2其他.
+     * Get sysRoleType 角色的类型，0：管理员(老板)，1：管理员(员工)  2:普通员工 3:其他.
      *
      * @return the string
      */
     public Integer getSysRoleType(){
         return sysRoleType;
+    }
+
+    /**
+     * Set disabledFlag 是否被禁用  0否 1禁用.
+     */
+    public void setDisabledFlag(Integer disabledFlag){
+        this.disabledFlag = disabledFlag;
+    }
+
+    /**
+     * Get disabledFlag 是否被禁用  0否 1禁用.
+     *
+     * @return the string
+     */
+    public Integer getDisabledFlag(){
+        return disabledFlag;
     }
 
     /**

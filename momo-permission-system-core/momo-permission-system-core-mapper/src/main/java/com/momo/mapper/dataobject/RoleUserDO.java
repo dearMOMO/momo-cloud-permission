@@ -36,13 +36,13 @@ public class RoleUserDO{
      */
     private String updateBy;
     /**
-     * flag 状态 0启用  1禁用.
-     */
-    private Integer flag;
-    /**
      * delFlag 删除状态(0-正常，1-删除).
      */
     private Integer delFlag;
+    /**
+     * disabledFlag 状态 0启用  1禁用.
+     */
+    private Integer disabledFlag;
     /**
      * createTime 创建时间.
      */
@@ -165,22 +165,6 @@ public class RoleUserDO{
     }
 
     /**
-     * Set flag 状态 0启用  1禁用.
-     */
-    public void setFlag(Integer flag){
-        this.flag = flag;
-    }
-
-    /**
-     * Get flag 状态 0启用  1禁用.
-     *
-     * @return the string
-     */
-    public Integer getFlag(){
-        return flag;
-    }
-
-    /**
      * Set delFlag 删除状态(0-正常，1-删除).
      */
     public void setDelFlag(Integer delFlag){
@@ -194,6 +178,22 @@ public class RoleUserDO{
      */
     public Integer getDelFlag(){
         return delFlag;
+    }
+
+    /**
+     * Set disabledFlag 状态 0启用  1禁用.
+     */
+    public void setDisabledFlag(Integer disabledFlag){
+        this.disabledFlag = disabledFlag;
+    }
+
+    /**
+     * Get disabledFlag 状态 0启用  1禁用.
+     *
+     * @return the string
+     */
+    public Integer getDisabledFlag(){
+        return disabledFlag;
     }
 
     /**

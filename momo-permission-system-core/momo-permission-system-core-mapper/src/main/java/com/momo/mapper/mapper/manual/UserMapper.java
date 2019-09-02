@@ -14,7 +14,7 @@ public interface UserMapper {
 
     UserDO uuid(@Param("uuid") String uuid);
 
-    List<SysUserListDO> pageSysUserList(@Param("tenantId") Long tenantId, @Param("sysUserName") String sysUserName, @Param("flag") Integer flag);
+    List<SysUserListDO> pageSysUserList(@Param("tenantId") Long tenantId, @Param("sysUserName") String sysUserName, @Param("disabledFlag") Integer disabledFlag);
 
     UserDO getUserInfo(@Param("id") Long id);
 

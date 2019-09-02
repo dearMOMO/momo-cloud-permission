@@ -11,9 +11,9 @@
         <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
         <result column="NAME_BOTTOM" property="nameBottom" jdbcType="VARCHAR" javaType="String"/>
         <result column="USER_GROUP_NAME" property="userGroupName" jdbcType="VARCHAR" javaType="String"/>
-        <result column="FLAG" property="flag" jdbcType="INTEGER" javaType="Integer"/>
         <result column="DEL_FLAG" property="delFlag" jdbcType="INTEGER" javaType="Integer"/>
         <result column="SYS_OPEN_DAY" property="sysOpenDay" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="DISABLED_FLAG" property="disabledFlag" jdbcType="INTEGER" javaType="Integer"/>
         <result column="SYS_OPEN_ACCOUNT_NUM" property="sysOpenAccountNum" jdbcType="INTEGER" javaType="Integer"/>
         <result column="SYS_CREATE_ACCOUNT_NUM" property="sysCreateAccountNum" jdbcType="INTEGER" javaType="Integer"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>

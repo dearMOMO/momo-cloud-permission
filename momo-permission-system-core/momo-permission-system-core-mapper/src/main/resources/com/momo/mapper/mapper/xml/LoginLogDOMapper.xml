@@ -15,7 +15,7 @@
         <result column="USER_LOGIN_NAME" property="userLoginName" jdbcType="VARCHAR" javaType="String"/>
         <result column="USER_LOGIN_DEVICE" property="userLoginDevice" jdbcType="VARCHAR" javaType="String"/>
         <result column="USER_LOGIN_BROWSER" property="userLoginBrowser" jdbcType="VARCHAR" javaType="String"/>
-        <result column="FLAG" property="flag" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="DISABLED_FLAG" property="disabledFlag" jdbcType="INTEGER" javaType="Integer"/>
         <result column="USER_LOGIN_TYPE" property="userLoginType" jdbcType="INTEGER" javaType="Integer"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
         <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>

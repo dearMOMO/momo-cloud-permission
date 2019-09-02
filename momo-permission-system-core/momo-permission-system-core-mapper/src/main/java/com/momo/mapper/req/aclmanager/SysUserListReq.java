@@ -22,8 +22,8 @@ public class SysUserListReq extends BaseReq {
      */
     private String sysUserName;
     /**
-     * flag 是否被禁用  0否 1禁用.
+     * disabledFlag 是否被禁用  0否 1禁用.
      */
-    private Integer flag;
+    private Integer disabledFlag;
 
 }

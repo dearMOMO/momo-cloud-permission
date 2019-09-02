@@ -4,13 +4,14 @@
     <!-- 自动生成,请修改 SYS_USER_DEPT.xml -->
     <resultMap id="BaseResultMap"  type="com.momo.mapper.dataobject.UserDeptDO">
         <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+        <result column="TENANT_ID" property="tenantId" jdbcType="BIGINT" javaType="Long"/>
         <result column="SYS_DEPT_ID" property="sysDeptId" jdbcType="BIGINT" javaType="Long"/>
         <result column="SYS_USER_ID" property="sysUserId" jdbcType="BIGINT" javaType="Long"/>
         <result column="UUID" property="uuid" jdbcType="VARCHAR" javaType="String"/>
         <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
         <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
-        <result column="FLAG" property="flag" jdbcType="INTEGER" javaType="Integer"/>
         <result column="DEL_FLAG" property="delFlag" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="DISABLED_FLAG" property="disabledFlag" jdbcType="INTEGER" javaType="Integer"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
         <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
     </resultMap>

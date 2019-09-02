@@ -40,10 +40,6 @@ public class UserGroupDO{
      */
     private String userGroupName;
     /**
-     * flag 状态 0启用  1禁用.
-     */
-    private Integer flag;
-    /**
      * delFlag 删除状态(0-正常，1-删除).
      */
     private Integer delFlag;
@@ -51,6 +47,10 @@ public class UserGroupDO{
      * sysOpenDay 开通的天数 -1 不限次数 自己公司公司所有.
      */
     private Integer sysOpenDay;
+    /**
+     * disabledFlag 状态 0启用  1禁用.
+     */
+    private Integer disabledFlag;
     /**
      * sysOpenAccountNum 已开通账号个数.
      */
@@ -205,22 +205,6 @@ public class UserGroupDO{
     }
 
     /**
-     * Set flag 状态 0启用  1禁用.
-     */
-    public void setFlag(Integer flag){
-        this.flag = flag;
-    }
-
-    /**
-     * Get flag 状态 0启用  1禁用.
-     *
-     * @return the string
-     */
-    public Integer getFlag(){
-        return flag;
-    }
-
-    /**
      * Set delFlag 删除状态(0-正常，1-删除).
      */
     public void setDelFlag(Integer delFlag){
@@ -250,6 +234,22 @@ public class UserGroupDO{
      */
     public Integer getSysOpenDay(){
         return sysOpenDay;
+    }
+
+    /**
+     * Set disabledFlag 状态 0启用  1禁用.
+     */
+    public void setDisabledFlag(Integer disabledFlag){
+        this.disabledFlag = disabledFlag;
+    }
+
+    /**
+     * Get disabledFlag 状态 0启用  1禁用.
+     *
+     * @return the string
+     */
+    public Integer getDisabledFlag(){
+        return disabledFlag;
     }
 
     /**

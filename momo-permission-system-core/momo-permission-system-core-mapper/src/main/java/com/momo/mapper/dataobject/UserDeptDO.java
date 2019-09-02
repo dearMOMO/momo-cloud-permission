@@ -12,6 +12,10 @@ public class UserDeptDO{
      */
     private Long id;
     /**
+     * tenantId 租户id.
+     */
+    private Long tenantId;
+    /**
      * sysDeptId 部门id.
      */
     private Long sysDeptId;
@@ -32,13 +36,13 @@ public class UserDeptDO{
      */
     private String updateBy;
     /**
-     * flag 是否被禁用  0否 1禁用.
-     */
-    private Integer flag;
-    /**
      * delFlag 删除状态(0-正常，1-删除).
      */
     private Integer delFlag;
+    /**
+     * disabledFlag 是否被禁用  0否 1禁用.
+     */
+    private Integer disabledFlag;
     /**
      * createTime 创建时间.
      */
@@ -62,6 +66,22 @@ public class UserDeptDO{
      */
     public Long getId(){
         return id;
+    }
+
+    /**
+     * Set tenantId 租户id.
+     */
+    public void setTenantId(Long tenantId){
+        this.tenantId = tenantId;
+    }
+
+    /**
+     * Get tenantId 租户id.
+     *
+     * @return the string
+     */
+    public Long getTenantId(){
+        return tenantId;
     }
 
     /**
@@ -145,22 +165,6 @@ public class UserDeptDO{
     }
 
     /**
-     * Set flag 是否被禁用  0否 1禁用.
-     */
-    public void setFlag(Integer flag){
-        this.flag = flag;
-    }
-
-    /**
-     * Get flag 是否被禁用  0否 1禁用.
-     *
-     * @return the string
-     */
-    public Integer getFlag(){
-        return flag;
-    }
-
-    /**
      * Set delFlag 删除状态(0-正常，1-删除).
      */
     public void setDelFlag(Integer delFlag){
@@ -174,6 +178,22 @@ public class UserDeptDO{
      */
     public Integer getDelFlag(){
         return delFlag;
+    }
+
+    /**
+     * Set disabledFlag 是否被禁用  0否 1禁用.
+     */
+    public void setDisabledFlag(Integer disabledFlag){
+        this.disabledFlag = disabledFlag;
+    }
+
+    /**
+     * Get disabledFlag 是否被禁用  0否 1禁用.
+     *
+     * @return the string
+     */
+    public Integer getDisabledFlag(){
+        return disabledFlag;
     }
 
     /**

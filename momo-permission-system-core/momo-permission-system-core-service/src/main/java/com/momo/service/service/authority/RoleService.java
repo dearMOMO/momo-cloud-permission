@@ -368,7 +368,7 @@ public class RoleService extends BaseService {
             BeanUtils.copyProperties(roleDO, sysRoleChecke);
             sysRoleChecke.setIdStr(String.valueOf(roleDO.getId()));
             //是否被禁用  0否 1禁用
-            if (roleDO.getFlag().equals(1)) {
+            if (roleDO.getDisabledFlag().equals(1)) {
                 sysRoleChecke.setDisabled(true);
             }
             //非总部为企业授权，则屏蔽管理员(老板)角色
@@ -476,7 +476,7 @@ public class RoleService extends BaseService {
             }
             //屏蔽非总部操作第三方管理员角色状态
             //状态 0启用  1禁用
-            if (roleDO.getSysRoleType().equals(0) && roleReq.getFlag().equals(1)) {
+            if (roleDO.getSysRoleType().equals(0) && roleReq.getDisabledFlag().equals(1)) {
                 throw BizException.fail("您无权限操作管理员角色状态");
             }
         }
@@ -503,10 +503,10 @@ public class RoleService extends BaseService {
         }
         RoleDO record = new RoleDO();
         //状态 0启用  1禁用
-        if (roleReq.getFlag().equals(0)) {
-            record.setFlag(0);
-        } else if (roleReq.getFlag().equals(1)) {
-            record.setFlag(1);
+        if (roleReq.getDisabledFlag().equals(0)) {
+            record.setDisabledFlag(0);
+        } else if (roleReq.getDisabledFlag().equals(1)) {
+            record.setDisabledFlag(1);
         }
         record.setUpdateBy(redisUser.getSysUserName());
         record.setUpdateTime(DateUtils.getDateTime());

@@ -73,7 +73,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
 
     public PageInfo<SysUserGroupPageRes> getUserGroupPage(UserGroupPageReq userGroupPageReq) {
         PageHelper.startPage(userGroupPageReq.getPageNum(), userGroupPageReq.getPageSize(), "id desc");
-        List<UserGroupDO> getUserGroupPage = userGroupMapper.getUserGroupPage(userGroupPageReq.getUserGroupName(), userGroupPageReq.getFlag());
+        List<UserGroupDO> getUserGroupPage = userGroupMapper.getUserGroupPage(userGroupPageReq.getUserGroupName(), userGroupPageReq.getDisabledFlag());
         PageInfo<UserGroupDO> pageInfo = new PageInfo<>(getUserGroupPage);
         List<UserGroupDO> userGroupDOS = pageInfo.getList();
         List<SysUserGroupPageRes> sysUserGroupPageRes = Lists.newArrayList();
@@ -198,7 +198,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
             throw BizException.fail("企业不存在");
         }
         PageHelper.startPage(sysEnterpriseRoleReq.getPageNum(), sysEnterpriseRoleReq.getPageSize(), "id desc");
-        List<RoleDO> getRoleListByEnterpriseId = roleMapper.getRoleListByEnterpriseId(userGroupDO.getId(), sysEnterpriseRoleReq.getSysRoleType(), sysEnterpriseRoleReq.getFlag(), sysEnterpriseRoleReq.getSysRoleName());
+        List<RoleDO> getRoleListByEnterpriseId = roleMapper.getRoleListByEnterpriseId(userGroupDO.getId(), sysEnterpriseRoleReq.getSysRoleType(), sysEnterpriseRoleReq.getDisabledFlag(), sysEnterpriseRoleReq.getSysRoleName());
         PageInfo<RoleDO> pageInfo = new PageInfo<>(getRoleListByEnterpriseId);
         SysEnterpriseRoleRes sysEnterpriseRoleResFinal = new SysEnterpriseRoleRes();
         sysEnterpriseRoleResFinal.setSysEnterpriseName(userGroupDO.getUserGroupName());
@@ -298,7 +298,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
             throw BizException.fail("待编辑的企业不存在");
         }
         RedisUser redisUser = this.redisUser();
-        userGroupDO.setFlag(sysUserGroupReq.getFlag());
+        userGroupDO.setDisabledFlag(sysUserGroupReq.getDisabledFlag());
         userGroupDO.setUpdateBy(redisUser.getSysUserName());
         userGroupDO.setUpdateTime(DateUtils.getDateTime());
         userGroupMapper.updateByPrimaryKeySelective(userGroupDO);
@@ -358,7 +358,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         BeanUtils.copyProperties(sysEnterpriseRoleReq, record);
         record.setTenantId(null);
         //是否被禁用  0否 1禁用
-        record.setFlag(sysEnterpriseRoleReq.getFlag().equals(0) ? 1 : 0);
+        record.setDisabledFlag(sysEnterpriseRoleReq.getDisabledFlag().equals(0) ? 1 : 0);
         record.setUpdateBy(redisUser.getSysUserName());
         record.setUpdateTime(DateUtils.getDateTime());
         record.setId(roleDO.getId());
@@ -419,7 +419,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
             }
             //屏蔽非总部操作第三方管理员角色状态
             //状态 0启用  1禁用
-            if (roleDO.getSysRoleType().equals(0) && sysEnterpriseRoleReq.getFlag().equals(1)) {
+            if (roleDO.getSysRoleType().equals(0) && sysEnterpriseRoleReq.getDisabledFlag().equals(1)) {
                 throw BizException.fail("您无权限操作管理员角色状态");
             }
         }
@@ -547,7 +547,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         sysUserListResFianl.setSysEnterpriseName(uuid.getUserGroupName());
         RedisUser redisUser = this.redisUser();
         PageHelper.startPage(sysEnterpriseUserReq.getPageNum(), sysEnterpriseUserReq.getPageSize(), "id desc");
-        List<SysUserListDO> pageSysUserList = userMapper.pageSysUserList(uuid.getId(), sysEnterpriseUserReq.getSysUserName(), sysEnterpriseUserReq.getFlag());
+        List<SysUserListDO> pageSysUserList = userMapper.pageSysUserList(uuid.getId(), sysEnterpriseUserReq.getSysUserName(), sysEnterpriseUserReq.getDisabledFlag());
         PageInfo<SysUserListDO> pageInfo = new PageInfo<>(pageSysUserList);
         List<SysUserListRes> resList = Lists.newArrayList();
         List<SysUserListDO> doList = pageInfo.getList();
@@ -595,7 +595,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
                 if (null != userAccountPwdDO) {
                     sysUserListRes.setPwdBinding(true);
                     sysUserListRes.setPwdBindingName(userAccountPwdDO.getSysUserLoginName());
-                    sysUserListRes.setPwdBindingFlag(userAccountPwdDO.getFlag());
+                    sysUserListRes.setPwdBindingFlag(userAccountPwdDO.getDisabledFlag());
                     sysUserListRes.setPwdBindingDate(userAccountPwdDO.getCreateTime());
                 }
                 resList.add(sysUserListRes);
@@ -679,7 +679,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         UserDO userDO = new UserDO();
         BeanUtils.copyProperties(sysEnterpriseUserReq, userDO);
         userDO.setSysUserName(sysEnterpriseUserReq.getSysUserName());
-        userDO.setFlag(sysEnterpriseUserReq.getFlag());
+        userDO.setDisabledFlag(sysEnterpriseUserReq.getDisabledFlag());
         userDO.setId(userDODetail.getId());
         userDO.setUpdateBy(redisUser.getSysUserName());
         userDO.setUpdateTime(DateUtils.getDateTime());
@@ -734,7 +734,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
             BeanUtils.copyProperties(roleDO, sysRoleChecke);
             sysRoleChecke.setIdStr(String.valueOf(roleDO.getId()));
             //是否被禁用  0否 1禁用
-            if (roleDO.getFlag().equals(1)) {
+            if (roleDO.getDisabledFlag().equals(1)) {
                 sysRoleChecke.setDisabled(true);
             }
             sysRoleCheckedRes.add(sysRoleChecke);
@@ -781,7 +781,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         }
         RedisUser redisUser = this.redisUser();
         UserDO userDO = new UserDO();
-        userDO.setFlag(sysEnterpriseUserReq.getFlag());
+        userDO.setDisabledFlag(sysEnterpriseUserReq.getDisabledFlag());
         userDO.setId(userDODetail.getId());
         userDO.setUpdateBy(redisUser.getSysUserName());
         userDO.setUpdateTime(DateUtils.getDateTime());

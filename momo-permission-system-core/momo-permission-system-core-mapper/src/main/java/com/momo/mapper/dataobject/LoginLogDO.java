@@ -56,9 +56,9 @@ public class LoginLogDO{
      */
     private String userLoginBrowser;
     /**
-     * flag 状态 0启用  1禁用.
+     * disabledFlag 状态 0启用  1禁用.
      */
-    private Integer flag;
+    private Integer disabledFlag;
     /**
      * userLoginType 登录类型.
      */
@@ -265,19 +265,19 @@ public class LoginLogDO{
     }
 
     /**
-     * Set flag 状态 0启用  1禁用.
+     * Set disabledFlag 状态 0启用  1禁用.
      */
-    public void setFlag(Integer flag){
-        this.flag = flag;
+    public void setDisabledFlag(Integer disabledFlag){
+        this.disabledFlag = disabledFlag;
     }
 
     /**
-     * Get flag 状态 0启用  1禁用.
+     * Get disabledFlag 状态 0启用  1禁用.
      *
      * @return the string
      */
-    public Integer getFlag(){
-        return flag;
+    public Integer getDisabledFlag(){
+        return disabledFlag;
     }
 
     /**

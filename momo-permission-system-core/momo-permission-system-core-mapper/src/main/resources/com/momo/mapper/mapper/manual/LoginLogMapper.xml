@@ -37,8 +37,8 @@
             <if test="tenantId != null">
                 tenant_id,
             </if>
-            <if test="flag != null">
-                flag,
+            <if test="disabledFlag != null">
+                disabled_flag,
             </if>
             <if test="createTime != null">
                 create_time,
@@ -87,8 +87,8 @@
             <if test="tenantId != null">
                 #{tenantId,jdbcType=BIGINT},
             </if>
-            <if test="flag != null">
-                #{flag,jdbcType=INTEGER},
+            <if test="disabledFlag != null">
+                #{disabledFlag,jdbcType=INTEGER},
             </if>
             <if test="createTime != null">
                 #{createTime,jdbcType=TIMESTAMP},

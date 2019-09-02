@@ -45,10 +45,10 @@ public class SysUserGroupReq extends BaseReq {
     @NotBlank(message = "企业名称必填", groups = {Detail.class, Modify.class})
     private String userGroupName;
     /**
-     * flag 状态 0启用  1禁用.
+     * disabledFlag 状态 0启用  1禁用.
      */
     @NotNull(message = "状态 必填", groups = {Detail.class, Modify.class, Status.class})
-    private Integer flag;
+    private Integer disabledFlag;
     /**
      * delFlag 删除状态(0-正常，1-删除).
      */

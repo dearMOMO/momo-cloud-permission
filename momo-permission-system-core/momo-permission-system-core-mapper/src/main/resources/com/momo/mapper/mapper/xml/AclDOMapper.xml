@@ -18,10 +18,10 @@
         <result column="SYS_ACL_ROUTER" property="sysAclRouter" jdbcType="VARCHAR" javaType="String"/>
         <result column="SYS_ACL_COMPONENT_NAME" property="sysAclComponentName" jdbcType="VARCHAR" javaType="String"/>
         <result column="SYS_ACL_PERMISSION_CODE" property="sysAclPermissionCode" jdbcType="VARCHAR" javaType="String"/>
-        <result column="FLAG" property="flag" jdbcType="INTEGER" javaType="Integer"/>
         <result column="DEL_FLAG" property="delFlag" jdbcType="INTEGER" javaType="Integer"/>
         <result column="SYS_ACL_SEQ" property="sysAclSeq" jdbcType="INTEGER" javaType="Integer"/>
         <result column="SYS_ACL_TYPE" property="sysAclType" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="DISABLED_FLAG" property="disabledFlag" jdbcType="INTEGER" javaType="Integer"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
         <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
     </resultMap>

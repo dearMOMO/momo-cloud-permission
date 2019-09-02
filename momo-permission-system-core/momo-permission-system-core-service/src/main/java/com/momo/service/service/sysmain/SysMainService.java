@@ -76,7 +76,7 @@ public class SysMainService extends BaseService {
                 throw BizException.fail("您的账户已被删除，请联系管理员");
             }
             //状态 0启用  1禁用
-            if (userAccountPwdDO.getFlag().equals(1)) {
+            if (userAccountPwdDO.getDisabledFlag().equals(1)) {
                 throw BizException.fail("您的账户已被禁用，请联系管理员");
             }
         }
@@ -90,7 +90,7 @@ public class SysMainService extends BaseService {
             if (null == userGroupDO) {
                 throw BizException.fail("您所在的企业不存在");
             }
-            if (userGroupDO.getFlag().equals(1)) {
+            if (userGroupDO.getDisabledFlag().equals(1)) {
                 throw BizException.fail("您所在的企业已被禁用");
             }
             if (userGroupDO.getDelFlag().equals(1)) {

@@ -15,7 +15,7 @@
         <result column="sys_user_area" jdbcType="BIGINT" property="sysUserArea" />
         <result column="tenant_id" jdbcType="BIGINT" property="tenantId" />
         <result column="remark" jdbcType="VARCHAR" property="remark" />
-        <result column="flag" jdbcType="INTEGER" property="flag" />
+        <result column="disabled_flag" jdbcType="INTEGER" property="disabledFlag" />
         <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
         <result column="create_by" jdbcType="VARCHAR" property="createBy" />
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -36,7 +36,7 @@
         <result column="sys_user_area" jdbcType="BIGINT" property="sysUserArea" />
         <result column="tenant_id" jdbcType="BIGINT" property="tenantId" />
         <result column="remark" jdbcType="VARCHAR" property="remark" />
-        <result column="flag" jdbcType="INTEGER" property="flag" />
+        <result column="disabled_flag" jdbcType="INTEGER" property="disabledFlag" />
         <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
         <result column="create_by" jdbcType="VARCHAR" property="createBy" />
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -52,7 +52,7 @@
         <result column="sys_role_type" jdbcType="INTEGER" property="sysRoleType" />
         <result column="tenant_id" jdbcType="BIGINT" property="tenantId" />
         <result column="remark" jdbcType="VARCHAR" property="remark" />
-        <result column="flag" jdbcType="INTEGER" property="flag" />
+        <result column="disabled_flag" jdbcType="INTEGER" property="disabledFlag" />
         <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
         <result column="create_by" jdbcType="VARCHAR" property="createBy" />
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -69,7 +69,7 @@
         <result column="sys_user_id" jdbcType="BIGINT" property="sysUserId" />
         <result column="tenant_id" jdbcType="BIGINT" property="tenantId" />
         <result column="remark" jdbcType="VARCHAR" property="remark" />
-        <result column="flag" jdbcType="INTEGER" property="flag" />
+        <result column="disabled_flag" jdbcType="INTEGER" property="disabledFlag" />
         <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
         <result column="create_by" jdbcType="VARCHAR" property="createBy" />
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -80,20 +80,20 @@
     <sql id="Base_Column_List">
     id, sys_user_name, uuid, sys_user_phone, sys_user_email, sys_user_province_name,
     sys_user_province, sys_user_city_name, sys_user_city, sys_user_area_name, sys_user_area,
-    tenant_id, remark, flag, del_flag, create_by, create_time, update_time,
+    tenant_id, remark, disabled_flag, del_flag, create_by, create_time, update_time,
     update_by
   </sql>
 
     <select id="pageSysUserList" parameterType="map" resultMap="pageSysUserList">
         select
-        id, sys_user_name, uuid, sys_user_phone, sys_user_email, remark,update_by,create_time,flag
+        id, sys_user_name, uuid, sys_user_phone, sys_user_email, remark,update_by,create_time,disabled_flag
         from sys_user
         <trim prefixOverrides="and" prefix="where">
             <if test="tenantId!=null">
                 and tenant_id = #{tenantId}
             </if>
-            <if test="flag!=null">
-                and flag = #{flag}
+            <if test="disabledFlag!=null">
+                and disabled_flag = #{disabledFlag}
             </if>
             <if test="sysUserName!=null and sysUserName.trim()!=''">
                 and sys_user_name like CONCAT('%',#{sysUserName},'%')
@@ -102,7 +102,7 @@
     </select>
     <select id="pageSysUserList_loginPwd" parameterType="map" resultMap="loginPwd">
         select
-        id, uuid, sys_user_login_name,flag,create_time
+        id, uuid, sys_user_login_name,disabled_flag,create_time
         from sys_user_account_pwd
         where sys_user_id=#{id}
     </select>
@@ -172,8 +172,8 @@
             <if test="remark != null">
                 remark,
             </if>
-            <if test="flag != null">
-                flag,
+            <if test="disabledFlag != null">
+                disabled_flag,
             </if>
             <if test="delFlag != null">
                 del_flag,
@@ -231,8 +231,8 @@
             <if test="remark != null">
                 #{remark,jdbcType=VARCHAR},
             </if>
-            <if test="flag != null">
-                #{flag,jdbcType=INTEGER},
+            <if test="disabledFlag != null">
+                #{disabledFlag,jdbcType=INTEGER},
             </if>
             <if test="delFlag != null">
                 #{delFlag,jdbcType=INTEGER},
@@ -290,8 +290,8 @@
             <if test="remark != null">
                 remark = #{remark,jdbcType=VARCHAR},
             </if>
-            <if test="flag != null">
-                flag = #{flag,jdbcType=INTEGER},
+            <if test="disabledFlag != null">
+                disabled_flag = #{disabledFlag,jdbcType=INTEGER},
             </if>
             <if test="delFlag != null">
                 del_flag = #{delFlag,jdbcType=INTEGER},

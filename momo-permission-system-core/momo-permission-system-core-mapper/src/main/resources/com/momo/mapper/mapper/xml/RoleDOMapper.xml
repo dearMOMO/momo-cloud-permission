@@ -10,9 +10,9 @@
         <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
         <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
         <result column="SYS_ROLE_NAME" property="sysRoleName" jdbcType="VARCHAR" javaType="String"/>
-        <result column="FLAG" property="flag" jdbcType="INTEGER" javaType="Integer"/>
         <result column="DEL_FLAG" property="delFlag" jdbcType="INTEGER" javaType="Integer"/>
         <result column="SYS_ROLE_TYPE" property="sysRoleType" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="DISABLED_FLAG" property="disabledFlag" jdbcType="INTEGER" javaType="Integer"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
         <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
     </resultMap>

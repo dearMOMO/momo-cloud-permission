@@ -113,7 +113,7 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
         UserDO userDO = new UserDO();
         BeanUtils.copyProperties(sysUserAddReq, userDO);
         userDO.setSysUserName(sysUserAddReq.getSysUserName());
-        userDO.setFlag(sysUserAddReq.getFlag());
+        userDO.setDisabledFlag(sysUserAddReq.getDisabledFlag());
         userDO.setId(userDODetail.getId());
         userDO.setUpdateBy(redisUser.getSysUserName());
         userDO.setUpdateTime(DateUtils.getDateTime());
@@ -122,7 +122,7 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
             userMapper.updateByPrimaryKeySelective(userDO);
             return "编辑用户信息成功";
         } else {
-            if (userDODetail.getId().equals(redisUser.getBaseId()) && !userDODetail.getFlag().equals(sysUserAddReq.getFlag())) {
+            if (userDODetail.getId().equals(redisUser.getBaseId()) && !userDODetail.getDisabledFlag().equals(sysUserAddReq.getDisabledFlag())) {
                 throw BizException.fail("您无法更改自己的用户状态");
             }
             //普通管理员 按需来
@@ -150,7 +150,7 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
         }
         RedisUser redisUser = this.redisUser();
         UserDO userDO = new UserDO();
-        userDO.setFlag(sysUserAddReq.getFlag());
+        userDO.setDisabledFlag(sysUserAddReq.getDisabledFlag());
         userDO.setId(userDODetail.getId());
         userDO.setUpdateBy(redisUser.getSysUserName());
         userDO.setUpdateTime(DateUtils.getDateTime());
@@ -216,7 +216,7 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
     public PageInfo<SysUserListRes> sysUserList(SysUserListReq sysUserListReq) {
         RedisUser redisUser = this.redisUser();
         PageHelper.startPage(sysUserListReq.getPageNum(), sysUserListReq.getPageSize(), "id desc");
-        List<SysUserListDO> pageSysUserList = userMapper.pageSysUserList(redisUser.getTenantId(), sysUserListReq.getSysUserName(), sysUserListReq.getFlag());
+        List<SysUserListDO> pageSysUserList = userMapper.pageSysUserList(redisUser.getTenantId(), sysUserListReq.getSysUserName(), sysUserListReq.getDisabledFlag());
         PageInfo<SysUserListDO> pageInfo = new PageInfo<>(pageSysUserList);
         List<SysUserListRes> resList = Lists.newArrayList();
         List<SysUserListDO> doList = pageInfo.getList();
@@ -264,7 +264,7 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
                 if (null != userAccountPwdDO) {
                     sysUserListRes.setPwdBinding(true);
                     sysUserListRes.setPwdBindingName(userAccountPwdDO.getSysUserLoginName());
-                    sysUserListRes.setPwdBindingFlag(userAccountPwdDO.getFlag());
+                    sysUserListRes.setPwdBindingFlag(userAccountPwdDO.getDisabledFlag());
                     sysUserListRes.setPwdBindingDate(userAccountPwdDO.getCreateTime());
                 }
                 //用户是自己登陆，则显示自己

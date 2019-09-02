@@ -102,10 +102,10 @@ public interface RoleMapper {
      * 根据用户id得到角色列表
      *
      * @param userId
-     * @param flag
+     * @param disabledFlag
      * @return
      */
-    public List<RoleDO> getRolesByUserId(@Param("userId") Long userId,@Param("flag")Integer flag);
+    public List<RoleDO> getRolesByUserId(@Param("userId") Long userId,@Param("disabledFlag")Integer disabledFlag);
 
     /**
      * 根据组织id 和管理员角色 查询第三方组织的管理员信息
@@ -117,5 +117,5 @@ public interface RoleMapper {
     RoleDO getVipAdminRole(@Param("tenantId") Long tenantId, @Param("roleType") Integer roleType);
 
 
-    List<RoleDO> getRoleListByEnterpriseId(@Param("tenantId") Long tenantId, @Param("roleType") Integer roleType, @Param("flag") Integer flag, @Param("sysRoleName") String sysRoleName);
+    List<RoleDO> getRoleListByEnterpriseId(@Param("tenantId") Long tenantId, @Param("roleType") Integer roleType, @Param("disabledFlag") Integer disabledFlag, @Param("sysRoleName") String sysRoleName);
 }

@@ -3,7 +3,7 @@ package com.momo.mapper.dataobject;
 import java.util.Date;
 
 /**
- * The table 用户
+ * The table 用户基础表
  */
 public class UserDO{
 
@@ -68,13 +68,13 @@ public class UserDO{
      */
     private String sysUserProvinceName;
     /**
-     * flag 是否被禁用  0否 1禁用.
-     */
-    private Integer flag;
-    /**
      * delFlag 删除状态(0-正常，1-删除).
      */
     private Integer delFlag;
+    /**
+     * disabledFlag 是否被禁用  0否 1禁用.
+     */
+    private Integer disabledFlag;
     /**
      * createTime 创建时间.
      */
@@ -325,22 +325,6 @@ public class UserDO{
     }
 
     /**
-     * Set flag 是否被禁用  0否 1禁用.
-     */
-    public void setFlag(Integer flag){
-        this.flag = flag;
-    }
-
-    /**
-     * Get flag 是否被禁用  0否 1禁用.
-     *
-     * @return the string
-     */
-    public Integer getFlag(){
-        return flag;
-    }
-
-    /**
      * Set delFlag 删除状态(0-正常，1-删除).
      */
     public void setDelFlag(Integer delFlag){
@@ -354,6 +338,22 @@ public class UserDO{
      */
     public Integer getDelFlag(){
         return delFlag;
+    }
+
+    /**
+     * Set disabledFlag 是否被禁用  0否 1禁用.
+     */
+    public void setDisabledFlag(Integer disabledFlag){
+        this.disabledFlag = disabledFlag;
+    }
+
+    /**
+     * Get disabledFlag 是否被禁用  0否 1禁用.
+     *
+     * @return the string
+     */
+    public Integer getDisabledFlag(){
+        return disabledFlag;
     }
 
     /**

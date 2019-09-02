@@ -68,10 +68,6 @@ public class AclDO{
      */
     private String sysAclPermissionCode;
     /**
-     * flag 状态 0启用  1禁用.
-     */
-    private Integer flag;
-    /**
      * delFlag 删除状态(0-正常，1-删除).
      */
     private Integer delFlag;
@@ -83,6 +79,10 @@ public class AclDO{
      * sysAclType 类型，-1系统 0:目录 1：菜单，2：按钮，3：其他.
      */
     private Integer sysAclType;
+    /**
+     * disabledFlag 状态 0启用  1禁用.
+     */
+    private Integer disabledFlag;
     /**
      * createTime 创建时间.
      */
@@ -333,22 +333,6 @@ public class AclDO{
     }
 
     /**
-     * Set flag 状态 0启用  1禁用.
-     */
-    public void setFlag(Integer flag){
-        this.flag = flag;
-    }
-
-    /**
-     * Get flag 状态 0启用  1禁用.
-     *
-     * @return the string
-     */
-    public Integer getFlag(){
-        return flag;
-    }
-
-    /**
      * Set delFlag 删除状态(0-正常，1-删除).
      */
     public void setDelFlag(Integer delFlag){
@@ -394,6 +378,22 @@ public class AclDO{
      */
     public Integer getSysAclType(){
         return sysAclType;
+    }
+
+    /**
+     * Set disabledFlag 状态 0启用  1禁用.
+     */
+    public void setDisabledFlag(Integer disabledFlag){
+        this.disabledFlag = disabledFlag;
+    }
+
+    /**
+     * Get disabledFlag 状态 0启用  1禁用.
+     *
+     * @return the string
+     */
+    public Integer getDisabledFlag(){
+        return disabledFlag;
     }
 
     /**

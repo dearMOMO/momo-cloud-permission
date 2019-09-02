@@ -11,7 +11,7 @@
         <result column="SYS_PRODUCT_NAME" property="sysProductName" jdbcType="VARCHAR" javaType="String"/>
         <result column="SYS_PRODUCT_REPLY" property="sysProductReply" jdbcType="VARCHAR" javaType="String"/>
         <result column="SYS_PRODUCT_DETAIL" property="sysProductDetail" jdbcType="VARCHAR" javaType="String"/>
-        <result column="FLAG" property="flag" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="DISABLED_FLAG" property="disabledFlag" jdbcType="INTEGER" javaType="Integer"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
         <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
     </resultMap>

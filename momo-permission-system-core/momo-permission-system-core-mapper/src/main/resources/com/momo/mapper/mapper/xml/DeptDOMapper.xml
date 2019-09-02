@@ -12,10 +12,10 @@
         <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
         <result column="SYS_DEPT_NAME" property="sysDeptName" jdbcType="VARCHAR" javaType="String"/>
         <result column="SYS_DEPT_LEVEL" property="sysDeptLevel" jdbcType="VARCHAR" javaType="String"/>
-        <result column="FLAG" property="flag" jdbcType="INTEGER" javaType="Integer"/>
         <result column="DEL_FLAG" property="delFlag" jdbcType="INTEGER" javaType="Integer"/>
         <result column="SYS_IS_LEAF" property="sysIsLeaf" jdbcType="INTEGER" javaType="Integer"/>
         <result column="SYS_DEPT_SEQ" property="sysDeptSeq" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="DISABLED_FLAG" property="disabledFlag" jdbcType="INTEGER" javaType="Integer"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
         <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
     </resultMap>

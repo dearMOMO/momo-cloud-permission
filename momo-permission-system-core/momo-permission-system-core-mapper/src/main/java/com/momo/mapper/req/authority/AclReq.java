@@ -73,7 +73,7 @@ public class AclReq extends BaseReq {
     @NotNull(message = "状态 0启用  1禁用 必填", groups = {save.class,Status.class, Modify.class,Permission.class})
     @Max(value = 1,message = "状态：最大值为1")
     @Min(value = 0,message = "状态：最小值为0")
-    private Integer flag;
+    private Integer disabledFlag;
     /**
      * sysAclAction 按钮动作类型(交给前端处理）.
      */

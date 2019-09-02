@@ -13,7 +13,7 @@ public interface UserGroupMapper {
 
     UserGroupDO uuid(@Param("uuid") String uuid);
 
-    List<UserGroupDO> getUserGroupPage(@Param("userGroupName") String userGroupName, @Param("flag") Integer flag);
+    List<UserGroupDO> getUserGroupPage(@Param("userGroupName") String userGroupName, @Param("disabledFlag") Integer disabledFlag);
 
     int insertSelective(UserGroupDO userGroupDO);
 

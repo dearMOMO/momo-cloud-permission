@@ -50,10 +50,10 @@ public class SysEnterpriseUserReq extends BaseReq {
      */
     private String sysUserPhone;
     /**
-     * flag 是否被禁用  0否 1禁用.
+     * disabledFlag 是否被禁用  0否 1禁用.
      */
     @NotNull(message = "状态必填", groups = {Add.class, Modify.class, Status.class})
-    private Integer flag;
+    private Integer disabledFlag;
     /**
      * sysUserLoginName 登录名.
      */

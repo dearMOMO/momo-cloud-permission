@@ -13,9 +13,9 @@
         <result column="SYS_FILTERS" property="sysFilters" jdbcType="VARCHAR" javaType="String"/>
         <result column="SYS_PREDICATES" property="sysPredicates" jdbcType="VARCHAR" javaType="String"/>
         <result column="P_ID" property="pId" jdbcType="INTEGER" javaType="Integer"/>
-        <result column="FLAG" property="flag" jdbcType="INTEGER" javaType="Integer"/>
         <result column="DEL_FLAG" property="delFlag" jdbcType="INTEGER" javaType="Integer"/>
         <result column="SYS_ORDER" property="sysOrder" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="DISABLED_FLAG" property="disabledFlag" jdbcType="INTEGER" javaType="Integer"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
         <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
     </resultMap>

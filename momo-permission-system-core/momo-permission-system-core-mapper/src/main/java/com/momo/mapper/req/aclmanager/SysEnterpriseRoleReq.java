@@ -35,10 +35,10 @@ public class SysEnterpriseRoleReq extends BaseReq {
      */
     private Long tenantId;
     /**
-     * flag 状态 0启用  1禁用.
+     * disabledFlag 状态 0启用  1禁用.
      */
     @NotNull(message = "状态 0启用  1禁用 必填", groups = {save.class, Modify.class, Status.class})
-    private Integer flag;
+    private Integer disabledFlag;
 
     /**
      * roleName 角色名称.

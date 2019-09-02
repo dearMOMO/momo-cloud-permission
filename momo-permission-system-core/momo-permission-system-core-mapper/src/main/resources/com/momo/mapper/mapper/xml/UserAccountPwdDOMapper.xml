@@ -13,8 +13,8 @@
         <result column="SYS_USER_PWD" property="sysUserPwd" jdbcType="VARCHAR" javaType="String"/>
         <result column="SYS_USER_AUTH_SALT" property="sysUserAuthSalt" jdbcType="VARCHAR" javaType="String"/>
         <result column="SYS_USER_LOGIN_NAME" property="sysUserLoginName" jdbcType="VARCHAR" javaType="String"/>
-        <result column="FLAG" property="flag" jdbcType="INTEGER" javaType="Integer"/>
         <result column="DEL_FLAG" property="delFlag" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="DISABLED_FLAG" property="disabledFlag" jdbcType="INTEGER" javaType="Integer"/>
         <result column="SYS_LOGIN_NUMBER" property="sysLoginNumber" jdbcType="INTEGER" javaType="Integer"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
         <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>

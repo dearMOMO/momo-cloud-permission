@@ -40,9 +40,9 @@ public class BugDO{
      */
     private String sysProductDetail;
     /**
-     * flag 处理状态 0 已处理 1未处理.
+     * disabledFlag 状态 0启用  1禁用.
      */
-    private Integer flag;
+    private Integer disabledFlag;
     /**
      * createTime CREATE_TIME.
      */
@@ -181,19 +181,19 @@ public class BugDO{
     }
 
     /**
-     * Set flag 处理状态 0 已处理 1未处理.
+     * Set disabledFlag 状态 0启用  1禁用.
      */
-    public void setFlag(Integer flag){
-        this.flag = flag;
+    public void setDisabledFlag(Integer disabledFlag){
+        this.disabledFlag = disabledFlag;
     }
 
     /**
-     * Get flag 处理状态 0 已处理 1未处理.
+     * Get disabledFlag 状态 0启用  1禁用.
      *
      * @return the string
      */
-    public Integer getFlag(){
-        return flag;
+    public Integer getDisabledFlag(){
+        return disabledFlag;
     }
 
     /**

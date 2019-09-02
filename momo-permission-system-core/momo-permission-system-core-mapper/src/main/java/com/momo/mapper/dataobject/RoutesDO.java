@@ -48,10 +48,6 @@ public class RoutesDO{
      */
     private Integer pId;
     /**
-     * flag 状态 0启用  1禁用.
-     */
-    private Integer flag;
-    /**
      * delFlag 删除状态(0-正常，1-删除).
      */
     private Integer delFlag;
@@ -59,6 +55,10 @@ public class RoutesDO{
      * sysOrder 这个路由的执行order.
      */
     private Integer sysOrder;
+    /**
+     * disabledFlag 状态 0启用  1禁用.
+     */
+    private Integer disabledFlag;
     /**
      * createTime 创建时间.
      */
@@ -229,22 +229,6 @@ public class RoutesDO{
     }
 
     /**
-     * Set flag 状态 0启用  1禁用.
-     */
-    public void setFlag(Integer flag){
-        this.flag = flag;
-    }
-
-    /**
-     * Get flag 状态 0启用  1禁用.
-     *
-     * @return the string
-     */
-    public Integer getFlag(){
-        return flag;
-    }
-
-    /**
      * Set delFlag 删除状态(0-正常，1-删除).
      */
     public void setDelFlag(Integer delFlag){
@@ -274,6 +258,22 @@ public class RoutesDO{
      */
     public Integer getSysOrder(){
         return sysOrder;
+    }
+
+    /**
+     * Set disabledFlag 状态 0启用  1禁用.
+     */
+    public void setDisabledFlag(Integer disabledFlag){
+        this.disabledFlag = disabledFlag;
+    }
+
+    /**
+     * Get disabledFlag 状态 0启用  1禁用.
+     *
+     * @return the string
+     */
+    public Integer getDisabledFlag(){
+        return disabledFlag;
     }
 
     /**

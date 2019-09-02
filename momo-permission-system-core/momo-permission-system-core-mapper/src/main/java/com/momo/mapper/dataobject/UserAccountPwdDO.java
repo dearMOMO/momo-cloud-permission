@@ -3,7 +3,7 @@ package com.momo.mapper.dataobject;
 import java.util.Date;
 
 /**
- * The table 用户基础表
+ * The table 用户账号密码
  */
 public class UserAccountPwdDO{
 
@@ -48,13 +48,13 @@ public class UserAccountPwdDO{
      */
     private String sysUserLoginName;
     /**
-     * flag 状态 0启用  1禁用.
-     */
-    private Integer flag;
-    /**
      * delFlag 删除状态(0-正常，1-删除).
      */
     private Integer delFlag;
+    /**
+     * disabledFlag 状态 0启用  1禁用.
+     */
+    private Integer disabledFlag;
     /**
      * sysLoginNumber 账号允许登录的次数 -1 不限次数 ，0禁止登陆.
      */
@@ -229,22 +229,6 @@ public class UserAccountPwdDO{
     }
 
     /**
-     * Set flag 状态 0启用  1禁用.
-     */
-    public void setFlag(Integer flag){
-        this.flag = flag;
-    }
-
-    /**
-     * Get flag 状态 0启用  1禁用.
-     *
-     * @return the string
-     */
-    public Integer getFlag(){
-        return flag;
-    }
-
-    /**
      * Set delFlag 删除状态(0-正常，1-删除).
      */
     public void setDelFlag(Integer delFlag){
@@ -258,6 +242,22 @@ public class UserAccountPwdDO{
      */
     public Integer getDelFlag(){
         return delFlag;
+    }
+
+    /**
+     * Set disabledFlag 状态 0启用  1禁用.
+     */
+    public void setDisabledFlag(Integer disabledFlag){
+        this.disabledFlag = disabledFlag;
+    }
+
+    /**
+     * Get disabledFlag 状态 0启用  1禁用.
+     *
+     * @return the string
+     */
+    public Integer getDisabledFlag(){
+        return disabledFlag;
     }
 
     /**
