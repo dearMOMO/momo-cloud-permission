@@ -23,11 +23,11 @@ import lombok.*;
 //@EqualsAndHashCode(callSuper = true, of = {"id"})
 public class SysEnterpriseRoleRes extends RoleDO {
     //是否显示编辑按钮
-    private boolean editButton = true;
+    private boolean editButtonShow = true;
     //是否显示授权按钮
     private boolean authorButton = true;
     //是否显示状态按钮
-    private boolean flagButton = true;
+    private boolean disabledFlagButtonShow = true;
     private PageInfo<SysEnterpriseRoleRes> sysEnterpriseRoleResPageInfo;
     //企业名称
     private String sysEnterpriseName;

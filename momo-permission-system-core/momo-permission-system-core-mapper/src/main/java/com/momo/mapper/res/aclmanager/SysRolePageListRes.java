@@ -22,5 +22,5 @@ public class SysRolePageListRes extends RoleDO {
     //是否显示授权按钮
     private boolean authorButton = true;
     //是否显示状态按钮
-    private boolean flagButton = true;
+    private boolean disabledFlagButtonShow = true;
 }

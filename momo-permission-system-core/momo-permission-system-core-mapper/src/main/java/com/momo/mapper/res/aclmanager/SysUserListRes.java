@@ -27,7 +27,7 @@ public class SysUserListRes extends UserDO {
     //是否显示修改密码按钮
     private boolean pwdButton = true;
     //是否显示状态按钮
-    private boolean flagButton = true;
+    private boolean disabledFlagButtonShow = true;
     //是否显示授权角色按钮
     private boolean roleButton = true;
 
