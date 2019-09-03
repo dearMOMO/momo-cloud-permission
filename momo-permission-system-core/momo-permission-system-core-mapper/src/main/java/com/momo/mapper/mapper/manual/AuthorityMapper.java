@@ -29,7 +29,7 @@ public interface AuthorityMapper {
      * @param userAclIdList     权限点 ids
      * @return
      */
-    List<AclDO> getAllAcl(@Param("sys_acl_permission_code") Long sys_acl_permission_code, @Param("userAclIdList") List<Long> userAclIdList);
+    List<AclDO> getAllAcl(@Param("sys_acl_permission_code") String sys_acl_permission_code, @Param("userAclIdList") List<Long> userAclIdList);
 
     /**
      * 根据角色ids 查询所有角色
@@ -46,7 +46,7 @@ public interface AuthorityMapper {
      * @param roleId
      * @return
      */
-    List<Long> aclsByRoleId(@Param("roleIds") Set<Long> roleId, @Param("sys_acl_permission_code") Long sys_acl_permission_code);
+    List<Long> aclsByRoleId(@Param("roleIds") Set<Long> roleId, @Param("sys_acl_permission_code") String sys_acl_permission_code);
 
     /**
      * 根据组的id 得到管理员ids

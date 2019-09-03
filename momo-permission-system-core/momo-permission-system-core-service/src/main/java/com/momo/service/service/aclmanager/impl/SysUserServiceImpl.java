@@ -126,7 +126,7 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
                 throw BizException.fail("您无法更改自己的用户状态");
             }
             //普通管理员 按需来
-            if (superAdminsService.checkIsSuperAdmin(userDODetail.getSysUserPhone())) {
+            if (superAdminsService.checkIsSuperAdmin(redisUser.getSysUserPhone())) {
                 throw BizException.fail("超级管理员信息不允许编辑");
             }
             //是否被禁用  0否 1禁用
@@ -159,8 +159,10 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
             userMapper.updateByPrimaryKeySelective(userDO);
             return "用户状态设置成功";
         } else {
+            RedisUser redisUserTwo=new RedisUser();
+            redisUserTwo.setSysUserPhone(userDODetail.getSysUserPhone());
             //普通管理员 按需来
-            if (superAdminsService.checkIsSuperAdmin(userDODetail.getSysUserPhone())) {
+            if (superAdminsService.checkIsSuperAdmin(redisUserTwo.getSysUserPhone())) {
                 throw BizException.fail("超级管理员状态不允许编辑");
             }
             //是否被禁用  0否 1禁用
@@ -196,6 +198,8 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
             userAccountPwdMapper.updateByPrimaryKeySelective(userAccountPwdDO);
             return "修改密码成功";
         } else {
+            RedisUser redisUserTwo=new RedisUser();
+            redisUserTwo.setSysUserPhone(userDODetail.getSysUserPhone());
             //普通管理员 按需来
             if (superAdminsService.checkIsSuperAdmin(userDODetail.getSysUserPhone())) {
                 throw BizException.fail("超级管理员密码不允许编辑");

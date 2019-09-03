@@ -30,7 +30,7 @@ public class AdminSysCoreService {
     @Autowired
     private AuthorityMapper authorityMapper;
 
-    public List<AclDO> getRoleAclList(Set<Long> roleIds, Long aclPermissionType) {
+    public List<AclDO> getRoleAclList(Set<Long> roleIds, String aclPermissionType) {
         if (org.apache.commons.collections.CollectionUtils.isEmpty(roleIds)) {
             return Lists.newArrayList();
         }
@@ -47,8 +47,8 @@ public class AdminSysCoreService {
     public List<AclDO> getUserAclList(LoginAuthReq loginAuthReq, RedisUser redisUser) {
 
         //如果是超级管理员，则获取所有权限点
-        if (isSuperAdmin(redisUser)) {
-            return authorityMapper.getAllAcl(loginAuthReq.getAclPermissionType(), null);
+        if (superAdminsService.checkIsSuperAdmin(redisUser.getSysUserPhone())) {
+            return authorityMapper.getAllAcl(loginAuthReq.getAclPermissionCode(), null);
         }
         //根据用户id获取角色ids
         List<Long> userRoleIdList = authorityMapper.rolesByUserId(redisUser.getBaseId());
@@ -68,19 +68,19 @@ public class AdminSysCoreService {
             }
         });
         //根据角色ids获取权限点ids
-        List<Long> userAclIdList = authorityMapper.aclsByRoleId(finalRoleIds, loginAuthReq.getAclPermissionType());
+        List<Long> userAclIdList = authorityMapper.aclsByRoleId(finalRoleIds, loginAuthReq.getAclPermissionCode());
         if (CollectionUtils.isEmpty(userAclIdList)) {
             return Lists.newArrayList();
         }
         //根据权限点ids获取权限点列表
-        return authorityMapper.getAllAcl(loginAuthReq.getAclPermissionType(), userAclIdList);
+        return authorityMapper.getAllAcl(loginAuthReq.getAclPermissionCode(), userAclIdList);
     }
 
     //为角色授权 权限 之前， 需要查看该角色拥有哪些权限点，以及当前登录用户可以操作哪些权限
     public List<AclDO> getUserHavingAclList(LoginAuthReq loginAuthReq, RedisUser redisUser) {
         //如果是超级管理员，则获取所有权限点
-        if (isSuperAdmin(redisUser)) {
-            return authorityMapper.getAllAcl(loginAuthReq.getAclPermissionType(), null);
+        if (superAdminsService.checkIsSuperAdmin(redisUser.getSysUserPhone())) {
+            return authorityMapper.getAllAcl(loginAuthReq.getAclPermissionCode(), null);
         }
         //根据用户id获取角色ids
         List<Long> userRoleIdList = authorityMapper.rolesByUserId(redisUser.getBaseId());
@@ -89,23 +89,11 @@ public class AdminSysCoreService {
         }
         Set<Long> userRoleIdListSet = userRoleIdList.stream().map(aLong -> aLong).collect(Collectors.toSet());
         //根据角色ids获取权限点ids
-        List<Long> userAclIdList = authorityMapper.aclsByRoleId(userRoleIdListSet, loginAuthReq.getAclPermissionType());
+        List<Long> userAclIdList = authorityMapper.aclsByRoleId(userRoleIdListSet, loginAuthReq.getAclPermissionCode());
         if (org.apache.commons.collections.CollectionUtils.isEmpty(userAclIdList)) {
             return Lists.newArrayList();
         }
         //根据权限点ids获取权限点列表
-        return authorityMapper.getAllAcl(loginAuthReq.getAclPermissionType(), userAclIdList);
-    }
-
-    public boolean isSuperAdmin(RedisUser redisUser) {
-        // 这里是我自己定义了一个假的超级管理员规则，实际中要根据项目进行修改
-        // 可以是配置文件获取，可以指定某个用户，也可以指定某个角色
-        if (StringUtils.isBlank(redisUser.getSysUserPhone())) {
-            return false;
-        }
-        if (superAdminsService.checkIsSuperAdmin(redisUser.getSysUserPhone())) {
-            return true;
-        }
-        return false;
+        return authorityMapper.getAllAcl(loginAuthReq.getAclPermissionCode(), userAclIdList);
     }
 }

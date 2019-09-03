@@ -32,8 +32,7 @@ public class AdminAuthorityService extends BaseService {
     private AuthorityMapper authorityMapper;
 
     //动态权限菜单(总部和第三方通用)
-    public List<AclLevelRes> dynamicMenuTree(LoginAuthReq loginAuthReq) {
-        RedisUser redisUser = this.redisUser();
+    public List<AclLevelRes> dynamicMenuTree(LoginAuthReq loginAuthReq,RedisUser redisUser) {
         List<AclDO> userAclList = sysCoreService.getUserAclList(loginAuthReq, redisUser);
         List<AclLevelRes> aclDtoList = Lists.newArrayList();
         for (AclDO acl : userAclList) {
@@ -53,7 +52,7 @@ public class AdminAuthorityService extends BaseService {
         // 1、当前用户已分配的权限点
         List<AclDO> userAclList = sysCoreService.getUserHavingAclList(loginAuthReq, redisUser);
         // 2、当前角色分配的权限点
-        List<AclDO> roleAclList = sysCoreService.getRoleAclList(Sets.newHashSet(loginAuthReq.getRoleId()), loginAuthReq.getAclPermissionType());
+        List<AclDO> roleAclList = sysCoreService.getRoleAclList(Sets.newHashSet(loginAuthReq.getRoleId()), loginAuthReq.getAclPermissionCode());
         // 3、当前系统所有权限点
         List<AclLevelRes> aclDtoList = Lists.newArrayList();
 

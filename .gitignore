@@ -28,4 +28,6 @@ build/
 ### VS Code ###
 .vscode/
 /logs/
-/mybatis-代码生成器/src/
+/mybatis-代码生成器/src/dao
+/mybatis-代码生成器/src/entity
+/mybatis-代码生成器/src/mapper
