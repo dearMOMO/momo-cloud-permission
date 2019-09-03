@@ -1,12 +1,15 @@
 package com.momo.momopermissionsystemcoreweb.configuration;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import java.lang.reflect.Method;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -17,39 +20,47 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @author: Jie Li
  * @create: 2019-07-30 09:50
  **/
+@Slf4j
 @Configuration
-@EnableAsync
-public class AsyncTaskExecutePool {
+@PropertySource(value = "classpath:config/AsyncTaskExecutePoolConfig.properties")
+public class AsyncTaskExecutePool implements AsyncConfigurer {
 
-    private final static Logger log = LoggerFactory.getLogger(AsyncTaskExecutePool.class);
 
-    private int corePoolSize = 20;
+    @Value("${async.pool.corePoolSize}")
+    private int corePoolSize;//核心线程池大小
 
-    private int maxPoolSize = 50;
+    @Value("${async.pool.maxPoolSize}")
+    private int maxPoolSize;//最大线程数
 
-    private int keepAliveSeconds = 300;
+    @Value("${async.pool.keepAliveSeconds}")
+    private int keepAliveSeconds;//活跃时间
 
-    private int queueCapacity = 200;
+    @Value("${async.pool.queueCapacity}")
+    private int queueCapacity;//队列容量
+
 
     /**
      * myTaskAsynPool即配置线程池的方法名，此处如果不写自定义线程池的方法名，会使用默认的线程池
      */
     //@Async("threadPoolTaskExecutor")
+    // Future<String> future = new AsyncResult<>("success!");
     @Bean("threadPoolTaskExecutor")
-    public Executor ThreadPoolTaskExecutor() {
+    @Override
+    public Executor getAsyncExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        //核心线程数目
-        executor.setCorePoolSize(getCorePoolSize());
-        //指定最大线程数
-        executor.setMaxPoolSize(getMaxPoolSize());
-        //队列中最大的数目
-        executor.setQueueCapacity(getQueueCapacity());
-        //线程空闲后的最大存活时间
-        executor.setKeepAliveSeconds(getKeepAliveSeconds());
-        //线程名称前缀
+        //核心线程池大小
+        executor.setCorePoolSize(corePoolSize);
+        //最大线程数
+        executor.setMaxPoolSize(maxPoolSize);
+        //队列容量
+        executor.setQueueCapacity(queueCapacity);
+        //活跃时间
+        executor.setKeepAliveSeconds(keepAliveSeconds);
+        //线程名字前缀
         executor.setThreadNamePrefix("taskExecutor-");
-        //rejection-policy：当pool已经达到max size的时候，如何处理新任务
-        //CALLER_RUNS：不在新线程中执行任务，而是由调用者所在的线程来执行
+
+        // setRejectedExecutionHandler：当pool已经达到max size的时候，如何处理新任务
+        // CallerRunsPolicy：不在新线程中执行任务，而是由调用者所在的线程来执行
         //对拒绝task的处理策略
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         //加载
@@ -57,40 +68,31 @@ public class AsyncTaskExecutePool {
         return executor;
     }
 
-
-    public int getCorePoolSize() {
-        return corePoolSize;
+    /**
+     * 异步任务中异常处理
+     *
+     * @return
+     */
+    @Override
+    public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
+        return (arg0, arg1, arg2) -> {
+            log.error("==========================   异步程序执行异常 begin    =======================");
+            log.info("Exception message - {}", arg0.getMessage());
+            log.info("Method name - {}", arg1.getName());
+            for (Object param : arg2) {
+                log.error("Parameter value - {}", param);
+            }
+            log.error("==========================   异步程序执行异常 end    =======================");
+        };
+//        return new AsyncUncaughtExceptionHandler() {
+//
+//            @Override
+//            public void handleUncaughtException(Throwable arg0, Method arg1, Object... arg2) {
+//                log.error("异步程序执行异常==========================" + arg0.getMessage() + "=======================", arg0);
+//                log.error("exception method:" + arg1.getName());
+//            }
+//        };
     }
 
-    public AsyncTaskExecutePool setCorePoolSize(int corePoolSize) {
-        this.corePoolSize = corePoolSize;
-        return this;
-    }
 
-    public int getMaxPoolSize() {
-        return maxPoolSize;
-    }
-
-    public AsyncTaskExecutePool setMaxPoolSize(int maxPoolSize) {
-        this.maxPoolSize = maxPoolSize;
-        return this;
-    }
-
-    public int getKeepAliveSeconds() {
-        return keepAliveSeconds;
-    }
-
-    public AsyncTaskExecutePool setKeepAliveSeconds(int keepAliveSeconds) {
-        this.keepAliveSeconds = keepAliveSeconds;
-        return this;
-    }
-
-    public int getQueueCapacity() {
-        return queueCapacity;
-    }
-
-    public AsyncTaskExecutePool setQueueCapacity(int queueCapacity) {
-        this.queueCapacity = queueCapacity;
-        return this;
-    }
 }

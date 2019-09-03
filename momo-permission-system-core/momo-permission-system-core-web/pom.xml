@@ -170,6 +170,10 @@
                                         <copy file="${basedir}/builder/dev/config/resource.properties"
                                               tofile="${basedir}/target/classes/config/resource.properties"/>
 
+                                        <delete file="${basedir}/target/classes/config/AsyncTaskExecutePoolConfig.properties"/>
+                                        <copy file="${basedir}/builder/dev/config/AsyncTaskExecutePoolConfig.properties"
+                                              tofile="${basedir}/target/classes/config/AsyncTaskExecutePoolConfig.properties"/>
+
                                     </target>
 
                                 </configuration>
@@ -212,6 +216,10 @@
                                         <delete file="${basedir}/target/classes/config/resource.properties"/>
                                         <copy file="${basedir}/builder/master/config/resource.properties"
                                               tofile="${basedir}/target/classes/config/resource.properties"/>
+
+                                        <delete file="${basedir}/target/classes/config/AsyncTaskExecutePoolConfig.properties"/>
+                                        <copy file="${basedir}/builder/dev/config/AsyncTaskExecutePoolConfig.properties"
+                                              tofile="${basedir}/target/classes/config/AsyncTaskExecutePoolConfig.properties"/>
 
                                     </target>
 
@@ -256,6 +264,10 @@
                                         <copy file="${basedir}/builder/pre/config/resource.properties"
                                               tofile="${basedir}/target/classes/config/resource.properties"/>
 
+                                        <delete file="${basedir}/target/classes/config/AsyncTaskExecutePoolConfig.properties"/>
+                                        <copy file="${basedir}/builder/dev/config/AsyncTaskExecutePoolConfig.properties"
+                                              tofile="${basedir}/target/classes/config/AsyncTaskExecutePoolConfig.properties"/>
+
                                     </target>
 
                                 </configuration>
@@ -298,6 +310,10 @@
                                         <delete file="${basedir}/target/classes/config/resource.properties"/>
                                         <copy file="${basedir}/builder/test/config/resource.properties"
                                               tofile="${basedir}/target/classes/config/resource.properties"/>
+
+                                        <delete file="${basedir}/target/classes/config/AsyncTaskExecutePoolConfig.properties"/>
+                                        <copy file="${basedir}/builder/dev/config/AsyncTaskExecutePoolConfig.properties"
+                                              tofile="${basedir}/target/classes/config/AsyncTaskExecutePoolConfig.properties"/>
 
                                     </target>
 
