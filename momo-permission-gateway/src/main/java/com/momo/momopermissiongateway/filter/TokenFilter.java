@@ -49,8 +49,6 @@ public class TokenFilter implements GlobalFilter, Ordered {
     //redis 30 分钟会话失效时间
     private final static Long EXPIREDREDIS = 1800L;
     @Autowired
-    private JwtProperties jwtProperties;
-    @Autowired
     private InterceptUrlConfiguration interceptUrlConfiguration;
 
     @Override
@@ -79,7 +77,7 @@ public class TokenFilter implements GlobalFilter, Ordered {
                 String userInfo = jwtTokenUtil.getUsernameFromToken(authToken);
                 RedisUser redisUser = JSON.parseObject(userInfo, new TypeReference<RedisUser>() {
                 });
-                if (!redisUser.getTenantId().equals(1L) && interceptUrlConfiguration.checkEnterpriseUrl(path)) {
+                if (!redisUser.getTenantId().equals(interceptUrlConfiguration.getTeantId()) && interceptUrlConfiguration.checkEnterpriseUrl(path)) {
                     return JwtResponse.jwtResponse(exchange, HttpStatus.UNAUTHORIZED.value(), "您无权限访问");
                 }
                 //第三方

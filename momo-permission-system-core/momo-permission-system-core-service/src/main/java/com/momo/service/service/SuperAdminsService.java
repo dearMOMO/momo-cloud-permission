@@ -32,6 +32,7 @@ import java.util.Set;
 @AllArgsConstructor
 //@EqualsAndHashCode(of = {"id"})
 public class SuperAdminsService {
+    private Long teantId;
     private List<String> superAdmins = Lists.newArrayList();
 
     public boolean checkIsSuperAdmin(String sysUserPhone) {

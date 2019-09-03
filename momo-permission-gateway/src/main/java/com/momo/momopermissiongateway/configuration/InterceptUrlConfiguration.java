@@ -28,6 +28,7 @@ import java.util.List;
 @AllArgsConstructor
 //@EqualsAndHashCode(of = {"id"})
 public class InterceptUrlConfiguration {
+    private Long teantId;
     //忽略拦截URL
     private List<String> ignorerUrl = Lists.newArrayList();
 

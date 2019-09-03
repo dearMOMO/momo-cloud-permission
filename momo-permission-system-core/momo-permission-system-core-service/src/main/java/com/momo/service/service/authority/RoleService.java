@@ -118,7 +118,7 @@ public class RoleService extends BaseService {
         RedisUser redisUser = this.redisUser();
         //屏蔽非总部操作第三方管理员角色
         //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
-        if (!redisUser.getTenantId().equals(1L) && roleDO.getSysRoleType().equals(0)) {
+        if (!redisUser.getTenantId().equals(superAdminsService.getTeantId()) && roleDO.getSysRoleType().equals(0)) {
             throw BizException.fail("您无权限操作");
         }
         //当前登录用户所拥有的 角色
@@ -171,7 +171,7 @@ public class RoleService extends BaseService {
         }
         loginAuthReq.setRoleId(roleDO.getId());
         RedisUser redisUser = this.redisUser();
-        if (redisUser.getTenantId().equals(1L)) {
+        if (redisUser.getTenantId().equals(superAdminsService.getTeantId())) {
             AclTreeRes aclTreeRes = adminAuthorityService.roleTree(loginAuthReq, redisUser);
             return aclTreeRes;
         } else {
@@ -219,7 +219,7 @@ public class RoleService extends BaseService {
 
         }
         List<SysRolePageListRes> sysRolePageListRes = Lists.newArrayList();
-        if (redisUser.getTenantId().equals(1L)) {
+        if (redisUser.getTenantId().equals(superAdminsService.getTeantId())) {
             boolean superAdmin = superAdminsService.checkIsSuperAdmin(redisUser.getSysUserPhone());
             momoRoleList(sysRolePageListRes, roleDOS, roleIds, checkAdminRole, superAdmin, currentLoginRoleType);
         } else {
@@ -328,7 +328,7 @@ public class RoleService extends BaseService {
     public DisabledAdminRoleButtonRes disabledAdminRoleButton() {
         RedisUser redisUser = this.redisUser();
         DisabledAdminRoleButtonRes disabledAdminRoleButtonRes=new DisabledAdminRoleButtonRes();
-        if (redisUser.getTenantId().equals(1L)) {
+        if (redisUser.getTenantId().equals(superAdminsService.getTeantId())) {
             disabledAdminRoleButtonRes.setDisabledAdminRoleButton(false);
             return disabledAdminRoleButtonRes;
         }
@@ -374,7 +374,7 @@ public class RoleService extends BaseService {
             //非总部为企业授权，则屏蔽管理员(老板)角色
             //角色的类型，0：管理员(老板)，1：管理员(员工)  2:普通员工 3:其他
             //防止将 管理员(老板)角色 授权给多个用户，造成系统混乱
-            if (!redisUser.getTenantId().equals(1L)) {
+            if (!redisUser.getTenantId().equals(superAdminsService.getTeantId())) {
                 if (roleDO.getSysRoleType().equals(0)) {
                     sysRoleChecke.setDisabled(true);
                 }
@@ -425,7 +425,7 @@ public class RoleService extends BaseService {
         if (checkRoleName(roleReq.getSysRoleName(), null, redisUser.getTenantId())) {
             throw BizException.fail("角色名称已存在");
         }
-        if (!redisUser.getTenantId().equals(1L)) {
+        if (!redisUser.getTenantId().equals(superAdminsService.getTeantId())) {
             //角色的类型，0：管理员角色，1：普通用户 2其他
             if (roleReq.getSysRoleType().equals(0)) {
                 if (checkAdminRole(0, null, redisUser.getTenantId())) {
@@ -462,7 +462,7 @@ public class RoleService extends BaseService {
 
 
         //非总部，不可以操作管理员敏感权限
-        if (!redisUser.getTenantId().equals(1L)) {
+        if (!redisUser.getTenantId().equals(superAdminsService.getTeantId())) {
             //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
             if (roleReq.getSysRoleType().equals(0)) {
                 if (checkAdminRole(0, roleDO.getId(), redisUser.getTenantId())) {
@@ -498,7 +498,7 @@ public class RoleService extends BaseService {
         }
         RedisUser redisUser = this.redisUser();
         //非总部，不可以操作管理员敏感权限
-        if (!redisUser.getTenantId().equals(1L) && roleDO.getSysRoleType().equals(0)) {
+        if (!redisUser.getTenantId().equals(superAdminsService.getTeantId()) && roleDO.getSysRoleType().equals(0)) {
             throw BizException.fail("您无权限操作");
         }
         RoleDO record = new RoleDO();

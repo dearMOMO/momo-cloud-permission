@@ -4,6 +4,7 @@ import com.momo.mapper.req.sysmain.LoginAuthReq;
 import com.momo.mapper.req.sysmain.RedisUser;
 import com.momo.mapper.res.authority.AclLevelRes;
 import com.momo.service.service.BaseService;
+import com.momo.service.service.SuperAdminsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,10 +28,12 @@ public class DynamicMenuTreeService extends BaseService {
     private CommonAuthorityService commonAuthorityService;
     @Autowired
     private AdminAuthorityService adminAuthorityService;
+    @Autowired
+    private SuperAdminsService superAdminsService;
 
     public List<AclLevelRes> dynamicMenuTree(LoginAuthReq loginAuthReq) {
         RedisUser redisUser = this.redisUser();
-        if (redisUser.getTenantId().equals(1L)) {
+        if (redisUser.getTenantId().equals(superAdminsService.getTeantId())) {
             return adminAuthorityService.dynamicMenuTree(loginAuthReq, redisUser);
         } else {
             return commonAuthorityService.dynamicMenuTree(loginAuthReq, redisUser);
