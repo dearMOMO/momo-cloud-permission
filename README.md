@@ -12,10 +12,6 @@
          开发迅速、学习简单、轻量级、易扩展 不依赖框架，原生实现一套易于扩展的分布式权限管理系统
          
  
- [GitHub](https://gitee.com/momoriven/momo-cloud-permission)
- [<font color=#F56C6C size=4 >彩蛋</font>](#彩蛋)
- [Get Started](#《分布式手撸rbac权限系统pro》)
- 
  ## [静态资源-Vue](https://gitee.com/momoriven/permission-vue)
  
 #### SpringCloud/SpringCloudAlibaba 架构图
