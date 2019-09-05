@@ -25,14 +25,12 @@ public enum RedisKeyEnum {
     REDIS_KEY_WEBSITE_VISIBLE_TOTAL("webTotalPeople", 60 * 60*15, "网站访问总人数"),
     //
     REDIS_USER_INFO("user:",-1,"用户信息,实时更新"),
-    REDIS_ACL_MODULE_MAP("aclModuleMap:",-1,"权限模块 Map"),
-    REDIS_ACL_MODULE_OBJ("aclModuleObj:",-1,"权限模块 对象"),
-    REDIS_ACL_MAP("aclMap:",-1,"权限点模块 Map"),
-    REDIS_ACL_OBJ("aclObj:",-1,"权限点模块 对象"),
-    REDIS_ROLE_STR("role:",-1,"普通角色 "),
-    REDIS_ADMIN_ROLE_STR("adminRole:",-1,"管理员角色 "),
-    REDIS_USER_ROLES_STR("userRoles:",-1,"用户和角色关系 "),
-    REDIS_ROLE_ACLS_MAP("roleAcls:",-1,"角色和权限关系 "),
+    REDIS_ROLE_STR("roleStr:",-1,"普通角色 "),
+    REDIS_ADMIN_ROLE_STR("adminRoleStr:",-1,"管理员角色 "),
+
+    REDIS_ACL_MAP("aclMap:",-1,"权限点 Map"),
+    REDIS_USER_ROLES_Map("userRoleMap:",-1,"用户和角色关系 "),
+    REDIS_ROLE_ACLS_MAP("roleAclsMap:",-1,"角色和权限关系 "),
     ;
     private final String key;
     private final int expireTime;

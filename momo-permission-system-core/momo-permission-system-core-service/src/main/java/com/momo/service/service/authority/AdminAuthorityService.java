@@ -100,12 +100,7 @@ public class AdminAuthorityService extends BaseService {
             }
         }
         // 按照seq从小到大排序
-        Collections.sort(rootList, new Comparator<AclLevelRes>() {
-            @Override
-            public int compare(AclLevelRes o1, AclLevelRes o2) {
-                return o1.getSysAclSeq() - o2.getSysAclSeq();
-            }
-        });
+        Collections.sort(rootList, (o1, o2) -> o1.getSysAclSeq() - o2.getSysAclSeq());
         // 递归生成树
         transformDeptTree(rootList, LevelUtil.ROOT, levelDeptMap);
         return rootList;

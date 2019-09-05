@@ -54,7 +54,7 @@ public class AclService extends BaseService {
         // 1、当前用户已分配的权限点
         List<AclDO> userAclList = sysCoreService.getUserHavingAclList(new LoginAuthReq(), redisUser);
         //是否被禁用  0否 1禁用
-        List<RoleDO> getRolesByUserId = roleMapper.getRolesByUserId(redisUser.getBaseId(),0);
+        List<RoleDO> getRolesByUserId = roleMapper.getRolesByUserId(redisUser.getBaseId(), 0);
         Set<Long> roleIds = getRolesByUserId.stream().map(roleDO -> roleDO.getId()).collect(Collectors.toSet());
         // 2、当前角色分配的权限点
         List<AclDO> roleAclList = sysCoreService.getRoleAclList(roleIds, null);
@@ -103,13 +103,14 @@ public class AclService extends BaseService {
         BeanUtils.copyProperties(aclReq, record);
         record.setSysAclParentId(aclReq.getSysAclParentIdStr());
         record.setSysAclLevel(level);
-        record.setSysAclPermissionCode(null);
         record.setCreateBy(redisUser.getSysUserName());
         record.setUpdateBy(redisUser.getSysUserName());
         record.setCreateTime(DateUtils.getDateTime());
         record.setUpdateTime(DateUtils.getDateTime());
         record.setUuid(StrUtil.genUUID());
         record.setId(snowFlake.nextId());
+        record.setDisabledFlag(0);
+        record.setDelFlag(0);
         aclMapper.insertSelective(record);
         return "新增权限成功";
     }
@@ -147,7 +148,7 @@ public class AclService extends BaseService {
         if (before.getId().equals(aclReq.getSysAclParentIdStr())) {
             throw BizException.fail("无法将当前模块挂在自己模块下");
         }
-        if (!aclReq.getSysAclParentIdStr().equals(0L)){
+        if (!aclReq.getSysAclParentIdStr().equals(0L)) {
             AclDO aclDO = aclMapper.selectByPrimaryKey(aclReq.getSysAclParentIdStr());
             if (!before.getSysAclPermissionCode().equals(aclDO.getSysAclPermissionCode())) {
                 throw BizException.fail("无法跨模块编辑");
@@ -195,6 +196,7 @@ public class AclService extends BaseService {
         return aclDetailRes;
     }
 
+    @Transactional
     public String updateStatus(AclReq aclReq) {
         AclDO selfAclDO = aclMapper.selectByPrimaryUuid(aclReq.getUuid());
         if (null == selfAclDO) {

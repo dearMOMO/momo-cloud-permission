@@ -21,6 +21,7 @@ import com.momo.mapper.req.sysmain.LoginAuthReq;
 import com.momo.mapper.req.sysmain.RedisUser;
 import com.momo.mapper.res.aclmanager.*;
 import com.momo.mapper.res.authority.AclTreeRes;
+import com.momo.service.async.RoleRedisCacheServiceAsync;
 import com.momo.service.service.BaseService;
 import com.momo.service.service.SuperAdminsService;
 import com.momo.service.service.aclmanager.SysEnterpriseService;
@@ -66,6 +67,8 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
     private UserAccountPwdMapper userAccountPwdMapper;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private RoleRedisCacheServiceAsync roleRedisCacheServiceAsync;
     private SnowFlake snowFlake = new SnowFlake(1L, 1L);
     @Autowired
     private SuperAdminsService superAdminsService;
@@ -157,7 +160,9 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
             throw BizException.fail("您无权限操作");
         }
         List<AclDO> getAcls = userGroupPageReq.getAcls();
-        roleService.computeAclsToRole(getAcls, roleDO, redisUser);
+        List<AclDO> redisAcls = Lists.newArrayList();
+        roleService.computeAclsToRole(getAcls, roleDO, redisUser, redisAcls);
+        roleRedisCacheServiceAsync.aclsToRoleToRedis(roleDO.getId(), roleDO.getTenantId(), redisAcls);
         return "为企业授权成功";
     }
 
@@ -486,6 +491,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         computeAclsToRole(getAcls, roleDO, redisUser);
         return "为角色授权权限成功";
     }
+
     @Transactional
     public void computeAclsToRole(List<AclDO> getAcls, RoleDO roleDO, RedisUser redisUser) {
         List<AclDO> aclDOS = Lists.newArrayList();
@@ -512,6 +518,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         }
         updateRoleAcls(roleDO.getId(), aclDOS, redisUser, roleDO.getTenantId(), acls, roleDO.getSysRoleType(), alcIds);
     }
+
     @Transactional
     public void updateRoleAcls(Long roleId, List<AclDO> aclIdList, RedisUser redisUser, Long groupId, List<Long> acls, Integer roleType, List<Long> alcIds) {
         roleMapper.deleteRoleAclsByRoleId(roleId);
@@ -794,7 +801,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
             if (superAdminsService.checkIsSuperAdmin(userDODetail.getSysUserPhone())) {
                 throw BizException.fail("超级管理员状态不允许编辑");
             }
-            List<RoleDO> roleDOS = roleMapper.getRolesByUserId(userDODetail.getId(),0);
+            List<RoleDO> roleDOS = roleMapper.getRolesByUserId(userDODetail.getId(), 0);
             //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
             Set<Integer> roleTypes = roleDOS.stream().map(RoleDO::getSysRoleType).collect(Collectors.toSet());
             if (roleTypes.contains(0) && !userDODetail.getId().equals(redisUser.getBaseId())) {
@@ -833,7 +840,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
             if (superAdminsService.checkIsSuperAdmin(userDODetail.getSysUserPhone())) {
                 throw BizException.fail("超级管理员密码不允许编辑");
             }
-            List<RoleDO> roleDOS = roleMapper.getRolesByUserId(userDODetail.getId(),0);
+            List<RoleDO> roleDOS = roleMapper.getRolesByUserId(userDODetail.getId(), 0);
             //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
             Set<Integer> roleTypes = roleDOS.stream().map(RoleDO::getSysRoleType).collect(Collectors.toSet());
             if (roleTypes.contains(0) && !userDODetail.getId().equals(redisUser.getBaseId())) {

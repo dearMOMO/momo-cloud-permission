@@ -22,6 +22,7 @@ import com.momo.mapper.res.aclmanager.SysRoleCheckedRes;
 import com.momo.mapper.res.aclmanager.SysRolePageListRes;
 import com.momo.mapper.res.authority.AclTreeRes;
 import com.momo.mapper.res.authority.CheckTwoSetSizeRes;
+import com.momo.service.async.RoleRedisCacheServiceAsync;
 import com.momo.service.service.BaseService;
 import com.momo.service.service.SuperAdminsService;
 import org.apache.commons.collections.CollectionUtils;
@@ -56,6 +57,8 @@ public class RoleService extends BaseService {
     private CommonAuthorityService commonAuthorityService;
     @Autowired
     private SuperAdminsService superAdminsService;
+    @Autowired
+    private RoleRedisCacheServiceAsync roleRedisCacheServiceAsync;
     private SnowFlake snowFlake = new SnowFlake(1, 1);
 
     public String rolesToUser(BatchRoleUserReq batchRoleUserReq) {
@@ -107,6 +110,7 @@ public class RoleService extends BaseService {
             }
         }
         updateUserRoles(userDO.getId(), roleIdList, redisUser, userDO.getTenantId());
+        roleRedisCacheServiceAsync.rolesToUserToRedis(userDO.getId(), roleIdList, userDO.getTenantId());
         return "为用户授权角色成功";
     }
 
@@ -132,17 +136,22 @@ public class RoleService extends BaseService {
             });
         }
         List<AclDO> getAcls = batchRoleUserReq.getAcls();
-
-        computeAclsToRole(getAcls, roleDO, redisUser);
+        List<AclDO> redisAcls = Lists.newArrayList();
+        computeAclsToRole(getAcls, roleDO, redisUser, redisAcls);
+        roleRedisCacheServiceAsync.aclsToRoleToRedis(roleDO.getId(), roleDO.getTenantId(), redisAcls);
         return "为角色授权权限成功";
     }
 
     @Transactional
-    public void computeAclsToRole(List<AclDO> getAcls, RoleDO roleDO, RedisUser redisUser) {
+    public void computeAclsToRole(List<AclDO> getAcls, RoleDO roleDO, RedisUser redisUser, List<AclDO> redisAcls) {
         List<AclDO> aclDOS = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(getAcls)) {
             Set<String> aclsUuid = getAcls.stream().map(aclDO -> aclDO.getUuid()).collect(Collectors.toSet());
-            aclDOS.addAll(aclMapper.aclUuids(aclsUuid));
+            List<AclDO> aclUuids = aclMapper.aclUuids(aclsUuid);
+            if (CollectionUtils.isNotEmpty(aclUuids)) {
+                aclDOS.addAll(aclUuids);
+                redisAcls.addAll(aclUuids);
+            }
         }
         List<Long> acls = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(aclDOS)) {
@@ -265,7 +274,7 @@ public class RoleService extends BaseService {
                 rolePageListRes.setDisabledFlagButtonShow(true);
             }
             //屏蔽管理员(老板)角色 和状态  按钮
-            if (aDo.getSysRoleType().equals(0)){
+            if (aDo.getSysRoleType().equals(0)) {
                 rolePageListRes.setAuthorButtonShow(false);
                 rolePageListRes.setDisabledFlagButtonShow(false);
             }
@@ -327,7 +336,7 @@ public class RoleService extends BaseService {
 
     public DisabledAdminRoleButtonRes disabledAdminRoleButton() {
         RedisUser redisUser = this.redisUser();
-        DisabledAdminRoleButtonRes disabledAdminRoleButtonRes=new DisabledAdminRoleButtonRes();
+        DisabledAdminRoleButtonRes disabledAdminRoleButtonRes = new DisabledAdminRoleButtonRes();
         if (redisUser.getTenantId().equals(superAdminsService.getTeantId())) {
             disabledAdminRoleButtonRes.setDisabledAdminRoleButton(false);
             return disabledAdminRoleButtonRes;
@@ -444,8 +453,9 @@ public class RoleService extends BaseService {
         record.setUuid(StrUtil.genUUID());
         record.setTenantId(redisUser.getTenantId());
         record.setId(snowFlake.nextId());
+        record.setDelFlag(0);
         roleMapper.insertSelective(record);
-
+        roleRedisCacheServiceAsync.roleSaveToRedis(record);
         return "新增角色成功";
     }
 
@@ -483,10 +493,11 @@ public class RoleService extends BaseService {
         RoleDO record = new RoleDO();
         BeanUtils.copyProperties(roleReq, record);
         record.setUpdateBy(redisUser.getSysUserName());
-        record.setTenantId(null);
+        record.setTenantId(roleDO.getTenantId());
         record.setUpdateTime(DateUtils.getDateTime());
         record.setId(roleDO.getId());
         roleMapper.updateByPrimaryKeySelective(record);
+        roleRedisCacheServiceAsync.roleModifyToRedis(record, roleDO);
         return "编辑角色成功";
     }
 
@@ -510,9 +521,10 @@ public class RoleService extends BaseService {
         }
         record.setUpdateBy(redisUser.getSysUserName());
         record.setUpdateTime(DateUtils.getDateTime());
-        record.setTenantId(null);
+        record.setTenantId(roleDO.getTenantId());
         record.setId(roleDO.getId());
         roleMapper.updateByPrimaryKeySelective(record);
+        roleRedisCacheServiceAsync.roleStatusToRedis(roleDO, record.getDisabledFlag());
         return "变更角色状态成功";
     }
 
@@ -566,10 +578,10 @@ public class RoleService extends BaseService {
     }
 
     public boolean checkRoleName(String roleName, Long id, Long tenantId) {
-        return roleMapper.checkRoleName(roleName, id, tenantId) > 0 ? true : false;
+        return roleMapper.checkRoleName(roleName, id, tenantId) > 0;
     }
 
     public boolean checkAdminRole(Integer roleType, Long id, Long compId) {
-        return roleMapper.checkAdminRole(id, roleType, compId) > 0 ? true : false;
+        return roleMapper.checkAdminRole(id, roleType, compId) > 0;
     }
 }
