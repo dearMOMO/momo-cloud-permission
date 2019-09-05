@@ -1,12 +1,6 @@
+# 感谢大佬对小弟的支持，谢谢您
 
- #  **momo-cloud-permission** 
- # **手写权限系统(灵活控制)** 
- # **支持多系统、多租户** 
- # **缓存redis** 
- # **DB架构图还在绘制中。。。。** 
- 
          
- 
 # [静态资源-Vue](https://gitee.com/momoriven/permission-vue)
 
 
