@@ -93,7 +93,7 @@
     <update id="batchUpdateLevel" parameterType="map">
         <foreach collection="sysAclModuleList" item="sysAclModule" separator=";">
             UPDATE sys_acl
-            SET sys_acl_module_level = #{sysAclModule.sysAclModuleLevel}
+            SET sys_acl_level = #{sysAclModule.sysAclLevel}
             WHERE id = #{sysAclModule.id}
         </foreach>
     </update>

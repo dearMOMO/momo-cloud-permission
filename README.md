@@ -1,6 +1,3 @@
-# 感谢大佬对小弟的支持，谢谢您
-
-         
 # [静态资源-Vue](https://gitee.com/momoriven/permission-vue)
 
 

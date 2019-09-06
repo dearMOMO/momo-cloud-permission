@@ -17,6 +17,7 @@ import com.momo.mapper.req.sysmain.RedisUser;
 import com.momo.mapper.res.authority.AclDetailRes;
 import com.momo.mapper.res.authority.AclLevelRes;
 import com.momo.mapper.res.authority.AclTreeRes;
+import com.momo.service.async.AclRedisCacheServiceAsync;
 import com.momo.service.service.BaseService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
@@ -47,6 +48,8 @@ public class AclService extends BaseService {
     private RoleMapper roleMapper;
     @Autowired
     private AuthorityMapper authorityMapper;
+    @Autowired
+    private AclRedisCacheServiceAsync aclRedisCacheServiceAsync;
     private SnowFlake snowFlake = new SnowFlake(1, 1);
 
     public AclTreeRes aclTree() {
@@ -112,6 +115,7 @@ public class AclService extends BaseService {
         record.setDisabledFlag(0);
         record.setDelFlag(0);
         aclMapper.insertSelective(record);
+        aclRedisCacheServiceAsync.aclSaveToRedis(record);
         return "新增权限成功";
     }
 
@@ -135,7 +139,10 @@ public class AclService extends BaseService {
         record.setUpdateTime(DateUtils.getDateTime());
         record.setUuid(StrUtil.genUUID());
         record.setId(snowFlake.nextId());
+        record.setDisabledFlag(0);
+        record.setDelFlag(0);
         aclMapper.insertSelective(record);
+        aclRedisCacheServiceAsync.aclSaveToRedis(record);
         return "新增权限系统成功";
     }
 
@@ -170,6 +177,7 @@ public class AclService extends BaseService {
         after.setUpdateTime(DateUtils.getDateTime());
         after.setId(before.getId());
         after.setSysAclParentId(aclReq.getSysAclParentIdStr());
+        after.setSysAclPermissionCode(before.getSysAclPermissionCode());
         updateWithChild(before, after);
 
         return "编辑权限成功";
@@ -236,8 +244,8 @@ public class AclService extends BaseService {
 
             }
         }
-        after.setSysAclPermissionCode(null);
         aclMapper.updateByPrimaryKeySelective(after);
+        aclRedisCacheServiceAsync.modifyAclToRedis(after, aclModuleList);
     }
 
     private boolean checkUrl(String url, String moduleType, Long id) {
