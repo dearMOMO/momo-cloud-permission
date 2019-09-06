@@ -29,7 +29,7 @@
         <commons-lang3.version>3.4</commons-lang3.version>
         <UserAgentUtils.version>1.21</UserAgentUtils.version>
         <shiro-core.version>1.4.0</shiro-core.version>
-        <netty-all.version>4.1.39.Final</netty-all.version>
+        <netty-all.version>4.1.36.Final</netty-all.version>
         <spring-boot-admin.version>2.0.4</spring-boot-admin.version>
         <EasyCaptcha.version>1.5.0</EasyCaptcha.version>
         <commons-codec.version>1.12</commons-codec.version>
