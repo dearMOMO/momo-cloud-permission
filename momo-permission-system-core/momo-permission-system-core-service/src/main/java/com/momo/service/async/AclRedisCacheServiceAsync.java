@@ -2,7 +2,10 @@ package com.momo.service.async;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
 import com.momo.common.error.RedisKeyEnum;
 import com.momo.common.util.RedisUtil;
 import com.momo.mapper.dataobject.AclDO;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @ProjectName: momo-cloud-permission
@@ -27,18 +31,18 @@ import java.util.Map;
  */
 @Service
 @Slf4j
-@Async("threadPoolTaskExecutor")
 public class AclRedisCacheServiceAsync {
     @Autowired
     private RedisUtil redisUtil;
 
-
+    @Async("threadPoolTaskExecutor")
     public void aclSaveToRedis(AclDO aclDO) {
         String redisKey = RedisKeyEnum.REDIS_ACL_MAP.getKey() + aclDO.getSysAclPermissionCode();
         String aclsStr = JSONObject.toJSONString(aclDO, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteDateUseDateFormat);
         redisUtil.hset(redisKey, String.valueOf(aclDO.getId()), aclsStr);
     }
 
+    @Async("threadPoolTaskExecutor")
     public void modifyAclToRedis(AclDO aclSelf, List<AclDO> aclsChild) {
         String redisKey = RedisKeyEnum.REDIS_ACL_MAP.getKey() + aclSelf.getSysAclPermissionCode();
         String aclsStr = JSONObject.toJSONString(aclSelf, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteDateUseDateFormat);

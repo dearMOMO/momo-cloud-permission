@@ -1,9 +1,13 @@
 package com.momo.service.service.authority;
 
-import com.google.common.collect.Lists;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.google.common.collect.*;
+import com.momo.common.error.RedisKeyEnum;
 import com.momo.common.util.DateUtils;
 import com.momo.common.error.BizException;
 import com.momo.common.util.LevelUtil;
+import com.momo.common.util.RedisUtil;
 import com.momo.common.util.StrUtil;
 import com.momo.common.util.snowFlake.SnowFlake;
 import com.momo.mapper.dataobject.AclDO;
@@ -26,6 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -48,6 +53,8 @@ public class AclService extends BaseService {
     private RoleMapper roleMapper;
     @Autowired
     private AuthorityMapper authorityMapper;
+    @Autowired
+    private RedisUtil redisUtil;
     @Autowired
     private AclRedisCacheServiceAsync aclRedisCacheServiceAsync;
     private SnowFlake snowFlake = new SnowFlake(1, 1);
@@ -91,6 +98,34 @@ public class AclService extends BaseService {
         aclTreeRes.setAclLevelRes(aclListToTree);
         aclTreeRes.setDefaultexpandedKeys(defaultexpandedKeys);
         return aclTreeRes;
+    }
+
+    public String aclsToRedis() {
+        List<AclDO> getAllAcl = authorityMapper.getAllAcl(null, null);
+        Set<String> redisMapKey = Sets.newHashSet();
+        Multimap<String, AclDO> aclDOMultimap = ArrayListMultimap.create();
+        if (CollectionUtils.isNotEmpty(getAllAcl)) {
+            getAllAcl.forEach(aclDO -> {
+                String redisKey = RedisKeyEnum.REDIS_ACL_MAP.getKey() + aclDO.getSysAclPermissionCode();
+                redisMapKey.add(redisKey);
+
+                aclDOMultimap.put(redisKey, aclDO);
+            });
+        }
+        if (CollectionUtils.isNotEmpty(redisMapKey)) {
+            redisMapKey.forEach(s -> {
+                List<AclDO> aclDOS = (List<AclDO>) aclDOMultimap.get(s);
+                Map<String, String> aclMap = Maps.newHashMap();
+                if (CollectionUtils.isNotEmpty(aclDOS)) {
+                    aclDOS.forEach(aclDO -> {
+                        String aclMapStr = JSONObject.toJSONString(aclDO, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteDateUseDateFormat);
+                        aclMap.put(String.valueOf(aclDO.getId()), aclMapStr);
+                    });
+                }
+                redisUtil.hsetputAll(s, aclMap);
+            });
+        }
+        return "一键同步权限到Redis成功";
     }
 
     @Transactional
@@ -211,6 +246,7 @@ public class AclService extends BaseService {
             throw BizException.fail("待编辑的权限不存在");
         }
         AclDO record = new AclDO();
+        BeanUtils.copyProperties(selfAclDO, record);
         //状态 0启用  1禁用
         if (aclReq.getDisabledFlag().equals(0)) {
             record.setDisabledFlag(1);
@@ -218,10 +254,12 @@ public class AclService extends BaseService {
             record.setDisabledFlag(0);
         }
         RedisUser redisUser = this.redisUser();
+
         record.setUpdateBy(redisUser.getSysUserName());
         record.setUpdateTime(DateUtils.getDateTime());
         record.setId(selfAclDO.getId());
         aclMapper.updateByPrimaryKeySelective(record);
+        aclRedisCacheServiceAsync.modifyAclToRedis(record, null);
         return "更新权限状态成功";
     }
 

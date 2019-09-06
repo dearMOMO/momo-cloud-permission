@@ -29,6 +29,11 @@ public class AclController {
         return JSONResult.ok(aclService.aclTree());
     }
 
+    @RequestMapping("/aclsToRedis/v1")
+    public JSONResult aclsToRedis() {
+        return JSONResult.ok(aclService.aclsToRedis());
+    }
+
     @RequestMapping("/save/v1")
     public JSONResult save(@Validated(AclReq.save.class) @RequestBody AclReq aclReq) {
         return JSONResult.ok(aclService.insertSelective(aclReq));
