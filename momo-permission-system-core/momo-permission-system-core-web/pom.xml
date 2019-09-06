@@ -92,6 +92,10 @@
             <groupId>com.momo</groupId>
             <artifactId>momo-permission-system-core-service</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.momo</groupId>
+            <artifactId>momo-permission-system-core-netty</artifactId>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -174,6 +178,10 @@
                                         <copy file="${basedir}/builder/dev/config/AsyncTaskExecutePoolConfig.properties"
                                               tofile="${basedir}/target/classes/config/AsyncTaskExecutePoolConfig.properties"/>
 
+                                        <delete file="${basedir}/target/classes/banner.txt"/>
+                                        <copy file="${basedir}/builder/dev/banner.txt"
+                                              tofile="${basedir}/target/classes/banner.txt"/>
+
                                     </target>
 
                                 </configuration>
@@ -220,6 +228,10 @@
                                         <delete file="${basedir}/target/classes/config/AsyncTaskExecutePoolConfig.properties"/>
                                         <copy file="${basedir}/builder/dev/config/AsyncTaskExecutePoolConfig.properties"
                                               tofile="${basedir}/target/classes/config/AsyncTaskExecutePoolConfig.properties"/>
+
+                                        <delete file="${basedir}/target/classes/banner.txt"/>
+                                        <copy file="${basedir}/builder/dev/banner.txt"
+                                              tofile="${basedir}/target/classes/banner.txt"/>
 
                                     </target>
 
@@ -268,6 +280,10 @@
                                         <copy file="${basedir}/builder/dev/config/AsyncTaskExecutePoolConfig.properties"
                                               tofile="${basedir}/target/classes/config/AsyncTaskExecutePoolConfig.properties"/>
 
+                                        <delete file="${basedir}/target/classes/banner.txt"/>
+                                        <copy file="${basedir}/builder/dev/banner.txt"
+                                              tofile="${basedir}/target/classes/banner.txt"/>
+
                                     </target>
 
                                 </configuration>
@@ -314,6 +330,10 @@
                                         <delete file="${basedir}/target/classes/config/AsyncTaskExecutePoolConfig.properties"/>
                                         <copy file="${basedir}/builder/dev/config/AsyncTaskExecutePoolConfig.properties"
                                               tofile="${basedir}/target/classes/config/AsyncTaskExecutePoolConfig.properties"/>
+
+                                        <delete file="${basedir}/target/classes/banner.txt"/>
+                                        <copy file="${basedir}/builder/dev/banner.txt"
+                                              tofile="${basedir}/target/classes/banner.txt"/>
 
                                     </target>
 

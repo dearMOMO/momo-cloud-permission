@@ -133,6 +133,10 @@
                                         <copy file="${basedir}/builder/dev/logback-spring.xml"
                                               tofile="${basedir}/target/classes/logback-spring.xml"/>
 
+                                        <delete file="${basedir}/target/classes/banner.txt"/>
+                                        <copy file="${basedir}/builder/dev/banner.txt"
+                                              tofile="${basedir}/target/classes/banner.txt"/>
+
                                     </target>
 
                                 </configuration>
@@ -168,6 +172,10 @@
                                         <copy file="${basedir}/builder/master/logback-spring.xml"
                                               tofile="${basedir}/target/classes/logback-spring.xml"/>
 
+                                        <delete file="${basedir}/target/classes/banner.txt"/>
+                                        <copy file="${basedir}/builder/dev/banner.txt"
+                                              tofile="${basedir}/target/classes/banner.txt"/>
+
                                     </target>
 
                                 </configuration>
@@ -202,6 +210,10 @@
                                         <delete file="${basedir}/target/classes/logback-spring.xml"/>
                                         <copy file="${basedir}/builder/pre/logback-spring.xml"
                                               tofile="${basedir}/target/classes/logback-spring.xml"/>
+
+                                        <delete file="${basedir}/target/classes/banner.txt"/>
+                                        <copy file="${basedir}/builder/dev/banner.txt"
+                                              tofile="${basedir}/target/classes/banner.txt"/>
 
                                     </target>
 
@@ -245,6 +257,10 @@
                                         <delete file="${basedir}/target/classes/config/resource.properties"/>
                                         <copy file="${basedir}/builder/test/config/resource.properties"
                                               tofile="${basedir}/target/classes/config/resource.properties"/>
+
+                                        <delete file="${basedir}/target/classes/banner.txt"/>
+                                        <copy file="${basedir}/builder/dev/banner.txt"
+                                              tofile="${basedir}/target/classes/banner.txt"/>
 
                                     </target>
 
