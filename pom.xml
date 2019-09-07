@@ -35,6 +35,7 @@
         <commons-codec.version>1.12</commons-codec.version>
         <hutool-all.version>4.6.1</hutool-all.version>
         <commons-collections.version>3.2.2</commons-collections.version>
+        <weixin-java-tools.version>3.5.0</weixin-java-tools.version>
     </properties>
     <modules>
         <module>momo-permission-eureka</module>
@@ -43,6 +44,40 @@
     </modules>
     <dependencyManagement>
         <dependencies>
+            <!--微信相关 begin-->
+            <!--微信小程序-->
+            <dependency>
+                <groupId>com.github.binarywang</groupId>
+                <artifactId>weixin-java-miniapp</artifactId>
+                <version>${weixin-java-tools.version}</version>
+            </dependency>
+            <!--微信支付-->
+            <dependency>
+                <groupId>com.github.binarywang</groupId>
+                <artifactId>weixin-java-pay</artifactId>
+                <version>${weixin-java-tools.version}</version>
+            </dependency>
+            <!--微信开放平台-->
+            <dependency>
+                <groupId>com.github.binarywang</groupId>
+                <artifactId>weixin-java-open</artifactId>
+                <version>${weixin-java-tools.version}</version>
+            </dependency>
+            <!--公众号（包括订阅号和服务号）-->
+            <dependency>
+                <groupId>com.github.binarywang</groupId>
+                <artifactId>weixin-java-mp</artifactId>
+                <version>${weixin-java-tools.version}</version>
+            </dependency>
+            <!--企业号/企业微信-->
+            <dependency>
+                <groupId>com.github.binarywang</groupId>
+                <artifactId>weixin-java-cp</artifactId>
+                <version>${weixin-java-tools.version}</version>
+            </dependency>
+
+            <!--微信相关 end-->
+            <!--Netty-->
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-all</artifactId>

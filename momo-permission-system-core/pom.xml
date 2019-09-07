@@ -17,6 +17,7 @@
         <module>momo-permission-system-core-common</module>
         <module>momo-permission-system-core-web</module>
         <module>momo-permission-system-core-netty</module>
+        <module>momo-permission-system-core-weixin-all</module>
     </modules>
     <dependencyManagement>
         <dependencies>
@@ -43,6 +44,11 @@
             <dependency>
                 <groupId>com.momo</groupId>
                 <artifactId>momo-permission-system-core-common</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.momo</groupId>
+                <artifactId>momo-permission-system-core-weixin-all</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>

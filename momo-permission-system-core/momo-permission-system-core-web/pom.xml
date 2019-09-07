@@ -96,10 +96,6 @@
             <groupId>com.momo</groupId>
             <artifactId>momo-permission-system-core-service</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.momo</groupId>
-            <artifactId>momo-permission-system-core-netty</artifactId>
-        </dependency>
     </dependencies>
 
     <dependencyManagement>

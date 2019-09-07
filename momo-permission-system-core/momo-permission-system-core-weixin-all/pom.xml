@@ -8,31 +8,19 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <packaging>jar</packaging>
-    <artifactId>momo-permission-system-core-service</artifactId>
+
+    <artifactId>momo-permission-system-core-weixin-all</artifactId>
     <dependencies>
-        <!--rabbitmq -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-amqp</artifactId>
-        </dependency>
         <!--简化实体类代码量-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
         </dependency>
+        <!--微信开放平台-->
         <dependency>
-            <groupId>com.momo</groupId>
-            <artifactId>momo-permission-system-core-netty</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.momo</groupId>
-            <artifactId>momo-permission-system-core-weixin-all</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.momo</groupId>
-            <artifactId>momo-permission-system-core-feign</artifactId>
+            <groupId>com.github.binarywang</groupId>
+            <artifactId>weixin-java-open</artifactId>
         </dependency>
     </dependencies>
 
