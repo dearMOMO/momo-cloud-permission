@@ -11,6 +11,16 @@
 
     <artifactId>momo-permission-system-core-weixin-all</artifactId>
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-databind</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <!--简化实体类代码量-->
         <dependency>
             <groupId>org.projectlombok</groupId>

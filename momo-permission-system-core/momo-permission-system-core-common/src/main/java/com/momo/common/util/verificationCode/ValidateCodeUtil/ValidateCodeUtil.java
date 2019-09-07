@@ -1,7 +1,7 @@
 package com.momo.common.util.verificationCode.ValidateCodeUtil;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.RandomUtils;
-import org.apache.tomcat.util.codec.binary.Base64;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
