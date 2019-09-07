@@ -11,6 +11,12 @@
 
     <artifactId>momo-permission-system-core-netty</artifactId>
     <dependencies>
+        <!--简化实体类代码量-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>

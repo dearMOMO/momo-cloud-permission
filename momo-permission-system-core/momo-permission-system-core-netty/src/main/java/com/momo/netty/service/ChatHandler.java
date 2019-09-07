@@ -12,6 +12,7 @@ import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.util.concurrent.GlobalEventExecutor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -21,9 +22,9 @@ import org.springframework.stereotype.Component;
  * TextWebSocketFrame： 在netty中，是用于为websocket专门处理文本的对象，frame是消息的载体
  */
 @Component
+@Slf4j
 public class ChatHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
 
-    protected static Logger logger = LoggerFactory.getLogger(ChatHandler.class);
 
     private RedisUtil redisUtil = SpringContextUtil.getBean(RedisUtil.class);
 
@@ -42,19 +43,19 @@ public class ChatHandler extends SimpleChannelInboundHandler<TextWebSocketFrame>
         // 	2.1  当websocket 第一次open的时候，初始化channel，把用的channel和userid关联起来
         String senderId = "";
         UserChannelRel.put(senderId, currentChannel);
-        logger.info(" 获取客户端传输过来的消息content=== " + content);
-        logger.info(" 获取客户端传输过来的消息currentChannel=== " + currentChannel);
+        log.info(" 获取客户端传输过来的消息content=== " + content);
+        log.info(" 获取客户端传输过来的消息currentChannel=== " + currentChannel);
 
         if (content.trim().equals("心跳包")) {
             //心跳类型的消息
-            logger.info("收到来自channel为[" + currentChannel + "]的心跳包...");
+            log.info("收到来自channel为[" + currentChannel + "]的心跳包...");
             return;
         }
         //群聊
         String redisKey = NettyChannelRedisKey.channelLongTextRedisKey(currentChannel);
         String uName = (String) redisUtil.get(redisKey);
-        logger.info("currentChannel.id()===" + currentChannel.id());
-        logger.info("currentChannel.id().asLongText()===" + currentChannel.id().asLongText());
+        log.info("currentChannel.id()===" + currentChannel.id());
+        log.info("currentChannel.id().asLongText()===" + currentChannel.id().asLongText());
         for (Channel channel : users) {
             if (channel != currentChannel) {
                 channel.writeAndFlush(new TextWebSocketFrame("[" + uName + "]" + msg.text()));
@@ -73,14 +74,14 @@ public class ChatHandler extends SimpleChannelInboundHandler<TextWebSocketFrame>
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
 
         Channel channel = ctx.channel();
-        logger.info("服务器 - " + channel.remoteAddress());
+        log.info("服务器 - " + channel.remoteAddress());
         String uName = new RandomName().getRandomName();
         for (Channel chann : users) {
             chann.writeAndFlush(new TextWebSocketFrame("[新用户] - " + uName + " 加入"));
         }
         String redisKey = NettyChannelRedisKey.channelLongTextRedisKey(channel);
-        logger.info("channel.id()===" + channel.id());
-        logger.info("channel.id().asLongText()===" + redisKey);
+        log.info("channel.id()===" + channel.id());
+        log.info("channel.id().asLongText()===" + redisKey);
         redisUtil.set(redisKey, uName);
         UserChannelRel.put("channel:"+redisKey,channel);
         users.add(channel);
@@ -96,8 +97,8 @@ public class ChatHandler extends SimpleChannelInboundHandler<TextWebSocketFrame>
         }
         String channelId = ctx.channel().id().asShortText();
         String bigChannelId = ctx.channel().id().asLongText();
-        logger.info("客户端被移除，短channelId为：" + channelId);
-        logger.info("客户端被移除，长channelId为：" + bigChannelId);
+        log.info("客户端被移除，短channelId为：" + channelId);
+        log.info("客户端被移除，长channelId为：" + bigChannelId);
         redisUtil.del(redisKey);
         // 当触发handlerRemoved，ChannelGroup会自动移除对应客户端的channel
         users.remove(ctx.channel());
@@ -107,14 +108,14 @@ public class ChatHandler extends SimpleChannelInboundHandler<TextWebSocketFrame>
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         Channel incoming = ctx.channel();
         String redisKey = NettyChannelRedisKey.channelLongTextRedisKey(incoming);
-        logger.info("用户:" + redisUtil.get(redisKey) + "在线");
+        log.info("用户:" + redisUtil.get(redisKey) + "在线");
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         Channel incoming = ctx.channel();
         String redisKey = NettyChannelRedisKey.channelLongTextRedisKey(incoming);
-        logger.info("用户:" + redisUtil.get(redisKey) + "掉线");
+        log.info("用户:" + redisUtil.get(redisKey) + "掉线");
     }
 
     @Override
@@ -122,7 +123,7 @@ public class ChatHandler extends SimpleChannelInboundHandler<TextWebSocketFrame>
         cause.printStackTrace();
         Channel incoming = ctx.channel();
         String redisKey = NettyChannelRedisKey.channelLongTextRedisKey(incoming);
-        System.out.println("用户:" + redisUtil.get(redisKey) + "异常");
+        log.error("用户:" + redisUtil.get(redisKey) + "异常");
         // 发生异常之后关闭连接（关闭channel），随后从ChannelGroup中移除
         incoming.close();
         users.remove(ctx.channel());
