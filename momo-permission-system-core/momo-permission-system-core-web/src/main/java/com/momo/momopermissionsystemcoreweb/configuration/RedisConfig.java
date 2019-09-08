@@ -16,48 +16,48 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import java.time.Duration;
 
 /**
- * 	https://gitee.com/pomZhiXia/boot-root
+ * https://gitee.com/pomZhiXia/boot-root
  */
 @Configuration
 public class RedisConfig {
 
-	@Value("${spring.redis.database}")
-	private Integer database;
+    @Value("${spring.redis.database}")
+    private Integer database;
 
-	@Value("${spring.redis.host}")
-	private String host;
+    @Value("${spring.redis.host}")
+    private String host;
 
-	@Value("${spring.redis.port}")
-	private Integer port;
+    @Value("${spring.redis.port}")
+    private Integer port;
 
-	@Value("${spring.redis.password}")
-	private String password;
+    @Value("${spring.redis.password}")
+    private String password;
 
-	@Value("${spring.redis.timeout}")
-	private Long timeout;
+    @Value("${spring.redis.timeout}")
+    private Long timeout;
 
-	@Value("${spring.redis.lettuce.pool.max-idle}")
-	private Integer maxIdle;
+    @Value("${spring.redis.lettuce.pool.max-idle}")
+    private Integer maxIdle;
 
-	@Value("${spring.redis.lettuce.pool.min-idle}")
-	private Integer minIdle;
+    @Value("${spring.redis.lettuce.pool.min-idle}")
+    private Integer minIdle;
 
-	@Value("${spring.redis.lettuce.pool.max-active}")
-	private Integer maxActive;
+    @Value("${spring.redis.lettuce.pool.max-active}")
+    private Integer maxActive;
 
-	@Value("${spring.redis.lettuce.pool.max-wait}")
-	private Long maxWait;
+    @Value("${spring.redis.lettuce.pool.max-wait}")
+    private Long maxWait;
 
-	@Bean
-	public LettuceConnectionFactory lettuceConnectionFactory(GenericObjectPoolConfig<Object> genericObjectPoolConfig) {
-		// 单机版配置
-		RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
-		redisStandaloneConfiguration.setDatabase(database);
-		redisStandaloneConfiguration.setHostName(host);
-		redisStandaloneConfiguration.setPort(port);
-		redisStandaloneConfiguration.setPassword(RedisPassword.of(password));
+    @Bean
+    public LettuceConnectionFactory lettuceConnectionFactory(GenericObjectPoolConfig<Object> genericObjectPoolConfig) {
+        // 单机版配置
+        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
+        redisStandaloneConfiguration.setDatabase(database);
+        redisStandaloneConfiguration.setHostName(host);
+        redisStandaloneConfiguration.setPort(port);
+        redisStandaloneConfiguration.setPassword(RedisPassword.of(password));
 
-		// 集群版配置
+        // 集群版配置
 //		RedisClusterConfiguration redisClusterConfiguration = new RedisClusterConfiguration();
 //		String[] serverArray = clusterNodes.split(",");
 //		Set<RedisNode> nodes = new HashSet<RedisNode>();
@@ -69,40 +69,40 @@ public class RedisConfig {
 //		redisClusterConfiguration.setClusterNodes(nodes);
 //		redisClusterConfiguration.setMaxRedirects(maxRedirects);
 
-		LettuceClientConfiguration lettuceClientConfiguration = LettucePoolingClientConfiguration.builder()
-				.commandTimeout(Duration.ofMillis(timeout)).poolConfig(genericObjectPoolConfig).build();
+        LettuceClientConfiguration lettuceClientConfiguration = LettucePoolingClientConfiguration.builder()
+                .commandTimeout(Duration.ofMillis(timeout)).poolConfig(genericObjectPoolConfig).build();
 
-		LettuceConnectionFactory lettuceConnectionFactory = new LettuceConnectionFactory(redisStandaloneConfiguration,
-				lettuceClientConfiguration);
-		return lettuceConnectionFactory;
-	}
+        LettuceConnectionFactory lettuceConnectionFactory = new LettuceConnectionFactory(redisStandaloneConfiguration,
+                lettuceClientConfiguration);
+        return lettuceConnectionFactory;
+    }
 
-	/**
-	 * GenericObjectPoolConfig 连接池配置
-	 *
-	 * @return
-	 */
-	@Bean
-	public GenericObjectPoolConfig<Object> genericObjectPoolConfig() {
-		GenericObjectPoolConfig<Object> genericObjectPoolConfig = new GenericObjectPoolConfig<Object>();
-		genericObjectPoolConfig.setMaxIdle(maxIdle);
-		genericObjectPoolConfig.setMinIdle(minIdle);
-		genericObjectPoolConfig.setMaxTotal(maxActive);
-		genericObjectPoolConfig.setMaxWaitMillis(maxWait);
-		return genericObjectPoolConfig;
-	}
+    /**
+     * GenericObjectPoolConfig 连接池配置
+     *
+     * @return
+     */
+    @Bean
+    public GenericObjectPoolConfig<Object> genericObjectPoolConfig() {
+        GenericObjectPoolConfig<Object> genericObjectPoolConfig = new GenericObjectPoolConfig<Object>();
+        genericObjectPoolConfig.setMaxIdle(maxIdle);
+        genericObjectPoolConfig.setMinIdle(minIdle);
+        genericObjectPoolConfig.setMaxTotal(maxActive);
+        genericObjectPoolConfig.setMaxWaitMillis(maxWait);
+        return genericObjectPoolConfig;
+    }
 
-	/**
-	 * 设置 redisTemplate 序列化方式
-	 * 
-	 * @param lettuceConnectionFactory
-	 * @return
-	 */
-	@Bean
-	public RedisTemplate<String, Object> redisTemplate(LettuceConnectionFactory lettuceConnectionFactory) {
-		RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-		redisTemplate.setConnectionFactory(lettuceConnectionFactory);
-		// 设置值（value）的序列化采用FastJsonRedisSerializer。
+    /**
+     * 设置 redisTemplate 序列化方式
+     *
+     * @param lettuceConnectionFactory
+     * @return
+     */
+    @Bean
+    public RedisTemplate<String, Object> redisTemplate(LettuceConnectionFactory lettuceConnectionFactory) {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(lettuceConnectionFactory);
+        // 设置值（value）的序列化采用FastJsonRedisSerializer。
 //		FastJsonRedisSerializer<Object> fastJsonRedisSerializer = new FastJsonRedisSerializer<>(Object.class);
 //		redisTemplate.setValueSerializer(fastJsonRedisSerializer);
 //		redisTemplate.setHashValueSerializer(fastJsonRedisSerializer);
@@ -110,13 +110,33 @@ public class RedisConfig {
 //		redisTemplate.setKeySerializer(new StringRedisSerializer());
 //		redisTemplate.setHashKeySerializer(new StringRedisSerializer());
 //		redisTemplate.setDefaultSerializer(fastJsonRedisSerializer);
-		RedisSerializer stringSerializer = new StringRedisSerializer();
-		redisTemplate.setKeySerializer(stringSerializer);
-		redisTemplate.setValueSerializer(stringSerializer);
-		redisTemplate.setHashKeySerializer(stringSerializer);
-		redisTemplate.setHashValueSerializer(stringSerializer);
-		redisTemplate.afterPropertiesSet();
-		return redisTemplate;
-	}
+        RedisSerializer stringSerializer = new StringRedisSerializer();
+        redisTemplate.setKeySerializer(stringSerializer);
+        redisTemplate.setValueSerializer(stringSerializer);
+        redisTemplate.setHashKeySerializer(stringSerializer);
+        redisTemplate.setHashValueSerializer(stringSerializer);
+        redisTemplate.afterPropertiesSet();
+        return redisTemplate;
+    }
 
+    @Bean
+    public RedisTemplate<String, String> redisTemplateString(LettuceConnectionFactory lettuceConnectionFactory) {
+        RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(lettuceConnectionFactory);
+        // 设置值（value）的序列化采用FastJsonRedisSerializer。
+//		FastJsonRedisSerializer<Object> fastJsonRedisSerializer = new FastJsonRedisSerializer<>(Object.class);
+//		redisTemplate.setValueSerializer(fastJsonRedisSerializer);
+//		redisTemplate.setHashValueSerializer(fastJsonRedisSerializer);
+//		// 设置键（key）的序列化采用StringRedisSerializer。
+//		redisTemplate.setKeySerializer(new StringRedisSerializer());
+//		redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+//		redisTemplate.setDefaultSerializer(fastJsonRedisSerializer);
+        RedisSerializer stringSerializer = new StringRedisSerializer();
+        redisTemplate.setKeySerializer(stringSerializer);
+        redisTemplate.setValueSerializer(stringSerializer);
+        redisTemplate.setHashKeySerializer(stringSerializer);
+        redisTemplate.setHashValueSerializer(stringSerializer);
+        redisTemplate.afterPropertiesSet();
+        return redisTemplate;
+    }
 }

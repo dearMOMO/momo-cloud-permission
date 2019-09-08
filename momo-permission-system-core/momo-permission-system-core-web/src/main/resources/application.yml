@@ -136,8 +136,8 @@ netty:
 
 wechat:
   open:
-    componentAppId: wxd121534636780b46
-    componentSecret: 4efd09d0e34604c49bf04f5b05a6e869
+    componentAppId: wxc98a16f59fd4081b
+    componentSecret: c094c543efccd63dec1501cf60d00d90
     componentToken:
     componentAesKey:
 
