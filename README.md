@@ -18,7 +18,7 @@
 </p>
 # [静态资源-Vue](https://gitee.com/momoriven/permission-vue) 
 
-# [项目文档](http://www.mqgnsds.top/)
+# [项目文档](https://dearmomo.github.io)
 
 ![文档首页预览](https://gitee.com/momoriven/momo-images/raw/master/doc/momo-cloud-permission/images/0documentIndex.png "文档首页预览")
 
