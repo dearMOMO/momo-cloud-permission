@@ -99,8 +99,8 @@ public class AdminAuthorityService extends BaseService {
                 rootList.add(dto);
             }
         }
-        // 按照seq从小到大排序
-        Collections.sort(rootList, (o1, o2) -> o1.getSysAclSeq() - o2.getSysAclSeq());
+        // 按照seq从大到小排序
+        rootList.sort((o1, o2) -> o2.getSysAclSeq() - o1.getSysAclSeq());
         // 递归生成树
         transformDeptTree(rootList, LevelUtil.ROOT, levelDeptMap);
         return rootList;
@@ -110,9 +110,8 @@ public class AdminAuthorityService extends BaseService {
     // level:0.1
     // level:0.2
     private void transformDeptTree(List<AclLevelRes> deptLevelList, String level, Multimap<String, AclLevelRes> levelDeptMap) {
-        for (int i = 0; i < deptLevelList.size(); i++) {
+        for (AclLevelRes deptLevelDto : deptLevelList) {
             // 遍历该层的每个元素
-            AclLevelRes deptLevelDto = deptLevelList.get(i);
             // 处理当前层级的数据
             String nextLevel = LevelUtil.calculateLevel(level, deptLevelDto.getId());
             // 处理下一层
@@ -128,10 +127,5 @@ public class AdminAuthorityService extends BaseService {
         }
     }
 
-    private Comparator<AclLevelRes> deptSeqComparator = new Comparator<AclLevelRes>() {
-        @Override
-        public int compare(AclLevelRes o1, AclLevelRes o2) {
-            return o1.getSysAclSeq() - o2.getSysAclSeq();
-        }
-    };
+    private Comparator<AclLevelRes> deptSeqComparator = (o1, o2) -> o2.getSysAclSeq() - o1.getSysAclSeq();
 }

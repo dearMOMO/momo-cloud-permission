@@ -151,7 +151,7 @@ public class SysMainService extends BaseService {
                     loginNumber(userDO.getId(), listStr, redisUserKey, token);
                 }
             }
-        } else if (loginNumber.equals(-1)) {//不限制登录次数
+        } else {//不限制登录次数
             //token放入 redis
             redisUtil.set(RedisKeyEnum.REDIS_KEY_USER_INFO.getKey() + redisUserKey, token, RedisKeyEnum.REDIS_KEY_USER_INFO.getExpireTime());
         }

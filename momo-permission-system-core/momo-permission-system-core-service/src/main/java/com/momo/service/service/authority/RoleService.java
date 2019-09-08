@@ -146,7 +146,7 @@ public class RoleService extends BaseService {
     public void computeAclsToRole(List<AclDO> getAcls, RoleDO roleDO, RedisUser redisUser, List<AclDO> redisAcls) {
         List<AclDO> aclDOS = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(getAcls)) {
-            Set<String> aclsUuid = getAcls.stream().map(aclDO -> aclDO.getUuid()).collect(Collectors.toSet());
+            Set<String> aclsUuid = getAcls.stream().map(AclDO::getUuid).collect(Collectors.toSet());
             List<AclDO> aclUuids = aclMapper.aclUuids(aclsUuid);
             if (CollectionUtils.isNotEmpty(aclUuids)) {
                 aclDOS.addAll(aclUuids);

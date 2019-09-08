@@ -65,13 +65,13 @@ public class AclService extends BaseService {
         List<AclDO> userAclList = sysCoreService.getUserHavingAclList(new LoginAuthReq(), redisUser);
         //是否被禁用  0否 1禁用
         List<RoleDO> getRolesByUserId = roleMapper.getRolesByUserId(redisUser.getBaseId(), 0);
-        Set<Long> roleIds = getRolesByUserId.stream().map(roleDO -> roleDO.getId()).collect(Collectors.toSet());
+        Set<Long> roleIds = getRolesByUserId.stream().map(RoleDO::getId).collect(Collectors.toSet());
         // 2、当前角色分配的权限点
         List<AclDO> roleAclList = sysCoreService.getRoleAclList(roleIds, null);
         // 3、当前系统所有权限点
         List<AclLevelRes> aclDtoList = Lists.newArrayList();
-        Set<Long> userAclIdSet = userAclList.stream().map(sysAcl -> sysAcl.getId()).collect(Collectors.toSet());
-        Set<Long> roleAclIdSet = roleAclList.stream().map(sysAcl -> sysAcl.getId()).collect(Collectors.toSet());
+        Set<Long> userAclIdSet = userAclList.stream().map(AclDO::getId).collect(Collectors.toSet());
+        Set<Long> roleAclIdSet = roleAclList.stream().map(AclDO::getId).collect(Collectors.toSet());
         List<AclDO> allAclList = authorityMapper.getAllAcl(null, null);
         List<String> defaultexpandedKeys = Lists.newArrayList();
         for (AclDO acl : allAclList) {
@@ -287,7 +287,7 @@ public class AclService extends BaseService {
     }
 
     private boolean checkUrl(String url, String moduleType, Long id) {
-        return aclMapper.checkUrl(url, moduleType, id) > 0 ? true : false;
+        return aclMapper.checkUrl(url, moduleType, id) > 0;
     }
 
     private String getLevel(Long aclModuleId) {
