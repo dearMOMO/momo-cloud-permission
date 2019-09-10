@@ -63,7 +63,7 @@ public class SysMainService extends BaseService {
 
     public String userLogin(SysUserLoginReq sysUserLoginReq, HttpServletRequest request) {
         //todo 验证码
-//        checkVerificationCode(sysUserLoginReq);
+        checkVerificationCode(sysUserLoginReq);
         UserAccountPwdDO userAccountPwdDO = userAccountPwdMapper.sysUserAccountLogin(sysUserLoginReq.getSysUserLoginName());
         if (null == userAccountPwdDO) {
             throw BizException.fail("用户名或者密码错误");
