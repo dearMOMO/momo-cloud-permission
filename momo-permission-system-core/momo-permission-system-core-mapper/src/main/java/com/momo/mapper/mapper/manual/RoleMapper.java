@@ -89,6 +89,10 @@ public interface RoleMapper {
      */
     List<RoleDO> roleList(RoleDO selfRoleDO);
 
+    int getAllRoleForCount();
+
+    List<RoleDO> getAllRoleForPage();
+
     /**
      * 根据id查询角色
      *

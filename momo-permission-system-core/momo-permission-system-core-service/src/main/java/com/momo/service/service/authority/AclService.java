@@ -287,17 +287,18 @@ public class AclService extends BaseService {
     }
 
     public String userToRolesToAcls() {
-        int pageNum = 1;
-        int pageSize = 30;
-        int totalUser = userMapper.getAllUserForCount();
-        int forCount = 1;
-        forCount(forCount, totalUser, pageSize);
-
-        for (int i = 0; i < forCount; i++) {
-            PageHelper.startPage(pageNum, pageSize);
+        //用户相关
+        int pageNumUser = 1;
+        int pageSizeUser = 200;
+        int totalUserUser = userMapper.getAllUserForCount();
+        int forCountUser = 1;
+        forCountUser(forCountUser, totalUserUser, pageSizeUser);
+        for (int i = 0; i < forCountUser; i++) {
+            PageHelper.startPage(pageNumUser, pageSizeUser);
             List<UserDO> pageSysUserList = userMapper.getAllUserForPage();
             PageInfo<UserDO> pageInfo = new PageInfo<>(pageSysUserList);
-            pageSize += pageSize;
+            pageSizeUser += pageSizeUser;
+            pageNumUser++;
             //用户id,tenantId
             List<UserDO> userIds = pageInfo.getList();
             if (CollectionUtils.isEmpty(userIds)) {
@@ -310,40 +311,85 @@ public class AclService extends BaseService {
                     redisUtil.set(RedisKeyEnum.REDIS_USER_ROLES_STR.getKey() + userDO.getId(), JSONObject.toJSONString(roleIds));
                     //根据角色id查询角色与权限关系
                     roleIds.forEach(roleId -> {
-                        List<RoleAclDO> getRoleAclByRoleId = roleAclMapper.getRoleAclByRoleId(roleId);
-                        if (CollectionUtils.isNotEmpty(getRoleAclByRoleId)) {
-                            String redisKey = RedisKeyEnum.REDIS_ROLE_ACLS_MAP.getKey() + roleId;
-                            Map<String, Object> map = Maps.newHashMap();
-                            getRoleAclByRoleId.forEach(roleAclDO -> {
-                                Set<String> sysAclPermissionCode = Sets.newHashSet();
-                                Multimap<String, Long> multimap = ArrayListMultimap.create();
-                                getRoleAclByRoleId.forEach(aclDO -> {
-                                    sysAclPermissionCode.add(aclDO.getSysAclPermissionCode());
-                                    multimap.put(aclDO.getSysAclPermissionCode(), aclDO.getId());
-                                });
-                                sysAclPermissionCode.forEach(s -> {
-                                    List<Long> aclIds = (List<Long>) multimap.get(s);
-                                    if (CollectionUtils.isNotEmpty(aclIds)) {
-                                        map.put(s, JSONObject.toJSONString(aclIds));
-                                    }
-                                });
-                            });
-                            redisUtil.hmset(redisKey, map);
-                        }
+
                     });
                 }
             });
         }
+        //角色相关
+        int pageNumRole = 1;
+        int pageSizeRole = 200;
+        int totalRole = roleMapper.getAllRoleForCount();
+        int forCountRole = 1;
+        forCountRole(forCountRole, totalRole, pageSizeRole);
+        for (int i = 0; i < forCountRole; i++) {
+            PageHelper.startPage(pageNumRole, pageSizeRole);
+            List<RoleDO> pageSysUserList = roleMapper.getAllRoleForPage();
+            PageInfo<RoleDO> pageInfo = new PageInfo<>(pageSysUserList);
+            pageSizeRole += pageSizeRole;
+            pageNumRole++;
+            //角色id,角色类型
+            List<RoleDO> userDos = pageInfo.getList();
+            if (CollectionUtils.isNotEmpty(userDos)) {
+                userDos.forEach(roleDO -> {
+                    //根据角色id查询角色与权限关系
+                    String redisKey = RedisKeyEnum.REDIS_ROLE_STR.getKey() + roleDO.getId();
+                    String redisAdminKey = RedisKeyEnum.REDIS_ADMIN_ROLE_STR.getKey() + roleDO.getTenantId();
+                    String roleStr = JSONObject.toJSONString(roleDO, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteDateUseDateFormat);
+                    redisUtil.set(redisKey, roleStr);
+                    //角色的类型，0：管理员(老板)，1：管理员(员工)  2:普通员工 3:其他
+                    if (roleDO.getSysRoleType().equals(0)) {
+                        redisUtil.set(redisAdminKey, roleStr);
+                    }
+                    //根据角色id查询角色与权限关系
+                    List<RoleAclDO> getRoleAclByRoleId = roleAclMapper.getRoleAclByRoleId(roleDO.getId());
+                    if (CollectionUtils.isNotEmpty(getRoleAclByRoleId)) {
+                        String roleIdToAclIdsRedisKey = RedisKeyEnum.REDIS_ROLE_ACLS_MAP.getKey() + roleDO.getId();
+                        Map<String, Object> map = Maps.newHashMap();
+                        getRoleAclByRoleId.forEach(roleAclDO -> {
+                            Set<String> sysAclPermissionCode = Sets.newHashSet();
+                            Multimap<String, Long> multimap = ArrayListMultimap.create();
+                            getRoleAclByRoleId.forEach(aclDO -> {
+                                sysAclPermissionCode.add(aclDO.getSysAclPermissionCode());
+                                multimap.put(aclDO.getSysAclPermissionCode(), aclDO.getId());
+                            });
+                            sysAclPermissionCode.forEach(s -> {
+                                List<Long> aclIds = (List<Long>) multimap.get(s);
+                                if (CollectionUtils.isNotEmpty(aclIds)) {
+                                    map.put(s, JSONObject.toJSONString(aclIds));
+                                }
+                            });
+                        });
+                        redisUtil.hmset(roleIdToAclIdsRedisKey, map);
+                    }
+                });
+            }
+
+        }
+
         return "一键同步用户和角色关系到Redis成功";
     }
 
-    private void forCount(int forCount, int totalUser, int pageSize) {
+    private void forCountUser(int forCountUser, int totalUser, int pageSizeUser) {
         for (; ; ) {
-            int moduluscount = totalUser / pageSize;
+            int moduluscount = totalUser / pageSizeUser;
             if (moduluscount != 0) {
-                forCount++;
-                pageSize += pageSize;
-                forCount(forCount, totalUser, pageSize);
+                forCountUser++;
+                pageSizeUser += pageSizeUser;
+                forCountUser(forCountUser, totalUser, pageSizeUser);
+            } else {
+                break;
+            }
+        }
+    }
+
+    private void forCountRole(int forCountRole, int totalRole, int pageSizeRole) {
+        for (; ; ) {
+            int moduluscount = totalRole / pageSizeRole;
+            if (moduluscount != 0) {
+                forCountRole++;
+                pageSizeRole += pageSizeRole;
+                forCountUser(forCountRole, totalRole, pageSizeRole);
             } else {
                 break;
             }

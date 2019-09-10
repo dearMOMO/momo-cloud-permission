@@ -255,6 +255,17 @@
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
+    <select id="getAllRoleForCount" parameterType="map" resultType="int">
+    SELECT
+         count(id)
+         FROM sys_role
+</select>
+    <select id="getAllRoleForPage" parameterType="map" resultMap="BaseResultMap">
+    SELECT
+         id, uuid, sys_role_name, sys_role_type, tenant_id, remark, disabled_flag, del_flag,
+        create_time
+         FROM sys_role
+</select>
     <select id="getRoleById" parameterType="map" resultMap="BaseResultMap">
     SELECT
          id, uuid, sys_role_name, sys_role_type, tenant_id, remark, disabled_flag, del_flag,
