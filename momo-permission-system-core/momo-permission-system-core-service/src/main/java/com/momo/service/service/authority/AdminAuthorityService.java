@@ -31,7 +31,7 @@ public class AdminAuthorityService extends BaseService {
     @Autowired
     private AuthorityMapper authorityMapper;
 
-    //动态权限菜单(总部和第三方通用)
+    //动态权限菜单(总部)
     public List<AclLevelRes> dynamicMenuTree(LoginAuthReq loginAuthReq,RedisUser redisUser) {
         List<AclDO> userAclList = sysCoreService.getUserAclList(loginAuthReq, redisUser);
         List<AclLevelRes> aclDtoList = Lists.newArrayList();
