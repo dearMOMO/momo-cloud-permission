@@ -2,6 +2,8 @@ package com.momo.service.service.authority;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.*;
 import com.momo.common.error.RedisKeyEnum;
 import com.momo.common.util.DateUtils;
@@ -11,10 +13,11 @@ import com.momo.common.util.RedisUtil;
 import com.momo.common.util.StrUtil;
 import com.momo.common.util.snowFlake.SnowFlake;
 import com.momo.mapper.dataobject.AclDO;
+import com.momo.mapper.dataobject.RoleAclDO;
 import com.momo.mapper.dataobject.RoleDO;
-import com.momo.mapper.mapper.manual.AclMapper;
-import com.momo.mapper.mapper.manual.AuthorityMapper;
-import com.momo.mapper.mapper.manual.RoleMapper;
+import com.momo.mapper.dataobject.UserDO;
+import com.momo.mapper.dataobject.manual.SysUserListDO;
+import com.momo.mapper.mapper.manual.*;
 import com.momo.mapper.req.authority.AclReq;
 import com.momo.mapper.req.sysmain.LoginAuthReq;
 import com.momo.mapper.req.sysmain.RedisUser;
@@ -55,6 +58,12 @@ public class AclService extends BaseService {
     private AuthorityMapper authorityMapper;
     @Autowired
     private RedisUtil redisUtil;
+    @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private RoleUserMapper roleUserMapper;
+    @Autowired
+    private RoleAclMapper roleAclMapper;
     @Autowired
     private AclRedisCacheServiceAsync aclRedisCacheServiceAsync;
     private SnowFlake snowFlake = new SnowFlake(1, 1);
@@ -98,34 +107,6 @@ public class AclService extends BaseService {
         aclTreeRes.setAclLevelRes(aclListToTree);
         aclTreeRes.setDefaultexpandedKeys(defaultexpandedKeys);
         return aclTreeRes;
-    }
-
-    public String aclsToRedis() {
-        List<AclDO> getAllAcl = authorityMapper.getAllAcl(null, null);
-        Set<String> redisMapKey = Sets.newHashSet();
-        Multimap<String, AclDO> aclDOMultimap = ArrayListMultimap.create();
-        if (CollectionUtils.isNotEmpty(getAllAcl)) {
-            getAllAcl.forEach(aclDO -> {
-                String redisKey = RedisKeyEnum.REDIS_ACL_MAP.getKey() + aclDO.getSysAclPermissionCode();
-                redisMapKey.add(redisKey);
-
-                aclDOMultimap.put(redisKey, aclDO);
-            });
-        }
-        if (CollectionUtils.isNotEmpty(redisMapKey)) {
-            redisMapKey.forEach(s -> {
-                List<AclDO> aclDOS = (List<AclDO>) aclDOMultimap.get(s);
-                Map<String, String> aclMap = Maps.newHashMap();
-                if (CollectionUtils.isNotEmpty(aclDOS)) {
-                    aclDOS.forEach(aclDO -> {
-                        String aclMapStr = JSONObject.toJSONString(aclDO, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteDateUseDateFormat);
-                        aclMap.put(String.valueOf(aclDO.getId()), aclMapStr);
-                    });
-                }
-                redisUtil.hsetputAll(s, aclMap);
-            });
-        }
-        return "一键同步权限到Redis成功";
     }
 
     @Transactional
@@ -303,5 +284,97 @@ public class AclService extends BaseService {
         if (checkAclSysName > 0) {
             throw BizException.fail("菜单名称已存在");
         }
+    }
+
+    public String userToRolesToAcls() {
+        int pageNum = 1;
+        int pageSize = 30;
+        int totalUser = userMapper.getAllUserForCount();
+        int forCount = 1;
+        forCount(forCount, totalUser, pageSize);
+
+        for (int i = 0; i < forCount; i++) {
+            PageHelper.startPage(pageNum, pageSize);
+            List<UserDO> pageSysUserList = userMapper.getAllUserForPage();
+            PageInfo<UserDO> pageInfo = new PageInfo<>(pageSysUserList);
+            pageSize += pageSize;
+            //用户id,tenantId
+            List<UserDO> userIds = pageInfo.getList();
+            if (CollectionUtils.isEmpty(userIds)) {
+                break;
+            }
+            //根据用户id查询用户与角色关系
+            userIds.forEach(userDO -> {
+                List<Long> roleIds = roleUserMapper.userToRoleIds(userDO.getId());
+                if (CollectionUtils.isNotEmpty(roleIds)) {
+                    redisUtil.set(RedisKeyEnum.REDIS_USER_ROLES_STR.getKey() + userDO.getId(), JSONObject.toJSONString(roleIds));
+                    //根据角色id查询角色与权限关系
+                    roleIds.forEach(roleId -> {
+                        List<RoleAclDO> getRoleAclByRoleId = roleAclMapper.getRoleAclByRoleId(roleId);
+                        if (CollectionUtils.isNotEmpty(getRoleAclByRoleId)) {
+                            String redisKey = RedisKeyEnum.REDIS_ROLE_ACLS_MAP.getKey() + roleId;
+                            Map<String, Object> map = Maps.newHashMap();
+                            getRoleAclByRoleId.forEach(roleAclDO -> {
+                                Set<String> sysAclPermissionCode = Sets.newHashSet();
+                                Multimap<String, Long> multimap = ArrayListMultimap.create();
+                                getRoleAclByRoleId.forEach(aclDO -> {
+                                    sysAclPermissionCode.add(aclDO.getSysAclPermissionCode());
+                                    multimap.put(aclDO.getSysAclPermissionCode(), aclDO.getId());
+                                });
+                                sysAclPermissionCode.forEach(s -> {
+                                    List<Long> aclIds = (List<Long>) multimap.get(s);
+                                    if (CollectionUtils.isNotEmpty(aclIds)) {
+                                        map.put(s, JSONObject.toJSONString(aclIds));
+                                    }
+                                });
+                            });
+                            redisUtil.hmset(redisKey, map);
+                        }
+                    });
+                }
+            });
+        }
+        return "一键同步用户和角色关系到Redis成功";
+    }
+
+    private void forCount(int forCount, int totalUser, int pageSize) {
+        for (; ; ) {
+            int moduluscount = totalUser / pageSize;
+            if (moduluscount != 0) {
+                forCount++;
+                pageSize += pageSize;
+                forCount(forCount, totalUser, pageSize);
+            } else {
+                break;
+            }
+        }
+    }
+
+    public String aclsToRedis() {
+        List<AclDO> getAllAcl = authorityMapper.getAllAcl(null, null);
+        Set<String> redisMapKey = Sets.newHashSet();
+        Multimap<String, AclDO> aclDOMultimap = ArrayListMultimap.create();
+        if (CollectionUtils.isNotEmpty(getAllAcl)) {
+            getAllAcl.forEach(aclDO -> {
+                String redisKey = RedisKeyEnum.REDIS_ACL_MAP.getKey() + aclDO.getSysAclPermissionCode();
+                redisMapKey.add(redisKey);
+
+                aclDOMultimap.put(redisKey, aclDO);
+            });
+        }
+        if (CollectionUtils.isNotEmpty(redisMapKey)) {
+            redisMapKey.forEach(s -> {
+                List<AclDO> aclDOS = (List<AclDO>) aclDOMultimap.get(s);
+                Map<String, String> aclMap = Maps.newHashMap();
+                if (CollectionUtils.isNotEmpty(aclDOS)) {
+                    aclDOS.forEach(aclDO -> {
+                        String aclMapStr = JSONObject.toJSONString(aclDO, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteDateUseDateFormat);
+                        aclMap.put(String.valueOf(aclDO.getId()), aclMapStr);
+                    });
+                }
+                redisUtil.hsetputAll(s, aclMap);
+            });
+        }
+        return "一键同步权限到Redis成功";
     }
 }

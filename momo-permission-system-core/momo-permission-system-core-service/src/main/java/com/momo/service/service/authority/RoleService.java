@@ -190,7 +190,7 @@ public class RoleService extends BaseService {
     }
 
     public List<RoleDO> rolesByCurrentId(RedisUser redisUser) {
-        return roleMapper.rolesByCurrentId(redisUser.getBaseId());
+        return roleMapper.rolesByCurrentId(redisUser.getBaseId(),0);
     }
 
     public PageInfo<SysRolePageListRes> roleList(RoleReq roleReq) {

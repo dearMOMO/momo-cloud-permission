@@ -34,6 +34,11 @@ public class AclController {
         return JSONResult.ok(aclService.aclsToRedis());
     }
 
+    @RequestMapping("/userToRolesToAcls/v1")
+    public JSONResult userToRolesToAcls() {
+        return JSONResult.ok(aclService.userToRolesToAcls());
+    }
+
     @RequestMapping("/save/v1")
     public JSONResult save(@Validated(AclReq.save.class) @RequestBody AclReq aclReq) {
         return JSONResult.ok(aclService.insertSelective(aclReq));

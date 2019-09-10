@@ -83,7 +83,12 @@
     tenant_id, remark, disabled_flag, del_flag, create_by, create_time, update_time,
     update_by
   </sql>
-
+    <select id="getAllUserForPage" parameterType="map" resultMap="BaseResultMap">
+        select id,tenant_id from sys_user
+    </select>
+    <select id="getAllUserForCount" parameterType="map" resultType="int">
+        select count(id) from sys_user
+    </select>
     <select id="pageSysUserList" parameterType="map" resultMap="pageSysUserList">
         select
         id, sys_user_name, uuid, sys_user_phone, sys_user_email, remark,update_by,create_time,disabled_flag

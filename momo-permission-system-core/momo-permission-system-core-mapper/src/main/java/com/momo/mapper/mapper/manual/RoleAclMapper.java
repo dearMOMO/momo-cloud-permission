@@ -1,5 +1,6 @@
 package com.momo.mapper.mapper.manual;
 
+import com.momo.mapper.dataobject.RoleAclDO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -15,5 +16,7 @@ import java.util.List;
  * <p>Copyright: Copyright (c) 2019</p>
  */
 public interface RoleAclMapper {
-    List<Long> aclIdsByTeantId(@Param("teantId")Long teantId,@Param("aclPermissionCode") String aclPermissionCode);
+    List<Long> aclIdsByTeantId(@Param("teantId") Long teantId, @Param("aclPermissionCode") String aclPermissionCode);
+
+    List<RoleAclDO> getRoleAclByRoleId(@Param("roleId") Long roleId);
 }

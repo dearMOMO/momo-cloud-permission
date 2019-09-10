@@ -48,13 +48,22 @@
             </if>
         </trim>
     </select>
-    <select id="rolesByCurrentId" parameterType="java.lang.Long" resultMap="BaseResultMap">
-       SELECT id, uuid,sys_role_name, sys_role_type
+    <select id="rolesByCurrentId" parameterType="map" resultMap="BaseResultMap">
+       SELECT id, uuid,sys_role_name, sys_role_type,disabled_flag,del_flag
         FROM sys_role WHERE id IN(
             SELECT role_id
-        FROM sys_role_user WHERE user_id=#{userId,jdbcType=BIGINT}
-        ) and disabled_flag='0'
+        FROM sys_role_user
+        <trim prefix="where" prefixOverrides="and">
+            <if test="userId!=null">
+                and user_id=#{userId,jdbcType=BIGINT}
+            </if>
+            <if test="disabledFlag!=null">
+                and disabled_flag=#{disabledFlag}
+            </if>
+        </trim>
+        )
     </select>
+
     <select id="selectByPrimaryUuid" parameterType="string" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

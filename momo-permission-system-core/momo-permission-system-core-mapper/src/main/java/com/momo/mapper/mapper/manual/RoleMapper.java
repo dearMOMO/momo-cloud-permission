@@ -79,8 +79,7 @@ public interface RoleMapper {
      * @param userId
      * @return
      */
-    List<RoleDO> rolesByCurrentId(Long userId);
-
+    List<RoleDO> rolesByCurrentId(@Param("userId") Long userId, @Param("disabledFlag") Integer disabledFlag);
 
     /**
      * 分页查询角色
@@ -105,7 +104,7 @@ public interface RoleMapper {
      * @param disabledFlag
      * @return
      */
-    public List<RoleDO> getRolesByUserId(@Param("userId") Long userId,@Param("disabledFlag")Integer disabledFlag);
+    public List<RoleDO> getRolesByUserId(@Param("userId") Long userId, @Param("disabledFlag") Integer disabledFlag);
 
     /**
      * 根据组织id 和管理员角色 查询第三方组织的管理员信息

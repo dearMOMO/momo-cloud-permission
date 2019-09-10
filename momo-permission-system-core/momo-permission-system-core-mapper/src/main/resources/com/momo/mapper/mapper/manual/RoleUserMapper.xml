@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.momo.mapper.mapper.manual.RoleUserMapper">
+    <resultMap id="BaseResultMap"  type="com.momo.mapper.dataobject.RoleUserDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="uuid" jdbcType="VARCHAR" property="uuid" />
+        <result column="role_id" jdbcType="BIGINT" property="roleId" />
+        <result column="user_id" jdbcType="BIGINT" property="userId" />
+        <result column="tenant_id" jdbcType="BIGINT" property="tenantId" />
+        <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+        <result column="disabled_flag" jdbcType="INTEGER" property="disabledFlag" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, uuid, role_id, user_id, tenant_id, del_flag, disabled_flag, create_by, create_time,
+    update_time, update_by
+    </sql>
+    <select id="userToRoleIds" parameterType="map" resultType="long">
+        SELECT role_id
+        FROM sys_role_user
+        where user_id=#{userId,jdbcType=BIGINT}
+    </select>
+</mapper>

@@ -16,6 +16,10 @@ public interface UserMapper {
 
     List<SysUserListDO> pageSysUserList(@Param("tenantId") Long tenantId, @Param("sysUserName") String sysUserName, @Param("disabledFlag") Integer disabledFlag);
 
+    List<UserDO> getAllUserForPage();
+
+    int getAllUserForCount();
+
     UserDO getUserInfo(@Param("id") Long id);
 
     int insertSelective(UserDO record);

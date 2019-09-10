@@ -19,11 +19,15 @@
     id, uuid, sys_role_id, sys_acl_id, sys_acl_permission_code, tenant_id, disabled_flag,
     del_flag, create_by, create_time, update_time, update_by
   </sql>
-<select id="aclIdsByTeantId" parameterType="map" resultType="long">
-    SELECT sys_acl_id  FROM sys_role_acl
-    WHERE
-     sys_role_id=(SELECT id FROM sys_role WHERE tenant_id=#{teantId} AND sys_role_type=0 LIMIT 1)
-        and sys_acl_permission_code=#{aclPermissionCode}
-</select>
+    <select id="aclIdsByTeantId" parameterType="map" resultType="long">
+        SELECT sys_acl_id  FROM sys_role_acl
+        WHERE
+         sys_role_id=(SELECT id FROM sys_role WHERE tenant_id=#{teantId} AND sys_role_type=0 LIMIT 1)
+            and sys_acl_permission_code=#{aclPermissionCode}
+    </select>
+    <select id="getRoleAclByRoleId" parameterType="map" resultMap="BaseResultMap">
+        select id, sys_acl_id, sys_acl_permission_code
+        from sys_role_acl where sys_role_id=#{roleId}
+    </select>
 
 </mapper>
