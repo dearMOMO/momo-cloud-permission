@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -35,6 +32,21 @@ public class RedisUtil {
             return this.redisTemplate.opsForValue().multiGet(keys);
         } catch (Exception e) {
             logger.error("批量获取 redis失败:{},错误信息为:{}", keys.toString(), e.getMessage());
+            return Lists.newArrayList();
+        }
+    }
+
+    /**
+     * 批量获取 redis
+     *
+     * @param keys
+     * @return
+     */
+    public List<Object> batchMapByKeys(String key, List<Object> keys) {
+        try {
+            return this.redisTemplate.opsForHash().multiGet(key, keys);
+        } catch (Exception e) {
+            logger.error("批量获取 redis失败key:{}; keys:{}, 错误信息为:{}", key, keys.toString(), e.getMessage());
             return Lists.newArrayList();
         }
     }
@@ -132,10 +144,11 @@ public class RedisUtil {
 
     /**
      * 批量普通缓存放入
+     *
      * @param map
      * @return
      */
-    public boolean multiSet(Map<String,String> map) {
+    public boolean multiSet(Map<String, String> map) {
         try {
             redisTemplate.opsForValue().multiSet(map);
             return true;
@@ -144,6 +157,7 @@ public class RedisUtil {
             return false;
         }
     }
+
     /**
      * 普通缓存放入并设置时间
      *
@@ -287,6 +301,7 @@ public class RedisUtil {
 
     /**
      * 批量 向一张hash表中放入数据,如果不存在将创建
+     *
      * @param key
      * @param map
      * @return

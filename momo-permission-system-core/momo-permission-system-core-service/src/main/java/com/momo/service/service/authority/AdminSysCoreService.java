@@ -62,11 +62,7 @@ public class AdminSysCoreService {
         if (CollectionUtils.isEmpty(roleIds)) {
             return Lists.newArrayList();
         }
-        roleIds.forEach(aLong -> {
-            if (roleIds.contains(aLong)) {
-                finalRoleIds.add(aLong);
-            }
-        });
+        finalRoleIds.addAll(roleIds);
         //根据角色ids获取权限点ids
         List<Long> userAclIdList = authorityMapper.aclsByRoleId(finalRoleIds, loginAuthReq.getAclPermissionCode());
         if (CollectionUtils.isEmpty(userAclIdList)) {

@@ -3,9 +3,11 @@ package com.momo.service.service.authority;
 import com.momo.mapper.req.sysmain.LoginAuthReq;
 import com.momo.mapper.req.sysmain.RedisUser;
 import com.momo.mapper.res.authority.AclLevelRes;
+import com.momo.service.cache.AdminAuthorityServiceCache;
 import com.momo.service.service.BaseService;
 import com.momo.service.service.SuperAdminsService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,10 +32,16 @@ public class DynamicMenuTreeService extends BaseService {
     private AdminAuthorityService adminAuthorityService;
     @Autowired
     private SuperAdminsService superAdminsService;
+    @Autowired
+    private AdminAuthorityServiceCache adminAuthorityServiceCache;
 
     public List<AclLevelRes> dynamicMenuTree(LoginAuthReq loginAuthReq) {
         RedisUser redisUser = this.redisUser();
         if (redisUser.getTenantId().equals(superAdminsService.getTeantId())) {
+            List<AclLevelRes> dynamicMenuTree = adminAuthorityServiceCache.dynamicMenuTree(loginAuthReq,redisUser);
+            if (CollectionUtils.isNotEmpty(dynamicMenuTree)) {
+                return dynamicMenuTree;
+            }
             return adminAuthorityService.dynamicMenuTree(loginAuthReq, redisUser);
         } else {
             return commonAuthorityService.dynamicMenuTree(loginAuthReq, redisUser);

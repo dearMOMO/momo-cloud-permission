@@ -27,13 +27,13 @@ import java.util.stream.Collectors;
 public class AdminAuthorityService extends BaseService {
 
     @Autowired
-    private AdminSysCoreService sysCoreService;
+    private AdminSysCoreService adminSysCoreService;
     @Autowired
     private AuthorityMapper authorityMapper;
 
     //动态权限菜单(总部)
     public List<AclLevelRes> dynamicMenuTree(LoginAuthReq loginAuthReq,RedisUser redisUser) {
-        List<AclDO> userAclList = sysCoreService.getUserAclList(loginAuthReq, redisUser);
+        List<AclDO> userAclList = adminSysCoreService.getUserAclList(loginAuthReq, redisUser);
         List<AclLevelRes> aclDtoList = Lists.newArrayList();
         for (AclDO acl : userAclList) {
             if (acl.getDisabledFlag().equals(0)) {
@@ -50,9 +50,9 @@ public class AdminAuthorityService extends BaseService {
     //为角色授权 权限 之前， 需要查看该角色拥有哪些权限点，以及当前登录用户可以操作哪些权限
     public AclTreeRes roleTree(LoginAuthReq loginAuthReq, RedisUser redisUser) {
         // 1、当前用户已分配的权限点
-        List<AclDO> userAclList = sysCoreService.getUserHavingAclList(loginAuthReq, redisUser);
+        List<AclDO> userAclList = adminSysCoreService.getUserHavingAclList(loginAuthReq, redisUser);
         // 2、当前角色分配的权限点
-        List<AclDO> roleAclList = sysCoreService.getRoleAclList(Sets.newHashSet(loginAuthReq.getRoleId()), loginAuthReq.getAclPermissionCode());
+        List<AclDO> roleAclList = adminSysCoreService.getRoleAclList(Sets.newHashSet(loginAuthReq.getRoleId()), loginAuthReq.getAclPermissionCode());
         // 3、当前系统所有权限点
         List<AclLevelRes> aclDtoList = Lists.newArrayList();
 

@@ -29,7 +29,7 @@ public enum RedisKeyEnum {
     REDIS_ADMIN_ROLE_STR("adminRoleStr:",-1,"管理员角色 "),
 
     REDIS_ACL_MAP("aclMap:",-1,"权限点 Map"),
-    REDIS_USER_ROLES_Map("userRoleMap:",-1,"用户和角色关系 "),
+    REDIS_USER_ROLES_STR("userRoleStr:",-1,"用户和角色关系 "),
     REDIS_ROLE_ACLS_MAP("roleAclsMap:",-1,"角色和权限关系 "),
     ;
     private final String key;
