@@ -17,6 +17,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.net.SocketAddress;
+
 /**
  * @Description: 处理消息的handler
  * TextWebSocketFrame： 在netty中，是用于为websocket专门处理文本的对象，frame是消息的载体
@@ -30,11 +32,10 @@ public class ChatHandler extends SimpleChannelInboundHandler<TextWebSocketFrame>
 
 
     // 用于记录和管理所有客户端的channle
-    public static ChannelGroup users = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+    static ChannelGroup users = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame msg)
-            throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame msg) {
         // 获取客户端传输过来的消息
         String content = msg.text();
         //当前用户的 Channel
@@ -71,8 +72,7 @@ public class ChatHandler extends SimpleChannelInboundHandler<TextWebSocketFrame>
      * 获取客户端的channle，并且放到ChannelGroup中去进行管理
      */
     @Override
-    public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-
+    public void handlerAdded(ChannelHandlerContext ctx) {
         Channel channel = ctx.channel();
         log.info("服务器 - " + channel.remoteAddress());
         String uName = new RandomName().getRandomName();
@@ -82,13 +82,13 @@ public class ChatHandler extends SimpleChannelInboundHandler<TextWebSocketFrame>
         String redisKey = NettyChannelRedisKey.channelLongTextRedisKey(channel);
         log.info("channel.id()===" + channel.id());
         log.info("channel.id().asLongText()===" + redisKey);
-        redisUtil.set(redisKey, uName);
-        UserChannelRel.put("channel:"+redisKey,channel);
+        log.info("通过长id:==========================={}", redisKey);
+        UserChannelRel.put("channel:" + redisKey, channel);
         users.add(channel);
     }
 
     @Override
-    public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
+    public void handlerRemoved(ChannelHandlerContext ctx) {
         Channel incoming = ctx.channel();
         String redisKey = NettyChannelRedisKey.channelLongTextRedisKey(incoming);
         String uName = (String) redisUtil.get(redisKey);
@@ -99,27 +99,30 @@ public class ChatHandler extends SimpleChannelInboundHandler<TextWebSocketFrame>
         String bigChannelId = ctx.channel().id().asLongText();
         log.info("客户端被移除，短channelId为：" + channelId);
         log.info("客户端被移除，长channelId为：" + bigChannelId);
-        redisUtil.del(redisKey);
+        UserChannelRel.remove(redisKey);
         // 当触发handlerRemoved，ChannelGroup会自动移除对应客户端的channel
         users.remove(ctx.channel());
     }
 
     @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+    public void channelActive(ChannelHandlerContext ctx) {
         Channel incoming = ctx.channel();
         String redisKey = NettyChannelRedisKey.channelLongTextRedisKey(incoming);
         log.info("用户:" + redisUtil.get(redisKey) + "在线");
+        log.info("通过长id:==========================={}", redisKey);
+        UserChannelRel.put("channel:" + redisKey, incoming);
     }
 
     @Override
-    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+    public void channelInactive(ChannelHandlerContext ctx) {
         Channel incoming = ctx.channel();
         String redisKey = NettyChannelRedisKey.channelLongTextRedisKey(incoming);
         log.info("用户:" + redisUtil.get(redisKey) + "掉线");
+        UserChannelRel.remove(redisKey);
     }
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         cause.printStackTrace();
         Channel incoming = ctx.channel();
         String redisKey = NettyChannelRedisKey.channelLongTextRedisKey(incoming);
@@ -127,5 +130,6 @@ public class ChatHandler extends SimpleChannelInboundHandler<TextWebSocketFrame>
         // 发生异常之后关闭连接（关闭channel），随后从ChannelGroup中移除
         incoming.close();
         users.remove(ctx.channel());
+        UserChannelRel.remove(redisKey);
     }
 }
