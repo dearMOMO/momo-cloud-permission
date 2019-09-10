@@ -84,7 +84,7 @@ public class RoleRedisCacheServiceAsync {
                 .createTime(roleDO.getCreateTime()).delFlag(roleDO.getDelFlag())
                 .updateTime(roleDO.getUpdateTime()).updateBy(roleDO.getUpdateBy())
                 .tenantId(roleDO.getTenantId()).uuid(roleDO.getUuid()).build();
-        String redisKey = RedisKeyEnum.REDIS_ROLE_STR.getKey() + roleDO.getTenantId() + ":" + roleDORedisCache.getId();
+        String redisKey = RedisKeyEnum.REDIS_ROLE_STR.getKey() + roleDORedisCache.getId();
         String roleStr = JSONObject.toJSONString(roleDORedisCache, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteDateUseDateFormat);
         redisUtil.set(redisKey, roleStr);
         //角色的类型，0：管理员(老板)，1：管理员(员工)  2:普通员工 3:其他
@@ -108,8 +108,8 @@ public class RoleRedisCacheServiceAsync {
                 .createTime(roleDO.getCreateTime()).delFlag(roleDO.getDelFlag())
                 .updateTime(roleDO.getUpdateTime()).updateBy(roleDO.getUpdateBy())
                 .tenantId(roleDO.getTenantId()).uuid(roleDO.getUuid()).build();
-        String redisKey = RedisKeyEnum.REDIS_ROLE_STR.getKey() + roleDO.getTenantId() + ":" + roleDORedisCache.getId();
-        String redisAdminKey = RedisKeyEnum.REDIS_ADMIN_ROLE_STR.getKey() + roleDO.getTenantId() + ":" + roleDORedisCache.getId();
+        String redisKey = RedisKeyEnum.REDIS_ROLE_STR.getKey()  + roleDORedisCache.getId();
+        String redisAdminKey = RedisKeyEnum.REDIS_ADMIN_ROLE_STR.getKey()  + roleDORedisCache.getId();
         String roleStr = JSONObject.toJSONString(roleDORedisCache, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteDateUseDateFormat);
         redisUtil.set(redisKey, roleStr);
         //角色的类型，0：管理员(老板)，1：管理员(员工)  2:普通员工 3:其他
@@ -124,12 +124,11 @@ public class RoleRedisCacheServiceAsync {
      *
      * @param userId
      * @param roleIdList
-     * @param tenantId
      * @return
      */
-    public Future<String> rolesToUserToRedis(Long userId, Set<Long> roleIdList, Long tenantId) {
+    public Future<String> rolesToUserToRedis(Long userId, Set<Long> roleIdList) {
         Future<String> future = new AsyncResult<>("redis:变更角色状态成功");
-        String redisKey = RedisKeyEnum.REDIS_USER_ROLES_STR.getKey() + tenantId + ":" + userId;
+        String redisKey = RedisKeyEnum.REDIS_USER_ROLES_STR.getKey()  + userId;
         if (CollectionUtils.isEmpty(roleIdList)) {
             redisUtil.del(redisKey);
         } else {
@@ -142,13 +141,12 @@ public class RoleRedisCacheServiceAsync {
      * redis: 权限ids给角色
      *
      * @param roleId
-     * @param tenantId
      * @param redisAcls
      * @return
      */
-    public Future<String> aclsToRoleToRedis(Long roleId, Long tenantId, List<AclDO> redisAcls) {
+    public Future<String> aclsToRoleToRedis(Long roleId, List<AclDO> redisAcls) {
         Future<String> future = new AsyncResult<>("redis:变更角色状态成功");
-        String redisKey = RedisKeyEnum.REDIS_ROLE_ACLS_MAP.getKey() + tenantId + ":" + roleId;
+        String redisKey = RedisKeyEnum.REDIS_ROLE_ACLS_MAP.getKey() + roleId;
         if (CollectionUtils.isEmpty(redisAcls)) {
             redisUtil.del(redisKey);
         } else {

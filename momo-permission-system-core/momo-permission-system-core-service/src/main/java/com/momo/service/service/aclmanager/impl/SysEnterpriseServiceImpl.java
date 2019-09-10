@@ -162,7 +162,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         List<AclDO> getAcls = userGroupPageReq.getAcls();
         List<AclDO> redisAcls = Lists.newArrayList();
         roleService.computeAclsToRole(getAcls, roleDO, redisUser, redisAcls);
-        roleRedisCacheServiceAsync.aclsToRoleToRedis(roleDO.getId(), roleDO.getTenantId(), redisAcls);
+        roleRedisCacheServiceAsync.aclsToRoleToRedis(roleDO.getId(), redisAcls);
         return "为企业授权成功";
     }
 

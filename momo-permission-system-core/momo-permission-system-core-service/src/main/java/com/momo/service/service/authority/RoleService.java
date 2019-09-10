@@ -110,7 +110,7 @@ public class RoleService extends BaseService {
             }
         }
         updateUserRoles(userDO.getId(), roleIdList, redisUser, userDO.getTenantId());
-        roleRedisCacheServiceAsync.rolesToUserToRedis(userDO.getId(), roleIdList, userDO.getTenantId());
+        roleRedisCacheServiceAsync.rolesToUserToRedis(userDO.getId(), roleIdList);
         return "为用户授权角色成功";
     }
 
@@ -138,7 +138,7 @@ public class RoleService extends BaseService {
         List<AclDO> getAcls = batchRoleUserReq.getAcls();
         List<AclDO> redisAcls = Lists.newArrayList();
         computeAclsToRole(getAcls, roleDO, redisUser, redisAcls);
-        roleRedisCacheServiceAsync.aclsToRoleToRedis(roleDO.getId(), roleDO.getTenantId(), redisAcls);
+        roleRedisCacheServiceAsync.aclsToRoleToRedis(roleDO.getId(), redisAcls);
         return "为角色授权权限成功";
     }
 
