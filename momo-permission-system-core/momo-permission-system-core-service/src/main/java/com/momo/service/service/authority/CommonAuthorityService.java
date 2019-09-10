@@ -55,7 +55,7 @@ public class CommonAuthorityService extends BaseService {
         return aclListToTree(aclDtoList);
     }
 
-    public List<AclLevelRes> aclListToTree(List<AclLevelRes> aclDtoList) {
+    private List<AclLevelRes> aclListToTree(List<AclLevelRes> aclDtoList) {
         if (CollectionUtils.isEmpty(aclDtoList)) {
             return Lists.newArrayList();
         }

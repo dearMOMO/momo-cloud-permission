@@ -42,24 +42,16 @@ public class AdminAuthorityServiceCache {
 
     public List<AclLevelRes> dynamicMenuTree(LoginAuthReq loginAuthReq, RedisUser redisUser) {
         List<AclDO> userAclList = adminSysCoreServiceCache.getUserAclList(loginAuthReq, redisUser);
-        Map<Object, Object> aclMap = redisUtil.hmget(RedisKeyEnum.REDIS_ACL_MAP.getKey() + loginAuthReq.getAclPermissionCode());
-        if (MapUtils.isEmpty(aclMap)) {
-            return Lists.newArrayList();
-        }
         List<AclLevelRes> aclDtoList = Lists.newArrayList();
-        aclMap.forEach((o, o2) -> {
-            if (null != o2) {
-                AclDO sysAcl = JSON.parseObject(String.valueOf(o2), new TypeReference<AclDO>() {
-                });
-                if (sysAcl.getDisabledFlag().equals(0) && sysAcl.getDelFlag().equals(0)) {
-                    AclLevelRes dto = AclLevelRes.adapt(sysAcl);
-                    dto.setHasAcl(true);
-                    dto.setDisabled(false);
-                    dto.setChecked(true);
-                    aclDtoList.add(dto);
-                }
+        for (AclDO acl : userAclList) {
+            if (acl.getDisabledFlag().equals(0) && acl.getDelFlag().equals(0)) {
+                AclLevelRes dto = AclLevelRes.adapt(acl);
+                dto.setHasAcl(true);
+                dto.setDisabled(false);
+                dto.setChecked(true);
+                aclDtoList.add(dto);
             }
-        });
+        }
         return aclListToTree(aclDtoList);
     }
 
