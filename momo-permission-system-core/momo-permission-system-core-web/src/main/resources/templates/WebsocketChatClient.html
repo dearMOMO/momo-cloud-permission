@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>WebSocket Chat</title>
+	 <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+</head>
+<body>
+
+<form onsubmit="return false;">
+    <h3>基于springboot2+redis+netty 简易聊天室：</h3>
+    <textarea id="responseText" style="width: 300px; height: 400px;"></textarea>
+    <br/>
+		<input type="text" name="message" id="msg" style="width: 300px" value="测试数据"/><br/>
+		<input type="button"  value="发送消息" onclick="send(this.form.message.value)"/>
+</form>
+<br/>
+<br/>
+<script type="text/javascript">
+    var socket;
+    if (!window.WebSocket) {
+        window.WebSocket = window.MozWebSocket;
+    }
+    if (window.WebSocket) {
+        socket = new WebSocket("ws://localhost:502/ws");
+        socket.onmessage = function(event) {
+            var ta = document.getElementById('responseText');
+            ta.value = ta.value + '\n' + event.data
+			scrollButtom();
+        };
+        socket.onopen = function(event) {
+            var ta = document.getElementById('responseText');
+            ta.value = "连接开启!";
+			// 定时发送心跳
+			setInterval("keepalive()", 10000000);
+        };
+        socket.onclose = function(event) {
+            var ta = document.getElementById('responseText');
+            ta.value = ta.value + "连接被关闭";
+        };
+    } else {
+        alert("你的浏览器不支持 WebSocket！");
+    }
+			 function keepalive() {
+					// 发送心跳
+					socket.send("心跳包");
+				}
+    function send(message) {
+        if (!window.WebSocket) {
+            return;
+        }
+        if (socket.readyState == WebSocket.OPEN) {
+            socket.send(message);
+			document.getElementById("msg").value="";
+        } else {
+            alert("连接没有开启.");
+        }
+    }
+    window.onbeforeunload = function(event) {
+        event.returnValue = "刷新提醒";
+    };
+	function scrollButtom(){
+		var areaMsgList = document.getElementById("responseText");
+		// 设置聊天记录进入页面的时候自动滚动到最后一条
+		areaMsgList.scrollTop = areaMsgList.scrollHeight + areaMsgList.offsetHeight;
+	}
+
+</script>
+</body>
+</html>
