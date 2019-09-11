@@ -17,10 +17,7 @@ import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -60,7 +57,7 @@ public class CommonSysCoreServiceCache {
             return aclDtoList;
         }
         //根据用户id获取角色ids
-        Object userRoleIdList = redisUtil.get(RedisKeyEnum.REDIS_USER_ROLES_STR.getKey() + redisUser.getTenantId() + ":" + redisUser.getBaseId());
+        Object userRoleIdList = redisUtil.get(RedisKeyEnum.REDIS_USER_ROLES_STR.getKey() + redisUser.getBaseId());
         if (null == userRoleIdList) {
             return Lists.newArrayList();
         }
@@ -73,7 +70,7 @@ public class CommonSysCoreServiceCache {
         List<String> roleIdKeys = Lists.newArrayList();
         userRoleIdListLong.forEach(aLong -> {
             if (null != aLong) {
-                roleIdKeys.add(String.valueOf(aLong));
+                roleIdKeys.add(RedisKeyEnum.REDIS_ROLE_STR.getKey()+aLong);
             }
         });
         //根据角色id获得角色列表
@@ -98,7 +95,7 @@ public class CommonSysCoreServiceCache {
             return Lists.newArrayList();
         }
         List<String> roleIdsStrList = Lists.newArrayList();
-        String roleIdsRedisKey = RedisKeyEnum.REDIS_ROLE_ACLS_MAP.getKey() + redisUser.getTenantId() + ":";
+        String roleIdsRedisKey = RedisKeyEnum.REDIS_ROLE_ACLS_MAP.getKey();
         List<String> finalRoleIdsList = finalRoleIds.stream().map(aLong -> roleIdsRedisKey + aLong).collect(Collectors.toList());
         roleIdsStrList.addAll(finalRoleIdsList);
         //根据角色ids获取权限点ids
@@ -108,7 +105,12 @@ public class CommonSysCoreServiceCache {
             if (CollectionUtils.isNotEmpty(aclIdsObj)) {
                 aclIdsObj.forEach(o -> {
                     if (null != o) {
-                        aclIdsRedisKey.add(String.valueOf(o));
+                        List<String> aclIds = JSON.parseObject(String.valueOf(o), new TypeReference<List<String>>() {
+                        });
+                        if (CollectionUtils.isNotEmpty(aclIds)){
+                            aclIdsRedisKey.addAll(aclIds);
+                        }
+
                     }
                 });
             }

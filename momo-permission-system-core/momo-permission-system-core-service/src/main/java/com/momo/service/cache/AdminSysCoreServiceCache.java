@@ -57,7 +57,7 @@ public class AdminSysCoreServiceCache {
             return aclDtoList;
         }
         //根据用户id获取角色ids
-        Object userRoleIdList = redisUtil.get(RedisKeyEnum.REDIS_USER_ROLES_STR.getKey() + redisUser.getTenantId() + ":" + redisUser.getBaseId());
+        Object userRoleIdList = redisUtil.get(RedisKeyEnum.REDIS_USER_ROLES_STR.getKey() + redisUser.getBaseId());
         if (null == userRoleIdList) {
             return Lists.newArrayList();
         }
@@ -95,7 +95,7 @@ public class AdminSysCoreServiceCache {
             return Lists.newArrayList();
         }
         List<String> roleIdsStrList = Lists.newArrayList();
-        String roleIdsRedisKey = RedisKeyEnum.REDIS_ROLE_ACLS_MAP.getKey() + redisUser.getTenantId() + ":";
+        String roleIdsRedisKey = RedisKeyEnum.REDIS_ROLE_ACLS_MAP.getKey();
         List<String> finalRoleIdsList = finalRoleIds.stream().map(aLong -> roleIdsRedisKey + aLong).collect(Collectors.toList());
         roleIdsStrList.addAll(finalRoleIdsList);
         //根据角色ids获取权限点ids

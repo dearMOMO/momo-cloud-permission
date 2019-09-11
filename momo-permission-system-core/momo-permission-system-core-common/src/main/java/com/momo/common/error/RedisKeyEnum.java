@@ -25,7 +25,7 @@ public enum RedisKeyEnum {
     REDIS_KEY_WEBSITE_VISIBLE_TOTAL("webTotalPeople", 60 * 60*15, "网站访问总人数"),
     //
     REDIS_USER_INFO("user:",-1,"用户信息,实时更新"),
-    REDIS_ROLE_STR("roleStr:",-1,"普通角色 "),
+    REDIS_ROLE_STR("roleStr:",-1,"所有单个角色 "),
     REDIS_ADMIN_ROLE_STR("adminRoleStr:",-1,"管理员角色 "),
 
     REDIS_ACL_MAP("aclMap:",-1,"权限点 Map"),

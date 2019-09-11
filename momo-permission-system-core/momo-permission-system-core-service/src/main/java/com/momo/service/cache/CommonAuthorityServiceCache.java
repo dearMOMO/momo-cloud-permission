@@ -9,6 +9,7 @@ import com.momo.common.error.RedisKeyEnum;
 import com.momo.common.util.LevelUtil;
 import com.momo.common.util.RedisUtil;
 import com.momo.mapper.dataobject.AclDO;
+import com.momo.mapper.dataobject.RoleDO;
 import com.momo.mapper.req.sysmain.LoginAuthReq;
 import com.momo.mapper.req.sysmain.RedisUser;
 import com.momo.mapper.res.authority.AclLevelRes;
@@ -46,20 +47,21 @@ public class CommonAuthorityServiceCache {
         List<AclDO> userAclList = commonSysCoreServiceCache.getUserAclList(loginAuthReq, redisUser);
         //获取第三方管理员权限id列表
         String redisAdminKey = RedisKeyEnum.REDIS_ADMIN_ROLE_STR.getKey() + redisUser.getTenantId();
-        Object aclIdsObj = redisUtil.get(redisAdminKey);
-        if (null == aclIdsObj) {
+        Object roleDoObj = redisUtil.get(redisAdminKey);
+        if (null == roleDoObj) {
             return Lists.newArrayList();
         }
-        List<Long> sysAcl = JSON.parseObject(String.valueOf(aclIdsObj), new TypeReference<List<Long>>() {
+        RoleDO roleDO = JSON.parseObject(String.valueOf(roleDoObj), new TypeReference<RoleDO>() {
         });
-        if (CollectionUtils.isEmpty(sysAcl)) {
+        if (roleDO.getDisabledFlag().equals(1)||roleDO.getDelFlag().equals(1)){
             return Lists.newArrayList();
         }
-        List<Long> adminAclIds = Lists.newArrayList();
-        sysAcl.forEach(aLong -> {
-            if (null != aLong) {
-                adminAclIds.add(aLong);
-            }
+        Object aclIdsObj = redisUtil.hget(RedisKeyEnum.REDIS_ROLE_ACLS_MAP.getKey()+roleDO.getId(),loginAuthReq.getAclPermissionCode());
+        if (null==aclIdsObj){
+            return Lists.newArrayList();
+        }
+
+        List<Long> adminAclIds = JSON.parseObject(String.valueOf(aclIdsObj), new TypeReference<List<Long>>() {
         });
         if (CollectionUtils.isEmpty(adminAclIds)) {
             return Lists.newArrayList();

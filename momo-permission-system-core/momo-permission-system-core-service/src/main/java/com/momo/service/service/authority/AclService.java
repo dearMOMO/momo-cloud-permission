@@ -309,10 +309,6 @@ public class AclService extends BaseService {
                 List<Long> roleIds = roleUserMapper.userToRoleIds(userDO.getId());
                 if (CollectionUtils.isNotEmpty(roleIds)) {
                     redisUtil.set(RedisKeyEnum.REDIS_USER_ROLES_STR.getKey() + userDO.getId(), JSONObject.toJSONString(roleIds));
-                    //根据角色id查询角色与权限关系
-                    roleIds.forEach(roleId -> {
-
-                    });
                 }
             });
         }
@@ -351,7 +347,7 @@ public class AclService extends BaseService {
                             Multimap<String, Long> multimap = ArrayListMultimap.create();
                             getRoleAclByRoleId.forEach(aclDO -> {
                                 sysAclPermissionCode.add(aclDO.getSysAclPermissionCode());
-                                multimap.put(aclDO.getSysAclPermissionCode(), aclDO.getId());
+                                multimap.put(aclDO.getSysAclPermissionCode(), aclDO.getSysAclId());
                             });
                             sysAclPermissionCode.forEach(s -> {
                                 List<Long> aclIds = (List<Long>) multimap.get(s);
