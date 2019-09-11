@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -37,8 +38,9 @@ public class AdminSysCoreService {
         if (org.apache.commons.collections.CollectionUtils.isEmpty(aclIdList)) {
             return Lists.newArrayList();
         }
+        Set<Long> aclIdSet=new HashSet<>(aclIdList);
         //根据权限点ids获取权限点列表
-        return authorityMapper.getAllAcl(null, aclIdList);
+        return authorityMapper.getAllAcl(null, aclIdSet);
     }
 
     //动态权限菜单
@@ -53,21 +55,22 @@ public class AdminSysCoreService {
         if (CollectionUtils.isEmpty(userRoleIdList)) {
             return Lists.newArrayList();
         }
-        Set<Long> finalRoleIds = Sets.newHashSet();
+
         //根据角色ids获取角色列表 临时启用和禁用角色
         //是否被禁用  0否 1禁用
-        List<Long> roleIds = authorityMapper.rolesByRoleId(userRoleIdList, 0);
+        List<Long> roleIds = authorityMapper.rolesByRoleId(userRoleIdList, 0, 0);
         if (CollectionUtils.isEmpty(roleIds)) {
             return Lists.newArrayList();
         }
-        finalRoleIds.addAll(roleIds);
+        Set<Long> finalRoleIds = Sets.newHashSet(roleIds);
         //根据角色ids获取权限点ids
-        List<Long> userAclIdList = authorityMapper.aclsByRoleId(finalRoleIds, loginAuthReq.getAclPermissionCode());
-        if (CollectionUtils.isEmpty(userAclIdList)) {
+        List<Long> aclIdsList = authorityMapper.aclsByRoleId(finalRoleIds, loginAuthReq.getAclPermissionCode());
+        if (CollectionUtils.isEmpty(aclIdsList)) {
             return Lists.newArrayList();
         }
+        Set<Long> aclIdsSet = new HashSet<>(aclIdsList);
         //根据权限点ids获取权限点列表
-        return authorityMapper.getAllAcl(loginAuthReq.getAclPermissionCode(), userAclIdList);
+        return authorityMapper.getAllAcl(loginAuthReq.getAclPermissionCode(), aclIdsSet);
     }
 
     //为角色授权 权限 之前， 需要查看该角色拥有哪些权限点，以及当前登录用户可以操作哪些权限
@@ -87,7 +90,8 @@ public class AdminSysCoreService {
         if (org.apache.commons.collections.CollectionUtils.isEmpty(userAclIdList)) {
             return Lists.newArrayList();
         }
+        Set<Long> aclIdSet=new HashSet<>(userAclIdList);
         //根据权限点ids获取权限点列表
-        return authorityMapper.getAllAcl(loginAuthReq.getAclPermissionCode(), userAclIdList);
+        return authorityMapper.getAllAcl(loginAuthReq.getAclPermissionCode(), aclIdSet);
     }
 }

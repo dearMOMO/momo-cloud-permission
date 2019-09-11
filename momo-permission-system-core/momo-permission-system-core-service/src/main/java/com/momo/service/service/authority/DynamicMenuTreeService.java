@@ -43,7 +43,7 @@ public class DynamicMenuTreeService extends BaseService {
         //总部权限菜单
         if (redisUser.getTenantId().equals(superAdminsService.getTeantId())) {
             //走redis缓存
-        =    List<AclLevelRes> dynamicMenuTree = adminAuthorityServiceCache.dynamicMenuTree(loginAuthReq, redisUser);
+            List<AclLevelRes> dynamicMenuTree = adminAuthorityServiceCache.dynamicMenuTree(loginAuthReq, redisUser);
             if (CollectionUtils.isNotEmpty(dynamicMenuTree)) {
                 return dynamicMenuTree;
             }
