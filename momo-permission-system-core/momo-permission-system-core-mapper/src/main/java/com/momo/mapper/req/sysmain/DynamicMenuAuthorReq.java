@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 //@EqualsAndHashCode(of = {"id"})
-public class LoginAuthReq extends BaseReq {
+public class DynamicMenuAuthorReq extends BaseReq {
     //用户ID
     private Long userId;
     //权限类型

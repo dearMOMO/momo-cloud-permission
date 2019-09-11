@@ -17,7 +17,7 @@ import com.momo.mapper.req.aclmanager.SysEnterpriseUserReq;
 import com.momo.mapper.req.aclmanager.SysUserGroupReq;
 import com.momo.mapper.req.aclmanager.UserGroupPageReq;
 import com.momo.mapper.req.authority.BatchRoleUserReq;
-import com.momo.mapper.req.sysmain.LoginAuthReq;
+import com.momo.mapper.req.sysmain.DynamicMenuAuthorReq;
 import com.momo.mapper.req.sysmain.RedisUser;
 import com.momo.mapper.res.aclmanager.*;
 import com.momo.mapper.res.authority.AclTreeRes;
@@ -132,7 +132,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
             throw BizException.fail("请先为企业设置一个管理员用户");
         }
         RedisUser redisUser = this.redisUser();
-        LoginAuthReq loginAuthReq = new LoginAuthReq();
+        DynamicMenuAuthorReq loginAuthReq = new DynamicMenuAuthorReq();
         loginAuthReq.setRoleId(getVipAdminRole.getId());
         if (redisUser.getTenantId().equals(superAdminsService.getTeantId())) {
             return adminAuthorityService.roleTree(loginAuthReq, redisUser);
@@ -448,7 +448,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         if (null == roleDO) {
             throw BizException.fail("待编辑的角色不存在");
         }
-        LoginAuthReq loginAuthReq = new LoginAuthReq();
+        DynamicMenuAuthorReq loginAuthReq = new DynamicMenuAuthorReq();
         loginAuthReq.setRoleId(roleDO.getId());
         RedisUser redisUser = this.redisUser();
         if (redisUser.getTenantId().equals(superAdminsService.getTeantId())) {

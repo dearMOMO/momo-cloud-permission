@@ -4,12 +4,10 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.momo.mapper.dataobject.AclDO;
 import com.momo.mapper.mapper.manual.AuthorityMapper;
+import com.momo.mapper.req.sysmain.DynamicMenuAuthorReq;
 import com.momo.mapper.req.sysmain.RedisUser;
-import com.momo.mapper.req.sysmain.LoginAuthReq;
 import com.momo.service.service.SuperAdminsService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -44,7 +42,7 @@ public class AdminSysCoreService {
     }
 
     //动态权限菜单
-    public List<AclDO> getUserAclList(LoginAuthReq loginAuthReq, RedisUser redisUser) {
+    public List<AclDO> getUserAclList(DynamicMenuAuthorReq loginAuthReq, RedisUser redisUser) {
 
         //如果是超级管理员，则获取所有权限点
         if (superAdminsService.checkIsSuperAdmin(redisUser.getSysUserPhone())) {
@@ -73,7 +71,7 @@ public class AdminSysCoreService {
     }
 
     //为角色授权 权限 之前， 需要查看该角色拥有哪些权限点，以及当前登录用户可以操作哪些权限
-    public List<AclDO> getUserHavingAclList(LoginAuthReq loginAuthReq, RedisUser redisUser) {
+    public List<AclDO> getUserHavingAclList(DynamicMenuAuthorReq loginAuthReq, RedisUser redisUser) {
         //如果是超级管理员，则获取所有权限点
         if (superAdminsService.checkIsSuperAdmin(redisUser.getSysUserPhone())) {
             return authorityMapper.getAllAcl(loginAuthReq.getAclPermissionCode(), null);

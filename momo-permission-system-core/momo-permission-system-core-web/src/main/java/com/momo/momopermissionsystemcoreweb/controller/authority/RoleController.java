@@ -3,7 +3,7 @@ package com.momo.momopermissionsystemcoreweb.controller.authority;
 import com.momo.common.common.JSONResult;
 import com.momo.mapper.req.authority.BatchRoleUserReq;
 import com.momo.mapper.req.authority.RoleReq;
-import com.momo.mapper.req.sysmain.LoginAuthReq;
+import com.momo.mapper.req.sysmain.DynamicMenuAuthorReq;
 import com.momo.service.service.authority.RoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +62,7 @@ public class RoleController {
     }
 
     @PostMapping("/roleHaveAclTree/v1")
-    public JSONResult roleHaveAclTree(@Validated(LoginAuthReq.Detail.class) @RequestBody LoginAuthReq loginAuthReq) {
+    public JSONResult roleHaveAclTree(@Validated(DynamicMenuAuthorReq.Detail.class) @RequestBody DynamicMenuAuthorReq loginAuthReq) {
         return JSONResult.ok(roleService.roleHaveAclTree(loginAuthReq));
     }
 

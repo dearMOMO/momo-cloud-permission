@@ -16,10 +16,9 @@ import com.momo.mapper.dataobject.AclDO;
 import com.momo.mapper.dataobject.RoleAclDO;
 import com.momo.mapper.dataobject.RoleDO;
 import com.momo.mapper.dataobject.UserDO;
-import com.momo.mapper.dataobject.manual.SysUserListDO;
 import com.momo.mapper.mapper.manual.*;
 import com.momo.mapper.req.authority.AclReq;
-import com.momo.mapper.req.sysmain.LoginAuthReq;
+import com.momo.mapper.req.sysmain.DynamicMenuAuthorReq;
 import com.momo.mapper.req.sysmain.RedisUser;
 import com.momo.mapper.res.authority.AclDetailRes;
 import com.momo.mapper.res.authority.AclLevelRes;
@@ -71,7 +70,7 @@ public class AclService extends BaseService {
     public AclTreeRes aclTree() {
         RedisUser redisUser = this.redisUser();
         // 1、当前用户已分配的权限点
-        List<AclDO> userAclList = sysCoreService.getUserHavingAclList(new LoginAuthReq(), redisUser);
+        List<AclDO> userAclList = sysCoreService.getUserHavingAclList(new DynamicMenuAuthorReq(), redisUser);
         //是否被禁用  0否 1禁用
         List<RoleDO> getRolesByUserId = roleMapper.getRolesByUserId(redisUser.getBaseId(), 0);
         Set<Long> roleIds = getRolesByUserId.stream().map(RoleDO::getId).collect(Collectors.toSet());

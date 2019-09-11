@@ -1,6 +1,6 @@
 package com.momo.service.service.authority;
 
-import com.momo.mapper.req.sysmain.LoginAuthReq;
+import com.momo.mapper.req.sysmain.DynamicMenuAuthorReq;
 import com.momo.mapper.req.sysmain.RedisUser;
 import com.momo.mapper.res.authority.AclLevelRes;
 import com.momo.service.cache.AdminAuthorityServiceCache;
@@ -38,12 +38,12 @@ public class DynamicMenuTreeService extends BaseService {
     @Autowired
     private CommonAuthorityServiceCache commonAuthorityServiceCache;
 
-    public List<AclLevelRes> dynamicMenuTree(LoginAuthReq loginAuthReq) {
+    public List<AclLevelRes> dynamicMenuTree(DynamicMenuAuthorReq loginAuthReq) {
         RedisUser redisUser = this.redisUser();
         //总部权限菜单
         if (redisUser.getTenantId().equals(superAdminsService.getTeantId())) {
             //走redis缓存
-            List<AclLevelRes> dynamicMenuTree = adminAuthorityServiceCache.dynamicMenuTree(loginAuthReq, redisUser);
+        =    List<AclLevelRes> dynamicMenuTree = adminAuthorityServiceCache.dynamicMenuTree(loginAuthReq, redisUser);
             if (CollectionUtils.isNotEmpty(dynamicMenuTree)) {
                 return dynamicMenuTree;
             }

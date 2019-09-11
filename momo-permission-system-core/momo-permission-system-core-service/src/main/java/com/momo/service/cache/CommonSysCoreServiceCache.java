@@ -8,7 +8,7 @@ import com.momo.common.error.RedisKeyEnum;
 import com.momo.common.util.RedisUtil;
 import com.momo.mapper.dataobject.AclDO;
 import com.momo.mapper.dataobject.RoleDO;
-import com.momo.mapper.req.sysmain.LoginAuthReq;
+import com.momo.mapper.req.sysmain.DynamicMenuAuthorReq;
 import com.momo.mapper.req.sysmain.RedisUser;
 import com.momo.service.service.SuperAdminsService;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +39,7 @@ public class CommonSysCoreServiceCache {
     private RedisUtil redisUtil;
 
     //动态权限菜单
-    public List<AclDO> getUserAclList(LoginAuthReq loginAuthReq, RedisUser redisUser) {
+    public List<AclDO> getUserAclList(DynamicMenuAuthorReq loginAuthReq, RedisUser redisUser) {
         //如果是超级管理员，则获取所有权限点
         if (superAdminsService.checkIsSuperAdmin(redisUser.getSysUserPhone())) {
             Map<Object, Object> aclMap = redisUtil.hmget(RedisKeyEnum.REDIS_ACL_MAP.getKey() + loginAuthReq.getAclPermissionCode());
@@ -129,7 +129,9 @@ public class CommonSysCoreServiceCache {
             if (null != o) {
                 AclDO aclDO = JSON.parseObject(String.valueOf(o), new TypeReference<AclDO>() {
                 });
-                getAllAcl.add(aclDO);
+                if (aclDO.getDelFlag().equals(0) && aclDO.getDisabledFlag().equals(0)) {
+                    getAllAcl.add(aclDO);
+                }
             }
         });
         return getAllAcl;

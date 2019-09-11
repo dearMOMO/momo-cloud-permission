@@ -3,11 +3,10 @@ package com.momo.service.service.authority;
 import com.google.common.collect.*;
 import com.momo.common.util.LevelUtil;
 import com.momo.mapper.dataobject.AclDO;
-import com.momo.mapper.dataobject.RoleAclDO;
 import com.momo.mapper.mapper.manual.AuthorityMapper;
+import com.momo.mapper.req.sysmain.DynamicMenuAuthorReq;
 import com.momo.mapper.req.sysmain.RedisUser;
 import com.momo.mapper.res.authority.AclLevelRes;
-import com.momo.mapper.req.sysmain.LoginAuthReq;
 import com.momo.mapper.res.authority.AclTreeRes;
 import com.momo.service.service.BaseService;
 import org.apache.commons.collections.CollectionUtils;
@@ -32,7 +31,7 @@ public class AdminAuthorityService extends BaseService {
     private AuthorityMapper authorityMapper;
 
     //动态权限菜单(总部)
-    public List<AclLevelRes> dynamicMenuTree(LoginAuthReq loginAuthReq,RedisUser redisUser) {
+    public List<AclLevelRes> dynamicMenuTree(DynamicMenuAuthorReq loginAuthReq, RedisUser redisUser) {
         List<AclDO> userAclList = adminSysCoreService.getUserAclList(loginAuthReq, redisUser);
         List<AclLevelRes> aclDtoList = Lists.newArrayList();
         for (AclDO acl : userAclList) {
@@ -48,7 +47,7 @@ public class AdminAuthorityService extends BaseService {
     }
 
     //为角色授权 权限 之前， 需要查看该角色拥有哪些权限点，以及当前登录用户可以操作哪些权限
-    public AclTreeRes roleTree(LoginAuthReq loginAuthReq, RedisUser redisUser) {
+    public AclTreeRes roleTree(DynamicMenuAuthorReq loginAuthReq, RedisUser redisUser) {
         // 1、当前用户已分配的权限点
         List<AclDO> userAclList = adminSysCoreService.getUserHavingAclList(loginAuthReq, redisUser);
         // 2、当前角色分配的权限点

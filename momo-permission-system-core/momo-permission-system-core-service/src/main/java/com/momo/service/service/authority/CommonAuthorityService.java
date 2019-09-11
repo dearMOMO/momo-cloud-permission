@@ -3,10 +3,9 @@ package com.momo.service.service.authority;
 import com.google.common.collect.*;
 import com.momo.common.util.LevelUtil;
 import com.momo.mapper.dataobject.AclDO;
-import com.momo.mapper.dataobject.RoleAclDO;
 import com.momo.mapper.mapper.manual.AuthorityMapper;
 import com.momo.mapper.mapper.manual.RoleAclMapper;
-import com.momo.mapper.req.sysmain.LoginAuthReq;
+import com.momo.mapper.req.sysmain.DynamicMenuAuthorReq;
 import com.momo.mapper.req.sysmain.RedisUser;
 import com.momo.mapper.res.authority.AclLevelRes;
 import com.momo.mapper.res.authority.AclTreeRes;
@@ -31,19 +30,20 @@ public class CommonAuthorityService extends BaseService {
     private RoleAclMapper roleAclMapper;
 
     //动态权限菜单(第三方)
-    public List<AclLevelRes> dynamicMenuTree(LoginAuthReq loginAuthReq,RedisUser redisUser) {
+    public List<AclLevelRes> dynamicMenuTree(DynamicMenuAuthorReq loginAuthReq, RedisUser redisUser) {
         List<AclDO> userAclList = commonSysCoreService.getUserAclList(loginAuthReq, redisUser);
         //获取第三方管理员权限id列表
-        List<Long> adminAclIds = roleAclMapper.aclIdsByTeantId(redisUser.getTenantId(),loginAuthReq.getAclPermissionCode());
-        if (CollectionUtils.isEmpty(adminAclIds)){
+        List<Long> adminAclIds = roleAclMapper.aclIdsByTeantId(redisUser.getTenantId(), loginAuthReq.getAclPermissionCode());
+        if (CollectionUtils.isEmpty(adminAclIds)) {
             return Lists.newArrayList();
         }
+        Set<Long> adminAclIdsSet=new HashSet<>(adminAclIds);
         List<AclLevelRes> aclDtoList = Lists.newArrayList();
         for (AclDO acl : userAclList) {
             //权限继承
             //企业员工权限列表不能大于该企业下管理员(老板)权限列表
-            if (acl.getDisabledFlag().equals(0)) {
-                if (adminAclIds.contains(acl.getId())){
+            if (acl.getDisabledFlag().equals(0) && acl.getDelFlag().equals(0)) {
+                if (adminAclIdsSet.contains(acl.getId())) {
                     AclLevelRes dto = AclLevelRes.adapt(acl);
                     dto.setHasAcl(true);
                     dto.setDisabled(false);
@@ -77,7 +77,7 @@ public class CommonAuthorityService extends BaseService {
     }
 
     //为角色授权 权限 之前， 需要查看该角色拥有哪些权限点，以及当前登录用户可以操作哪些权限
-    public AclTreeRes roleTree(LoginAuthReq loginAuthReq, RedisUser redisUser) {
+    public AclTreeRes roleTree(DynamicMenuAuthorReq loginAuthReq, RedisUser redisUser) {
         // 1、当前用户已分配的权限点
         List<AclDO> userAclList = commonSysCoreService.getUserHavingAclList(loginAuthReq, redisUser);
         // 2、当前角色分配的权限点
@@ -88,12 +88,13 @@ public class CommonAuthorityService extends BaseService {
         Set<Long> roleAclIdSet = roleAclList.stream().map(AclDO::getId).collect(Collectors.toSet());
         //获取第三方管理员角色列表
         List<Long> adminRoles = authorityMapper.rolesAdminByGroupId(redisUser.getTenantId());
-        Set<Long> adminRolesSet = adminRoles.stream().collect(Collectors.toSet());
+        Set<Long> adminRolesSet = new HashSet<>(adminRoles);
         //根据角色id获取权限ids
         List<Long> aclIds = authorityMapper.aclsByRoleId(adminRolesSet, loginAuthReq.getAclPermissionCode());
         List<String> defaultexpandedKeys = Lists.newArrayList();
+        Set<Long> aclIdsSet=new HashSet<>(aclIds);
         //根据权限点的ids获取权限点列表
-        List<AclDO> allAclList = authorityMapper.getAllAcl(null, aclIds);
+        List<AclDO> allAclList = authorityMapper.getAllAcl(null, aclIdsSet);
         for (AclDO acl : allAclList) {
             AclLevelRes dto = AclLevelRes.adapt(acl);
             if (userAclIdSet.contains(acl.getId())) {
@@ -149,7 +150,7 @@ public class CommonAuthorityService extends BaseService {
             List<AclLevelRes> tempDeptList = (List<AclLevelRes>) levelDeptMap.get(nextLevel);
             if (CollectionUtils.isNotEmpty(tempDeptList)) {
                 // 排序
-                Collections.sort(tempDeptList, deptSeqComparator);
+                tempDeptList.sort(deptSeqComparator);
                 // 设置下一层部门
                 deptLevelDto.setChildren(tempDeptList);
                 // 进入到下一层处理

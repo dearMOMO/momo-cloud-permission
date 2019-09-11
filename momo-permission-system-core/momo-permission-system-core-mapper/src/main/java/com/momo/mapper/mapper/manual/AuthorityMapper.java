@@ -29,7 +29,7 @@ public interface AuthorityMapper {
      * @param userAclIdList     权限点 ids
      * @return
      */
-    List<AclDO> getAllAcl(@Param("sys_acl_permission_code") String sys_acl_permission_code, @Param("userAclIdList") List<Long> userAclIdList);
+    List<AclDO> getAllAcl(@Param("sys_acl_permission_code") String sys_acl_permission_code, @Param("userAclIdList") Set<Long> userAclIdList);
 
     /**
      * 根据角色ids 查询所有角色
@@ -37,7 +37,7 @@ public interface AuthorityMapper {
      * @param roleId
      * @return
      */
-    List<Long> rolesByRoleId(@Param("roleIds") List<Long> roleId, @Param("disabledFlag") Integer disabledFlag);
+    List<Long> rolesByRoleId(@Param("roleIds") List<Long> roleId, @Param("disabledFlag") Integer disabledFlag,@Param("delFlag")Integer delFlag);
 
 
     /**

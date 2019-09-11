@@ -41,13 +41,16 @@
         SELECT
         id
         FROM sys_role WHERE
-        <if test="disabledFlag!=null">
-            disabled_flag=#{disabledFlag} AND
-        </if>
         id IN
         <foreach collection="roleIds" close=")" item="item" open="(" separator=",">
             #{item}
         </foreach>
+        <if test="disabledFlag!=null">
+            AND  disabled_flag=#{disabledFlag}
+        </if>
+        <if test="delFlag!=null">
+            AND  del_flag=#{delFlag}
+        </if>
     </select>
     <select id="getAllAcl" parameterType="map" resultMap="getAllAcl">
         SELECT

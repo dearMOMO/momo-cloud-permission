@@ -1,26 +1,21 @@
 package com.momo.service.cache;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
-import com.momo.common.error.RedisKeyEnum;
 import com.momo.common.util.LevelUtil;
 import com.momo.common.util.RedisUtil;
 import com.momo.mapper.dataobject.AclDO;
-import com.momo.mapper.req.sysmain.LoginAuthReq;
+import com.momo.mapper.req.sysmain.DynamicMenuAuthorReq;
 import com.momo.mapper.req.sysmain.RedisUser;
 import com.momo.mapper.res.authority.AclLevelRes;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @ProjectName: momo-cloud-permission
@@ -40,7 +35,7 @@ public class AdminAuthorityServiceCache {
     @Autowired
     private RedisUtil redisUtil;
 
-    public List<AclLevelRes> dynamicMenuTree(LoginAuthReq loginAuthReq, RedisUser redisUser) {
+    public List<AclLevelRes> dynamicMenuTree(DynamicMenuAuthorReq loginAuthReq, RedisUser redisUser) {
         List<AclDO> userAclList = adminSysCoreServiceCache.getUserAclList(loginAuthReq, redisUser);
         List<AclLevelRes> aclDtoList = Lists.newArrayList();
         for (AclDO acl : userAclList) {

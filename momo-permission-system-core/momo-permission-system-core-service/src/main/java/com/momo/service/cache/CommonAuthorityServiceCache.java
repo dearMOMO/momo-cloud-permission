@@ -10,10 +10,9 @@ import com.momo.common.util.LevelUtil;
 import com.momo.common.util.RedisUtil;
 import com.momo.mapper.dataobject.AclDO;
 import com.momo.mapper.dataobject.RoleDO;
-import com.momo.mapper.req.sysmain.LoginAuthReq;
+import com.momo.mapper.req.sysmain.DynamicMenuAuthorReq;
 import com.momo.mapper.req.sysmain.RedisUser;
 import com.momo.mapper.res.authority.AclLevelRes;
-import com.momo.service.service.SuperAdminsService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +42,7 @@ public class CommonAuthorityServiceCache {
     private RedisUtil redisUtil;
 
     //动态权限菜单(第三方)
-    public List<AclLevelRes> dynamicMenuTree(LoginAuthReq loginAuthReq, RedisUser redisUser) {
+    public List<AclLevelRes> dynamicMenuTree(DynamicMenuAuthorReq loginAuthReq, RedisUser redisUser) {
         List<AclDO> userAclList = commonSysCoreServiceCache.getUserAclList(loginAuthReq, redisUser);
         //获取第三方管理员权限id列表
         String redisAdminKey = RedisKeyEnum.REDIS_ADMIN_ROLE_STR.getKey() + redisUser.getTenantId();
@@ -53,11 +52,11 @@ public class CommonAuthorityServiceCache {
         }
         RoleDO roleDO = JSON.parseObject(String.valueOf(roleDoObj), new TypeReference<RoleDO>() {
         });
-        if (roleDO.getDisabledFlag().equals(1)||roleDO.getDelFlag().equals(1)){
+        if (roleDO.getDisabledFlag().equals(1) || roleDO.getDelFlag().equals(1)) {
             return Lists.newArrayList();
         }
-        Object aclIdsObj = redisUtil.hget(RedisKeyEnum.REDIS_ROLE_ACLS_MAP.getKey()+roleDO.getId(),loginAuthReq.getAclPermissionCode());
-        if (null==aclIdsObj){
+        Object aclIdsObj = redisUtil.hget(RedisKeyEnum.REDIS_ROLE_ACLS_MAP.getKey() + roleDO.getId(), loginAuthReq.getAclPermissionCode());
+        if (null == aclIdsObj) {
             return Lists.newArrayList();
         }
 
@@ -70,7 +69,7 @@ public class CommonAuthorityServiceCache {
         for (AclDO acl : userAclList) {
             //权限继承
             //企业员工权限列表不能大于该企业下管理员(老板)权限列表
-            if (acl.getDisabledFlag().equals(0)) {
+            if (acl.getDisabledFlag().equals(0) && acl.getDelFlag().equals(0)) {
                 if (adminAclIds.contains(acl.getId())) {
                     AclLevelRes dto = AclLevelRes.adapt(acl);
                     dto.setHasAcl(true);

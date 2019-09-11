@@ -15,7 +15,7 @@ import com.momo.mapper.mapper.manual.RoleMapper;
 import com.momo.mapper.mapper.manual.UserMapper;
 import com.momo.mapper.req.authority.BatchRoleUserReq;
 import com.momo.mapper.req.authority.RoleReq;
-import com.momo.mapper.req.sysmain.LoginAuthReq;
+import com.momo.mapper.req.sysmain.DynamicMenuAuthorReq;
 import com.momo.mapper.req.sysmain.RedisUser;
 import com.momo.mapper.res.aclmanager.DisabledAdminRoleButtonRes;
 import com.momo.mapper.res.aclmanager.SysRoleCheckedRes;
@@ -173,7 +173,7 @@ public class RoleService extends BaseService {
         updateRoleAcls(roleDO.getId(), aclDOS, redisUser, roleDO.getTenantId(), acls, roleDO.getSysRoleType(), alcIds);
     }
 
-    public AclTreeRes roleHaveAclTree(LoginAuthReq loginAuthReq) {
+    public AclTreeRes roleHaveAclTree(DynamicMenuAuthorReq loginAuthReq) {
         RoleDO roleDO = roleMapper.selectByPrimaryUuid(loginAuthReq.getUuid());
         if (null == roleDO) {
             throw BizException.fail("待授权的角色不存在");
