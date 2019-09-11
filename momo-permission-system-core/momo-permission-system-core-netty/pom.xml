@@ -23,7 +23,7 @@
         </dependency>
         <dependency>
             <groupId>com.momo</groupId>
-            <artifactId>momo-permission-system-core-common</artifactId>
+            <artifactId>momo-permission-system-core-service</artifactId>
         </dependency>
     </dependencies>
 

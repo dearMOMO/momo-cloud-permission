@@ -54,14 +54,14 @@ public class WxMpConfiguration {
 
         WxMpService service = new WxMpServiceImpl();
         service.setMultiConfigStorages(configs
-            .stream().map(a -> {
-                WxMpDefaultConfigImpl configStorage = new WxMpDefaultConfigImpl();
-                configStorage.setAppId(a.getAppId());
-                configStorage.setSecret(a.getSecret());
-                configStorage.setToken(a.getToken());
-                configStorage.setAesKey(a.getAesKey());
-                return configStorage;
-            }).collect(Collectors.toMap(WxMpDefaultConfigImpl::getAppId, a -> a, (o, n) -> o)));
+                .stream().map(a -> {
+                    WxMpDefaultConfigImpl configStorage = new WxMpDefaultConfigImpl();
+                    configStorage.setAppId(a.getAppId());
+                    configStorage.setSecret(a.getSecret());
+                    configStorage.setToken(a.getToken());
+                    configStorage.setAesKey(a.getAesKey());
+                    return configStorage;
+                }).collect(Collectors.toMap(WxMpDefaultConfigImpl::getAppId, a -> a, (o, n) -> o)));
         return service;
     }
 
@@ -74,11 +74,11 @@ public class WxMpConfiguration {
 
         // 接收客服会话管理事件
         newRouter.rule().async(false).msgType(EVENT).event(KF_CREATE_SESSION)
-            .handler(this.kfSessionHandler).end();
+                .handler(this.kfSessionHandler).end();
         newRouter.rule().async(false).msgType(EVENT).event(KF_CLOSE_SESSION)
-            .handler(this.kfSessionHandler).end();
+                .handler(this.kfSessionHandler).end();
         newRouter.rule().async(false).msgType(EVENT).event(KF_SWITCH_SESSION)
-            .handler(this.kfSessionHandler).end();
+                .handler(this.kfSessionHandler).end();
 
         // 门店审核事件
         newRouter.rule().async(false).msgType(EVENT).event(POI_CHECK_NOTIFY).handler(this.storeCheckNotifyHandler).end();

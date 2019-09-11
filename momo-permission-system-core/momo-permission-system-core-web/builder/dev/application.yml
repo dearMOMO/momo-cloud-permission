@@ -114,25 +114,24 @@ management:
     health:
       show-details: ALWAYS
 
-# Netty相关配置
-#不能用localhost,否则启动报异常:Unresolved address
-#tcp监听的端口
-netty:
-  tcp:
-    port: 502
-  # bossGroup的线程数
-  boss:
-    thread:
-      count: 24
-  # worker的线程数
-  worker:
-    thread:
-      count: 24
-  #是否使用长连接
-  so:
-    keepalive: true #Socket参数，连接保活，默认值为False。启用该功能时，TCP会主动探测空闲连接的有效性。可以将此功能视为TCP的心跳机制，
-    #需要注意的是：默认的心跳间隔是7200s即2小时。Netty默认关闭该功能
-    backlog: 100 #Socket参数，服务端接受连接的队列长度，如果队列已满，客户端连接将被拒绝
+wx:
+  mp:
+    configs:
+      - appId: wxc98a16f59fd4081b #（一个公众号的appid）
+        secret: c094c543efccd63dec1501cf60d00d90 #（公众号的appsecret）
+        token: e3a1b83d6a794192850b2ae68ae35239 #（接口配置里的Token值）
+        aesKey: cIUOrNiwF2trY6vN0CCw450mDnnIpvaFsZhYnN4TpBz #（接口配置里的EncodingAESKey值）
+      - appId: wx6ad144e54af67d87 #（一个公众号的appid）
+        secret: 91a2ff6d38a2bbccfb7e9f9079108e2e #（公众号的appsecret）
+        token:  #（接口配置里的Token值）
+        aesKey:  #（接口配置里的EncodingAESKey值）
+
+wechat:
+  open:
+    componentAppId: wxc98a16f59fd4081b
+    componentSecret: c094c543efccd63dec1501cf60d00d90
+    componentToken:
+    componentAesKey:
 
 #################   cloud 初始化参数   ############################
 momo:
