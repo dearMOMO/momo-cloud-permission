@@ -33,7 +33,7 @@
             var ta = document.getElementById('responseText');
             ta.value = "连接开启!";
 			// 定时发送心跳
-			setInterval("keepalive()", 10000000);
+			setInterval("keepalive()", 500000);
         };
         socket.onclose = function(event) {
             var ta = document.getElementById('responseText');
