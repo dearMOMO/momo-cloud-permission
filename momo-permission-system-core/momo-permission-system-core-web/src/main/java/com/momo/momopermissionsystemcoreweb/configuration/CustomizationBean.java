@@ -1,0 +1,28 @@
+package com.momo.momopermissionsystemcoreweb.configuration;
+
+import io.undertow.server.DefaultByteBufferPool;
+import io.undertow.websockets.jsr.WebSocketDeploymentInfo;
+import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
+import org.springframework.stereotype.Component;
+
+/**
+ * @ClassName: CustomizationBean
+ * @Author: Jie Li
+ * @Date 2019-09-19 13:17
+ * @Description: TODO
+ * @Version: 1.0
+ * <p>Copyright: Copyright (c) 2019</p>
+ **/
+@Component
+public class CustomizationBean implements WebServerFactoryCustomizer<UndertowServletWebServerFactory> {
+
+    @Override
+    public void customize(UndertowServletWebServerFactory factory) {
+        factory.addDeploymentInfoCustomizers(deploymentInfo -> {
+            WebSocketDeploymentInfo webSocketDeploymentInfo = new WebSocketDeploymentInfo();
+            webSocketDeploymentInfo.setBuffers(new DefaultByteBufferPool(false, 1024));
+            deploymentInfo.addServletContextAttribute("io.undertow.websockets.jsr.WebSocketDeploymentInfo", webSocketDeploymentInfo);
+        });
+    }
+}
