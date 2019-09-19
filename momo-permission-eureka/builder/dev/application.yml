@@ -14,6 +14,7 @@ eureka:
       user.name: ${momo.security.name}
       user.password: ${momo.security.password}
     hostname: ${momo.ip}
+    ip-address: ${momo.ipAddress}
     preferIpAddress: true
     instance-id: ${momo.application}:${spring.cloud.client.ip-address}:${momo.port}
   client:
@@ -56,7 +57,8 @@ management:
 momo:
   application: momo-permission-eureka #应用名
   port: 8761 #项目端口号
-  ip: 111.231.117.239 #注册中心ip地址
+  ip: 127.0.0.1 #注册中心ip地址
+  ipAddress: 127.0.0.1 #解决外网环境下，注册中心ip问题
   #  ip: localhost #注册中心ip地址
   eureka-port: 8761 #注册中心端口号
   security:

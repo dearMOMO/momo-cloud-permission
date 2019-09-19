@@ -1,6 +1,7 @@
 package com.momo.common.common;
 
 import io.netty.channel.Channel;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,30 +10,32 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @Description: 用户id和channel的关联关系处理
  */
+@Slf4j
 public class UserChannelCurrentMap {
 
-    private static Map<String, Channel> manager = new ConcurrentHashMap<>();
+    private static Map<String, Channel> managerChannel = new ConcurrentHashMap<>();
+    private static Map<String, Channel> managerUserId = new ConcurrentHashMap<>();
 
-    public static Map<String, Channel> getAll() {
-        return manager;
+    public static Map<String, Channel> getAllChannel() {
+        return managerChannel;
     }
 
-    public static void put(String senderId, Channel channel) {
-        manager.put(senderId, channel);
+    public static void putChannel(String channelLongText, Channel channel) {
+        managerChannel.put(channelLongText, channel);
     }
 
-    public static void remove(String senderId) {
-        manager.remove("channel:" + senderId);
+    public static void remove(String channelLongText) {
+        managerChannel.remove("channel:" + channelLongText);
     }
 
-    public static Channel get(String senderId) {
-        return manager.get(senderId);
+    public static Channel getChannel(String channelLongText) {
+        return managerChannel.get(channelLongText);
     }
 
     public static void output() {
-        for (HashMap.Entry<String, Channel> entry : manager.entrySet()) {
-            System.out.println("UserId: " + entry.getKey()
-                    + ", ChannelId: " + entry.getValue().id().asLongText());
-        }
+        managerChannel.forEach((s, channel) -> {
+            log.info("longText{}; ChannelId:{}", s, channel);
+        });
+
     }
 }
