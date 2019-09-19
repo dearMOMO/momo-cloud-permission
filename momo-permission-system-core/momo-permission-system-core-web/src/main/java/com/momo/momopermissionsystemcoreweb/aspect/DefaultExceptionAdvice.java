@@ -35,7 +35,7 @@ public class DefaultExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({IllegalArgumentException.class})
     public JSONResult badRequestException(IllegalArgumentException e) {
-        return defHandler("参数解析失败", e);
+        return defHandler(null, "参数解析失败", e);
     }
 
     /**
@@ -45,7 +45,7 @@ public class DefaultExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({HttpMessageNotReadableException.class})
     public JSONResult httpMessageNotReadableException(HttpMessageNotReadableException e) {
-        return defHandler("参数解析失败", e);
+        return defHandler(null, "参数解析失败", e);
     }
 
     /**
@@ -66,7 +66,7 @@ public class DefaultExceptionAdvice {
             sb.append(" ; ");
         }
 
-        return defHandler(sb.toString(), e);
+        return defHandler(null, sb.toString(), e);
     }
 
     /**
@@ -76,7 +76,7 @@ public class DefaultExceptionAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler({IllegalStateException.class})
     public JSONResult illegalStateException(IllegalStateException e) {
-        return defHandler("illegalStateException", e);
+        return defHandler(null, "illegalStateException", e);
     }
 
     /**
@@ -85,7 +85,7 @@ public class DefaultExceptionAdvice {
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     @ExceptionHandler({HttpRequestMethodNotSupportedException.class})
     public JSONResult handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
-        return defHandler("不支持当前请求方法", e);
+        return defHandler(null, "不支持当前请求方法", e);
     }
 
     /**
@@ -94,7 +94,7 @@ public class DefaultExceptionAdvice {
     @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
     @ExceptionHandler({HttpMediaTypeNotSupportedException.class})
     public JSONResult handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException e) {
-        return defHandler("不支持当前媒体类型", e);
+        return defHandler(null, "不支持当前媒体类型", e);
     }
 
     /**
@@ -104,7 +104,7 @@ public class DefaultExceptionAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler({SQLException.class})
     public JSONResult handleSQLException(SQLException e) {
-        return defHandler("服务运行SQLException异常", e);
+        return defHandler(null, "服务运行SQLException异常", e);
     }
 
     /**
@@ -114,7 +114,7 @@ public class DefaultExceptionAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(BizException.class)
     public JSONResult handleException(BizException e) {
-        return defHandler(e.getMessage(), e);
+        return defHandler(null, e.getMessage(), e);
     }
 
 
@@ -125,11 +125,11 @@ public class DefaultExceptionAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public JSONResult handleException(Exception e) {
-        return defHandler("服务异常", e);
+        return defHandler(null, "服务异常", e);
     }
 
-    private JSONResult defHandler(String msg, Exception e) {
+    private JSONResult defHandler(Integer status, String msg, Exception e) {
         log.error(msg, e.getMessage(), e);
-        return JSONResult.errorException(msg);
+        return JSONResult.errorMsg(status, msg);
     }
 }
