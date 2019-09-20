@@ -31,3 +31,4 @@ build/
 .vscode/
 /builder/master/
 /logs/
+/builder/pre/

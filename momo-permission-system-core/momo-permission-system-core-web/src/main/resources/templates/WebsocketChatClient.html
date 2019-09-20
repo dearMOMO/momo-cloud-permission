@@ -23,7 +23,7 @@
         window.WebSocket = window.MozWebSocket;
     }
     if (window.WebSocket) {
-        socket = new WebSocket("ws://localhost:502/ws");
+        socket = new WebSocket("ws://www.mqgnsds.top:502/ws");
         socket.onmessage = function(event) {
             var ta = document.getElementById('responseText');
             ta.value = ta.value + '\n' + event.data

@@ -1,5 +1,6 @@
 package com.momo.momopermissionsystemcoreweb.configuration;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +20,7 @@ import java.time.Duration;
  * https://gitee.com/pomZhiXia/boot-root
  */
 @Configuration
+@Slf4j
 public class RedisConfig {
 
     @Value("${spring.redis.database}")
@@ -116,27 +118,8 @@ public class RedisConfig {
         redisTemplate.setHashKeySerializer(stringSerializer);
         redisTemplate.setHashValueSerializer(stringSerializer);
         redisTemplate.afterPropertiesSet();
+        log.info("Redis启动成功{}", lettuceConnectionFactory.toString());
         return redisTemplate;
     }
 
-    @Bean
-    public RedisTemplate<String, String> redisTemplateString(LettuceConnectionFactory lettuceConnectionFactory) {
-        RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(lettuceConnectionFactory);
-        // 设置值（value）的序列化采用FastJsonRedisSerializer。
-//		FastJsonRedisSerializer<Object> fastJsonRedisSerializer = new FastJsonRedisSerializer<>(Object.class);
-//		redisTemplate.setValueSerializer(fastJsonRedisSerializer);
-//		redisTemplate.setHashValueSerializer(fastJsonRedisSerializer);
-//		// 设置键（key）的序列化采用StringRedisSerializer。
-//		redisTemplate.setKeySerializer(new StringRedisSerializer());
-//		redisTemplate.setHashKeySerializer(new StringRedisSerializer());
-//		redisTemplate.setDefaultSerializer(fastJsonRedisSerializer);
-        RedisSerializer stringSerializer = new StringRedisSerializer();
-        redisTemplate.setKeySerializer(stringSerializer);
-        redisTemplate.setValueSerializer(stringSerializer);
-        redisTemplate.setHashKeySerializer(stringSerializer);
-        redisTemplate.setHashValueSerializer(stringSerializer);
-        redisTemplate.afterPropertiesSet();
-        return redisTemplate;
-    }
 }

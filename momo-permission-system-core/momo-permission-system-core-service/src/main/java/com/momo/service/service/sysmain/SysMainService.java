@@ -14,7 +14,6 @@ import com.momo.common.util.JwtTokenUtil;
 import com.momo.common.util.RedisUtil;
 import com.momo.common.util.StrUtil;
 import com.momo.common.util.snowFlake.SnowFlake;
-import com.momo.common.util.verificationCode.captcha.SpecCaptcha;
 import com.momo.mapper.dataobject.*;
 import com.momo.mapper.mapper.manual.UserAccountPwdMapper;
 import com.momo.mapper.mapper.manual.UserGroupMapper;
@@ -25,6 +24,7 @@ import com.momo.mapper.res.sysmain.UserInfoRes;
 import com.momo.service.async.LoginLogAsync;
 import com.momo.service.service.BaseService;
 import com.momo.service.service.SuperAdminsService;
+import com.wf.captcha.SpecCaptcha;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -63,7 +63,7 @@ public class SysMainService extends BaseService {
 
     public String userLogin(SysUserLoginReq sysUserLoginReq, HttpServletRequest request) {
         //todo 验证码
-//        checkVerificationCode(sysUserLoginReq);
+        checkVerificationCode(sysUserLoginReq);
         UserAccountPwdDO userAccountPwdDO = userAccountPwdMapper.sysUserAccountLogin(sysUserLoginReq.getSysUserLoginName());
         if (null == userAccountPwdDO) {
             throw BizException.fail("用户名或者密码错误");
@@ -198,14 +198,14 @@ public class SysMainService extends BaseService {
 
     public JSONResult createVerificationCode() {
         try {
-            SpecCaptcha specCaptcha = new SpecCaptcha();
-            String verUUidCode = specCaptcha.outaaaa(null);
+            SpecCaptcha specCaptcha = new SpecCaptcha(130, 48, 5);
+            String imageBase64 = specCaptcha.toBase64();
             String key = StrUtil.genUUID();
-            String verificationCode = specCaptcha.text();
+            String verificationCode = specCaptcha.text().toLowerCase();
             redisUtil.set(RedisKeyEnum.REDIS_KEY_IMG_UUID_CODE.getKey() + key, verificationCode, RedisKeyEnum.REDIS_KEY_IMG_UUID_CODE.getExpireTime());
             Map<String, Object> map = Maps.newHashMap();
             //base64
-            map.put(RedisKeyEnum.REDIS_KEY_IMG_BASE.getKey(), verUUidCode);
+            map.put(RedisKeyEnum.REDIS_KEY_IMG_BASE.getKey(), imageBase64);
             //一个verUUidCode对应当前请求用户
             map.put(RedisKeyEnum.REDIS_KEY_IMG_UUID_CODE_HEADER.getKey(), key);
             map.put(RedisKeyEnum.REDIS_KEY_IMG_TYPE.getKey(), "data:image/png;base64,");
