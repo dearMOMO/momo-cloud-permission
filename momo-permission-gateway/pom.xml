@@ -239,7 +239,7 @@
                                               tofile="${basedir}/target/classes/config/resource.properties"/>
 
                                         <delete file="${basedir}/target/classes/banner.txt"/>
-                                        <copy file="${basedir}/builder/dev/banner.txt"
+                                        <copy file="${basedir}/builder/master/banner.txt"
                                               tofile="${basedir}/target/classes/banner.txt"/>
 
                                     </target>
@@ -286,7 +286,7 @@
                                               tofile="${basedir}/target/classes/config/resource.properties"/>
 
                                         <delete file="${basedir}/target/classes/banner.txt"/>
-                                        <copy file="${basedir}/builder/dev/banner.txt"
+                                        <copy file="${basedir}/builder/pre/banner.txt"
                                               tofile="${basedir}/target/classes/banner.txt"/>
 
                                     </target>

@@ -177,7 +177,7 @@
                                               tofile="${basedir}/target/classes/logback-spring.xml"/>
 
                                         <delete file="${basedir}/target/classes/banner.txt"/>
-                                        <copy file="${basedir}/builder/dev/banner.txt"
+                                        <copy file="${basedir}/builder/master/banner.txt"
                                               tofile="${basedir}/target/classes/banner.txt"/>
 
                                     </target>
@@ -216,7 +216,7 @@
                                               tofile="${basedir}/target/classes/logback-spring.xml"/>
 
                                         <delete file="${basedir}/target/classes/banner.txt"/>
-                                        <copy file="${basedir}/builder/dev/banner.txt"
+                                        <copy file="${basedir}/builder/pre/banner.txt"
                                               tofile="${basedir}/target/classes/banner.txt"/>
 
                                     </target>
@@ -254,16 +254,8 @@
                                         <copy file="${basedir}/builder/test/logback-spring.xml"
                                               tofile="${basedir}/target/classes/logback-spring.xml"/>
 
-                                        <delete file="${basedir}/target/classes/config/jwt.properties"/>
-                                        <copy file="${basedir}/builder/test/config/jwt.properties"
-                                              tofile="${basedir}/target/classes/config/jwt.properties"/>
-
-                                        <delete file="${basedir}/target/classes/config/resource.properties"/>
-                                        <copy file="${basedir}/builder/test/config/resource.properties"
-                                              tofile="${basedir}/target/classes/config/resource.properties"/>
-
                                         <delete file="${basedir}/target/classes/banner.txt"/>
-                                        <copy file="${basedir}/builder/dev/banner.txt"
+                                        <copy file="${basedir}/builder/test/banner.txt"
                                               tofile="${basedir}/target/classes/banner.txt"/>
 
                                     </target>
