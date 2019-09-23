@@ -23,8 +23,9 @@
         window.WebSocket = window.MozWebSocket;
     }
     if (window.WebSocket) {
-        socket = new WebSocket("ws://www.mqgnsds.top:502/ws");
+        socket = new WebSocket("ws://127.0.0.1:502/ws");
         socket.onmessage = function(event) {
+            console.log(event.data)
             var ta = document.getElementById('responseText');
             ta.value = ta.value + '\n' + event.data
 			scrollButtom();
@@ -32,8 +33,9 @@
         socket.onopen = function(event) {
             var ta = document.getElementById('responseText');
             ta.value = "连接开启!";
+            send("defaultMsg");
 			// 定时发送心跳
-			setInterval("keepalive()", 500000);
+			setInterval("keepalive()", 50000);
         };
         socket.onclose = function(event) {
             var ta = document.getElementById('responseText');

@@ -115,6 +115,24 @@ management:
     health:
       show-details: ALWAYS
 
+# Netty相关配置
+#不能用localhost,否则启动报异常:Unresolved address
+#tcp监听的端口
+netty:
+  tcp:
+    port: 502
+  # bossGroup的线程数
+  boss: #worker.threads>boss.threads
+    thread: # 1-4 用来accept的处理
+      count: 4
+  # worker的线程数
+  worker:
+    thread: #cpu核数*2
+      count: 2
+  #是否使用长连接
+  so:
+    keepalive: true #一般对终端设备，我看很多人的推荐是关掉，不是true  Socket参数，连接保活，默认值为False。启用该功能时，TCP会主动探测空闲连接的有效性。可以将此功能视为TCP的心跳机制#需要注意的是：默认的心跳间隔是7200s即2小时。Netty默认关闭该功能
+    backlog: 5 # 半连接队列最大值 client连接有很多时，server.boss(accept)处理不过来时，堆在队列等待accept处理的数量值 Socket参数，服务端接受连接的队列长度，如果队列已满，客户端连接将被拒绝
 
 wx:
   mp:

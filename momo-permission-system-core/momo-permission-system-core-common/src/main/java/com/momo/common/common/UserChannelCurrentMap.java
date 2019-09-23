@@ -20,6 +20,10 @@ public class UserChannelCurrentMap {
         return managerChannel;
     }
 
+    public static int managerChannelSize() {
+        return managerChannel.size();
+    }
+
     public static void putChannel(String channelLongText, Channel channel) {
         managerChannel.put(channelLongText, channel);
     }
