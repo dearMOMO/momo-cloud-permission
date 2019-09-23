@@ -29,7 +29,7 @@ public class UserChannelCurrentMap {
     }
 
     public static void remove(String channelLongText) {
-        managerChannel.remove("channel:" + channelLongText);
+        managerChannel.remove(channelLongText);
     }
 
     public static Channel getChannel(String channelLongText) {
