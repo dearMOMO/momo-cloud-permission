@@ -23,7 +23,7 @@
         <spring-cloud.version>Greenwich.SR2</spring-cloud.version>
         <mysql-connector-java.version>6.0.6</mysql-connector-java.version>
         <pagehelper-spring-boot-starter.version>1.2.10</pagehelper-spring-boot-starter.version>
-        <lombok.version>1.18.8</lombok.version>
+        <lombok.version>1.18.10</lombok.version>
         <fastjson.version>1.2.61</fastjson.version>
         <guava.version>23.0</guava.version>
         <commons-pool2.version>2.7.0</commons-pool2.version>
