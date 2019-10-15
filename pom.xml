@@ -39,6 +39,7 @@
         <hutool-all.version>4.6.1</hutool-all.version>
         <commons-collections.version>3.2.2</commons-collections.version>
         <weixin-java-tools.version>3.5.0</weixin-java-tools.version>
+        <lettuce-core.version>5.2.0.RELEASE</lettuce-core.version>
     </properties>
     <modules>
         <module>momo-permission-eureka</module>
@@ -123,6 +124,12 @@
                 <artifactId>commons-pool2</artifactId>
                 <version>${commons-pool2.version}</version>
             </dependency>
+            <dependency>
+                <groupId>io.lettuce</groupId>
+                <artifactId>lettuce-core</artifactId>
+                <version>${lettuce-core.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>com.github.pagehelper</groupId>
                 <artifactId>pagehelper-spring-boot-starter</artifactId>
