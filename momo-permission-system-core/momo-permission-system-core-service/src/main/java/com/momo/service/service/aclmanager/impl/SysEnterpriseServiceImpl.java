@@ -29,11 +29,11 @@ import com.momo.service.service.authority.AdminAuthorityService;
 import com.momo.service.service.authority.CommonAuthorityService;
 import com.momo.service.service.authority.RoleService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -212,7 +212,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         sysRolePageListResPageInfo.setPageNum(pageInfo.getPageNum());
         List<RoleDO> roleDOS = pageInfo.getList();
 
-        if (org.apache.commons.collections.CollectionUtils.isEmpty(roleDOS)) {
+        if (CollectionUtils.isEmpty(roleDOS)) {
             sysEnterpriseRoleResFinal.setSysEnterpriseRoleResPageInfo(sysRolePageListResPageInfo);
             return sysEnterpriseRoleResFinal;
         }
@@ -222,7 +222,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         Set<Long> roleIds = Sets.newHashSet();
         //当前登录用户是否是管理员(老板)
         boolean checkAdminRole = false;
-        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(roleDOList)) {
+        if (CollectionUtils.isNotEmpty(roleDOList)) {
             for (RoleDO roleDO : roleDOList) {
                 roleIds.add(roleDO.getId());
                 if (roleDO.getSysRoleType() == 0) {
@@ -479,7 +479,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         //当前登录用户所拥有的 角色
         //是否被禁用  0否 1禁用
         List<RoleDO> currentRoleDOList = roleMapper.getRolesByUserId(redisUser.getBaseId(), 0);
-        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(currentRoleDOList)) {
+        if (CollectionUtils.isNotEmpty(currentRoleDOList)) {
             currentRoleDOList.forEach(currentRole -> {
                 if (currentRole.getId().equals(roleDO.getId())) {
                     throw BizException.fail("您无法变更自己的权限");
@@ -495,12 +495,12 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
     @Transactional
     public void computeAclsToRole(List<AclDO> getAcls, RoleDO roleDO, RedisUser redisUser) {
         List<AclDO> aclDOS = Lists.newArrayList();
-        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(getAcls)) {
+        if (CollectionUtils.isNotEmpty(getAcls)) {
             Set<String> aclsUuid = getAcls.stream().map(aclDO -> aclDO.getUuid()).collect(Collectors.toSet());
             aclDOS.addAll(aclMapper.aclUuids(aclsUuid));
         }
         List<Long> acls = Lists.newArrayList();
-        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(aclDOS)) {
+        if (CollectionUtils.isNotEmpty(aclDOS)) {
             aclDOS.forEach(roleAclDO -> {
                 acls.add(roleAclDO.getId());
             });
@@ -512,7 +512,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
             Set<Long> aclIdSet = Sets.newHashSet(acls);
             originAclIdSet.removeAll(aclIdSet);
             alcIds.addAll(originAclIdSet);
-            if (org.apache.commons.collections.CollectionUtils.isEmpty(originAclIdSet)) {
+            if (CollectionUtils.isEmpty(originAclIdSet)) {
                 return;
             }
         }
@@ -522,7 +522,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
     @Transactional
     public void updateRoleAcls(Long roleId, List<AclDO> aclIdList, RedisUser redisUser, Long groupId, List<Long> acls, Integer roleType, List<Long> alcIds) {
         roleMapper.deleteRoleAclsByRoleId(roleId);
-        if (org.apache.commons.collections.CollectionUtils.isEmpty(aclIdList)) {
+        if (CollectionUtils.isEmpty(aclIdList)) {
             return;
         }
         List<RoleAclDO> roleUserList = Lists.newArrayList();
@@ -563,7 +563,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         pageInfoRes.setPageNum(pageInfo.getPageNum());
         pageInfoRes.setPageSize(pageInfo.getPageSize());
         pageInfoRes.setTotal(pageInfo.getTotal());
-        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(doList)) {
+        if (CollectionUtils.isNotEmpty(doList)) {
             doList.forEach(sysUserListDO -> {
                 SysUserListRes sysUserListRes = new SysUserListRes();
                 BeanUtils.copyProperties(sysUserListDO, sysUserListRes);
@@ -731,7 +731,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
         List<RoleDO> roleDOList = roleMapper.getRolesByUserId(userDO.getId(), null);
         Set<String> roleSet = Sets.newHashSet();
         //已选中列表
-        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(roleDOList)) {
+        if (CollectionUtils.isNotEmpty(roleDOList)) {
             roleSet = roleDOList.stream().map(roleDO -> String.valueOf(roleDO.getId())).collect(Collectors.toSet());
         }
         SysRoleCheckedRes roleCheckedRes = new SysRoleCheckedRes();
@@ -767,7 +767,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
             Set<Long> originAclIdSet = Sets.newHashSet(originAclIdList);
             Set<Long> aclIdSet = Sets.newHashSet(roles);
             originAclIdSet.removeAll(aclIdSet);
-            if (org.apache.commons.collections.CollectionUtils.isEmpty(originAclIdSet)) {
+            if (CollectionUtils.isEmpty(originAclIdSet)) {
                 return "为企业用户授权角色成功";
             }
         }
@@ -855,7 +855,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
     public void updateUserRoles(Long userId, List<Long> roleIdList, RedisUser redisUser, Long tenantId) {
         roleMapper.deleteUserRolesByUserId(userId);
 
-        if (org.apache.commons.collections.CollectionUtils.isEmpty(roleIdList)) {
+        if (CollectionUtils.isEmpty(roleIdList)) {
             return;
         }
         List<RoleUserDO> roleUserList = Lists.newArrayList();

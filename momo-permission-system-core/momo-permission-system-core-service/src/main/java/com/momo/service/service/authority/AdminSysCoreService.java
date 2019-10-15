@@ -9,10 +9,10 @@ import com.momo.mapper.req.sysmain.DynamicMenuAuthorReq;
 import com.momo.mapper.req.sysmain.HasAclReq;
 import com.momo.mapper.req.sysmain.RedisUser;
 import com.momo.service.service.SuperAdminsService;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -36,12 +36,12 @@ public class AdminSysCoreService {
     private AclMapper aclMapper;
 
     public List<AclDO> getRoleAclList(Set<Long> roleIds, String aclPermissionType) {
-        if (org.apache.commons.collections.CollectionUtils.isEmpty(roleIds)) {
+        if (CollectionUtils.isEmpty(roleIds)) {
             return Lists.newArrayList();
         }
         //根据角色id获取权限点ids
         List<Long> aclIdList = authorityMapper.aclsByRoleId(roleIds, aclPermissionType);
-        if (org.apache.commons.collections.CollectionUtils.isEmpty(aclIdList)) {
+        if (CollectionUtils.isEmpty(aclIdList)) {
             return Lists.newArrayList();
         }
         Set<Long> aclIdSet = new HashSet<>(aclIdList);
@@ -87,13 +87,13 @@ public class AdminSysCoreService {
         }
         //根据用户id获取角色ids
         List<Long> userRoleIdList = authorityMapper.rolesByUserId(redisUser.getBaseId());
-        if (org.apache.commons.collections.CollectionUtils.isEmpty(userRoleIdList)) {
+        if (CollectionUtils.isEmpty(userRoleIdList)) {
             return Lists.newArrayList();
         }
         Set<Long> userRoleIdListSet = userRoleIdList.stream().map(aLong -> aLong).collect(Collectors.toSet());
         //根据角色ids获取权限点ids
         List<Long> userAclIdList = authorityMapper.aclsByRoleId(userRoleIdListSet, loginAuthReq.getAclPermissionCode());
-        if (org.apache.commons.collections.CollectionUtils.isEmpty(userAclIdList)) {
+        if (CollectionUtils.isEmpty(userAclIdList)) {
             return Lists.newArrayList();
         }
         Set<Long> aclIdSet = new HashSet<>(userAclIdList);

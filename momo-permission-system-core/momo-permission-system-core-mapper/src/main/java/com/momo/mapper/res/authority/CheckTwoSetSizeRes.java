@@ -2,7 +2,7 @@ package com.momo.mapper.res.authority;
 
 import com.google.common.collect.Lists;
 import lombok.*;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.Comparator;
 import java.util.List;

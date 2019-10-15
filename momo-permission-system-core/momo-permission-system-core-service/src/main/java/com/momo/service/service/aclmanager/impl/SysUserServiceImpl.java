@@ -23,7 +23,7 @@ import com.momo.service.service.BaseService;
 import com.momo.service.service.SuperAdminsService;
 import com.momo.service.service.aclmanager.SysUserService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

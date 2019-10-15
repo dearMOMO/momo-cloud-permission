@@ -12,8 +12,8 @@ import com.momo.mapper.req.sysmain.DynamicMenuAuthorReq;
 import com.momo.mapper.req.sysmain.RedisUser;
 import com.momo.service.service.SuperAdminsService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

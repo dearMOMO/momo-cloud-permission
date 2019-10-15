@@ -12,7 +12,7 @@ import com.momo.mapper.cache.RoleDORedisCache;
 import com.momo.mapper.dataobject.AclDO;
 import com.momo.mapper.dataobject.RoleDO;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
