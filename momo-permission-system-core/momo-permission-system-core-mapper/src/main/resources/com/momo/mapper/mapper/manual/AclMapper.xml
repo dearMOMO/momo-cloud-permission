@@ -33,6 +33,11 @@
     <select id="checkChildAcl" parameterType="map" resultType="int">
         select count(id) from sys_acl where sys_acl_level like CONCAT('%',#{sys_acl_level})
     </select>
+    <select id="getByUrl" parameterType="map" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM sys_acl
+        WHERE url = #{url}
+    </select>
     <select id="checkAclSysName" parameterType="map" resultType="int">
         select count(id) from sys_acl
         <trim prefixOverrides="and" prefix="where">

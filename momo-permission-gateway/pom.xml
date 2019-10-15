@@ -47,6 +47,11 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
         </dependency>
+        <!--	服务之间的调用 集成Ribbon或Eureka实现负载均衡的HTTP客户端	-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
         <!--Admin监控  client-->
         <dependency>
             <groupId>de.codecentric</groupId>

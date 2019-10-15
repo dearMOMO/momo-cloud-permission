@@ -3,10 +3,13 @@ package com.momo.momopermissiongateway.filter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
+import com.momo.momopermissiongateway.common.JSONResult;
 import com.momo.momopermissiongateway.common.RedisUser;
 import com.momo.momopermissiongateway.configuration.InterceptUrlConfiguration;
 import com.momo.momopermissiongateway.configuration.JwtProperties;
 import com.momo.momopermissiongateway.exception.RedisKeyEnum;
+import com.momo.momopermissiongateway.feign.HasAclServiceFeign;
+import com.momo.momopermissiongateway.req.HasAclReq;
 import com.momo.momopermissiongateway.res.JwtResponse;
 import com.momo.momopermissiongateway.utils.DateUtils;
 import com.momo.momopermissiongateway.utils.JwtTokenUtil;
@@ -50,6 +53,8 @@ public class TokenFilter implements GlobalFilter, Ordered {
     private final static Long EXPIREDREDIS = 1800L;
     @Autowired
     private InterceptUrlConfiguration interceptUrlConfiguration;
+    @Autowired
+    private HasAclServiceFeign hasAclServiceFeign;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -78,6 +83,20 @@ public class TokenFilter implements GlobalFilter, Ordered {
                 RedisUser redisUser = JSON.parseObject(userInfo, new TypeReference<RedisUser>() {
                 });
                 if (!redisUser.getTenantId().equals(interceptUrlConfiguration.getTeantId()) && interceptUrlConfiguration.checkEnterpriseUrl(path)) {
+                    return JwtResponse.jwtResponse(exchange, HttpStatus.UNAUTHORIZED.value(), "您无权限访问");
+                }
+                //权限拦截
+                HasAclReq hasAclReq = new HasAclReq();
+                hasAclReq.setUrl(path);
+                hasAclReq.setTenantId(hasAclReq.getTenantId());
+                JSONResult hasAcl = hasAclServiceFeign.hasAcl(hasAclReq);
+                if (hasAcl.getStatus() == 500) {
+                    return JwtResponse.jwtResponse(exchange, HttpStatus.INTERNAL_SERVER_ERROR.value(), hasAcl.getMsg());
+                } else if (hasAcl.getStatus() == 200) {
+                    if (!(boolean) hasAcl.getData()) {
+                        return JwtResponse.jwtResponse(exchange, HttpStatus.UNAUTHORIZED.value(), "您无权限访问");
+                    }
+                } else {
                     return JwtResponse.jwtResponse(exchange, HttpStatus.UNAUTHORIZED.value(), "您无权限访问");
                 }
                 //第三方

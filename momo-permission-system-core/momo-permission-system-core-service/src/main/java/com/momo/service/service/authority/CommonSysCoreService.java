@@ -5,9 +5,11 @@ import com.google.common.collect.Sets;
 import com.momo.mapper.dataobject.AclDO;
 import com.momo.mapper.mapper.manual.AuthorityMapper;
 import com.momo.mapper.req.sysmain.DynamicMenuAuthorReq;
+import com.momo.mapper.req.sysmain.HasAclReq;
 import com.momo.mapper.req.sysmain.RedisUser;
 import com.momo.service.service.SuperAdminsService;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -82,5 +84,38 @@ public class CommonSysCoreService {
         Set<Long> aclIdsSet = Sets.newHashSet(aclIdsList);
         //根据权限点ids获取权限点列表
         return authorityMapper.getAllAcl(loginAuthReq.getAclPermissionCode(), aclIdsSet);
+    }
+
+    public boolean hasUrlAcl(HasAclReq hasAclReq) {
+        if (StringUtils.isBlank(hasAclReq.getUrl())) {
+            return false;
+        }
+        String url = truncateUrlPage(hasAclReq.getUrl());
+        if (superAdminsService.checkIsSuperAdmin(hasAclReq.getSysUserPhone())) {
+            return true;
+        }
+        List<AclDO> userAclList = getUserAclList(new DynamicMenuAuthorReq(), hasAclReq);
+        Set<String> userAclIdSet = userAclList.stream().map(AclDO::getSysAclUrl).collect(Collectors.toSet());
+        // 规则：只要有一个权限点有权限，那么我们就认为有访问权限
+        for (String aclUrl : userAclIdSet) {
+            // 判断一个用户是否具有某个权限点的访问权限
+            if (StringUtils.isBlank(aclUrl)) { // 权限点无效
+                continue;
+            }
+            if (url.equals(aclUrl)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private String truncateUrlPage(String strURL) {
+        String strAllParam = null;
+        strURL = strURL.trim().toLowerCase();
+        String[] arrSplit = strURL.split("[?]");
+        if (strURL.length() > 0) {
+            strAllParam = arrSplit[0];
+        }
+        return strAllParam;
     }
 }
