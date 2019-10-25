@@ -167,10 +167,10 @@ momo:
     password: kagome123456 #密码
   #超级管理员租户信息
   teantId: 1
-  ignore-url: #忽略拦截URL
+  ignorerUrl: #忽略拦截URL
     - /api/platform/sysMain/login/v1
     - /api/platform/sysMain/images/captcha/v1
-  enterprise-url: 企业相关操作URL，只有MOMO企业下的员工才可以操作
+  enterpriseUrl: 企业相关操作URL，只有MOMO企业下的员工才可以操作
     - /api/platform/enterprise/sysUserGroupPage/v1
     - /api/platform/enterprise/detail/v1
     - /api/platform/enterprise/save/v1

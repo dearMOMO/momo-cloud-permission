@@ -4,7 +4,9 @@ import com.momo.momopermissiongateway.common.JSONResult;
 import com.momo.momopermissiongateway.req.HasAclReq;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -19,8 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @FeignClient(name = "momo-permission-system-core", fallback = HasAclServiceFeign.HasAclServiceImplFeign.class)
 public interface HasAclServiceFeign {
 
-    @RequestMapping("/hasAcl/v1")
-    JSONResult hasAcl(HasAclReq hasAclReq);
+    @PostMapping(value = "/platform/intercept/hasAcl/v1", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    JSONResult hasAcl(@RequestBody HasAclReq hasAclReq);
 
     @Component
     @Slf4j
