@@ -10,6 +10,9 @@
 
 <p align="center">
 
+[GitHub](https://github.com/dearMOMO/momo-cloud-permission)
+[Gitee](https://gitee.com/momoriven/momo-cloud-permission)
+
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![LICENSE](https://img.shields.io/badge/License-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE) 
 [![Badge](https://img.shields.io/badge/Link-996.icu-red.svg)](https://996.icu/#/zh_CN)
