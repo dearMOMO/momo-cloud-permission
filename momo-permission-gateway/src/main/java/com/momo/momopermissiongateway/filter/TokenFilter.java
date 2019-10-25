@@ -88,7 +88,7 @@ public class TokenFilter implements GlobalFilter, Ordered {
                 //权限拦截
                 HasAclReq hasAclReq = new HasAclReq();
                 hasAclReq.setUrl(path);
-                hasAclReq.setTenantId(hasAclReq.getTenantId());
+                hasAclReq.setTenantId(redisUser.getTenantId());
                 JSONResult hasAcl = hasAclServiceFeign.hasAcl(hasAclReq);
                 if (hasAcl.getStatus() == 500) {
                     return JwtResponse.jwtResponse(exchange, HttpStatus.INTERNAL_SERVER_ERROR.value(), hasAcl.getMsg());
