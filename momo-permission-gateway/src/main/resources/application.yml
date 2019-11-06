@@ -145,6 +145,29 @@ momo-permission-system-core:
     eureka:
       enabled: true
 
+feign:
+  # feign启用hystrix，才能熔断、降级
+  # hystrix:
+  #  enabled: true
+  # 启用 okhttp 关闭默认 httpclient
+  httpclient:
+    enabled: false #关闭httpclient
+    # 配置连接池
+    max-connections: 500 #feign的最大连接数
+    max-connections-per-route: 100 #fegin单个路径的最大连接数
+  okhttp:
+    enabled: true
+  # 请求与响应的压缩以提高通信效率
+  compression:
+    request:
+      enabled: true
+      min-request-size: 2048
+      mime-types: text/xml,application/xml,application/json
+    response:
+      enabled: true
+# hystrix进入follback的超时时间，第一次访问接口时由于要初始化http pools等，这里我们设置超时时间比http请求时间长一点
+#.command.default.execution.isolation.thread.timeoutInMilliseconds=10000
+
 management:
   endpoints:
     web:

@@ -28,6 +28,10 @@ eureka:
       defaultZone: http://${momo.security.name}:${momo.security.password}@${momo.ip}:${momo.eureka-port}/eureka/
 #      defaultZone: http://${momo.security.name}:${momo.security.password}@${momo.ip}:${momo.eureka-port}:8761/eureka/,http://${momo.security.name}:${momo.security.password}@${momo.ip}:${momo.eureka-port}:8762/eureka/,http://${momo.security.name}:${momo.security.password}@${momo.ip}:${momo.eureka-port}:8763/eureka/
 spring:
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
   application:
     name: ${momo.application}
   http:
