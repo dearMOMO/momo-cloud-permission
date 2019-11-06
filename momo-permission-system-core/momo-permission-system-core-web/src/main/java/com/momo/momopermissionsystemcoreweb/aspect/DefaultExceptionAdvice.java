@@ -11,6 +11,7 @@ import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -115,6 +116,16 @@ public class DefaultExceptionAdvice {
     @ExceptionHandler(BizException.class)
     public JSONResult handleException(BizException e) {
         return defHandler(null, e.getMessage(), e);
+    }
+
+    /**
+     * BusinessException 没有找到对应的访问路径
+     * 返回状态码:500
+     */
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public JSONResult noHandlerFoundException(BizException e) {
+        return defHandler(null, "没有找到对应的访问路径", e);
     }
 
 

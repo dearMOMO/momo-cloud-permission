@@ -3,9 +3,12 @@
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
     <!-- 定义日志文件 输入位置 -->
-    <property name="log_dir" value="./logs/"/>
+    <property name="log_dir" value="./logs"/>
     <!-- 日志最大的历史 30天 -->
     <property name="maxHistory" value="61"/>
+    <!--按照固定窗口模式生成日志文件-->
+    <property name="minIndex" value="1"/>
+    <property name="maxIndex" value="10"/>
 
     <!-- ConsoleAppender 控制台输出日志 -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
@@ -32,20 +35,22 @@
             则只保存最近6个月的文件，删除之前的旧文件。注意，删除旧文件是，那些为了归档而创建的目录也会被删除-->
             <maxHistory>${maxHistory}</maxHistory>
         </rollingPolicy>
-
-        <!-- 按照固定窗口模式生成日志文件，当文件大于20MB时，生成新的日志文件。窗口大小是1到3，当保存了3个归档文件后，将覆盖最早的日志。
-        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-          <fileNamePattern>${log_dir}/%d{yyyy-MM-dd}/.log.zip</fileNamePattern>
-          <minIndex>1</minIndex>
-          <maxIndex>3</maxIndex>
-        </rollingPolicy>   -->
-        <!-- 查看当前活动文件的大小，如果超过指定大小会告知RollingFileAppender 触发当前活动文件滚动
-        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <maxFileSize>5MB</maxFileSize>
-        </triggeringPolicy>   -->
+        <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 归档的日志文件的路径，例如今天是2013-12-21日志，当前写的日志文件路径为file节点指定，可以将此文件与file指定文件路径设置为不同路径，从而将当前日志文件或归档日志文件置不同的目录。
+            而2013-12-21的日志文件在由fileNamePattern指定。%d{yyyy-MM-dd}指定日期格式，%i指定索引 -->
+            <!--            <fileNamePattern>${log_dir}/pigeonhole/log-error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>-->
+            <fileNamePattern>${log_dir}/%d{yyyy-MM-dd}/error-log-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <maxHistory>10</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+            <maxFileSize>1MB</maxFileSize>
+        </rollingPolicy>
+        <!-- 追加方式记录日志 -->
+        <append>true</append>
 
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+            <charset>utf-8</charset>
         </encoder>
     </appender>
 
@@ -65,8 +70,22 @@
             <!-- 日志最大的历史 60天 -->
             <maxHistory>${maxHistory}</maxHistory>
         </rollingPolicy>
+        <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 归档的日志文件的路径，例如今天是2013-12-21日志，当前写的日志文件路径为file节点指定，可以将此文件与file指定文件路径设置为不同路径，从而将当前日志文件或归档日志文件置不同的目录。
+            而2013-12-21的日志文件在由fileNamePattern指定。%d{yyyy-MM-dd}指定日期格式，%i指定索引 -->
+            <!--            <fileNamePattern>${log_dir}/pigeonhole/log-error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>-->
+            <fileNamePattern>${log_dir}/%d{yyyy-MM-dd}/warn-log-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <maxHistory>10</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+            <maxFileSize>1MB</maxFileSize>
+        </rollingPolicy>
+        <!-- 追加方式记录日志 -->
+        <append>true</append>
+
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+            <charset>utf-8</charset>
         </encoder>
     </appender>
 
@@ -86,8 +105,22 @@
             <!-- 日志最大的历史 60天 -->
             <maxHistory>${maxHistory}</maxHistory>
         </rollingPolicy>
+        <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 归档的日志文件的路径，例如今天是2013-12-21日志，当前写的日志文件路径为file节点指定，可以将此文件与file指定文件路径设置为不同路径，从而将当前日志文件或归档日志文件置不同的目录。
+            而2013-12-21的日志文件在由fileNamePattern指定。%d{yyyy-MM-dd}指定日期格式，%i指定索引 -->
+            <!--            <fileNamePattern>${log_dir}/pigeonhole/log-error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>-->
+            <fileNamePattern>${log_dir}/%d{yyyy-MM-dd}/info-log-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <maxHistory>10</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+            <maxFileSize>1MB</maxFileSize>
+        </rollingPolicy>
+        <!-- 追加方式记录日志 -->
+        <append>true</append>
+
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+            <charset>utf-8</charset>
         </encoder>
     </appender>
 
@@ -107,8 +140,22 @@
             <!-- 日志最大的历史 60天 -->
             <maxHistory>${maxHistory}</maxHistory>
         </rollingPolicy>
+        <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 归档的日志文件的路径，例如今天是2013-12-21日志，当前写的日志文件路径为file节点指定，可以将此文件与file指定文件路径设置为不同路径，从而将当前日志文件或归档日志文件置不同的目录。
+            而2013-12-21的日志文件在由fileNamePattern指定。%d{yyyy-MM-dd}指定日期格式，%i指定索引 -->
+            <!--            <fileNamePattern>${log_dir}/pigeonhole/log-error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>-->
+            <fileNamePattern>${log_dir}/%d{yyyy-MM-dd}/debug-log-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <maxHistory>10</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+            <maxFileSize>1MB</maxFileSize>
+        </rollingPolicy>
+        <!-- 追加方式记录日志 -->
+        <append>true</append>
+
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+            <charset>utf-8</charset>
         </encoder>
     </appender>
 
@@ -128,8 +175,22 @@
             <!-- 日志最大的历史 60天 -->
             <maxHistory>${maxHistory}</maxHistory>
         </rollingPolicy>
+        <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 归档的日志文件的路径，例如今天是2013-12-21日志，当前写的日志文件路径为file节点指定，可以将此文件与file指定文件路径设置为不同路径，从而将当前日志文件或归档日志文件置不同的目录。
+            而2013-12-21的日志文件在由fileNamePattern指定。%d{yyyy-MM-dd}指定日期格式，%i指定索引 -->
+            <!--            <fileNamePattern>${log_dir}/pigeonhole/log-error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>-->
+            <fileNamePattern>${log_dir}/%d{yyyy-MM-dd}/trace-log-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <maxHistory>10</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+            <maxFileSize>1MB</maxFileSize>
+        </rollingPolicy>
+        <!-- 追加方式记录日志 -->
+        <append>true</append>
+
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+            <charset>utf-8</charset>
         </encoder>
     </appender>
 
