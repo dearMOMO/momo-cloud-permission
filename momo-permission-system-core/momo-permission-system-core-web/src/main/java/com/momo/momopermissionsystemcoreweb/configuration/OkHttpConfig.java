@@ -1,4 +1,4 @@
-package com.momo.momopermissiongateway.configuration;
+package com.momo.momopermissionsystemcoreweb.configuration;
 
 /**
  * @ClassName: OkHttpConfig
@@ -10,7 +10,8 @@ package com.momo.momopermissiongateway.configuration;
  **/
 
 import feign.Feign;
-import okhttp3.*;
+import okhttp3.ConnectionPool;
+import okhttp3.OkHttpClient;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.cloud.openfeign.FeignAutoConfiguration;
@@ -35,8 +36,8 @@ public class OkHttpConfig {
     }*/
 
     @Bean
-    public okhttp3.OkHttpClient okHttpClient() {
-        return new okhttp3.OkHttpClient.Builder()
+    public OkHttpClient okHttpClient() {
+        return new OkHttpClient.Builder()
                 //设置连接超时
                 .connectTimeout(10, TimeUnit.SECONDS)
                 //设置读超时
