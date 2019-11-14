@@ -30,7 +30,7 @@ public class SysMainController {
      * @param sysUserLoginReq
      * @return
      */
-    @SysLog("用户登录")
+    @SysLog(description = "用户登录")
     @PostMapping("/login/v1")
     public JSONResult userLogin(@Validated(SysUserLoginReq.Query.class) @RequestBody SysUserLoginReq sysUserLoginReq, HttpServletRequest request) {
         String msg = sysMainService.userLogin(sysUserLoginReq, request);
