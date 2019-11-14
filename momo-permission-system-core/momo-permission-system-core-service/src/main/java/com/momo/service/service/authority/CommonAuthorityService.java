@@ -1,12 +1,12 @@
 package com.momo.service.service.authority;
 
 import com.google.common.collect.*;
-import com.momo.common.util.LevelUtil;
+import com.momo.common.core.util.LevelUtil;
 import com.momo.mapper.dataobject.AclDO;
 import com.momo.mapper.mapper.manual.AuthorityMapper;
 import com.momo.mapper.mapper.manual.RoleAclMapper;
 import com.momo.mapper.req.sysmain.DynamicMenuAuthorReq;
-import com.momo.mapper.req.sysmain.RedisUser;
+import com.momo.common.core.entity.RedisUser;
 import com.momo.mapper.res.authority.AclLevelRes;
 import com.momo.mapper.res.authority.AclTreeRes;
 import com.momo.service.service.BaseService;

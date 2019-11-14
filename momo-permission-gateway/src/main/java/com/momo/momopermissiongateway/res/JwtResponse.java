@@ -1,7 +1,7 @@
 package com.momo.momopermissiongateway.res;
 
 import com.alibaba.fastjson.JSONObject;
-import com.momo.momopermissiongateway.common.JSONResult;
+import com.momo.common.core.common.JSONResult;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;

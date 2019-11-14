@@ -1,8 +1,8 @@
 package com.momo.momopermissionsystemcoreweb.aspect;
 
-import com.momo.common.common.JSONResult;
-import com.momo.common.error.BizException;
-import com.momo.common.error.ErrorEnum;
+import com.momo.common.core.common.JSONResult;
+import com.momo.common.core.error.BizException;
+import com.momo.common.core.error.ErrorEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;

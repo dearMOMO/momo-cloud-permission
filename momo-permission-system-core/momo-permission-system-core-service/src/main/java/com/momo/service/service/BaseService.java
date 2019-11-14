@@ -2,9 +2,9 @@ package com.momo.service.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.momo.common.error.RedisKeyEnum;
-import com.momo.common.util.JwtTokenUtil;
-import com.momo.mapper.req.sysmain.RedisUser;
+import com.momo.common.core.error.RedisKeyEnum;
+import com.momo.common.core.util.JwtTokenUtil;
+import com.momo.common.core.entity.RedisUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;

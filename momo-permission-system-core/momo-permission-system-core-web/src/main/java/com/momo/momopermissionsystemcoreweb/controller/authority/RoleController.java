@@ -1,6 +1,6 @@
 package com.momo.momopermissionsystemcoreweb.controller.authority;
 
-import com.momo.common.common.JSONResult;
+import com.momo.common.core.common.JSONResult;
 import com.momo.mapper.req.authority.BatchRoleUserReq;
 import com.momo.mapper.req.authority.RoleReq;
 import com.momo.mapper.req.sysmain.DynamicMenuAuthorReq;

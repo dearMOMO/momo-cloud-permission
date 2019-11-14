@@ -1,6 +1,7 @@
 package com.momo.momopermissionsystemcoreweb.controller.sysmain;
 
-import com.momo.common.common.JSONResult;
+import com.momo.common.core.common.JSONResult;
+import com.momo.common.log.annotation.SysLog;
 import com.momo.mapper.req.sysmain.SysUserLoginReq;
 import com.momo.service.service.sysmain.SysMainService;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,7 @@ public class SysMainController {
      * @param sysUserLoginReq
      * @return
      */
+    @SysLog("用户登录")
     @PostMapping("/login/v1")
     public JSONResult userLogin(@Validated(SysUserLoginReq.Query.class) @RequestBody SysUserLoginReq sysUserLoginReq, HttpServletRequest request) {
         String msg = sysMainService.userLogin(sysUserLoginReq, request);

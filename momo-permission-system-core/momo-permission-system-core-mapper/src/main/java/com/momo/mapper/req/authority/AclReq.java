@@ -1,8 +1,6 @@
 package com.momo.mapper.req.authority;
 
-import com.momo.common.error.BaseReq;
 import lombok.*;
-import org.springframework.format.annotation.NumberFormat;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;

@@ -46,6 +46,7 @@
         <module>momo-permission-eureka</module>
         <module>momo-permission-gateway</module>
         <module>momo-permission-system-core</module>
+        <module>momo-permission-common</module>
     </modules>
     <dependencyManagement>
         <dependencies>
@@ -196,12 +197,17 @@
                 <artifactId>momo-permission-system-core</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
+            <dependency>
+                <groupId>com.momo</groupId>
+                <artifactId>momo-permission-common</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
-    <repositories>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-    </repositories>
+<!--    &lt;!&ndash;<repositories>-->
+<!--        <repository>-->
+<!--            <id>jitpack.io</id>-->
+<!--            <url>https://jitpack.io</url>-->
+<!--        </repository>-->
+<!--    </repositories>&ndash;&gt;-->
 </project>

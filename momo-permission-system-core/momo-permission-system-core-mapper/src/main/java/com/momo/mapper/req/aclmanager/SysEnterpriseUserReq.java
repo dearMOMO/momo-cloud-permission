@@ -1,7 +1,6 @@
 package com.momo.mapper.req.aclmanager;
 
 import com.google.common.collect.Lists;
-import com.momo.common.error.BaseReq;
 import com.momo.mapper.dataobject.AclDO;
 import lombok.*;
 

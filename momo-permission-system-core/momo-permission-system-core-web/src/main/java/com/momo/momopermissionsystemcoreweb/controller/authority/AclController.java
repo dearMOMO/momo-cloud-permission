@@ -1,6 +1,6 @@
 package com.momo.momopermissionsystemcoreweb.controller.authority;
 
-import com.momo.common.common.JSONResult;
+import com.momo.common.core.common.JSONResult;
 import com.momo.mapper.req.authority.AclReq;
 import com.momo.service.service.authority.AclService;
 import lombok.extern.slf4j.Slf4j;

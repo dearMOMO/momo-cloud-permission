@@ -45,7 +45,8 @@
         </dependency>
         <dependency>
             <groupId>com.momo</groupId>
-            <artifactId>momo-permission-system-core-common</artifactId>
+            <artifactId>momo-permission-common-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

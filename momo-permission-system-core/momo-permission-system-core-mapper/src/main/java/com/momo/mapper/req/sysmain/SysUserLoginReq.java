@@ -1,7 +1,6 @@
 package com.momo.mapper.req.sysmain;
 
 
-import com.momo.common.error.BaseReq;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -19,7 +18,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @AllArgsConstructor
 //@EqualsAndHashCode(of = {"id"})
-public class SysUserLoginReq extends BaseReq{
+public class SysUserLoginReq extends BaseReq {
     /**
      * sysUserPwd 密码.
      */

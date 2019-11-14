@@ -1,7 +1,7 @@
 package com.momo.momopermissiongateway.filter;
 
 import com.alibaba.fastjson.JSONObject;
-import com.momo.momopermissiongateway.common.JSONResult;
+import com.momo.common.core.common.JSONResult;
 import com.momo.momopermissiongateway.configuration.CrossDomainConfiguration;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
@@ -82,9 +82,9 @@ public class RateCheckGatewayFilterFactory extends AbstractGatewayFilterFactory<
         httpHeaders.add("Access-Control-Allow-Credentials", "true");
         httpHeaders.add("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
         //设置body
-        JSONResult jsonResult = JSONResult.build(HttpStatus.TOO_MANY_REQUESTS.value(), "当前访问人数过多，请稍后重试", "");
+        JSONResult jsonResult = JSONResult.build(HttpStatus.TOO_MANY_REQUESTS.value(), "当前访问人数过多，请稍后重试", "当前访问人数过多，请稍后重试");
         DataBuffer bodyDataBuffer = response.bufferFactory().wrap(JSONObject.toJSONString(jsonResult).getBytes());
-        log.info("限流了================");
+        log.error("限流了================");
         return response.writeWith(Mono.just(bodyDataBuffer));
     }
 

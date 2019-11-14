@@ -14,7 +14,7 @@
         <module>momo-permission-system-core-mapper</module>
         <module>momo-permission-system-core-service</module>
         <module>momo-permission-system-core-feign</module>
-        <module>momo-permission-system-core-common</module>
+<!--        <module>momo-permission-system-core-common</module>-->
         <module>momo-permission-system-core-web</module>
         <module>momo-permission-system-core-netty</module>
         <module>momo-permission-system-core-weixin-all</module>
@@ -41,11 +41,11 @@
                 <artifactId>momo-permission-system-core-feign</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
-            <dependency>
+            <!--<dependency>
                 <groupId>com.momo</groupId>
                 <artifactId>momo-permission-system-core-common</artifactId>
                 <version>1.0-SNAPSHOT</version>
-            </dependency>
+            </dependency>-->
             <dependency>
                 <groupId>com.momo</groupId>
                 <artifactId>momo-permission-system-core-weixin-all</artifactId>

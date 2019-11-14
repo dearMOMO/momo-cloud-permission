@@ -1,6 +1,6 @@
 package com.momo.momopermissiongateway.feign;
 
-import com.momo.momopermissiongateway.common.JSONResult;
+import com.momo.common.core.common.JSONResult;
 import com.momo.momopermissiongateway.req.HasAclReq;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FeignClient;
