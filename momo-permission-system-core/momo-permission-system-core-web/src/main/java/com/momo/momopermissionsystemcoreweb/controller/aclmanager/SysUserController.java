@@ -1,6 +1,6 @@
 package com.momo.momopermissionsystemcoreweb.controller.aclmanager;
 
-import com.momo.common.common.JSONResult;
+import com.momo.common.core.common.JSONResult;
 import com.momo.mapper.req.aclmanager.SysUserAddReq;
 import com.momo.mapper.req.aclmanager.SysUserListReq;
 import com.momo.service.service.aclmanager.SysUserService;

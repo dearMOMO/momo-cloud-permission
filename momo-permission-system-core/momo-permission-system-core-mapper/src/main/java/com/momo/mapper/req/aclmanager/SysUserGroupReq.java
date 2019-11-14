@@ -1,6 +1,6 @@
 package com.momo.mapper.req.aclmanager;
 
-import com.momo.common.error.BaseReq;
+import com.momo.common.core.error.BaseReq;
 import lombok.*;
 import org.springframework.validation.annotation.Validated;
 

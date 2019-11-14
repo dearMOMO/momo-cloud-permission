@@ -1,8 +1,8 @@
 package com.momo.service.async;
 
 import com.alibaba.fastjson.JSONObject;
-import com.momo.common.util.DateUtils;
-import com.momo.common.common.UserAgentGetter;
+import com.momo.common.core.util.DateUtils;
+import com.momo.common.core.common.UserAgentGetter;
 import com.momo.mapper.dataobject.LoginLogDO;
 import com.momo.mapper.mapper.manual.LoginLogMapper;
 import lombok.extern.slf4j.Slf4j;

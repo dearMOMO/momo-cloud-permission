@@ -1,6 +1,6 @@
 package com.momo.mapper.req.authority;
 
-import com.momo.common.error.BaseReq;
+import com.momo.common.core.error.BaseReq;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;

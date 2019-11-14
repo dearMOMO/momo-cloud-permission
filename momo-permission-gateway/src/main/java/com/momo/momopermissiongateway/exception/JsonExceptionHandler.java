@@ -1,6 +1,7 @@
 package com.momo.momopermissiongateway.exception;
 
 import com.google.common.collect.Maps;
+import com.momo.common.core.error.ErrorEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.boot.autoconfigure.web.ResourceProperties;

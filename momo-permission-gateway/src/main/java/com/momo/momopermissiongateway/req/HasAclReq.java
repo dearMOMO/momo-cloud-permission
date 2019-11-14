@@ -1,6 +1,6 @@
 package com.momo.momopermissiongateway.req;
 
-import com.momo.momopermissiongateway.common.RedisUser;
+import com.momo.common.core.entity.RedisUser;
 import lombok.*;
 
 /**

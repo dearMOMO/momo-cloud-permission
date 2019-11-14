@@ -1,6 +1,6 @@
 package com.momo.momopermissionsystemcoreweb.aspect;
 
-import com.momo.common.error.BizException;
+import com.momo.common.core.error.BizException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import lombok.extern.slf4j.Slf4j;

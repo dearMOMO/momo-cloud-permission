@@ -1,7 +1,7 @@
 package com.momo.service.service.authority;
 
 import com.momo.mapper.req.sysmain.DynamicMenuAuthorReq;
-import com.momo.mapper.req.sysmain.RedisUser;
+import com.momo.common.core.entity.RedisUser;
 import com.momo.mapper.res.authority.AclLevelRes;
 import com.momo.service.cache.AdminAuthorityServiceCache;
 import com.momo.service.cache.CommonAuthorityServiceCache;

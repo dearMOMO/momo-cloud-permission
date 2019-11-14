@@ -7,14 +7,13 @@ import com.momo.mapper.mapper.manual.AclMapper;
 import com.momo.mapper.mapper.manual.AuthorityMapper;
 import com.momo.mapper.req.sysmain.DynamicMenuAuthorReq;
 import com.momo.mapper.req.sysmain.HasAclReq;
-import com.momo.mapper.req.sysmain.RedisUser;
+import com.momo.common.core.entity.RedisUser;
 import com.momo.service.service.SuperAdminsService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

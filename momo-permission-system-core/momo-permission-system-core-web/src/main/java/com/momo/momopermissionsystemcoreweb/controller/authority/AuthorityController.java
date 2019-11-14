@@ -1,7 +1,7 @@
 package com.momo.momopermissionsystemcoreweb.controller.authority;
 
 import com.google.common.collect.Maps;
-import com.momo.common.common.JSONResult;
+import com.momo.common.core.common.JSONResult;
 import com.momo.mapper.req.sysmain.DynamicMenuAuthorReq;
 import com.momo.mapper.res.authority.AclLevelRes;
 import com.momo.service.service.authority.DynamicMenuTreeService;

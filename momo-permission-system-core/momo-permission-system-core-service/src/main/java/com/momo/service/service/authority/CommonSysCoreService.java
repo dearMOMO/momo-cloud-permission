@@ -6,7 +6,7 @@ import com.momo.mapper.dataobject.AclDO;
 import com.momo.mapper.mapper.manual.AuthorityMapper;
 import com.momo.mapper.req.sysmain.DynamicMenuAuthorReq;
 import com.momo.mapper.req.sysmain.HasAclReq;
-import com.momo.mapper.req.sysmain.RedisUser;
+import com.momo.common.core.entity.RedisUser;
 import com.momo.service.service.SuperAdminsService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
