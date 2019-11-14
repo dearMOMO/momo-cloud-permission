@@ -22,6 +22,7 @@ public class DynamicRouteMap {
         });
         ROUTEMAP.put(routeDefinition.getId(), routeDefinition);
     }
+
     public static void put(String id, RouteDefinition routeDefinition) {
 
         ROUTEMAP.put(id, routeDefinition);
