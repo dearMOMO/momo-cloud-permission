@@ -1,5 +1,6 @@
 package com.momo.mapper.req.sysmain;
 
+import com.momo.common.core.error.BaseReq;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
