@@ -31,7 +31,7 @@ public class SysLogAspect {
         log.info("[类名]:{},[方法]:{}", strClassName, strMethodName);
 
         SysLogDO logVo = SysLogUtils.getSysLog();
-        logVo.setTitle(sysLog.value());
+        logVo.setTitle(sysLog.description());
         // 发送异步日志事件
         Long startTime = System.currentTimeMillis();
         Object obj = point.proceed();

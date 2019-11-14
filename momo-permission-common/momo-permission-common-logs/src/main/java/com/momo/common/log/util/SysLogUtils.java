@@ -19,7 +19,6 @@ package com.momo.common.log.util;
 import cn.hutool.core.util.URLUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.HttpUtil;
-import com.momo.common.core.common.CommonConstants;
 import com.momo.common.log.event.SysLogDO;
 import lombok.experimental.UtilityClass;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -28,25 +27,29 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 
+
 /**
- * 系统日志工具类
- *
- * @author L.cm
- */
+ * @ClassName: SysLogListener
+ * @Author: Jie Li
+ * @Date 2019-11-14 14:41
+ * @Description: 系统日志工具类
+ * @Version: 1.0
+ * <p>Copyright: Copyright (c) 2019</p>
+ **/
 @UtilityClass
 public class SysLogUtils {
-	public SysLogDO getSysLog() {
-		HttpServletRequest request = ((ServletRequestAttributes) Objects
-			.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
-		SysLogDO sysLog = new SysLogDO();
-		sysLog.setCreateBy("MOMO");
-		sysLog.setType(CommonConstants.STATUS_NORMAL);
-		sysLog.setRemoteAddr(ServletUtil.getClientIP(request));
-		sysLog.setRequestUri(URLUtil.getPath(request.getRequestURI()));
-		sysLog.setMethod(request.getMethod());
-		sysLog.setUserAgent(request.getHeader("user-agent"));
-		sysLog.setParams(HttpUtil.toParams(request.getParameterMap()));
-		sysLog.setServiceId("MOMO");
-		return sysLog;
-	}
+    public SysLogDO getSysLog() {
+        HttpServletRequest request = ((ServletRequestAttributes) Objects
+                .requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+        SysLogDO sysLog = new SysLogDO();
+        sysLog.setCreateBy("MOMO");
+        sysLog.setType("test");
+        sysLog.setRemoteAddr(ServletUtil.getClientIP(request));
+        sysLog.setRequestUri(URLUtil.getPath(request.getRequestURI()));
+        sysLog.setMethod(request.getMethod());
+        sysLog.setUserAgent(request.getHeader("user-agent"));
+        sysLog.setParams(HttpUtil.toParams(request.getParameterMap()));
+        sysLog.setServiceId("MOMO");
+        return sysLog;
+    }
 }

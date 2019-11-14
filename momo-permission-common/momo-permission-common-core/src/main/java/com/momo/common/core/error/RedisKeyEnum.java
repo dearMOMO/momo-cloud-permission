@@ -1,8 +1,14 @@
 package com.momo.common.core.error;
 
+
 /**
- * Created by MOMO on 2018/9/14.
- */
+ * @ClassName: RedisKeyEnum
+ * @Author: Jie Li
+ * @Date 2019-11-14 15:41
+ * @Description: 错误码
+ * @Version: 1.0
+ * <p>Copyright: Copyright (c) 2019</p>
+ **/
 public enum RedisKeyEnum {
 
     //

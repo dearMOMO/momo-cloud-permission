@@ -14,11 +14,15 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
+
 /**
- * 参数校验工具类
- * @author jim
- * @date 16/10/12
- */
+ * @ClassName: ParamsUtil
+ * @Author: Jie Li
+ * @Date 2019-11-14 15:41
+ * @Description: 参数校验工具类
+ * @Version: 1.0
+ * <p>Copyright: Copyright (c) 2019</p>
+ **/
 @Slf4j
 public class ParamsUtil {
 

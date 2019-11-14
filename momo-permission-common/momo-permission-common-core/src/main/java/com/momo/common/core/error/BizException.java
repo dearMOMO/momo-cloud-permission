@@ -6,11 +6,13 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 业务错误
- *
- * @author jim
- * @date 16/10/12
- */
+ * @ClassName: BizException
+ * @Author: Jie Li
+ * @Date 2019-11-14 16:03
+ * @Description: 业务错误
+ * @Version: 1.0
+ * <p>Copyright: Copyright (c) 2019</p>
+ **/
 @Getter
 @Setter
 @ToString

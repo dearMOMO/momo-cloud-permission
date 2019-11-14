@@ -12,7 +12,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
  * @ClassName: LogAutoConfiguration
  * @Author: Jie Li
  * @Date 2019-11-14 14:55
- * @Description: TODO
+ * @Description: 自动配置类
  * @Version: 1.0
  * <p>Copyright: Copyright (c) 2019</p>
  **/

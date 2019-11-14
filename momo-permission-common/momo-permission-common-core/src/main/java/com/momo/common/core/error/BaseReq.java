@@ -1,18 +1,20 @@
 package com.momo.common.core.error;
 
-
 import lombok.Data;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author jim
- * @date 16/10/12
- */
+ * @ClassName: BaseReq
+ * @Author: Jie Li
+ * @Date 2019-11-14 16:03
+ * @Description: TODO
+ * @Version: 1.0
+ * <p>Copyright: Copyright (c) 2019</p>
+ **/
 @Data
-public class BaseReq implements Serializable {
+public class BaseReq  {
 
 
     //当前页

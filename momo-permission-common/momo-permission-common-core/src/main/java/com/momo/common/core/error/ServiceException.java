@@ -1,10 +1,13 @@
 package com.momo.common.core.error;
 
 /**
- * 服务错误
- * @author jim
- * @date 16/10/12
- */
+ * @ClassName: ServiceException
+ * @Author: Jie Li
+ * @Date 2019-11-14 15:41
+ * @Description: 服务错误
+ * @Version: 1.0
+ * <p>Copyright: Copyright (c) 2019</p>
+ **/
 public class ServiceException extends RuntimeException {
     private Integer errorCode;
     private String errorMessage;
