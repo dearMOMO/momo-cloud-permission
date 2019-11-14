@@ -77,7 +77,7 @@ public class RateCheckGatewayFilterFactory extends AbstractGatewayFilterFactory<
                 return keyResolver.resolve(exchange).flatMap(key -> {
                     RateLimiter rateLimiter = GuavaRateLimiter.resourceRateLimiter.get(key);
                     if (rateLimiter != null) {
-                        if (GuavaRateLimiter.resourceRateLimiter.get(key).tryAcquire(10000, TimeUnit.SECONDS)) {
+                        if (GuavaRateLimiter.resourceRateLimiter.get(key).tryAcquire(500, TimeUnit.SECONDS)) {
                             return chain.filter(exchange);
                         } else {
                             return setRateCheckResponse(exchange);
