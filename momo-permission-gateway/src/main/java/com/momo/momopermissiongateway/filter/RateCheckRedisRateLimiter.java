@@ -145,7 +145,7 @@ public class RateCheckRedisRateLimiter extends AbstractRateLimiter<RateCheckRedi
         return Mono.just(new Response(true, -1));
     }
 
-    static List<String> getKeys(String id) {
+    private static List<String> getKeys(String id) {
         // use `{}` around keys to use Redis Key hash tags
         // this allows for using redis cluster
 

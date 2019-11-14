@@ -54,19 +54,19 @@ public class DynamicRouteService implements RouteDefinitionRepository, Applicati
 
         //TODO 将redis改为 本地 map，用mq/配置中心更新map
         List<RouteDefinition> allRouteDefinitions = new ArrayList<>();
-        if (CollectionUtils.isEmpty(routeMap)) {
-            //获取配置文件中的路由参数
-            List<RouteDefinition> routeDefinitions = properties.getRoutes();
-            routeDefinitions.forEach(routeDefinition -> {
-                DynamicRouteMap.put(routeDefinition.getId(), routeDefinition);
-            });
-            allRouteDefinitions.addAll(routeDefinitions);
-        } else {
-            routeMap.forEach((k, v) -> {
-                allRouteDefinitions.add(v);
-            });
-        }
-        log.info("路由信息为:{}", JSONObject.toJSONString(allRouteDefinitions));
+//        if (CollectionUtils.isEmpty(routeMap)) {
+//            //获取配置文件中的路由参数
+//            List<RouteDefinition> routeDefinitions = properties.getRoutes();
+//            routeDefinitions.forEach(routeDefinition -> {
+//                DynamicRouteMap.put(routeDefinition.getId(), routeDefinition);
+//            });
+//            allRouteDefinitions.addAll(routeDefinitions);
+//        } else {
+        routeMap.forEach((k, v) -> {
+            allRouteDefinitions.add(v);
+        });
+//        }
+//        log.info("路由信息为:{}", JSONObject.toJSONString(allRouteDefinitions));
         return Flux.fromIterable(allRouteDefinitions);
     }
 
