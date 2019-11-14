@@ -1,10 +1,13 @@
 package com.momo.momopermissiongateway.filter;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.util.concurrent.RateLimiter;
 import com.momo.common.core.common.JSONResult;
 import com.momo.momopermissiongateway.configuration.CrossDomainConfiguration;
+import com.momo.momopermissiongateway.guavaLimit.GuavaRateLimiter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
@@ -20,12 +23,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * @program: momo-cloud
  * @description: gateway自带的RequestRateLimiter可定制的内容太少，真正用的话，需要：
- *                  1. 自定义限流后的response返回值
- *                  2. 不同的key（即接口）限流数不同
- *                  所以需要自定义一个限流的gateway filter
+ * 1. 自定义限流后的response返回值
+ * 2. 不同的key（即接口）限流数不同
+ * 所以需要自定义一个限流的gateway filter
  * @author: Jie Li
  * @create: 2019-07-17 10:45
  **/
@@ -35,6 +40,8 @@ public class RateCheckGatewayFilterFactory extends AbstractGatewayFilterFactory<
     private static ApplicationContext applicationContext;
     private RateCheckRedisRateLimiter rateLimiter;
     private KeyResolver keyResolver;
+    @Value("${momo.openRedisLimiter}")
+    private boolean openRedisLimiter;
 
     public RateCheckGatewayFilterFactory() {
         super(Config.class);
@@ -53,18 +60,34 @@ public class RateCheckGatewayFilterFactory extends AbstractGatewayFilterFactory<
 
         return (exchange, chain) -> {
             Route route = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR);
-
-            return keyResolver.resolve(exchange).flatMap(key ->
-                    // TODO: if key is empty?
-                    rateLimiter.isAllowed(route.getId(), key).flatMap(response -> {
-                        log.info("response: " + response);
-                        // TODO: set some headers for rate, tokens left
-                        if (response.isAllowed()) {
+            if (openRedisLimiter) {
+                return keyResolver.resolve(exchange).flatMap(key ->
+                        // TODO: if key is empty?
+                        rateLimiter.isAllowed(route.getId(), key).flatMap(response -> {
+                            log.info("response: " + response);
+                            // TODO: set some headers for rate, tokens left
+                            if (response.isAllowed()) {
+                                return chain.filter(exchange);
+                            }
+                            //超过了限流的response返回值
+                            return setRateCheckResponse(exchange);
+                        }));
+            } else {
+                //Guava rateLimiter 单机版限流
+                return keyResolver.resolve(exchange).flatMap(key -> {
+                    RateLimiter rateLimiter = GuavaRateLimiter.resourceRateLimiter.get(key);
+                    if (rateLimiter != null) {
+                        if (GuavaRateLimiter.resourceRateLimiter.get(key).tryAcquire(10000, TimeUnit.SECONDS)) {
                             return chain.filter(exchange);
+                        } else {
+                            return setRateCheckResponse(exchange);
                         }
-                        //超过了限流的response返回值
-                        return setRateCheckResponse(exchange);
-                    }));
+                    } else {
+                        GuavaRateLimiter.updateResourceRateLimiter(key, null);
+                        return chain.filter(exchange);
+                    }
+                });
+            }
         };
     }
 
@@ -94,6 +117,7 @@ public class RateCheckGatewayFilterFactory extends AbstractGatewayFilterFactory<
         public String getKeyResolver() {
             return keyResolver;
         }
+
         public void setKeyResolver(String keyResolver) {
             this.keyResolver = keyResolver;
         }

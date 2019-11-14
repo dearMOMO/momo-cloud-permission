@@ -1,6 +1,7 @@
 package com.momo.momopermissiongateway.guavaLimit;
 
 import com.google.common.util.concurrent.RateLimiter;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -19,10 +20,13 @@ public class GuavaRateLimiter {
 
     //初始化限流工具RateLimiter
     static {
-        createResourceRateLimiter("order", 50);
+        createResourceRateLimiter("/platform/sysMain/login/v1", 50d);
     }
 
-    public static void createResourceRateLimiter(String resource, double qps) {
+    public static void createResourceRateLimiter(String resource, Double qps) {
+        if (qps == null) {
+            qps = 50d;
+        }
         if (resourceRateLimiter.contains(resource)) {
             resourceRateLimiter.get(resource).setRate(qps);
         } else {
@@ -32,6 +36,18 @@ public class GuavaRateLimiter {
 
         }
 
+    }
+
+    public static void updateResourceRateLimiter(String resource, Double qps) {
+        if (StringUtils.isBlank(resource)) {
+            return;
+        }
+        if (qps == null) {
+            qps = 50d;
+        }
+        //创建限流工具，每秒发出50个令牌指令
+        RateLimiter rateLimiter = RateLimiter.create(qps);
+        resourceRateLimiter.put(resource, rateLimiter);
     }
 
     public static void main(String[] args) {
