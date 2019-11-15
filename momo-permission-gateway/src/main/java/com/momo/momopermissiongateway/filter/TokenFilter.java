@@ -88,6 +88,7 @@ public class TokenFilter implements GlobalFilter, Ordered {
                 HasAclReq hasAclReq = new HasAclReq();
                 hasAclReq.setUrl(path);
                 hasAclReq.setTenantId(redisUser.getTenantId());
+                hasAclReq.setSysUserPhone(redisUser.getSysUserPhone());
                 JSONResult hasAcl = hasAclServiceFeign.hasAcl(hasAclReq);
                 if (hasAcl.getStatus() == 500) {
                     return JwtResponse.jwtResponse(exchange, HttpStatus.INTERNAL_SERVER_ERROR.value(), hasAcl.getMsg());

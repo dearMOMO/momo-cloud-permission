@@ -33,9 +33,8 @@ public class BaseService {
         if (!StringUtils.isEmpty(authToken)) {
             //解析token
             String userInfo = jwtTokenUtil.getUsernameFromToken(authToken);
-            RedisUser redisUser = JSON.parseObject(userInfo, new TypeReference<RedisUser>() {
+            return JSON.parseObject(userInfo, new TypeReference<RedisUser>() {
             });
-            return redisUser;
         }
         RedisUser redisUser = new RedisUser();
         redisUser.setSysUserName("MOMO");

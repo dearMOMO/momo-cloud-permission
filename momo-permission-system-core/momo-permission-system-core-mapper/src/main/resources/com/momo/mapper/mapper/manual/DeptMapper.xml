@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.momo.mapper.mapper.manual.DeptMapper">
+    <resultMap id="BaseResultMap" type="com.momo.mapper.dataobject.DeptDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="sys_dept_name" jdbcType="VARCHAR" property="sysDeptName" />
+        <result column="sys_dept_parent_id" jdbcType="BIGINT" property="sysDeptParentId" />
+        <result column="sys_dept_level" jdbcType="VARCHAR" property="sysDeptLevel" />
+        <result column="sys_dept_seq" jdbcType="INTEGER" property="sysDeptSeq" />
+        <result column="sys_is_leaf" jdbcType="INTEGER" property="sysIsLeaf" />
+        <result column="tenant_id" jdbcType="BIGINT" property="tenantId" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="disabled_flag" jdbcType="INTEGER" property="disabledFlag" />
+        <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, sys_dept_name, sys_dept_parent_id, sys_dept_level, sys_dept_seq, sys_is_leaf,
+    tenant_id, remark, disabled_flag, del_flag, create_by, create_time, update_time,
+    update_by
+  </sql>
+
+    <select id="deptGetAll" parameterType="map" resultMap="BaseResultMap">
+        select
+        id, sys_dept_name, sys_dept_parent_id, sys_dept_level, sys_dept_seq, sys_is_leaf,
+    group_id, remark, disabled_flag, del_flag, create_by, create_time, update_time, update_by
+    from sys_dept where del_flag=0
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_dept
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sys_dept
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+    <insert id="insertSelective" parameterType="com.momo.mapper.dataobject.DeptDO">
+        insert into sys_dept
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="sysDeptName != null">
+                sys_dept_name,
+            </if>
+            <if test="sysDeptParentId != null">
+                sys_dept_parent_id,
+            </if>
+            <if test="sysDeptLevel != null">
+                sys_dept_level,
+            </if>
+            <if test="sysDeptSeq != null">
+                sys_dept_seq,
+            </if>
+            <if test="sysIsLeaf != null">
+                sys_is_leaf,
+            </if>
+            <if test="tenantId != null">
+                tenant_id,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="disabledFlag != null">
+                disabled_flag,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="sysDeptName != null">
+                #{sysDeptName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysDeptParentId != null">
+                #{sysDeptParentId,jdbcType=BIGINT},
+            </if>
+            <if test="sysDeptLevel != null">
+                #{sysDeptLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="sysDeptSeq != null">
+                #{sysDeptSeq,jdbcType=INTEGER},
+            </if>
+            <if test="sysIsLeaf != null">
+                #{sysIsLeaf,jdbcType=INTEGER},
+            </if>
+            <if test="tenantId != null">
+                #{tenantId,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="disabledFlag != null">
+                #{disabledFlag,jdbcType=INTEGER},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=INTEGER},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.momo.mapper.dataobject.DeptDO">
+        update sys_dept
+        <set>
+            <if test="sysDeptName != null">
+                sys_dept_name = #{sysDeptName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysDeptParentId != null">
+                sys_dept_parent_id = #{sysDeptParentId,jdbcType=BIGINT},
+            </if>
+            <if test="sysDeptLevel != null">
+                sys_dept_level = #{sysDeptLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="sysDeptSeq != null">
+                sys_dept_seq = #{sysDeptSeq,jdbcType=INTEGER},
+            </if>
+            <if test="sysIsLeaf != null">
+                sys_is_leaf = #{sysIsLeaf,jdbcType=INTEGER},
+            </if>
+            <if test="tenantId != null">
+                tenant_id = #{tenantId,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="disabledFlag != null">
+                disabled_flag = #{disabledFlag,jdbcType=INTEGER},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=INTEGER},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>

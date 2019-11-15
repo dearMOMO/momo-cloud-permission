@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.sql.SQLException;
+import java.sql.SQLSyntaxErrorException;
 import java.util.List;
 
 
@@ -33,7 +34,7 @@ public class DefaultExceptionAdvice {
      * IllegalArgumentException异常处理返回json
      * 返回状态码:400
      */
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler({IllegalArgumentException.class})
     public JSONResult badRequestException(IllegalArgumentException e) {
         return defHandler(null, "参数解析失败", e);
@@ -43,7 +44,7 @@ public class DefaultExceptionAdvice {
      * IllegalArgumentException异常处理返回json
      * 返回状态码:400
      */
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler({HttpMessageNotReadableException.class})
     public JSONResult httpMessageNotReadableException(HttpMessageNotReadableException e) {
         return defHandler(null, "参数解析失败", e);
@@ -53,7 +54,7 @@ public class DefaultExceptionAdvice {
      * IllegalArgumentException异常处理返回json
      * 返回状态码:500
      */
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler({MethodArgumentNotValidException.class})
     public JSONResult argumentNotValidException(MethodArgumentNotValidException e) {
         List<FieldError> bindingResult = e.getBindingResult().getFieldErrors();
@@ -74,7 +75,7 @@ public class DefaultExceptionAdvice {
      * illegalStateException异常处理返回json
      * 返回状态码:500
      */
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler({IllegalStateException.class})
     public JSONResult illegalStateException(IllegalStateException e) {
         return defHandler(null, "illegalStateException", e);
@@ -83,7 +84,7 @@ public class DefaultExceptionAdvice {
     /**
      * 返回状态码:405
      */
-    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler({HttpRequestMethodNotSupportedException.class})
     public JSONResult handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
         return defHandler(null, "不支持当前请求方法", e);
@@ -92,7 +93,7 @@ public class DefaultExceptionAdvice {
     /**
      * 返回状态码:415
      */
-    @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler({HttpMediaTypeNotSupportedException.class})
     public JSONResult handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException e) {
         return defHandler(null, "不支持当前媒体类型", e);
@@ -102,17 +103,27 @@ public class DefaultExceptionAdvice {
      * SQLException sql异常处理
      * 返回状态码:500
      */
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler({SQLException.class})
     public JSONResult handleSQLException(SQLException e) {
         return defHandler(null, "服务运行SQLException异常", e);
     }
 
     /**
+     * SQLException sql异常处理
+     * 返回状态码:500
+     */
+    @ResponseStatus(HttpStatus.OK)
+    @ExceptionHandler({SQLSyntaxErrorException.class})
+    public JSONResult sQLSyntaxErrorException(SQLException e) {
+        return defHandler(null, "SQL 参数异常", e);
+    }
+
+    /**
      * BusinessException 业务异常处理
      * 返回状态码:500
      */
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(BizException.class)
     public JSONResult handleException(BizException e) {
         return defHandler(null, e.getMessage(), e);
@@ -122,7 +133,7 @@ public class DefaultExceptionAdvice {
      * BusinessException 没有找到对应的访问路径
      * 返回状态码:500
      */
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(NoHandlerFoundException.class)
     public JSONResult noHandlerFoundException(BizException e) {
         return defHandler(null, "没有找到对应的访问路径", e);
@@ -133,7 +144,7 @@ public class DefaultExceptionAdvice {
      * 所有异常统一处理
      * 返回状态码:500
      */
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(Exception.class)
     public JSONResult handleException(Exception e) {
         return defHandler(null, "服务异常", e);

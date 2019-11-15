@@ -39,14 +39,17 @@ public class JsonExceptionHandler extends DefaultErrorWebExceptionHandler {
         error.getCause();
         error.getMessage();
         error.printStackTrace();
-        log.error("网关错误：{}==={}===={}",error.getMessage(), this.buildMessage(request, error),error.getStackTrace());
+        log.error("网关错误：{}==={}===={}", error.getMessage(), this.buildMessage(request, error), error.getStackTrace());
         if (error instanceof org.springframework.cloud.gateway.support.NotFoundException) {
             status = 404;
             return response(status, "服务正在上线，请稍后。。。。");
-        }else if(error instanceof org.springframework.web.server.ResponseStatusException){
+        } else if (error instanceof org.springframework.web.server.ResponseStatusException) {
             status = 404;
             return response(status, "服务正在启动，请稍后。。。。");
-        }else if(error instanceof java.net.ConnectException){
+        } else if (error instanceof java.net.ConnectException) {
+            status = 404;
+            return response(status, "服务正在上线，请稍后。。。。");
+        } else if (error instanceof com.netflix.client.ClientException) {
             status = 404;
             return response(status, "服务正在上线，请稍后。。。。");
         }
