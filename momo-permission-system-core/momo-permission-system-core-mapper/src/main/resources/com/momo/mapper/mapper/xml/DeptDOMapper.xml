@@ -4,9 +4,8 @@
     <!-- 自动生成,请修改 SYS_DEPT.xml -->
     <resultMap id="BaseResultMap"  type="com.momo.mapper.dataobject.DeptDO">
         <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
-        <result column="GROUP_ID" property="groupId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="TENANT_ID" property="tenantId" jdbcType="BIGINT" javaType="Long"/>
         <result column="SYS_DEPT_PARENT_ID" property="sysDeptParentId" jdbcType="BIGINT" javaType="Long"/>
-        <result column="UUID" property="uuid" jdbcType="VARCHAR" javaType="String"/>
         <result column="REMARK" property="remark" jdbcType="VARCHAR" javaType="String"/>
         <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
         <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>

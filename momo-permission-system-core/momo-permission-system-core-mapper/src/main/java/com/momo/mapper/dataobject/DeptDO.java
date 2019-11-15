@@ -12,17 +12,13 @@ public class DeptDO{
      */
     private Long id;
     /**
-     * groupId 第三方组 kagome-momo-open-source默认为1.
+     * tenantId 第三方组 kagome-momo-open-source默认为1.
      */
-    private Long groupId;
+    private Long tenantId;
     /**
      * sysDeptParentId 上级部门id.
      */
     private Long sysDeptParentId;
-    /**
-     * uuid 唯一，32位字符串，查询用.
-     */
-    private String uuid;
     /**
      * remark 备注.
      */
@@ -85,19 +81,19 @@ public class DeptDO{
     }
 
     /**
-     * Set groupId 第三方组 kagome-momo-open-source默认为1.
+     * Set tenantId 第三方组 kagome-momo-open-source默认为1.
      */
-    public void setGroupId(Long groupId){
-        this.groupId = groupId;
+    public void setTenantId(Long tenantId){
+        this.tenantId = tenantId;
     }
 
     /**
-     * Get groupId 第三方组 kagome-momo-open-source默认为1.
+     * Get tenantId 第三方组 kagome-momo-open-source默认为1.
      *
      * @return the string
      */
-    public Long getGroupId(){
-        return groupId;
+    public Long getTenantId(){
+        return tenantId;
     }
 
     /**
@@ -114,22 +110,6 @@ public class DeptDO{
      */
     public Long getSysDeptParentId(){
         return sysDeptParentId;
-    }
-
-    /**
-     * Set uuid 唯一，32位字符串，查询用.
-     */
-    public void setUuid(String uuid){
-        this.uuid = uuid;
-    }
-
-    /**
-     * Get uuid 唯一，32位字符串，查询用.
-     *
-     * @return the string
-     */
-    public String getUuid(){
-        return uuid;
     }
 
     /**

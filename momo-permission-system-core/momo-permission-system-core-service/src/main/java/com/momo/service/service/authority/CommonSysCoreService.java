@@ -90,9 +90,6 @@ public class CommonSysCoreService {
             return false;
         }
         String url = truncateUrlPage(hasAclReq.getUrl());
-        if (superAdminsService.checkIsSuperAdmin(hasAclReq.getSysUserPhone())) {
-            return true;
-        }
         List<AclDO> userAclList = getUserAclList(new DynamicMenuAuthorReq(), hasAclReq);
         Set<String> userAclIdSet = userAclList.stream().map(AclDO::getSysAclUrl).collect(Collectors.toSet());
         // 规则：只要有一个权限点有权限，那么我们就认为有访问权限

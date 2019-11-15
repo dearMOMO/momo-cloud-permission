@@ -124,7 +124,7 @@ spring:
 
 logging:
   level:
-    org.springframework.cloud.gateway: debug
+    org.springframework.cloud.gateway: info
 
 # ribbon重试
 momo-permission-system-core:

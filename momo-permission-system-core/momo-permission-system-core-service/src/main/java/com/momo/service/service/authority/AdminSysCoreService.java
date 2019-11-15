@@ -101,6 +101,9 @@ public class AdminSysCoreService {
     }
 
     public boolean hasUrlAcl(HasAclReq hasAclReq) {
+        if (superAdminsService.checkIsSuperAdmin(hasAclReq.getSysUserPhone())) {
+            return true;
+        }
         if (StringUtils.isBlank(hasAclReq.getUrl())) {
             return false;
         }
