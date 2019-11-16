@@ -88,7 +88,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
-        <finalName>momo-permission-eureka</finalName>
+        <finalName>app</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
