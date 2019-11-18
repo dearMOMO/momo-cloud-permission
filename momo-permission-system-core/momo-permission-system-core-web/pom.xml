@@ -130,7 +130,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
-        <finalName>momo-permission-system-core</finalName>
+        <finalName>app</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
