@@ -163,6 +163,7 @@ momo:
   security:
     name: kagome # 用户名
     password: kagome123456 #密码
+  checkVerificationCode: false
   #超级管理员租户信息
   teantId: 1
   #系统初始化超级管理员
