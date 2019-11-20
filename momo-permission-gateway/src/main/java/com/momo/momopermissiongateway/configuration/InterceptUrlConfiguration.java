@@ -34,6 +34,14 @@ public class InterceptUrlConfiguration {
 
     //#企业相关操作URL，只有MOMO企业下的员工才可以操作
     private List<String> enterpriseUrl = Lists.newArrayList();
+    private List<String> superAdmins = Lists.newArrayList();
+
+    public boolean checkIsSuperAdmin(String sysUserPhone) {
+        if (StringUtils.isBlank(sysUserPhone)) {
+            return false;
+        }
+        return superAdmins.contains(sysUserPhone);
+    }
 
     public boolean checkIgnoreUrl(String gatewayUrl) {
         if (StringUtils.isBlank(gatewayUrl)) {
