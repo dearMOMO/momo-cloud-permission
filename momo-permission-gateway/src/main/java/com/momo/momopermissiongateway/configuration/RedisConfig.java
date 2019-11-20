@@ -1,3 +1,62 @@
+/**
+ * Copyright (c) 2018-2019, Jie Li 李杰 (mqgnsds@163.com).
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * <p>
+ * Copyright (c) 2018-2019, Jie Li 李杰 (mqgnsds@163.com).
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * <p>
+ * Copyright (c) 2018-2019, Jie Li 李杰 (mqgnsds@163.com).
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Copyright (c) 2018-2019, Jie Li 李杰 (mqgnsds@163.com).
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.momo.momopermissiongateway.configuration;
 
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
@@ -16,48 +75,53 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import java.time.Duration;
 
 /**
- * 	https://gitee.com/pomZhiXia/boot-root
- */
+ * @ClassName: RedisConfig
+ * @Author: Jie Li
+ * @Date 2019-10-25 16:50
+ * @Description: redis配置
+ * @Version: 1.0
+ * <p>Copyright: Copyright (c) 2019</p>
+ **/
 @Configuration
 public class RedisConfig {
 
-	@Value("${spring.redis.database}")
-	private Integer database;
+    @Value("${spring.redis.database}")
+    private Integer database;
 
-	@Value("${spring.redis.host}")
-	private String host;
+    @Value("${spring.redis.host}")
+    private String host;
 
-	@Value("${spring.redis.port}")
-	private Integer port;
+    @Value("${spring.redis.port}")
+    private Integer port;
 
-	@Value("${spring.redis.password}")
-	private String password;
+    @Value("${spring.redis.password}")
+    private String password;
 
-	@Value("${spring.redis.timeout}")
-	private Long timeout;
+    @Value("${spring.redis.timeout}")
+    private Long timeout;
 
-	@Value("${spring.redis.lettuce.pool.max-idle}")
-	private Integer maxIdle;
+    @Value("${spring.redis.lettuce.pool.max-idle}")
+    private Integer maxIdle;
 
-	@Value("${spring.redis.lettuce.pool.min-idle}")
-	private Integer minIdle;
+    @Value("${spring.redis.lettuce.pool.min-idle}")
+    private Integer minIdle;
 
-	@Value("${spring.redis.lettuce.pool.max-active}")
-	private Integer maxActive;
+    @Value("${spring.redis.lettuce.pool.max-active}")
+    private Integer maxActive;
 
-	@Value("${spring.redis.lettuce.pool.max-wait}")
-	private Long maxWait;
+    @Value("${spring.redis.lettuce.pool.max-wait}")
+    private Long maxWait;
 
-	@Bean
-	public LettuceConnectionFactory lettuceConnectionFactory(GenericObjectPoolConfig<Object> genericObjectPoolConfig) {
-		// 单机版配置
-		RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
-		redisStandaloneConfiguration.setDatabase(database);
-		redisStandaloneConfiguration.setHostName(host);
-		redisStandaloneConfiguration.setPort(port);
-		redisStandaloneConfiguration.setPassword(RedisPassword.of(password));
+    @Bean
+    public LettuceConnectionFactory lettuceConnectionFactory(GenericObjectPoolConfig<Object> genericObjectPoolConfig) {
+        // 单机版配置
+        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
+        redisStandaloneConfiguration.setDatabase(database);
+        redisStandaloneConfiguration.setHostName(host);
+        redisStandaloneConfiguration.setPort(port);
+        redisStandaloneConfiguration.setPassword(RedisPassword.of(password));
 
-		// 集群版配置
+        // 集群版配置
 //		RedisClusterConfiguration redisClusterConfiguration = new RedisClusterConfiguration();
 //		String[] serverArray = clusterNodes.split(",");
 //		Set<RedisNode> nodes = new HashSet<RedisNode>();
@@ -69,39 +133,39 @@ public class RedisConfig {
 //		redisClusterConfiguration.setClusterNodes(nodes);
 //		redisClusterConfiguration.setMaxRedirects(maxRedirects);
 
-		LettuceClientConfiguration lettuceClientConfiguration = LettucePoolingClientConfiguration.builder()
-				.commandTimeout(Duration.ofMillis(timeout)).poolConfig(genericObjectPoolConfig).build();
+        LettuceClientConfiguration lettuceClientConfiguration = LettucePoolingClientConfiguration.builder()
+                .commandTimeout(Duration.ofMillis(timeout)).poolConfig(genericObjectPoolConfig).build();
 
-		LettuceConnectionFactory lettuceConnectionFactory = new LettuceConnectionFactory(redisStandaloneConfiguration,
-				lettuceClientConfiguration);
-		return lettuceConnectionFactory;
-	}
+        LettuceConnectionFactory lettuceConnectionFactory = new LettuceConnectionFactory(redisStandaloneConfiguration,
+                lettuceClientConfiguration);
+        return lettuceConnectionFactory;
+    }
 
-	/**
-	 * GenericObjectPoolConfig 连接池配置
-	 *
-	 * @return
-	 */
-	@Bean
-	public GenericObjectPoolConfig<Object> genericObjectPoolConfig() {
-		GenericObjectPoolConfig<Object> genericObjectPoolConfig = new GenericObjectPoolConfig<Object>();
-		genericObjectPoolConfig.setMaxIdle(maxIdle);
-		genericObjectPoolConfig.setMinIdle(minIdle);
-		genericObjectPoolConfig.setMaxTotal(maxActive);
-		genericObjectPoolConfig.setMaxWaitMillis(maxWait);
-		return genericObjectPoolConfig;
-	}
+    /**
+     * GenericObjectPoolConfig 连接池配置
+     *
+     * @return
+     */
+    @Bean
+    public GenericObjectPoolConfig<Object> genericObjectPoolConfig() {
+        GenericObjectPoolConfig<Object> genericObjectPoolConfig = new GenericObjectPoolConfig<Object>();
+        genericObjectPoolConfig.setMaxIdle(maxIdle);
+        genericObjectPoolConfig.setMinIdle(minIdle);
+        genericObjectPoolConfig.setMaxTotal(maxActive);
+        genericObjectPoolConfig.setMaxWaitMillis(maxWait);
+        return genericObjectPoolConfig;
+    }
 
-	/**
-	 * 设置 redisTemplate 序列化方式
-	 * 
-	 * @param lettuceConnectionFactory
-	 * @return
-	 */
-	@Bean
-	public RedisTemplate<String, Object> redisTemplate(LettuceConnectionFactory lettuceConnectionFactory) {
-		RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-		redisTemplate.setConnectionFactory(lettuceConnectionFactory);
+    /**
+     * 设置 redisTemplate 序列化方式
+     *
+     * @param lettuceConnectionFactory
+     * @return
+     */
+    @Bean
+    public RedisTemplate<String, Object> redisTemplate(LettuceConnectionFactory lettuceConnectionFactory) {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(lettuceConnectionFactory);
 //		// 设置值（value）的序列化采用FastJsonRedisSerializer。
 //		FastJsonRedisSerializer<Object> fastJsonRedisSerializer = new FastJsonRedisSerializer<>(Object.class);
 //		redisTemplate.setValueSerializer(fastJsonRedisSerializer);
@@ -111,13 +175,13 @@ public class RedisConfig {
 //		redisTemplate.setHashKeySerializer(new StringRedisSerializer());
 //		redisTemplate.setDefaultSerializer(fastJsonRedisSerializer);
 
-		RedisSerializer stringSerializer = new StringRedisSerializer();
-		redisTemplate.setKeySerializer(stringSerializer);
-		redisTemplate.setValueSerializer(stringSerializer);
-		redisTemplate.setHashKeySerializer(stringSerializer);
-		redisTemplate.setHashValueSerializer(stringSerializer);
-		redisTemplate.afterPropertiesSet();
-		return redisTemplate;
-	}
+        RedisSerializer stringSerializer = new StringRedisSerializer();
+        redisTemplate.setKeySerializer(stringSerializer);
+        redisTemplate.setValueSerializer(stringSerializer);
+        redisTemplate.setHashKeySerializer(stringSerializer);
+        redisTemplate.setHashValueSerializer(stringSerializer);
+        redisTemplate.afterPropertiesSet();
+        return redisTemplate;
+    }
 
 }

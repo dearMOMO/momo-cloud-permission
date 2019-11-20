@@ -13,28 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.momo.mapper.res.aclmanager;
+package com.momo.common.log.annotation;
 
-import lombok.*;
+import java.lang.annotation.*;
 
 /**
- * @ProjectName: momo-cloud-permission
- * @Package: com.momo.mapper.res.aclmanager
- * @Description: TODO
+ * @ClassName: SysLog
  * @Author: Jie Li
- * @CreateDate: 2019/9/2 0002 15:38
- * @UpdateDate: 2019/9/2 0002 15:38
+ * @Date 2019-11-14 14:03
+ * @Description: 标明日志注解
  * @Version: 1.0
  * <p>Copyright: Copyright (c) 2019</p>
- */
-@Getter
-@Setter
-@ToString
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-//@EqualsAndHashCode(callSuper = true, of = {"id"})
-public class DisabledAdminRoleButtonRes {
-    private boolean disabledAdminRoleButton = true;
+ **/
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface SystemCoreLog {
 
+    /**
+     * 描述
+     *
+     * @return {String}
+     */
+    String description();
 }

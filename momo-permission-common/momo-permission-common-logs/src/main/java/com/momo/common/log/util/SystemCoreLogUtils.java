@@ -1,12 +1,12 @@
-/*
- *  Copyright (c) 2019-2020, 冷冷 (wangiegie@gmail.com).
- *  <p>
- *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *  <p>
- * https://www.gnu.org/licenses/lgpl.html
- *  <p>
+/**
+ * Copyright (c) 2018-2019, Jie Li 李杰 (mqgnsds@163.com).
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
+
 package com.momo.common.log.util;
 
 import cn.hutool.core.util.URLUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.HttpUtil;
-import com.momo.common.log.event.SysLogDO;
+import com.momo.common.log.event.SystemCoreLogDO;
 import lombok.experimental.UtilityClass;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -37,11 +38,11 @@ import java.util.Objects;
  * <p>Copyright: Copyright (c) 2019</p>
  **/
 @UtilityClass
-public class SysLogUtils {
-    public SysLogDO getSysLog() {
+public class SystemCoreLogUtils {
+    public SystemCoreLogDO getSysLog() {
         HttpServletRequest request = ((ServletRequestAttributes) Objects
                 .requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
-        SysLogDO sysLog = new SysLogDO();
+        SystemCoreLogDO sysLog = new SystemCoreLogDO();
         sysLog.setCreateBy("MOMO");
         sysLog.setType("test");
         sysLog.setRemoteAddr(ServletUtil.getClientIP(request));

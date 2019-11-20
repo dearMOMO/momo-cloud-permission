@@ -13,28 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.momo.mapper.res.aclmanager;
+package com.momo.common.log.event;
 
-import lombok.*;
+import com.alibaba.fastjson.JSONObject;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.event.EventListener;
+import org.springframework.core.annotation.Order;
+import org.springframework.scheduling.annotation.Async;
 
 /**
- * @ProjectName: momo-cloud-permission
- * @Package: com.momo.mapper.res.aclmanager
- * @Description: TODO
+ * @ClassName: SysLogListener
  * @Author: Jie Li
- * @CreateDate: 2019/9/2 0002 15:38
- * @UpdateDate: 2019/9/2 0002 15:38
+ * @Date 2019-11-14 14:41
+ * @Description: TODO
  * @Version: 1.0
  * <p>Copyright: Copyright (c) 2019</p>
- */
-@Getter
-@Setter
-@ToString
-@Builder
-@NoArgsConstructor
+ **/
+@Slf4j
 @AllArgsConstructor
-//@EqualsAndHashCode(callSuper = true, of = {"id"})
-public class DisabledAdminRoleButtonRes {
-    private boolean disabledAdminRoleButton = true;
+public class SystemCoreLogListener {
 
+    @Async
+    @Order
+    @EventListener(SystemCoreLogEvent.class)
+    public void saveSysLog(SystemCoreLogEvent event) {
+        SystemCoreLogDO sysLog = (SystemCoreLogDO) event.getSource();
+        log.info("AOP logs  {}", JSONObject.toJSONString(sysLog));
+    }
 }

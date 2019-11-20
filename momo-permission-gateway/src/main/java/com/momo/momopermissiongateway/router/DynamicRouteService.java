@@ -1,7 +1,21 @@
+/**
+ * Copyright (c) 2018-2019, Jie Li 李杰 (mqgnsds@163.com).
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.momo.momopermissiongateway.router;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.config.GatewayProperties;
@@ -13,7 +27,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -23,11 +36,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by MOMO on 2019/2/26.
- * 使用Redis保存自定义路由配置（代替默认的InMemoryRouteDefinitionRepository）
- * <p/>
+ * @ClassName: DynamicRouteService
+ * @Author: Jie Li
+ * @Date 2019-11-20 15:18
+ * @Description: 使用Redis保存自定义路由配置（代替默认的InMemoryRouteDefinitionRepository
  * 存在问题：每次请求都会调用getRouteDefinitions，当网关较多时，会影响请求速度，考虑放到本地Map中，使用消息通知Map更新。
- */
+ * @Version: 1.0
+ * <p>Copyright: Copyright (c) 2019</p>
+ **/
 @Component
 @Slf4j
 public class DynamicRouteService implements RouteDefinitionRepository, ApplicationEventPublisherAware {

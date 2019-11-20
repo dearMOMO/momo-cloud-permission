@@ -1,3 +1,18 @@
+/**
+ * Copyright (c) 2018-2019, Jie Li 李杰 (mqgnsds@163.com).
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.momo.service.service.authority;
 
 import com.alibaba.fastjson.JSONObject;
@@ -5,9 +20,10 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.*;
+import com.momo.common.core.entity.RedisUser;
 import com.momo.common.core.error.RedisKeyEnum;
-import com.momo.common.core.util.DateUtils;
 import com.momo.common.core.error.BizException;
+import com.momo.common.core.util.DateUtils;
 import com.momo.common.core.util.LevelUtil;
 import com.momo.common.core.util.RedisUtil;
 import com.momo.common.core.util.StrUtil;
@@ -19,7 +35,6 @@ import com.momo.mapper.dataobject.UserDO;
 import com.momo.mapper.mapper.manual.*;
 import com.momo.mapper.req.authority.AclReq;
 import com.momo.mapper.req.sysmain.DynamicMenuAuthorReq;
-import com.momo.common.core.entity.RedisUser;
 import com.momo.mapper.res.authority.AclDetailRes;
 import com.momo.mapper.res.authority.AclLevelRes;
 import com.momo.mapper.res.authority.AclTreeRes;

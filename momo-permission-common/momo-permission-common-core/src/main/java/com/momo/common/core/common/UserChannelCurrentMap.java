@@ -7,8 +7,13 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * @Description: 用户id和channel的关联关系处理
- */
+ * @ClassName: UserChannelCurrentMap
+ * @Author: Jie Li
+ * @Date 2019-11-20 14:39
+ * @Description: TODO
+ * @Version: 1.0
+ * <p>Copyright: Copyright (c) 2019</p>
+ **/
 @Slf4j
 public class UserChannelCurrentMap {
 
