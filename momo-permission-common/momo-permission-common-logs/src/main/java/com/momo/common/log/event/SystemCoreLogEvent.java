@@ -13,28 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.momo.mapper.res.aclmanager;
+package com.momo.common.log.event;
 
-import lombok.*;
+import org.springframework.context.ApplicationEvent;
 
 /**
- * @ProjectName: momo-cloud-permission
- * @Package: com.momo.mapper.res.aclmanager
- * @Description: TODO
+ * @ClassName: SysLogEvent
  * @Author: Jie Li
- * @CreateDate: 2019/9/2 0002 15:38
- * @UpdateDate: 2019/9/2 0002 15:38
+ * @Date 2019-11-14 14:40
+ * @Description: 系统日志事件
  * @Version: 1.0
  * <p>Copyright: Copyright (c) 2019</p>
- */
-@Getter
-@Setter
-@ToString
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-//@EqualsAndHashCode(callSuper = true, of = {"id"})
-public class DisabledAdminRoleButtonRes {
-    private boolean disabledAdminRoleButton = true;
+ **/
+public class SystemCoreLogEvent extends ApplicationEvent {
 
+    public SystemCoreLogEvent(SystemCoreLogDO source) {
+        super(source);
+    }
 }

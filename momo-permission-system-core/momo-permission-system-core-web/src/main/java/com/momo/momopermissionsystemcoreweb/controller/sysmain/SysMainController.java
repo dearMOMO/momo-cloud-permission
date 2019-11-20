@@ -1,7 +1,22 @@
+/**
+ * Copyright (c) 2018-2019, Jie Li 李杰 (mqgnsds@163.com).
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.momo.momopermissionsystemcoreweb.controller.sysmain;
 
 import com.momo.common.core.common.JSONResult;
-import com.momo.common.log.annotation.SysLog;
+import com.momo.common.log.annotation.SystemCoreLog;
 import com.momo.mapper.req.sysmain.SysUserLoginReq;
 import com.momo.service.service.sysmain.SysMainService;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +45,7 @@ public class SysMainController {
      * @param sysUserLoginReq
      * @return
      */
-    @SysLog(description = "用户登录")
+    @SystemCoreLog(description = "用户登录")
     @PostMapping("/login/v1")
     public JSONResult userLogin(@Validated(SysUserLoginReq.Query.class) @RequestBody SysUserLoginReq sysUserLoginReq, HttpServletRequest request) {
         String msg = sysMainService.userLogin(sysUserLoginReq, request);

@@ -1,6 +1,5 @@
 package com.momo.common.core.common;
 
-
 import eu.bitwalker.useragentutils.UserAgent;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,11 +7,13 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 /**
- * 获取客户端设备信息
- *
- * @author wangfan
- * @date 2017-7-24 下午3:47:39
- */
+ * @ClassName: UserAgentGetter
+ * @Author: Jie Li
+ * @Date 2019-11-20 14:37
+ * @Description: 获取客户端设备信息
+ * @Version: 1.0
+ * <p>Copyright: Copyright (c) 2019</p>
+ **/
 public class UserAgentGetter {
     private UserAgent userAgent;
     private String userAgentString;

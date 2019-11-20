@@ -1,7 +1,24 @@
+/**
+ * Copyright (c) 2018-2019, Jie Li 李杰 (mqgnsds@163.com).
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.momo.common.core.common;
 
-
 /**
+ * @ClassName: JSONResult
+ * @Author: Jie Li
+ * @Date 2019-11-20 14:36
  * @Description: 自定义响应数据结构
  * 这个类是提供给门户，ios，安卓，微信商城用的
  * 门户接受此类数据后需要使用本类的方法转换成对于的数据类型格式（类，或者list）
@@ -12,10 +29,10 @@ package com.momo.common.core.common;
  * 502：拦截器拦截到用户token出错
  * 555：异常抛出信息
  * ***:其他自定义异常
- */
+ * @Version: 1.0
+ * <p>Copyright: Copyright (c) 2019</p>
+ **/
 public class JSONResult {
-
-
     // 响应业务状态
     private Integer status;
 
@@ -131,5 +148,4 @@ public class JSONResult {
     public void setOk(String ok) {
         this.ok = ok;
     }
-
 }
