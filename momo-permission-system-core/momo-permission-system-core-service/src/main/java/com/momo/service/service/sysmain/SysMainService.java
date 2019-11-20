@@ -27,6 +27,7 @@ import com.momo.service.service.SuperAdminsService;
 import com.wf.captcha.SpecCaptcha;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -59,10 +60,14 @@ public class SysMainService extends BaseService {
     private SnowFlake snowFlake = new SnowFlake(1, 1);
     @Autowired
     private SuperAdminsService superAdminsService;
+    @Value("${momo.checkVerificationCode}")
+    private boolean  checkVerificationCode;
 
     public String userLogin(SysUserLoginReq sysUserLoginReq, HttpServletRequest request) {
         //todo 验证码
-//        checkVerificationCode(sysUserLoginReq);
+        if (checkVerificationCode){
+            checkVerificationCode(sysUserLoginReq);
+        }
         UserAccountPwdDO userAccountPwdDO = userAccountPwdMapper.sysUserAccountLogin(sysUserLoginReq.getSysUserLoginName());
         if (null == userAccountPwdDO) {
             throw BizException.fail("用户名或者密码错误");

@@ -190,6 +190,12 @@ momo:
     password: kagome123456 #密码
   #超级管理员租户信息
   teantId: 1
+  #系统初始化超级管理员
+  superAdmins: #List
+    - 15050451502
+    - momo
+  modifyAdministratorAccount: false #是否允许修改管理员账号
+  modifyAdministratorAccountUrl: /api/platform/sysUser/sysUserPwd/v1
   openRedisLimiter: false #是否开启redis分布式缓存
   ignorerUrl: #忽略拦截URL
     - /api/platform/sysMain/login/v1

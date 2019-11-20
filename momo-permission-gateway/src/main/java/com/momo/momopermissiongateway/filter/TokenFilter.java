@@ -20,6 +20,7 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -54,6 +55,11 @@ public class TokenFilter implements GlobalFilter, Ordered {
     private InterceptUrlConfiguration interceptUrlConfiguration;
     @Autowired
     private HasAclServiceFeign hasAclServiceFeign;
+    @Value("${momo.modifyAdministratorAccount}")
+    private boolean modifyAdministratorAccount;
+    @Value("${momo.modifyAdministratorAccountUrl}")
+    private String modifyAdministratorAccountUrl;
+
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -84,6 +90,11 @@ public class TokenFilter implements GlobalFilter, Ordered {
                 if (!redisUser.getTenantId().equals(interceptUrlConfiguration.getTeantId()) && interceptUrlConfiguration.checkEnterpriseUrl(path)) {
                     return JwtResponse.jwtResponse(exchange, HttpStatus.UNAUTHORIZED.value(), "您无权限访问");
                 }
+                //不允许修改超级管理员密码
+                if (interceptUrlConfiguration.checkIsSuperAdmin(redisUser.getSysUserPhone()) && path.equalsIgnoreCase(modifyAdministratorAccountUrl)) {
+                    return JwtResponse.jwtResponse(exchange, HttpStatus.INTERNAL_SERVER_ERROR.value(), "做我女朋友，工资卡归您保管 ٩꒰▽ ꒱۶⁼³₌₃ 超级管理员密码不允许修改");
+                }
+
                 //权限拦截
                 HasAclReq hasAclReq = new HasAclReq();
                 hasAclReq.setUrl(path);
