@@ -33,6 +33,7 @@ import com.momo.mapper.mapper.manual.UserMapper;
 import com.momo.mapper.req.sysmain.SysUserLoginReq;
 import com.momo.mapper.res.sysmain.UserInfoRes;
 import com.momo.service.async.LoginLogAsync;
+import com.momo.service.async.NettyServiceAsync;
 import com.momo.service.service.BaseService;
 import com.momo.service.service.SuperAdminsService;
 import com.wf.captcha.SpecCaptcha;
@@ -68,15 +69,17 @@ public class SysMainService extends BaseService {
     private LoginLogAsync loginLog;
     @Autowired
     private UserGroupMapper userGroupMapper;
+    @Autowired
+    private NettyServiceAsync nettyServiceAsync;
     private SnowFlake snowFlake = new SnowFlake(1, 1);
     @Autowired
     private SuperAdminsService superAdminsService;
     @Value("${momo.checkVerificationCode}")
-    private boolean  checkVerificationCode;
+    private boolean checkVerificationCode;
 
     public String userLogin(SysUserLoginReq sysUserLoginReq, HttpServletRequest request) {
         //todo 验证码
-        if (checkVerificationCode){
+        if (checkVerificationCode) {
             checkVerificationCode(sysUserLoginReq);
         }
         UserAccountPwdDO userAccountPwdDO = userAccountPwdMapper.sysUserAccountLogin(sysUserLoginReq.getSysUserLoginName());
@@ -179,6 +182,8 @@ public class SysMainService extends BaseService {
         entity.setId(snowFlake.nextId());
         entity.setUuid(redisUserKey);
         loginLog.loginLog(entity, request);
+        //更新首页用户在线数量
+        nettyServiceAsync.onlineCount();
         //登录成功删除验证码
         redisUtil.del("verUUidCode:" + sysUserLoginReq.getVerUUidCode());
         return redisUserKey;

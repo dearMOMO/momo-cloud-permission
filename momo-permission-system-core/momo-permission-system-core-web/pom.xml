@@ -107,7 +107,7 @@
         </dependency>
         <dependency>
             <groupId>com.momo</groupId>
-            <artifactId>momo-permission-system-core-netty</artifactId>
+            <artifactId>momo-permission-system-core-service</artifactId>
         </dependency>
     </dependencies>
 
