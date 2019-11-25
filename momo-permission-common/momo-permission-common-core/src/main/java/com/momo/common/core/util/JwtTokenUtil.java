@@ -126,6 +126,31 @@ public class JwtTokenUtil {
     }
 
     /**
+     * 生成token(通过用户名和签名时候用的随机数)
+     */
+    public String generateTokenNetty(String jsonString, String randomKey, Long expiration) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(jwtProperties.getMd5Key(), randomKey);
+        return doGenerateTokenNetty(claims, jsonString, expiration);
+    }
+
+    /**
+     * 生成token
+     */
+    private String doGenerateTokenNetty(Map<String, Object> claims, String subject, Long expiration) {
+        final Date createdDate = new Date();
+        final Date expirationDate = new Date(createdDate.getTime() + expiration * 1000);
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(subject)
+                .setIssuedAt(createdDate)
+                .setExpiration(expirationDate)
+                .signWith(SignatureAlgorithm.HS512, jwtProperties.getSecret())
+                .compact();
+    }
+
+    /**
      * 生成token
      */
     private String doGenerateToken(Map<String, Object> claims, String subject) {

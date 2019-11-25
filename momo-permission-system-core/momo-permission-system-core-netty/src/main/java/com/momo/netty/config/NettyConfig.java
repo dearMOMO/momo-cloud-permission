@@ -1,4 +1,4 @@
-//package com.momo.netty.config;
+package com.momo.netty.config;//package com.momo.netty.config;
 //
 //import com.momo.netty.service.WSServerInitialzer;
 //import io.netty.bootstrap.ServerBootstrap;
