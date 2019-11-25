@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
     <title>WebSocket Chat</title>
-	 <meta name="viewport"
+    <meta name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
 </head>
 <body>
@@ -12,8 +12,8 @@
     <h3>基于springboot2+redis+netty 简易聊天室：</h3>
     <textarea id="responseText" style="width: 300px; height: 400px;"></textarea>
     <br/>
-		<input type="text" name="message" id="msg" style="width: 300px" value="测试数据"/><br/>
-		<input type="button"  value="发送消息" onclick="send(this.form.message.value)"/>
+    <input type="text" name="message" id="msg" style="width: 300px" value="测试数据"/><br/>
+    <input type="button" value="发送消息" onclick="send(this.form.message.value)"/>
 </form>
 <br/>
 <br/>
@@ -23,50 +23,65 @@
         window.WebSocket = window.MozWebSocket;
     }
     if (window.WebSocket) {
-        socket = new WebSocket("ws://www.mqgnsds.top:502/ws");
-        socket.onmessage = function(event) {
+        socket = new WebSocket("ws://127.0.0.1:502/ws?token=ed94c1636d414521828969df0840d79d");
+        socket.onmessage = function (event) {
             console.log(event.data)
             var ta = document.getElementById('responseText');
             ta.value = ta.value + '\n' + event.data
-			scrollButtom();
+            scrollButtom();
         };
-        socket.onopen = function(event) {
+        socket.onopen = function (event) {
             var ta = document.getElementById('responseText');
             ta.value = "连接开启!";
-            send("defaultMsg");
-			// 定时发送心跳
-			setInterval("keepalive()", 50000);
+            var data = {
+                "msgType": 1,
+                "token": "ed94c1636d414521828969df0840d79d",
+                "data": ""
+            };
+            // 发送心跳
+            socket.send(JSON.stringify(data));
+            // 定时发送心跳
+            setInterval("keepalive()", 50000);
         };
-        socket.onclose = function(event) {
+        socket.onclose = function (event) {
             var ta = document.getElementById('responseText');
             ta.value = ta.value + "连接被关闭";
         };
     } else {
         alert("你的浏览器不支持 WebSocket！");
     }
-			 function keepalive() {
-					// 发送心跳
-					socket.send("心跳包");
-				}
+
+    function keepalive() {
+        var data = {
+            "msgType": 1,
+            "token": "",
+            "data": ""
+        };
+        // 发送心跳
+        socket.send(JSON.stringify(data));
+    }
+
     function send(message) {
         if (!window.WebSocket) {
             return;
         }
         if (socket.readyState == WebSocket.OPEN) {
             socket.send(message);
-			document.getElementById("msg").value="";
+            document.getElementById("msg").value = "";
         } else {
             alert("连接没有开启.");
         }
     }
-    window.onbeforeunload = function(event) {
+
+    window.onbeforeunload = function (event) {
         event.returnValue = "刷新提醒";
     };
-	function scrollButtom(){
-		var areaMsgList = document.getElementById("responseText");
-		// 设置聊天记录进入页面的时候自动滚动到最后一条
-		areaMsgList.scrollTop = areaMsgList.scrollHeight + areaMsgList.offsetHeight;
-	}
+
+    function scrollButtom() {
+        var areaMsgList = document.getElementById("responseText");
+        // 设置聊天记录进入页面的时候自动滚动到最后一条
+        areaMsgList.scrollTop = areaMsgList.scrollHeight + areaMsgList.offsetHeight;
+    }
 
 </script>
 </body>

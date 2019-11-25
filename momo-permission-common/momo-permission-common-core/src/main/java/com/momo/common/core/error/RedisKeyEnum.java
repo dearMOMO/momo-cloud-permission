@@ -54,6 +54,11 @@ public enum RedisKeyEnum {
     REDIS_ROLE_ACLS_MAP("roleAclsMap:", -1, "角色和权限关系 "),
     //
     REDIS_KEY_USER_CODE("user:", -1, "用户信息"),
+
+    //##################    netty 相关    ##################
+    NETTY_HEART_BEAT("heartBeat", 0, "netty心跳包"),
+    NETTY_REFRESH_TOKEN("refreshToken", 1, "客户端刷新token"),
+    NETTY_ONLINE_COUNT("onlineCount", 2, "客户端获取在线数量"),
     ;
     private final String key;
     private final int expireTime;
