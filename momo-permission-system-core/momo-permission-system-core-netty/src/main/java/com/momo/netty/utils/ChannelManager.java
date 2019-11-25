@@ -34,6 +34,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ChannelManager {
     private final static Map<String, Channel> channelCache = new ConcurrentHashMap<>();
 
+    public static Map<String, Channel> getAll() {
+        return channelCache;
+    }
+
     public static void put(String key, Channel value) {
         channelCache.put(key, value);
     }
@@ -58,6 +62,10 @@ public class ChannelManager {
 
     public static void ctxWrite(ChannelHandlerContext ctx, Object obj) {
         Channel channel = ctx.channel();
+        ctxWrite(channel,obj);
+    }
+
+    public static void ctxWrite(Channel channel, Object obj) {
         channel.writeAndFlush(new TextWebSocketFrame(JSONObject.toJSONString(obj)));
     }
 

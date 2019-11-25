@@ -34,6 +34,10 @@
             <groupId>com.momo</groupId>
             <artifactId>momo-permission-system-core-mapper</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.momo</groupId>
+            <artifactId>momo-permission-system-core-netty</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
