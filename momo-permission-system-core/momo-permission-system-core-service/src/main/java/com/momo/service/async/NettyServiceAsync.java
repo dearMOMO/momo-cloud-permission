@@ -30,7 +30,8 @@ public class NettyServiceAsync {
         Future<String> future = new AsyncResult<>("更新首页用户在线数量");
         Map<String, Channel> channelMapAll = ChannelManager.getAllChannel();
         if (channelMapAll != null && !channelMapAll.isEmpty()) {
-            IMMessage imMessage = new IMMessage(RedisKeyEnum.NETTY_ONLINE_COUNT.getExpireTime(), ChannelManager.sizeChannel(), null);
+            int onlineConut = ChannelManager.sizeChannel() + 1;
+            IMMessage imMessage = new IMMessage(RedisKeyEnum.NETTY_ONLINE_COUNT.getExpireTime(), onlineConut, null);
             channelMapAll.forEach((s, channel) -> ChannelManager.ctxWrite(channel, imMessage));
         }
         return future;
