@@ -70,17 +70,19 @@ public class ChatHandler extends SimpleChannelInboundHandler<TextWebSocketFrame>
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame msg) throws Exception {
-        nettyHandlerService.refreshTken(ctx, msg.text());
+        nettyHandlerService.refreshToken(ctx, msg.text());
     }
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
         ctx.channel().close();
+        nettyHandlerService.onlineCount();
         ChannelManager.removeChannel(ChannelManager.channelLongText(ctx));
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        nettyHandlerService.onlineCount();
         ChannelManager.putChannel(ChannelManager.channelLongText(ctx), ctx.channel());
     }
 
@@ -89,6 +91,7 @@ public class ChatHandler extends SimpleChannelInboundHandler<TextWebSocketFrame>
         String channelId = ChannelManager.channelLongText(ctx);
         Long UserId = ChannelManager.getUserId(channelId);
         log.error("netty channel error baseId {} channelId{} {} {}", UserId, channelId, cause.getMessage(), cause);
+        nettyHandlerService.onlineCount();
         ChannelManager.channelClose(channelId, UserId);
         ctx.channel().close();
     }

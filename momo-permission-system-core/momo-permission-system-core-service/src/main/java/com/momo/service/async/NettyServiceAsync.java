@@ -1,15 +1,16 @@
 package com.momo.service.async;
 
 import com.momo.common.core.error.RedisKeyEnum;
+import com.momo.netty.service.NettyHandlerService;
 import com.momo.netty.utils.ChannelManager;
 import com.momo.netty.utils.IMMessage;
 import io.netty.channel.Channel;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
 import java.util.concurrent.Future;
 
 /**
@@ -25,15 +26,10 @@ import java.util.concurrent.Future;
 @Async("threadPoolTaskExecutor")
 public class NettyServiceAsync {
 
+    @Autowired
+    private NettyHandlerService nettyHandlerService;
 
     public Future<String> onlineCount() {
-        Future<String> future = new AsyncResult<>("更新首页用户在线数量");
-        Map<String, Channel> channelMapAll = ChannelManager.getAllChannel();
-        if (channelMapAll != null && !channelMapAll.isEmpty()) {
-            int onlineConut = ChannelManager.sizeChannel() + 1;
-            IMMessage imMessage = new IMMessage(RedisKeyEnum.NETTY_ONLINE_COUNT.getExpireTime(), onlineConut, null);
-            channelMapAll.forEach((s, channel) -> ChannelManager.ctxWrite(channel, imMessage));
-        }
-        return future;
+        return nettyHandlerService.onlineCount();
     }
 }

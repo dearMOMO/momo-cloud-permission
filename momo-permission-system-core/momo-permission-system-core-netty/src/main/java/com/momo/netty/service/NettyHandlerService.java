@@ -29,13 +29,17 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Map;
+import java.util.concurrent.Future;
 
 /**
  * @ClassName: NettyHandlerService
@@ -47,7 +51,6 @@ import java.util.Date;
  **/
 @Service
 @Slf4j
-@Async("threadPoolTaskExecutor")
 public class NettyHandlerService {
     @Autowired
     private RedisUtil redisUtil;
@@ -56,7 +59,8 @@ public class NettyHandlerService {
     // JWT 失效时间小于5分钟，更新JWT 60*5
     private final static Long EXPIREDJWT = 300L;
 
-    public void refreshTken(ChannelHandlerContext ctx, String msg) {
+    @Async("threadPoolTaskExecutor")
+    public void refreshToken(ChannelHandlerContext ctx, String msg) {
         String channelId = ChannelManager.channelLongText(ctx);
         Long UserId = ChannelManager.getUserId(channelId);
         try {
@@ -126,5 +130,17 @@ public class NettyHandlerService {
             ChannelManager.channelClose(channelId, UserId);
             ctx.channel().close();
         }
+    }
+
+    @Async("threadPoolTaskExecutor")
+    public Future<String> onlineCount() {
+        Future<String> future = new AsyncResult<>("更新首页用户在线数量");
+        Map<String, Channel> channelMapAll = ChannelManager.getAllChannel();
+        if (channelMapAll != null && !channelMapAll.isEmpty()) {
+            int onlineConut = ChannelManager.sizeChannel() + 1;
+            IMMessage imMessage = new IMMessage(RedisKeyEnum.NETTY_ONLINE_COUNT.getExpireTime(), onlineConut, null);
+            channelMapAll.forEach((s, channel) -> ChannelManager.ctxWrite(channel, imMessage));
+        }
+        return future;
     }
 }
