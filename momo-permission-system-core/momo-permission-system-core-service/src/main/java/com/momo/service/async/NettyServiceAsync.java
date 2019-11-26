@@ -1,14 +1,9 @@
 package com.momo.service.async;
 
-import com.momo.common.core.error.RedisKeyEnum;
 import com.momo.netty.service.NettyHandlerService;
-import com.momo.netty.utils.ChannelManager;
-import com.momo.netty.utils.IMMessage;
-import io.netty.channel.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.Future;
