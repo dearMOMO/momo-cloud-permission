@@ -57,6 +57,8 @@ public class NettyHandlerService {
     private final static Long EXPIREDJWT = 300L;
 
     public void refreshTken(ChannelHandlerContext ctx, String msg) {
+        String channelId = ChannelManager.channelLongText(ctx);
+        Long UserId = ChannelManager.getUserId(channelId);
         try {
             // 获取客户端传输过来的消息
             IMMessage imMessageClient = JSON.parseObject(msg, new TypeReference<IMMessage>() {
@@ -68,36 +70,23 @@ public class NettyHandlerService {
                     ctx.channel().close();
                     return;
                 }
-                try {
-                    //解析token
-                    String userInfo = jwtTokenUtil.getUsernameFromToken(String.valueOf(tokenObj));
-                    RedisUser redisUser = JSON.parseObject(userInfo, new TypeReference<RedisUser>() {
-                    });
-                    RedisUser nettyRedisUser = RedisUser.builder().baseId(redisUser.getBaseId()).sysUserPhone(redisUser.getSysUserPhone())
-                            .tenantId(redisUser.getTenantId()).build();
-                    final String randomKey = jwtTokenUtil.getRandomKey();
-                    //60*20
-                    final String token = jwtTokenUtil.generateTokenNetty(JSONObject.toJSONString(nettyRedisUser), randomKey, 1200L);
-                    IMMessage imMessage = new IMMessage(RedisKeyEnum.NETTY_REFRESH_TOKEN.getExpireTime(), token, null);
-                    //下发token给客户端
-                    ChannelManager.ctxWrite(ctx, imMessage);
-                } catch (MalformedJwtException e) {
-                    log.error("JWT格式错误异常:======>>>:{}====={}", e.getMessage(), e);
-                    ctx.channel().close();
-                } catch (SignatureException e) {
-                    log.error("JWT签名错误异常:======>>>:{}", e.getMessage(), e);
-                    ctx.channel().close();
-                } catch (ExpiredJwtException e) {
-                    log.error("JWT过期异常:======>>>:{}", e.getMessage(), e);
-                    ctx.channel().close();
-                } catch (UnsupportedJwtException e) {
-                    log.error("不支持的JWT异常:======>>>:{}", e.getMessage(), e);
-                    ctx.channel().close();
-                } catch (Exception e) {
-                    log.error("TokenFilter，不支持的异常:{}======>>>:{}", e.getMessage(), e);
-                    ctx.channel().close();
-                }
-            } else {
+
+                //解析token
+                String userInfo = jwtTokenUtil.getUsernameFromToken(String.valueOf(tokenObj));
+                RedisUser redisUser = JSON.parseObject(userInfo, new TypeReference<RedisUser>() {
+                });
+                RedisUser nettyRedisUser = RedisUser.builder().baseId(redisUser.getBaseId()).sysUserPhone(redisUser.getSysUserPhone())
+                        .tenantId(redisUser.getTenantId()).build();
+                final String randomKey = jwtTokenUtil.getRandomKey();
+                //60*20
+                final String token = jwtTokenUtil.generateTokenNetty(JSONObject.toJSONString(nettyRedisUser), randomKey, 1200L);
+                IMMessage imMessage = new IMMessage(RedisKeyEnum.NETTY_REFRESH_TOKEN.getExpireTime(), null, token);
+                ChannelManager.putChannelId(nettyRedisUser.getBaseId(), ChannelManager.channelLongText(ctx));
+                ChannelManager.putUserId(ChannelManager.channelLongText(ctx), nettyRedisUser.getBaseId());
+                //下发token给客户端
+                ChannelManager.ctxWrite(ctx, imMessage);
+
+            } else if (imMessageClient.getMsgType().equals(RedisKeyEnum.NETTY_HEART_BEAT.getExpireTime())) {//心跳包
                 String tokenClient = imMessageClient.getToken();
                 //解析token
                 String userInfo = jwtTokenUtil.getUsernameFromToken(tokenClient);
@@ -112,25 +101,29 @@ public class NettyHandlerService {
                     final String randomKey = jwtTokenUtil.getRandomKey();
                     //60*20
                     final String token = jwtTokenUtil.generateTokenNetty(JSONObject.toJSONString(nettyRedisUser), randomKey, 1200L);
-                    IMMessage imMessage = new IMMessage(RedisKeyEnum.NETTY_REFRESH_TOKEN.getExpireTime(), token, null);
+                    IMMessage imMessage = new IMMessage(RedisKeyEnum.NETTY_REFRESH_TOKEN.getExpireTime(), null, token);
                     //客户端刷新token
                     ChannelManager.ctxWrite(ctx, imMessage);
                 }
             }
         } catch (MalformedJwtException e) {
-            log.error("JWT格式错误异常:======>>>:{}====={}", e.getMessage(), e);
+            log.error("JWT格式错误异常 baseId {} channelId{}:======>>>:{}====={}", UserId, channelId, e.getMessage(), e);
+            ChannelManager.channelClose(channelId, UserId);
             ctx.channel().close();
         } catch (SignatureException e) {
-            log.error("JWT签名错误异常:======>>>:{}", e.getMessage(), e);
+            log.error("JWT签名错误异常 baseId {} channelId{}:======>>>:{}====={}", UserId, channelId, e.getMessage(), e);
+            ChannelManager.channelClose(channelId, UserId);
             ctx.channel().close();
         } catch (ExpiredJwtException e) {
-            log.error("JWT过期异常:======>>>:{}", e.getMessage(), e);
+            log.error("JWT过期异常 baseId {} channelId{}:======>>>:{}====={}", UserId, channelId, e.getMessage(), e);
             ctx.channel().close();
         } catch (UnsupportedJwtException e) {
-            log.error("不支持的JWT异常:======>>>:{}", e.getMessage(), e);
+            log.error("不支持的JWT异常 baseId {} channelId{}:======>>>:{}====={}", UserId, channelId, e.getMessage(), e);
+            ChannelManager.channelClose(channelId, UserId);
             ctx.channel().close();
         } catch (Exception e) {
-            log.error("TokenFilter，不支持的异常:{}======>>>:{}", e.getMessage(), e);
+            log.error("TokenFilter，不支持的异常 baseId {} channelId{}:======>>>:{}====={}", UserId, channelId, e.getMessage(), e);
+            ChannelManager.channelClose(channelId, UserId);
             ctx.channel().close();
         }
     }

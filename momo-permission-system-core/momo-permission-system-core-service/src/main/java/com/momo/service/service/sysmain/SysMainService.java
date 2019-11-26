@@ -213,6 +213,8 @@ public class SysMainService extends BaseService {
                 redisUtil.set(RedisKeyEnum.REDIS_KEY_USER_ID.getKey() + redisUser.getBaseId(), JSONObject.toJSONString(listRedis), RedisKeyEnum.REDIS_KEY_USER_ID.getExpireTime());
             }
         }
+        //更新首页用户在线数量
+        nettyServiceAsync.onlineCount();
         return "安全退出成功";
     }
 

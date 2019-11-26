@@ -56,11 +56,11 @@ public class ChatHandler extends SimpleChannelInboundHandler<TextWebSocketFrame>
                 request.setUri(newUri);
             }
             Object obj = paramMap.get("token");
-            if (null == obj) {
+            if (null == obj || "undefined".equals(obj)) {
                 ctx.channel().close();
                 return;
             }
-            ChannelManager.put(ChannelManager.channelLongText(ctx), ctx.channel());
+            ChannelManager.putChannel(ChannelManager.channelLongText(ctx), ctx.channel());
         } else if (msg instanceof TextWebSocketFrame) {
             //正常的TEXT消息类型
 //            TextWebSocketFrame frame = (TextWebSocketFrame) msg;
@@ -76,21 +76,21 @@ public class ChatHandler extends SimpleChannelInboundHandler<TextWebSocketFrame>
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
         ctx.channel().close();
-        ChannelManager.remove(ChannelManager.channelLongText(ctx));
+        ChannelManager.removeChannel(ChannelManager.channelLongText(ctx));
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        ChannelManager.put(ChannelManager.channelLongText(ctx), ctx.channel());
+        ChannelManager.putChannel(ChannelManager.channelLongText(ctx), ctx.channel());
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        log.error("netty channel error {} {}", cause.getMessage(), cause);
-        // 发生异常之后关闭连接（关闭channel），随后从ChannelGroup中移除
-        ChannelManager.remove(ChannelManager.channelLongText(ctx));
+        String channelId = ChannelManager.channelLongText(ctx);
+        Long UserId = ChannelManager.getUserId(channelId);
+        log.error("netty channel error baseId {} channelId{} {} {}", UserId, channelId, cause.getMessage(), cause);
+        ChannelManager.channelClose(channelId, UserId);
         ctx.channel().close();
-
     }
 
     private static Map<String, String> getUrlParams(String url) {
