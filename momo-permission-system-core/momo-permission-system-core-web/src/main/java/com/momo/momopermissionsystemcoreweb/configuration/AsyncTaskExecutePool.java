@@ -63,10 +63,12 @@ public class AsyncTaskExecutePool implements AsyncConfigurer {
     @Override
     public Executor getAsyncExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        //此方法返回可用处理器的虚拟机的最大数量; 不小于1
+        int core = Runtime.getRuntime().availableProcessors();
         //核心线程池大小
-        executor.setCorePoolSize(corePoolSize);
+        executor.setCorePoolSize(core);
         //最大线程数
-        executor.setMaxPoolSize(maxPoolSize);
+        executor.setMaxPoolSize(core * 2 + 1);
         //队列容量
         executor.setQueueCapacity(queueCapacity);
         //活跃时间
