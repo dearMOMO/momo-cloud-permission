@@ -64,6 +64,11 @@
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
         </dependency>
+        <!--rabbitmq -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
         <!--分布式链路跟踪 Sleuth 与 Zipkin  begin-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
