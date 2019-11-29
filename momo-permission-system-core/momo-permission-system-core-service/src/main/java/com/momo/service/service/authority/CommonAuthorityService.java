@@ -52,7 +52,7 @@ public class CommonAuthorityService extends BaseService {
         if (CollectionUtils.isEmpty(adminAclIds)) {
             return Lists.newArrayList();
         }
-        Set<Long> adminAclIdsSet=new HashSet<>(adminAclIds);
+        Set<Long> adminAclIdsSet = new HashSet<>(adminAclIds);
         List<AclLevelRes> aclDtoList = Lists.newArrayList();
         for (AclDO acl : userAclList) {
             //权限继承
@@ -107,7 +107,7 @@ public class CommonAuthorityService extends BaseService {
         //根据角色id获取权限ids
         List<Long> aclIds = authorityMapper.aclsByRoleId(adminRolesSet, loginAuthReq.getAclPermissionCode());
         List<String> defaultexpandedKeys = Lists.newArrayList();
-        Set<Long> aclIdsSet=new HashSet<>(aclIds);
+        Set<Long> aclIdsSet = new HashSet<>(aclIds);
         //根据权限点的ids获取权限点列表
         List<AclDO> allAclList = authorityMapper.getAllAcl(null, aclIdsSet);
         for (AclDO acl : allAclList) {
@@ -118,7 +118,7 @@ public class CommonAuthorityService extends BaseService {
             }
             if (roleAclIdSet.contains(acl.getId())) {
                 //类型，-1系统 0:目录 1：菜单，2：按钮，3：其他
-                if (acl.getSysAclType().equals(1) || acl.getSysAclType().equals(2) || acl.getSysAclType().equals(3)) {
+                if (acl.getSysAclType().equals(2) || acl.getSysAclType().equals(3)) {
                     dto.setChecked(true);
                     defaultexpandedKeys.add(String.valueOf(acl.getId()));
                 }
