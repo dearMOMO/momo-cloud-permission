@@ -110,21 +110,23 @@ public class TokenFilter implements GlobalFilter, Ordered {
                     return JwtResponse.jwtResponse(exchange, HttpStatus.INTERNAL_SERVER_ERROR.value(), "做我女朋友，工资卡归您保管 ٩꒰▽ ꒱۶⁼³₌₃ 超级管理员密码不允许修改");
                 }
 
-                //权限拦截
-                HasAclReq hasAclReq = new HasAclReq();
-                hasAclReq.setUrl(path);
-                hasAclReq.setTenantId(redisUser.getTenantId());
-                hasAclReq.setSysUserPhone(redisUser.getSysUserPhone());
-                JSONResult hasAcl = hasAclServiceFeign.hasAcl(hasAclReq);
-                if (hasAcl.getStatus() == 500) {
-                    return JwtResponse.jwtResponse(exchange, HttpStatus.INTERNAL_SERVER_ERROR.value(), hasAcl.getMsg());
-                } else if (hasAcl.getStatus() == 200) {
-                    if (!(boolean) hasAcl.getData()) {
+
+                if (!interceptUrlConfiguration.checkIgnorerAclUrl(path)) {
+                    //权限拦截
+                    HasAclReq hasAclReq = new HasAclReq();
+                    hasAclReq.setUrl(path);
+                    hasAclReq.setTenantId(redisUser.getTenantId());
+                    hasAclReq.setSysUserPhone(redisUser.getSysUserPhone());
+                    JSONResult hasAcl = hasAclServiceFeign.hasAcl(hasAclReq);
+                    if (hasAcl.getStatus() == 200) {
+                        if (!(boolean) hasAcl.getData()) {
+                            return JwtResponse.jwtResponse(exchange, HttpStatus.UNAUTHORIZED.value(), "您无权限访问");
+                        }
+                    } else {
                         return JwtResponse.jwtResponse(exchange, HttpStatus.UNAUTHORIZED.value(), "您无权限访问");
                     }
-                } else {
-                    return JwtResponse.jwtResponse(exchange, HttpStatus.UNAUTHORIZED.value(), "您无权限访问");
                 }
+
                 //第三方
                 //jwt 失效时间
                 Date getExpirationDateFromToken = jwtTokenUtil.getExpirationDateFromToken(String.valueOf(sessionJwt));

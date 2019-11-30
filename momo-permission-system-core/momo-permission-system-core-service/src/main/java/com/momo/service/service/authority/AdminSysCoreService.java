@@ -143,7 +143,7 @@ public class AdminSysCoreService {
 
     private String truncateUrlPage(String strURL) {
         String strAllParam = null;
-        strURL = strURL.trim().toLowerCase();
+        strURL = strURL.trim();
         String[] arrSplit = strURL.split("[?]");
         if (strURL.length() > 0) {
             strAllParam = arrSplit[0];

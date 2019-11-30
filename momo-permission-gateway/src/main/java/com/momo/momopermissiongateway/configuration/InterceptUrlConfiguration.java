@@ -46,6 +46,8 @@ public class InterceptUrlConfiguration {
     private Long teantId;
     //忽略拦截URL
     private List<String> ignorerUrl = Lists.newArrayList();
+    //忽略拦截权限URL
+    private List<String> ignorerAclUrl = Lists.newArrayList();
 
     //#企业相关操作URL，只有MOMO企业下的员工才可以操作
     private List<String> enterpriseUrl = Lists.newArrayList();
@@ -63,6 +65,13 @@ public class InterceptUrlConfiguration {
             return true;
         }
         return ignorerUrl.contains(gatewayUrl);
+    }
+
+    public boolean checkIgnorerAclUrl(String gatewayUrl) {
+        if (StringUtils.isBlank(gatewayUrl)) {
+            return true;
+        }
+        return ignorerAclUrl.contains(gatewayUrl);
     }
 
     public boolean checkEnterpriseUrl(String gatewayUrl) {
