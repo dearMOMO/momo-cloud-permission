@@ -196,6 +196,8 @@ momo:
     - /api/platform/sysMain/images/captcha/v1
   ignorerAclUrl: #忽略拦截权限URL
     - /api/platform/authority/dynamicMenu/v1
+    - /api/platform/sysMain/logout/v1
+    - /api/platform/netty/initialization/onlineCount/v1
   enterpriseUrl: 企业相关操作URL，只有MOMO企业下的员工才可以操作
     - /api/platform/enterprise/sysUserGroupPage/v1
     - /api/platform/enterprise/detail/v1
