@@ -39,7 +39,7 @@
         <commons-collections.version>3.2.2</commons-collections.version>
         <commons-collections4.version>4.4</commons-collections4.version>
         <weixin-java-tools.version>3.5.0</weixin-java-tools.version>
-        <lettuce-core.version>5.2.0.RELEASE</lettuce-core.version>
+        <lettuce-core.version>5.2.1.RELEASE</lettuce-core.version>
         <feign-okhttp.version>10.5.1</feign-okhttp.version>
     </properties>
     <modules>
