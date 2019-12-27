@@ -19,6 +19,8 @@ import com.google.common.collect.*;
 import com.momo.common.core.entity.RedisUser;
 import com.momo.common.core.util.LevelUtil;
 import com.momo.mapper.dataobject.AclDO;
+import com.momo.mapper.enums.AclTypeEnum;
+import com.momo.mapper.enums.DisabledFlagEnum;
 import com.momo.mapper.mapper.manual.AuthorityMapper;
 import com.momo.mapper.req.sysmain.DynamicMenuAuthorReq;
 import com.momo.mapper.res.authority.AclLevelRes;
@@ -50,7 +52,7 @@ public class AdminAuthorityService extends BaseService {
         List<AclDO> userAclList = adminSysCoreService.getUserAclList(loginAuthReq, redisUser);
         List<AclLevelRes> aclDtoList = Lists.newArrayList();
         for (AclDO acl : userAclList) {
-            if (acl.getDisabledFlag().equals(0)) {
+            if (acl.getDisabledFlag().equals(DisabledFlagEnum.start.type)) {
                 AclLevelRes dto = AclLevelRes.adapt(acl);
                 dto.setHasAcl(true);
                 dto.setDisabled(false);
@@ -84,7 +86,7 @@ public class AdminAuthorityService extends BaseService {
             }
             if (roleAclIdSet.contains(acl.getId())) {
                 //类型，-1系统 0:目录 1：菜单，2：按钮，3：其他
-                if (acl.getSysAclType().equals(2) || acl.getSysAclType().equals(3)) {
+                if (acl.getSysAclType().equals(AclTypeEnum.button.type) || acl.getSysAclType().equals(AclTypeEnum.other.type)) {
                     dto.setChecked(true);
                     defaultexpandedKeys.add(String.valueOf(acl.getId()));
                 }

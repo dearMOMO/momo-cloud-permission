@@ -16,26 +16,28 @@
 package com.momo.mapper.enums;
 
 /**
- * @ClassName: Sex
+ * @ClassName: AclTypeEnum
  * @Author: Jie Li
- * @Date 2019-12-21 21:47
- * @Description: 性别 枚举
+ * @Date 2019-12-27 16:42
+ * @Description: 权限类型
+ * -1系统 0:目录 1：菜单，2：按钮，3：其他
  * @Version: 1.0
  * <p>Copyright: Copyright (c) 2019</p>
  **/
-public enum SexEnum {
-    woman(0, "女", ""),
-    man(1, "男", ""),
-    secret(2, "保密", "");
+public enum AclTypeEnum {
+    system(-1, "系统", ""),
+    catalogue(0, "目录", ""),
+    menu(1, "菜单", ""),
+    button(2, "按钮", ""),
+    other(3, "其他", "");
 
     public final Integer type;
     public final String value;
     public final String description;
 
-    SexEnum(Integer type, String value, String description) {
+    AclTypeEnum(Integer type, String value, String description) {
         this.type = type;
         this.value = value;
         this.description = description;
     }
 }
-

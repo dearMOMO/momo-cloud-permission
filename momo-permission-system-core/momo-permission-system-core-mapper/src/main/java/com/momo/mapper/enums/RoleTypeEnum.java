@@ -16,26 +16,26 @@
 package com.momo.mapper.enums;
 
 /**
- * @ClassName: Sex
+ * @ClassName: RoleTypeEnum
  * @Author: Jie Li
- * @Date 2019-12-21 21:47
- * @Description: 性别 枚举
+ * @Date 2019-12-27 16:27
+ * @Description: 角色类型枚举
  * @Version: 1.0
  * <p>Copyright: Copyright (c) 2019</p>
  **/
-public enum SexEnum {
-    woman(0, "女", ""),
-    man(1, "男", ""),
-    secret(2, "保密", "");
+public enum RoleTypeEnum {
+    superAdmin(0, "管理员(老板)", "管理员(老板)"),
+    admin(1, "管理员(员工) ", "管理员(员工) "),
+    common(2, "普通员工", "普通员工"),
+    other(3, "其他", "其他");
 
     public final Integer type;
     public final String value;
     public final String description;
 
-    SexEnum(Integer type, String value, String description) {
+    RoleTypeEnum(Integer type, String value, String description) {
         this.type = type;
         this.value = value;
         this.description = description;
     }
 }
-

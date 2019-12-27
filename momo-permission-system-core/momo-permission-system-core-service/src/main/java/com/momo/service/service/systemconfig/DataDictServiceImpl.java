@@ -7,6 +7,7 @@ import com.momo.common.core.entity.RedisUser;
 import com.momo.common.core.error.BizException;
 import com.momo.common.core.util.LevelUtil;
 import com.momo.mapper.dataobject.DataDictDO;
+import com.momo.mapper.enums.DisabledFlagEnum;
 import com.momo.mapper.mapper.manual.DataDictMapper;
 import com.momo.mapper.req.systemconfig.DataDictTreeReq;
 import com.momo.mapper.res.systemconfig.DataDictLevelRes;
@@ -49,7 +50,7 @@ public class DataDictServiceImpl extends BaseService implements DataDictService 
         dataDiceGetAll.forEach(dataDictDO -> {
             DataDictTreeRes dictTreeRes = DataDictTreeRes.dictTreeRes(dataDictDO);
             //状态 0启用  1禁用
-            if (dictTreeRes.getDisabledFlag().equals(1)) {
+            if (dictTreeRes.getDisabledFlag().equals(DisabledFlagEnum.start.type)) {
                 dictTreeRes.setDisabled(false);
             }
             dictTreeResList.add(dictTreeRes);

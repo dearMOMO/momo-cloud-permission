@@ -32,6 +32,10 @@ import com.momo.mapper.dataobject.AclDO;
 import com.momo.mapper.dataobject.RoleAclDO;
 import com.momo.mapper.dataobject.RoleDO;
 import com.momo.mapper.dataobject.UserDO;
+import com.momo.mapper.enums.AclTypeEnum;
+import com.momo.mapper.enums.DelFlagEnum;
+import com.momo.mapper.enums.DisabledFlagEnum;
+import com.momo.mapper.enums.RoleTypeEnum;
 import com.momo.mapper.mapper.manual.*;
 import com.momo.mapper.req.authority.AclReq;
 import com.momo.mapper.req.sysmain.DynamicMenuAuthorReq;
@@ -87,7 +91,7 @@ public class AclService extends BaseService {
         // 1、当前用户已分配的权限点
         List<AclDO> userAclList = sysCoreService.getUserHavingAclList(new DynamicMenuAuthorReq(), redisUser);
         //是否被禁用  0否 1禁用
-        List<RoleDO> getRolesByUserId = roleMapper.getRolesByUserId(redisUser.getBaseId(), 0);
+        List<RoleDO> getRolesByUserId = roleMapper.getRolesByUserId(redisUser.getBaseId(), DisabledFlagEnum.start.type);
         Set<Long> roleIds = getRolesByUserId.stream().map(RoleDO::getId).collect(Collectors.toSet());
         // 2、当前角色分配的权限点
         List<AclDO> roleAclList = sysCoreService.getRoleAclList(roleIds, null);
@@ -109,7 +113,7 @@ public class AclService extends BaseService {
                 dto.setChecked(true);
             }
             //类型，-1系统 0:目录 1：菜单，2：按钮，3：其他
-            if (acl.getSysAclType().equals(0)) {
+            if (acl.getSysAclType().equals(AclTypeEnum.catalogue.type)) {
                 defaultexpandedKeys.add(String.valueOf(acl.getId()));
             }
             aclDtoList.add(dto);
@@ -142,8 +146,8 @@ public class AclService extends BaseService {
         record.setUpdateTime(DateUtils.getDateTime());
         record.setUuid(StrUtil.genUUID());
         record.setId(snowFlake.nextId());
-        record.setDisabledFlag(0);
-        record.setDelFlag(0);
+        record.setDisabledFlag(DisabledFlagEnum.start.type);
+        record.setDelFlag(DelFlagEnum.ok.type);
         aclMapper.insertSelective(record);
         aclRedisCacheServiceAsync.aclSaveToRedis(record);
         return "新增权限成功";
@@ -161,7 +165,7 @@ public class AclService extends BaseService {
         BeanUtils.copyProperties(aclReq, record);
         record.setSysAclParentId(0L);
         //类型，-1系统 0:目录 1：菜单，2：按钮，3：其他
-        record.setSysAclType(-1);
+        record.setSysAclType(AclTypeEnum.system.type);
         record.setSysAclLevel(LevelUtil.calculateLevel(getLevel(aclReq.getSysAclParentIdStr()), aclReq.getSysAclParentIdStr()));
         record.setCreateBy(redisUser.getSysUserName());
         record.setUpdateBy(redisUser.getSysUserName());
@@ -169,8 +173,8 @@ public class AclService extends BaseService {
         record.setUpdateTime(DateUtils.getDateTime());
         record.setUuid(StrUtil.genUUID());
         record.setId(snowFlake.nextId());
-        record.setDisabledFlag(0);
-        record.setDelFlag(0);
+        record.setDisabledFlag(DisabledFlagEnum.start.type);
+        record.setDelFlag(DelFlagEnum.ok.type);
         aclMapper.insertSelective(record);
         aclRedisCacheServiceAsync.aclSaveToRedis(record);
         return "新增权限系统成功";
@@ -221,7 +225,7 @@ public class AclService extends BaseService {
         AclDetailRes aclDetailRes = new AclDetailRes();
         BeanUtils.copyProperties(aclDO, aclDetailRes);
         //类型，-1系统 0:目录 1：菜单，2：按钮，3：其他
-        if (aclDO.getSysAclType().equals(-1)) {
+        if (aclDO.getSysAclType().equals(AclTypeEnum.system.type)) {
             //是否有孩子
             int count = aclMapper.checkChildAcl(LevelUtil.calculateLevel(aclDO.getSysAclLevel(), aclDO.getId()));
             if (count == 0) {
@@ -243,10 +247,10 @@ public class AclService extends BaseService {
         AclDO record = new AclDO();
         BeanUtils.copyProperties(selfAclDO, record);
         //状态 0启用  1禁用
-        if (aclReq.getDisabledFlag().equals(0)) {
-            record.setDisabledFlag(1);
-        } else if (aclReq.getDisabledFlag().equals(1)) {
-            record.setDisabledFlag(0);
+        if (aclReq.getDisabledFlag().equals(DisabledFlagEnum.start.type)) {
+            record.setDisabledFlag(DisabledFlagEnum.disabled.type);
+        } else if (aclReq.getDisabledFlag().equals(DisabledFlagEnum.disabled.type)) {
+            record.setDisabledFlag(DisabledFlagEnum.start.type);
         }
         RedisUser redisUser = this.redisUser();
 
@@ -348,7 +352,7 @@ public class AclService extends BaseService {
                     String roleStr = JSONObject.toJSONString(roleDO, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteDateUseDateFormat);
                     redisUtil.set(redisKey, roleStr);
                     //角色的类型，0：管理员(老板)，1：管理员(员工)  2:普通员工 3:其他
-                    if (roleDO.getSysRoleType().equals(0)) {
+                    if (roleDO.getSysRoleType().equals(RoleTypeEnum.superAdmin.type)) {
                         redisUtil.set(redisAdminKey, roleStr);
                     }
                     //根据角色id查询角色与权限关系

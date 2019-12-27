@@ -19,6 +19,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.momo.common.core.entity.RedisUser;
 import com.momo.mapper.dataobject.AclDO;
+import com.momo.mapper.enums.DelFlagEnum;
+import com.momo.mapper.enums.DisabledFlagEnum;
 import com.momo.mapper.mapper.manual.AuthorityMapper;
 import com.momo.mapper.req.sysmain.DynamicMenuAuthorReq;
 import com.momo.mapper.req.sysmain.HasAclReq;
@@ -85,7 +87,7 @@ public class CommonSysCoreService {
         }
         //根据角色ids获取角色列表 临时启用和禁用角色
         //是否被禁用  0否 1禁用
-        List<Long> roleIds = authorityMapper.rolesByRoleId(userRoleIdsList, 0, 0);
+        List<Long> roleIds = authorityMapper.rolesByRoleId(userRoleIdsList, DisabledFlagEnum.start.type, DelFlagEnum.ok.type);
         if (org.springframework.util.CollectionUtils.isEmpty(roleIds)) {
             return Lists.newArrayList();
         }

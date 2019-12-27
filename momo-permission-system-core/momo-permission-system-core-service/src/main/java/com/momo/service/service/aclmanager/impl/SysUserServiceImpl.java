@@ -28,6 +28,8 @@ import com.momo.mapper.dataobject.RoleDO;
 import com.momo.mapper.dataobject.UserAccountPwdDO;
 import com.momo.mapper.dataobject.UserDO;
 import com.momo.mapper.dataobject.manual.SysUserListDO;
+import com.momo.mapper.enums.DisabledFlagEnum;
+import com.momo.mapper.enums.RoleTypeEnum;
 import com.momo.mapper.mapper.manual.RoleMapper;
 import com.momo.mapper.mapper.manual.UserAccountPwdMapper;
 import com.momo.mapper.mapper.manual.UserMapper;
@@ -144,9 +146,9 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
                 throw BizException.fail("超级管理员信息不允许编辑");
             }
             //是否被禁用  0否 1禁用
-            List<RoleDO> roleDOS = roleMapper.getRolesByUserId(userDODetail.getId(), 0);
+            List<RoleDO> roleDOS = roleMapper.getRolesByUserId(userDODetail.getId(), DisabledFlagEnum.start.type);
             //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
-            Set<Integer> roleTypes = roleDOS.stream().map(roleDO -> roleDO.getSysRoleType()).collect(Collectors.toSet());
+            Set<Integer> roleTypes = roleDOS.stream().map(RoleDO::getSysRoleType).collect(Collectors.toSet());
             if (roleTypes.contains(0) && !userDODetail.getId().equals(redisUser.getBaseId())) {
                 throw BizException.fail("管理员信息不允许编辑");
             }
@@ -180,9 +182,9 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
                 throw BizException.fail("超级管理员状态不允许编辑");
             }
             //是否被禁用  0否 1禁用
-            List<RoleDO> roleDOS = roleMapper.getRolesByUserId(userDODetail.getId(), 0);
+            List<RoleDO> roleDOS = roleMapper.getRolesByUserId(userDODetail.getId(), DisabledFlagEnum.start.type);
             //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
-            Set<Integer> roleTypes = roleDOS.stream().map(roleDO -> roleDO.getSysRoleType()).collect(Collectors.toSet());
+            Set<Integer> roleTypes = roleDOS.stream().map(RoleDO::getSysRoleType).collect(Collectors.toSet());
             if (roleTypes.contains(0) && !userDODetail.getId().equals(redisUser.getBaseId())) {
                 throw BizException.fail("管理员状态不允许编辑");
             }
@@ -219,9 +221,9 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
                 throw BizException.fail("超级管理员密码不允许编辑");
             }
             //是否被禁用  0否 1禁用
-            List<RoleDO> roleDOS = roleMapper.getRolesByUserId(userDODetail.getId(), 0);
+            List<RoleDO> roleDOS = roleMapper.getRolesByUserId(userDODetail.getId(), DisabledFlagEnum.start.type);
             //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
-            Set<Integer> roleTypes = roleDOS.stream().map(roleDO -> roleDO.getSysRoleType()).collect(Collectors.toSet());
+            Set<Integer> roleTypes = roleDOS.stream().map(RoleDO::getSysRoleType).collect(Collectors.toSet());
             if (roleTypes.contains(0) && !userDODetail.getId().equals(redisUser.getBaseId())) {
                 throw BizException.fail("管理员密码不允许编辑");
             }
@@ -249,15 +251,15 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
                 BeanUtils.copyProperties(sysUserListDO, sysUserListRes);
                 //管理员按钮是否显示
                 List<RoleDO> roles = sysUserListDO.getRoles();
-                Set<Integer> rolesSet = roles.stream().map(roleDO -> roleDO.getSysRoleType()).collect(Collectors.toSet());
+                Set<Integer> rolesSet = roles.stream().map(RoleDO::getSysRoleType).collect(Collectors.toSet());
                 //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
-                if (rolesSet.contains(0)) {
+                if (rolesSet.contains(RoleTypeEnum.superAdmin.type)) {
                     sysUserListRes.setEditButtonShow(false);
                     sysUserListRes.setPwdButtonShow(false);
                     sysUserListRes.setDisabledFlagButtonShow(false);
                     sysUserListRes.setRoleButtonShow(false);
                 }
-                if (rolesSet.contains(1)) {
+                if (rolesSet.contains(RoleTypeEnum.admin.type)) {
                     sysUserListRes.setEditButtonShow(false);
                     sysUserListRes.setPwdButtonShow(false);
                     sysUserListRes.setDisabledFlagButtonShow(false);
