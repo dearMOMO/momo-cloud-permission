@@ -11,9 +11,12 @@
         <result column="SYS_DICT_DELS_NAME" property="sysDictDelsName" jdbcType="VARCHAR" javaType="String"/>
         <result column="SYS_DICT_CODE_VALUE" property="sysDictCodeValue" jdbcType="VARCHAR" javaType="String"/>
         <result column="SYS_DICT_DELS_VALUE" property="sysDictDelsValue" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SYS_DICT_CODE_HTML_LEFT" property="sysDictCodeHtmlLeft" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SYS_DICT_CODE_HTML_RIGHT" property="sysDictCodeHtmlRight" jdbcType="VARCHAR" javaType="String"/>
         <result column="DEL_FLAG" property="delFlag" jdbcType="INTEGER" javaType="Integer"/>
         <result column="DISABLED_FLAG" property="disabledFlag" jdbcType="INTEGER" javaType="Integer"/>
         <result column="SYS_DICT_DELS_SEQ" property="sysDictDelsSeq" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="SYS_DICT_CODE_HTML_APPLY" property="sysDictCodeHtmlApply" jdbcType="INTEGER" javaType="Integer"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
         <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
     </resultMap>
