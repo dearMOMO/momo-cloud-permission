@@ -5,7 +5,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.momo.common.core.entity.RedisUser;
 import com.momo.common.core.error.BizException;
+import com.momo.common.core.util.DateUtils;
 import com.momo.common.core.util.LevelUtil;
+import com.momo.common.core.util.snowFlake.SnowFlake;
 import com.momo.mapper.dataobject.DataDictDO;
 import com.momo.mapper.enums.DisabledFlagEnum;
 import com.momo.mapper.mapper.manual.DataDictMapper;
@@ -14,6 +16,7 @@ import com.momo.mapper.res.systemconfig.DataDictLevelRes;
 import com.momo.mapper.res.systemconfig.DataDictTreeRes;
 import com.momo.service.service.BaseService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -34,6 +37,7 @@ import java.util.List;
 public class DataDictServiceImpl extends BaseService implements DataDictService {
     @Autowired
     private DataDictMapper dataDictMapper;
+    private static final SnowFlake SNOW_FLAKE = new SnowFlake(1, 2);
 
     @Override
     public DataDictLevelRes dataDictTree(DataDictTreeReq dataDictTreeReq) {
@@ -58,6 +62,48 @@ public class DataDictServiceImpl extends BaseService implements DataDictService 
         List<DataDictTreeRes> dictListToTree = dictListToTree(dictTreeResList);
         dataDictLevelRes.setDataDictTreeRes(dictListToTree);
         return dataDictLevelRes;
+    }
+
+    @Override
+    public String dictSave(DataDictTreeReq dataDictTreeReq) {
+        if (checkCodeValue(dataDictTreeReq)) {
+            throw BizException.fail("参数值重复");
+        }
+        if (checkSameLevelName(null, null, dataDictTreeReq.getSysDictCodeName(), dataDictTreeReq.getId())) {
+            throw BizException.fail("参数名称重复");
+        }
+        RedisUser redisUser = this.redisUser();
+        DataDictDO dataDictDOInsert = new DataDictDO();
+        BeanUtils.copyProperties(dataDictTreeReq, dataDictDOInsert);
+        dataDictDOInsert.setCreateBy(redisUser.getSysUserName());
+        dataDictDOInsert.setUpdateBy(redisUser.getSysUserName());
+        dataDictDOInsert.setCreateTime(DateUtils.getCurrentTime());
+        dataDictDOInsert.setUpdateTime(DateUtils.getCurrentTime());
+        if (!dataDictTreeReq.getSysDictCodeParentId().equals(0L)) {
+            //得到父级信息
+            DataDictDO dataDictDO = dataDictMapper.selectByPrimaryKey(dataDictTreeReq.getSysDictCodeParentId());
+            if (dataDictDO == null) {
+                throw BizException.fail("查询父级信息不存在");
+            }
+            dataDictDOInsert.setSysDictCodeLevel(LevelUtil.calculateLevel(dataDictDO.getSysDictCodeLevel(),dataDictDO.getId()));
+            dataDictDOInsert.setSysDictCodeParentId(dataDictDO.getSysDictCodeParentId());
+            dataDictDOInsert.setSysDictCodeParentValue(dataDictDO.getSysDictCodeParentValue());
+        } else {
+            dataDictDOInsert.setSysDictCodeParentId(0L);
+            dataDictDOInsert.setSysDictCodeParentValue("0");
+            dataDictDOInsert.setSysDictCodeLevel("0");
+        }
+        dataDictMapper.insertSelective(dataDictDOInsert);
+
+        return "新增数据字典成功";
+    }
+
+    private boolean checkCodeValue(DataDictTreeReq dataDictTreeReq) {
+        return dataDictMapper.checkCodeValue(dataDictTreeReq.getSysDictCodeValue()) > 0;
+    }
+
+    private boolean checkSameLevelName(Long sysDictCodeParentId, String sysDictCodeParentValue, String sysDictCodeName, Long id) {
+        return dataDictMapper.checkSameLevelName(sysDictCodeParentId, sysDictCodeParentValue, sysDictCodeName, id) > 0;
     }
 
     private List<DataDictTreeRes> dictListToTree(List<DataDictTreeRes> dictTreeList) {

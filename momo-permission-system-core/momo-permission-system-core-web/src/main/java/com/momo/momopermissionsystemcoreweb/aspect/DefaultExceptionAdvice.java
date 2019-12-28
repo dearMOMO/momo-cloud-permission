@@ -75,7 +75,7 @@ public class DefaultExceptionAdvice {
         List<FieldError> bindingResult = e.getBindingResult().getFieldErrors();
         StringBuilder sb = new StringBuilder();
         //请求参数错误
-        sb.append(ErrorEnum.ERROR_PARAM.getErrorMessage());
+        sb.append(ErrorEnum.ERROR_PARAM.getErrorMessage()).append(" --> ");
         for (FieldError fieldError : bindingResult) {
             sb.append(fieldError.getField());
             sb.append(" : ");

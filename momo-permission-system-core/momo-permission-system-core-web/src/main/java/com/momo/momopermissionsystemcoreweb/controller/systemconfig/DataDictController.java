@@ -6,6 +6,7 @@ import com.momo.mapper.req.systemconfig.DataDictTreeReq;
 import com.momo.service.service.systemconfig.DataDictService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -23,9 +24,17 @@ public class DataDictController {
     @Autowired
     private DataDictService dataDictService;
 
-    @SystemCoreLog(description = "数据字典")
+    @SystemCoreLog(description = "数据字典 树")
     @PostMapping("/dictTree/v1")
     public JSONResult dataDictTree(@RequestBody DataDictTreeReq dataDictTreeReq) {
         return JSONResult.ok(dataDictService.dataDictTree(dataDictTreeReq));
     }
+
+    @SystemCoreLog(description = "新增 数据字典")
+    @PostMapping("/dictSave/v1")
+    public JSONResult dictSave(@Validated(DataDictTreeReq.Add.class) @RequestBody DataDictTreeReq dataDictTreeReq) {
+        return JSONResult.ok(dataDictService.dictSave(dataDictTreeReq));
+    }
+
+
 }

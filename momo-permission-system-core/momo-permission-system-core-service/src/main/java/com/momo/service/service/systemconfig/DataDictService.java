@@ -15,4 +15,6 @@ import com.momo.mapper.res.systemconfig.DataDictLevelRes;
 public interface DataDictService {
 
     DataDictLevelRes dataDictTree(DataDictTreeReq dataDictTreeReq);
+
+    String dictSave(DataDictTreeReq dataDictTreeReq);
 }
