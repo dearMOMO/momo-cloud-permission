@@ -40,6 +40,14 @@ public class DataDictDelsDO{
      */
     private String sysDictDelsValue;
     /**
+     * sysDictCodeHtmlLeft html左边值.
+     */
+    private String sysDictCodeHtmlLeft;
+    /**
+     * sysDictCodeHtmlRight html右边值.
+     */
+    private String sysDictCodeHtmlRight;
+    /**
      * delFlag 删除状态(0-正常，1-删除).
      */
     private Integer delFlag;
@@ -51,6 +59,10 @@ public class DataDictDelsDO{
      * sysDictDelsSeq 排序.
      */
     private Integer sysDictDelsSeq;
+    /**
+     * sysDictCodeHtmlApply 是否应用html值 0是 1否.
+     */
+    private Integer sysDictCodeHtmlApply;
     /**
      * createTime 创建时间.
      */
@@ -189,6 +201,38 @@ public class DataDictDelsDO{
     }
 
     /**
+     * Set sysDictCodeHtmlLeft html左边值.
+     */
+    public void setSysDictCodeHtmlLeft(String sysDictCodeHtmlLeft){
+        this.sysDictCodeHtmlLeft = sysDictCodeHtmlLeft;
+    }
+
+    /**
+     * Get sysDictCodeHtmlLeft html左边值.
+     *
+     * @return the string
+     */
+    public String getSysDictCodeHtmlLeft(){
+        return sysDictCodeHtmlLeft;
+    }
+
+    /**
+     * Set sysDictCodeHtmlRight html右边值.
+     */
+    public void setSysDictCodeHtmlRight(String sysDictCodeHtmlRight){
+        this.sysDictCodeHtmlRight = sysDictCodeHtmlRight;
+    }
+
+    /**
+     * Get sysDictCodeHtmlRight html右边值.
+     *
+     * @return the string
+     */
+    public String getSysDictCodeHtmlRight(){
+        return sysDictCodeHtmlRight;
+    }
+
+    /**
      * Set delFlag 删除状态(0-正常，1-删除).
      */
     public void setDelFlag(Integer delFlag){
@@ -234,6 +278,22 @@ public class DataDictDelsDO{
      */
     public Integer getSysDictDelsSeq(){
         return sysDictDelsSeq;
+    }
+
+    /**
+     * Set sysDictCodeHtmlApply 是否应用html值 0是 1否.
+     */
+    public void setSysDictCodeHtmlApply(Integer sysDictCodeHtmlApply){
+        this.sysDictCodeHtmlApply = sysDictCodeHtmlApply;
+    }
+
+    /**
+     * Get sysDictCodeHtmlApply 是否应用html值 0是 1否.
+     *
+     * @return the string
+     */
+    public Integer getSysDictCodeHtmlApply(){
+        return sysDictCodeHtmlApply;
     }
 
     /**

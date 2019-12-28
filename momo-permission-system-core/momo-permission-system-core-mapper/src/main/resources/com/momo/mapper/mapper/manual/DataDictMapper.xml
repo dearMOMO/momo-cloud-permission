@@ -9,6 +9,9 @@
         <result column="sys_dict_code_parent_id" jdbcType="BIGINT" property="sysDictCodeParentId"/>
         <result column="sys_dict_code_level" jdbcType="VARCHAR" property="sysDictCodeLevel"/>
         <result column="sys_dict_code_seq" jdbcType="INTEGER" property="sysDictCodeSeq"/>
+        <result column="sys_dict_code_html_left" jdbcType="VARCHAR" property="sysDictCodeHtmlLeft"/>
+        <result column="sys_dict_code_html_right" jdbcType="VARCHAR" property="sysDictCodeHtmlRight"/>
+        <result column="sys_dict_code_html_apply" jdbcType="INTEGER" property="sysDictCodeHtmlApply"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <result column="disabled_flag" jdbcType="INTEGER" property="disabledFlag"/>
         <result column="del_flag" jdbcType="INTEGER" property="delFlag"/>
@@ -19,13 +22,15 @@
     </resultMap>
     <sql id="Base_Column_List">
     id, sys_dict_code_name, sys_dict_code_value, sys_dict_code_parent_value, sys_dict_code_parent_id,
-    sys_dict_code_level, sys_dict_code_seq, remark, disabled_flag, del_flag, create_by,
-    create_time, update_time, update_by
+    sys_dict_code_level, sys_dict_code_seq, sys_dict_code_html_left, sys_dict_code_html_right,
+    sys_dict_code_html_apply, remark, disabled_flag, del_flag, create_by, create_time,
+    update_time, update_by
   </sql>
 
     <select id="dataDiceGetAll" parameterType="map" resultMap="BaseResultMap">
         select id, sys_dict_code_name, sys_dict_code_value, sys_dict_code_parent_value, sys_dict_code_parent_id,
-        sys_dict_code_level, sys_dict_code_seq, remark, disabled_flag
+        sys_dict_code_level, sys_dict_code_seq, sys_dict_code_html_left, sys_dict_code_html_right,
+        sys_dict_code_html_apply, remark, disabled_flag
         from sys_data_dict
         <trim prefix="where" prefixOverrides="and">
             <if test="delFlag!=null">
@@ -76,14 +81,15 @@
                 and id !=#{id}
             </if>
             <if test="sys_dict_code_value!=null and sys_dict_code_value.trim()!=''">
-               and sys_dict_code_value=#{sys_dict_code_value}
+                and sys_dict_code_value=#{sys_dict_code_value}
             </if>
         </trim>
         order by null limit 1
     </select>
     <select id="selectByCodeValue" parameterType="map" resultMap="BaseResultMap">
         select
-        id, sys_dict_code_name, sys_dict_code_value
+        id, sys_dict_code_name, sys_dict_code_value,sys_dict_code_html_left, sys_dict_code_html_right,
+        sys_dict_code_html_apply
         from sys_data_dict where sys_dict_code_value=#{sys_dict_code_value}
     </select>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">

@@ -1,7 +1,6 @@
 package com.momo.mapper.req.systemconfig;
 
 import com.momo.common.core.error.BaseReq;
-import com.momo.mapper.enums.SexEnum;
 import lombok.*;
 
 import javax.validation.constraints.*;
@@ -74,4 +73,17 @@ public class DataDictTreeReq extends BaseReq {
     @Min(value = 1, message = "最小值为1", groups = {Add.class})
     @Max(value = 2000000000, message = "最大值为 2000000000", groups = {Add.class, Modify.class})
     private String sysDictCodeSeq;
+
+    /**
+     * sysDictCodeHtmlLeft html左边值.
+     */
+    private String sysDictCodeHtmlLeft;
+    /**
+     * sysDictCodeHtmlRight html右边值.
+     */
+    private String sysDictCodeHtmlRight;
+    /**
+     * sysDictCodeHtmlApply 是否应用html值 0是 1否.
+     */
+    private Integer sysDictCodeHtmlApply;
 }
