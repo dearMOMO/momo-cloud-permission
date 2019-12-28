@@ -189,6 +189,9 @@ public class AclService extends BaseService {
         if (before.getId().equals(aclReq.getSysAclParentIdStr())) {
             throw BizException.fail("无法将当前模块挂在自己模块下");
         }
+        AclDO after = new AclDO();
+        BeanUtils.copyProperties(aclReq, after);
+        RedisUser redisUser = this.redisUser();
         if (!aclReq.getSysAclParentIdStr().equals(0L)) {
             AclDO aclDO = aclMapper.selectByPrimaryKey(aclReq.getSysAclParentIdStr());
             if (null == aclDO) {
@@ -197,6 +200,7 @@ public class AclService extends BaseService {
             if (!before.getSysAclPermissionCode().equals(aclDO.getSysAclPermissionCode())) {
                 throw BizException.fail("无法跨模块编辑");
             }
+            after.setSysAclLevel(LevelUtil.calculateLevel(aclDO.getSysAclLevel(), aclReq.getSysAclParentIdStr()));
         }
 
         if (checkUrl(aclReq.getSysAclUrl(), aclReq.getSysAclPermissionCode(), before.getId())) {
@@ -205,11 +209,6 @@ public class AclService extends BaseService {
         if (!aclReq.getSysAclParentIdStr().equals(0L) && !before.getSysAclPermissionCode().equals(aclReq.getSysAclPermissionCode())) {
             throw BizException.fail("权限码不允许编辑");
         }
-
-        AclDO after = new AclDO();
-        BeanUtils.copyProperties(aclReq, after);
-        RedisUser redisUser = this.redisUser();
-        after.setSysAclLevel(LevelUtil.calculateLevel(getLevel(aclReq.getSysAclParentIdStr()), aclReq.getSysAclParentIdStr()));
         after.setUpdateBy(redisUser.getSysUserName());
         after.setUpdateTime(DateUtils.getDateTime());
         after.setId(before.getId());
