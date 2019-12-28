@@ -27,6 +27,9 @@ import com.momo.common.core.error.RedisKeyEnum;
 import com.momo.common.core.util.*;
 import com.momo.common.core.util.snowFlake.SnowFlake;
 import com.momo.mapper.dataobject.*;
+import com.momo.mapper.enums.DelFlagEnum;
+import com.momo.mapper.enums.DisabledFlagEnum;
+import com.momo.mapper.enums.LoginTypeEnum;
 import com.momo.mapper.mapper.manual.UserAccountPwdMapper;
 import com.momo.mapper.mapper.manual.UserGroupMapper;
 import com.momo.mapper.mapper.manual.UserMapper;
@@ -90,7 +93,7 @@ public class SysMainService extends BaseService {
         //剔除超级管理员限制
         if (!superAdmin) {
             //删除状态(0-正常，1-删除)
-            if (userAccountPwdDO.getDelFlag().equals(1)) {
+            if (userAccountPwdDO.getDelFlag().equals(DelFlagEnum.del.type)) {
                 throw BizException.fail("您的账户已被删除，请联系管理员");
             }
             //状态 0启用  1禁用
@@ -108,10 +111,10 @@ public class SysMainService extends BaseService {
             if (null == userGroupDO) {
                 throw BizException.fail("您所在的企业不存在");
             }
-            if (userGroupDO.getDisabledFlag().equals(1)) {
+            if (userGroupDO.getDisabledFlag().equals(DisabledFlagEnum.disabled.type)) {
                 throw BizException.fail("您所在的企业已被禁用");
             }
-            if (userGroupDO.getDelFlag().equals(1)) {
+            if (userGroupDO.getDelFlag().equals(DisabledFlagEnum.disabled.type)) {
                 throw BizException.fail("您所在的企业已被删除");
             }
             if (userGroupDO.getId().equals(superAdminsService.getTeantId()) && DateUtils.timeDifference(userGroupDO.getSysAccountEndTime())) {
@@ -121,7 +124,7 @@ public class SysMainService extends BaseService {
 
         UserDO userDO = userMapper.getById(userAccountPwdDO.getSysUserId());
         String redisUserKey = StrUtil.genUUID();
-        RedisUser redisUser = RedisUser.builder().redisUserKey(redisUserKey).loginType(1)
+        RedisUser redisUser = RedisUser.builder().redisUserKey(redisUserKey).loginType(LoginTypeEnum.pwd.type)
                 .sysUserLoginName(userAccountPwdDO.getSysUserLoginName()).sysUserPhone(userDO.getSysUserPhone())
                 .tenantId(userAccountPwdDO.getTenantId()).sysUserName(userDO.getSysUserName())
                 .baseId(userDO.getId()).pwdId(userAccountPwdDO.getId())
@@ -177,7 +180,7 @@ public class SysMainService extends BaseService {
         entity.setTenantId(redisUser.getTenantId());
         entity.setUserLoginName(redisUser.getSysUserLoginName());
         entity.setUserUserName(userDO.getSysUserName());
-        entity.setUserLoginType(1);
+        entity.setUserLoginType(LoginTypeEnum.pwd.type);
         entity.setUserId(userDO.getId());
         entity.setId(snowFlake.nextId());
         entity.setUuid(redisUserKey);

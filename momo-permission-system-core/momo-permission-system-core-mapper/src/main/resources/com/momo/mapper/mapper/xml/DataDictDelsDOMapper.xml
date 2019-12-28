@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.momo.mapper.mapper.DataDictDelsDOMapper">
+    <!-- 自动生成,请修改 SYS_DATA_DICT_DELS.xml -->
+    <resultMap id="BaseResultMap"  type="com.momo.mapper.dataobject.DataDictDelsDO">
+        <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+        <result column="SYS_DICT_CODE_ID" property="sysDictCodeId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR" javaType="String"/>
+        <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SYS_DICT_DELS_NAME" property="sysDictDelsName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SYS_DICT_CODE_VALUE" property="sysDictCodeValue" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SYS_DICT_DELS_VALUE" property="sysDictDelsValue" jdbcType="VARCHAR" javaType="String"/>
+        <result column="DEL_FLAG" property="delFlag" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="DISABLED_FLAG" property="disabledFlag" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="SYS_DICT_DELS_SEQ" property="sysDictDelsSeq" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+
+    <sql id="Base_SF_Column_List">
+        sf.ID,sf.SYS_DICT_CODE_ID,sf.REMARK,sf.CREATE_BY,sf.UPDATE_BY
+        ,sf.SYS_DICT_DELS_NAME,sf.SYS_DICT_CODE_VALUE,sf.SYS_DICT_DELS_VALUE,sf.DEL_FLAG,sf.DISABLED_FLAG
+        ,sf.SYS_DICT_DELS_SEQ,sf.CREATE_TIME,sf.UPDATE_TIME
+    </sql>
+    <sql id="Base_Column_List">
+        ID,SYS_DICT_CODE_ID,REMARK,CREATE_BY,UPDATE_BY 
+        ,SYS_DICT_DELS_NAME,SYS_DICT_CODE_VALUE,SYS_DICT_DELS_VALUE,DEL_FLAG,DISABLED_FLAG 
+        ,SYS_DICT_DELS_SEQ,CREATE_TIME,UPDATE_TIME
+    </sql>
+
+
+    <!--插入表:sys_data_dict_dels-->
+    <insert id="insert" >
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        <![CDATA[
+        INSERT INTO sys_data_dict_dels(
+            ID
+            ,SYS_DICT_CODE_ID
+            ,REMARK
+            ,CREATE_BY
+            ,UPDATE_BY
+            ,SYS_DICT_DELS_NAME
+            ,SYS_DICT_CODE_VALUE
+            ,SYS_DICT_DELS_VALUE
+            ,DEL_FLAG
+            ,DISABLED_FLAG
+            ,SYS_DICT_DELS_SEQ
+            ,CREATE_TIME
+            ,UPDATE_TIME
+        )VALUES(
+             null
+            , #{sysDictCodeId,jdbcType=BIGINT}
+            , #{remark,jdbcType=VARCHAR}
+            , #{createBy,jdbcType=VARCHAR}
+            , #{updateBy,jdbcType=VARCHAR}
+            , #{sysDictDelsName,jdbcType=VARCHAR}
+            , #{sysDictCodeValue,jdbcType=VARCHAR}
+            , #{sysDictDelsValue,jdbcType=VARCHAR}
+            , #{delFlag,jdbcType=INTEGER}
+            , #{disabledFlag,jdbcType=INTEGER}
+            , #{sysDictDelsSeq,jdbcType=INTEGER}
+            , #{createTime,jdbcType=TIMESTAMP}
+            , #{updateTime,jdbcType=TIMESTAMP}
+        )
+        ]]>
+    </insert>
+
+    <!--批量插入表:sys_data_dict_dels-->
+    <insert id="insertBatch" >
+        INSERT INTO sys_data_dict_dels(
+            ID
+            ,SYS_DICT_CODE_ID
+            ,REMARK
+            ,CREATE_BY
+            ,UPDATE_BY
+            ,SYS_DICT_DELS_NAME
+            ,SYS_DICT_CODE_VALUE
+            ,SYS_DICT_DELS_VALUE
+            ,DEL_FLAG
+            ,DISABLED_FLAG
+            ,SYS_DICT_DELS_SEQ
+            ,CREATE_TIME
+            ,UPDATE_TIME
+        )VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+                 null
+                , #{item.sysDictCodeId,jdbcType=BIGINT}
+                , #{item.remark,jdbcType=VARCHAR}
+                , #{item.createBy,jdbcType=VARCHAR}
+                , #{item.updateBy,jdbcType=VARCHAR}
+                , #{item.sysDictDelsName,jdbcType=VARCHAR}
+                , #{item.sysDictCodeValue,jdbcType=VARCHAR}
+                , #{item.sysDictDelsValue,jdbcType=VARCHAR}
+                , #{item.delFlag,jdbcType=INTEGER}
+                , #{item.disabledFlag,jdbcType=INTEGER}
+                , #{item.sysDictDelsSeq,jdbcType=INTEGER}
+                , #{item.createTime,jdbcType=TIMESTAMP}
+                , #{item.updateTime,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </insert>
+
+    <!--根据主键删除数据:sys_data_dict_dels-->
+    <delete id="deleteById" >
+        <![CDATA[
+        DELETE /*MS-SYS-DATA-DICT-DELS-DELETEBYID*/ FROM sys_data_dict_dels
+        WHERE
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </delete>
+
+    <!--根据主键获取数据:sys_data_dict_dels-->
+    <select id="getById" resultMap="BaseResultMap">
+        SELECT /*MS-SYS-DATA-DICT-DELS-GETBYID*/  <include refid="Base_Column_List" />
+        FROM sys_data_dict_dels
+        WHERE
+        <![CDATA[
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </select>
+</mapper>

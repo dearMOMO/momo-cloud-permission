@@ -25,6 +25,9 @@ import com.momo.common.core.util.DateUtils;
 import com.momo.common.core.util.StrUtil;
 import com.momo.common.core.util.snowFlake.SnowFlake;
 import com.momo.mapper.dataobject.*;
+import com.momo.mapper.enums.DelFlagEnum;
+import com.momo.mapper.enums.DisabledFlagEnum;
+import com.momo.mapper.enums.RoleTypeEnum;
 import com.momo.mapper.mapper.manual.AclMapper;
 import com.momo.mapper.mapper.manual.AuthorityMapper;
 import com.momo.mapper.mapper.manual.RoleMapper;
@@ -80,7 +83,7 @@ public class RoleService extends BaseService {
         RedisUser redisUser = this.redisUser();
         //当前登录用户所拥有的 角色
         //是否被禁用  0否 1禁用
-        List<RoleDO> currentRoleDOList = roleMapper.getRolesByUserId(redisUser.getBaseId(), 0);
+        List<RoleDO> currentRoleDOList = roleMapper.getRolesByUserId(redisUser.getBaseId(), DisabledFlagEnum.start.type);
         UserDO userDO = userMapper.uuid(batchRoleUserReq.getUserUuid());
         if (null == userDO) {
             throw BizException.fail("待授权的用户不存在");
@@ -137,12 +140,12 @@ public class RoleService extends BaseService {
         RedisUser redisUser = this.redisUser();
         //屏蔽非总部操作第三方管理员角色
         //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
-        if (!redisUser.getTenantId().equals(superAdminsService.getTeantId()) && roleDO.getSysRoleType().equals(0)) {
+        if (!redisUser.getTenantId().equals(superAdminsService.getTeantId()) && roleDO.getSysRoleType().equals(RoleTypeEnum.superAdmin.type)) {
             throw BizException.fail("您无权限操作");
         }
         //当前登录用户所拥有的 角色
         //是否被禁用  0否 1禁用
-        List<RoleDO> currentRoleDOList = roleMapper.getRolesByUserId(redisUser.getBaseId(), 0);
+        List<RoleDO> currentRoleDOList = roleMapper.getRolesByUserId(redisUser.getBaseId(), DisabledFlagEnum.start.type);
         if (CollectionUtils.isNotEmpty(currentRoleDOList)) {
             currentRoleDOList.forEach(currentRole -> {
                 if (currentRole.getId().equals(roleDO.getId())) {
@@ -205,7 +208,7 @@ public class RoleService extends BaseService {
     }
 
     public List<RoleDO> rolesByCurrentId(RedisUser redisUser) {
-        return roleMapper.rolesByCurrentId(redisUser.getBaseId(),0);
+        return roleMapper.rolesByCurrentId(redisUser.getBaseId(), DisabledFlagEnum.start.type);
     }
 
     public PageInfo<SysRolePageListRes> roleList(RoleReq roleReq) {
@@ -225,7 +228,7 @@ public class RoleService extends BaseService {
             return sysRolePageListResPageInfo;
         }
         //是否被禁用  0否 1禁用
-        List<RoleDO> roleDOList = roleMapper.getRolesByUserId(redisUser.getBaseId(), 0);
+        List<RoleDO> roleDOList = roleMapper.getRolesByUserId(redisUser.getBaseId(), DisabledFlagEnum.start.type);
 
         //当前登录用户所拥有的 角色类型
         Set<Integer> currentLoginRoleType = Sets.newHashSet();
@@ -236,7 +239,7 @@ public class RoleService extends BaseService {
             for (RoleDO aDo : roleDOList) {
                 roleIds.add(aDo.getId());
                 currentLoginRoleType.add(aDo.getSysRoleType());
-                if (aDo.getSysRoleType().equals(0)) {
+                if (aDo.getSysRoleType().equals(RoleTypeEnum.superAdmin.type)) {
                     checkAdminRole = true;
                 }
             }
@@ -260,12 +263,12 @@ public class RoleService extends BaseService {
             BeanUtils.copyProperties(aDo, rolePageListRes);
             //管理员类型 隐藏
             //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
-            if (aDo.getSysRoleType().equals(0)) {
+            if (aDo.getSysRoleType().equals(RoleTypeEnum.superAdmin.type)) {
                 rolePageListRes.setEditButtonShow(false);
                 rolePageListRes.setAuthorButtonShow(false);
                 rolePageListRes.setDisabledFlagButtonShow(false);
             }
-            if (aDo.getSysRoleType().equals(1)) {
+            if (aDo.getSysRoleType().equals(RoleTypeEnum.admin.type)) {
                 rolePageListRes.setEditButtonShow(false);
                 rolePageListRes.setAuthorButtonShow(false);
                 rolePageListRes.setDisabledFlagButtonShow(false);
@@ -289,7 +292,7 @@ public class RoleService extends BaseService {
                 rolePageListRes.setDisabledFlagButtonShow(true);
             }
             //屏蔽管理员(老板)角色 和状态  按钮
-            if (aDo.getSysRoleType().equals(0)) {
+            if (aDo.getSysRoleType().equals(RoleTypeEnum.superAdmin.type)) {
                 rolePageListRes.setAuthorButtonShow(false);
                 rolePageListRes.setDisabledFlagButtonShow(false);
             }
@@ -303,12 +306,12 @@ public class RoleService extends BaseService {
             BeanUtils.copyProperties(aDo, rolePageListRes);
             //管理员类型 隐藏
             //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
-            if (aDo.getSysRoleType().equals(0)) {
+            if (aDo.getSysRoleType().equals(RoleTypeEnum.superAdmin.type)) {
                 rolePageListRes.setEditButtonShow(false);
                 rolePageListRes.setAuthorButtonShow(false);
                 rolePageListRes.setDisabledFlagButtonShow(false);
             }
-            if (aDo.getSysRoleType().equals(1)) {
+            if (aDo.getSysRoleType().equals(RoleTypeEnum.admin.type)) {
                 rolePageListRes.setEditButtonShow(false);
                 rolePageListRes.setAuthorButtonShow(false);
                 rolePageListRes.setDisabledFlagButtonShow(false);
@@ -372,14 +375,14 @@ public class RoleService extends BaseService {
 
         //当前登录用户所拥有的角色
         //是否被禁用  0否 1禁用
-        List<RoleDO> currentRoleDOList = roleMapper.getRolesByUserId(redisUser.getBaseId(), 0);
+        List<RoleDO> currentRoleDOList = roleMapper.getRolesByUserId(redisUser.getBaseId(), DisabledFlagEnum.start.type);
         Set<Integer> currentRoleSet = Sets.newHashSet();
         if (CollectionUtils.isNotEmpty(currentRoleDOList)) {
             currentRoleSet = currentRoleDOList.stream().map(RoleDO::getSysRoleType).collect(Collectors.toSet());
         }
         //选择用户所拥有的角色
         //是否被禁用  0否 1禁用
-        List<RoleDO> roleDOList = roleMapper.getRolesByUserId(userDO.getId(), 0);
+        List<RoleDO> roleDOList = roleMapper.getRolesByUserId(userDO.getId(), DisabledFlagEnum.start.type);
         Set<String> roleSet = Sets.newHashSet();
         //已选中列表
         if (CollectionUtils.isNotEmpty(roleDOList)) {
@@ -392,14 +395,14 @@ public class RoleService extends BaseService {
             BeanUtils.copyProperties(roleDO, sysRoleChecke);
             sysRoleChecke.setIdStr(String.valueOf(roleDO.getId()));
             //是否被禁用  0否 1禁用
-            if (roleDO.getDisabledFlag().equals(1)) {
+            if (roleDO.getDisabledFlag().equals(DisabledFlagEnum.disabled.type)) {
                 sysRoleChecke.setDisabled(true);
             }
             //非总部为企业授权，则屏蔽管理员(老板)角色
             //角色的类型，0：管理员(老板)，1：管理员(员工)  2:普通员工 3:其他
             //防止将 管理员(老板)角色 授权给多个用户，造成系统混乱
             if (!redisUser.getTenantId().equals(superAdminsService.getTeantId())) {
-                if (roleDO.getSysRoleType().equals(0)) {
+                if (roleDO.getSysRoleType().equals(RoleTypeEnum.superAdmin.type)) {
                     sysRoleChecke.setDisabled(true);
                 }
                 if (currentRoleSet.contains(0)) {
@@ -421,19 +424,19 @@ public class RoleService extends BaseService {
                 }
                 //角色类型为 0：管理员(老板) 或者 1：管理员(员工)
                 //角色的类型，0：管理员(老板)，1：管理员(员工)  2:普通员工 3:其他
-                if (currentRoleSet.contains(0)) {
+                if (currentRoleSet.contains(RoleTypeEnum.superAdmin.type)) {
                     sysRoleChecke.setDisabled(false);
                     continue;
                 }
-                if (currentRoleSet.contains(1)) {
+                if (currentRoleSet.contains(RoleTypeEnum.admin.type)) {
                     sysRoleChecke.setDisabled(false);
                     continue;
                 }
-                if ((currentRoleSet.contains(2) || currentRoleSet.contains(3)) && (roleDO.getSysRoleType().equals(2) || roleDO.getSysRoleType().equals(3))) {
+                if ((currentRoleSet.contains(RoleTypeEnum.common.type) || currentRoleSet.contains(RoleTypeEnum.other.type)) && (roleDO.getSysRoleType().equals(RoleTypeEnum.common.type) || roleDO.getSysRoleType().equals(RoleTypeEnum.other.type))) {
                     sysRoleChecke.setDisabled(false);
                     continue;
                 }
-                if (CollectionUtils.isEmpty(currentRoleSet) && (roleDO.getSysRoleType().equals(2) || roleDO.getSysRoleType().equals(3))) {
+                if (CollectionUtils.isEmpty(currentRoleSet) && (roleDO.getSysRoleType().equals(RoleTypeEnum.common.type) || roleDO.getSysRoleType().equals(RoleTypeEnum.other.type))) {
                     sysRoleChecke.setDisabled(false);
                 }
             }
@@ -451,8 +454,8 @@ public class RoleService extends BaseService {
         }
         if (!redisUser.getTenantId().equals(superAdminsService.getTeantId())) {
             //角色的类型，0：管理员角色，1：普通用户 2其他
-            if (roleReq.getSysRoleType().equals(0)) {
-                if (checkAdminRole(0, null, redisUser.getTenantId())) {
+            if (roleReq.getSysRoleType().equals(RoleTypeEnum.superAdmin.type)) {
+                if (checkAdminRole(RoleTypeEnum.superAdmin.type, null, redisUser.getTenantId())) {
                     throw BizException.fail("管理员角色已存在");
                 }
             }
@@ -468,7 +471,7 @@ public class RoleService extends BaseService {
         record.setUuid(StrUtil.genUUID());
         record.setTenantId(redisUser.getTenantId());
         record.setId(snowFlake.nextId());
-        record.setDelFlag(0);
+        record.setDelFlag(DelFlagEnum.ok.type);
         roleMapper.insertSelective(record);
         roleRedisCacheServiceAsync.roleSaveToRedis(record);
         return "新增角色成功";
@@ -489,19 +492,19 @@ public class RoleService extends BaseService {
         //非总部，不可以操作管理员敏感权限
         if (!redisUser.getTenantId().equals(superAdminsService.getTeantId())) {
             //角色的类型，0：管理员(老板)，1：管理员(员工) 2其他
-            if (roleReq.getSysRoleType().equals(0)) {
-                if (checkAdminRole(0, roleDO.getId(), redisUser.getTenantId())) {
+            if (roleReq.getSysRoleType().equals(RoleTypeEnum.superAdmin.type)) {
+                if (checkAdminRole(RoleTypeEnum.superAdmin.type, roleDO.getId(), redisUser.getTenantId())) {
                     throw BizException.fail("管理员角色已存在");
                 }
             }
             //角色的类型，0：管理员角色，1：普通用户 2其他
             //屏蔽非总部操作第三方管理员角色
-            if (roleDO.getSysRoleType().equals(0) && !roleReq.getSysRoleType().equals(0)) {
+            if (roleDO.getSysRoleType().equals(RoleTypeEnum.superAdmin.type) && !roleReq.getSysRoleType().equals(RoleTypeEnum.superAdmin.type)) {
                 throw BizException.fail("您无权限操作管理员角色类型");
             }
             //屏蔽非总部操作第三方管理员角色状态
             //状态 0启用  1禁用
-            if (roleDO.getSysRoleType().equals(0) && roleReq.getDisabledFlag().equals(1)) {
+            if (roleDO.getSysRoleType().equals(RoleTypeEnum.superAdmin.type) && roleReq.getDisabledFlag().equals(RoleTypeEnum.admin.type)) {
                 throw BizException.fail("您无权限操作管理员角色状态");
             }
         }
@@ -529,10 +532,10 @@ public class RoleService extends BaseService {
         }
         RoleDO record = new RoleDO();
         //状态 0启用  1禁用
-        if (roleReq.getDisabledFlag().equals(0)) {
-            record.setDisabledFlag(0);
-        } else if (roleReq.getDisabledFlag().equals(1)) {
-            record.setDisabledFlag(1);
+        if (roleReq.getDisabledFlag().equals(DisabledFlagEnum.start.type)) {
+            record.setDisabledFlag(DisabledFlagEnum.start.type);
+        } else if (roleReq.getDisabledFlag().equals(DisabledFlagEnum.disabled.type)) {
+            record.setDisabledFlag(DisabledFlagEnum.disabled.type);
         }
         record.setUpdateBy(redisUser.getSysUserName());
         record.setUpdateTime(DateUtils.getDateTime());
@@ -553,7 +556,7 @@ public class RoleService extends BaseService {
         for (AclDO aclId : aclIdList) {
             RoleAclDO roleUserDO = new RoleAclDO();
             roleUserDO.setId(snowFlake.nextId());
-            roleUserDO.setDelFlag(0);
+            roleUserDO.setDelFlag(DelFlagEnum.ok.type);
             roleUserDO.setTenantId(groupId);
             roleUserDO.setSysAclId(aclId.getId());
             roleUserDO.setSysRoleId(roleId);

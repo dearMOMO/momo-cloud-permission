@@ -33,6 +33,8 @@
         <!--生成对应表及类名-->
 
 
+<table tableName="sys_data_dict_dels" domainObjectName="sys_data_dict_dels" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" />
+<table tableName="sys_data_dict" domainObjectName="sys_data_dict" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" />
 <table tableName="sys_login_log" domainObjectName="sys_login_log" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" />
 <table tableName="sys_user_account_pwd" domainObjectName="sys_user_account_pwd" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" />
 <table tableName="sys_bug" domainObjectName="sys_bug" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" />
