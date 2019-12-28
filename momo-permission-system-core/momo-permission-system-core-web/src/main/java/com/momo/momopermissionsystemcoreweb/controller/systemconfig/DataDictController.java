@@ -36,5 +36,11 @@ public class DataDictController {
         return JSONResult.ok(dataDictService.dictSave(dataDictTreeReq));
     }
 
+    @SystemCoreLog(description = "编辑 数据字典")
+    @PostMapping("/dictModify/v1")
+    public JSONResult dictModify(@Validated(DataDictTreeReq.Modify.class) @RequestBody DataDictTreeReq dataDictTreeReq) {
+        return JSONResult.ok(dataDictService.dictModify(dataDictTreeReq));
+    }
+
 
 }

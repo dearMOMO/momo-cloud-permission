@@ -200,7 +200,9 @@ public class AclService extends BaseService {
             if (!before.getSysAclPermissionCode().equals(aclDO.getSysAclPermissionCode())) {
                 throw BizException.fail("无法跨模块编辑");
             }
-
+            after.setSysAclLevel(LevelUtil.calculateLevel(aclDO.getSysAclLevel(), aclReq.getSysAclParentIdStr()));
+        } else {
+            after.setSysAclLevel("0");
         }
 
         if (checkUrl(aclReq.getSysAclUrl(), aclReq.getSysAclPermissionCode(), before.getId())) {
@@ -214,7 +216,7 @@ public class AclService extends BaseService {
         after.setId(before.getId());
         after.setSysAclParentId(aclReq.getSysAclParentIdStr());
         after.setSysAclPermissionCode(before.getSysAclPermissionCode());
-        after.setSysAclLevel(LevelUtil.calculateLevel(aclDO.getSysAclLevel(), aclReq.getSysAclParentIdStr()));
+
         updateWithChild(before, after);
 
         return "编辑权限成功";

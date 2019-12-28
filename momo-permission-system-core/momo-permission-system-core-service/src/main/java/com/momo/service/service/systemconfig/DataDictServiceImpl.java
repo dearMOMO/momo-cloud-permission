@@ -8,6 +8,7 @@ import com.momo.common.core.error.BizException;
 import com.momo.common.core.util.DateUtils;
 import com.momo.common.core.util.LevelUtil;
 import com.momo.common.core.util.snowFlake.SnowFlake;
+import com.momo.mapper.dataobject.AclDO;
 import com.momo.mapper.dataobject.DataDictDO;
 import com.momo.mapper.enums.DisabledFlagEnum;
 import com.momo.mapper.mapper.manual.DataDictMapper;
@@ -66,7 +67,7 @@ public class DataDictServiceImpl extends BaseService implements DataDictService 
 
     @Override
     public String dictSave(DataDictTreeReq dataDictTreeReq) {
-        if (checkCodeValue(dataDictTreeReq)) {
+        if (checkCodeValue(dataDictTreeReq.getSysDictCodeValue(), null)) {
             throw BizException.fail("参数值重复");
         }
         if (checkSameLevelName(null, null, dataDictTreeReq.getSysDictCodeName(), dataDictTreeReq.getId())) {
@@ -85,7 +86,7 @@ public class DataDictServiceImpl extends BaseService implements DataDictService 
             if (dataDictDO == null) {
                 throw BizException.fail("查询父级信息不存在");
             }
-            dataDictDOInsert.setSysDictCodeLevel(LevelUtil.calculateLevel(dataDictDO.getSysDictCodeLevel(),dataDictDO.getId()));
+            dataDictDOInsert.setSysDictCodeLevel(LevelUtil.calculateLevel(dataDictDO.getSysDictCodeLevel(), dataDictDO.getId()));
             dataDictDOInsert.setSysDictCodeParentId(dataDictDO.getSysDictCodeParentId());
             dataDictDOInsert.setSysDictCodeParentValue(dataDictDO.getSysDictCodeParentValue());
         } else {
@@ -98,12 +99,76 @@ public class DataDictServiceImpl extends BaseService implements DataDictService 
         return "新增数据字典成功";
     }
 
-    private boolean checkCodeValue(DataDictTreeReq dataDictTreeReq) {
-        return dataDictMapper.checkCodeValue(dataDictTreeReq.getSysDictCodeValue()) > 0;
+    @Override
+    public String dictModify(DataDictTreeReq dataDictTreeReq) {
+        DataDictDO before = dataDictMapper.selectByPrimaryKey(dataDictTreeReq.getId());
+        if (before == null) {
+            throw BizException.fail("待编辑的数据字典不存在");
+        }
+        if (before.getId().equals(dataDictTreeReq.getSysDictCodeParentId())) {
+            throw BizException.fail("您无法将自己挂在自己模块下");
+        }
+
+        if (checkCodeValue(dataDictTreeReq.getSysDictCodeValue(), dataDictTreeReq.getId())) {
+            throw BizException.fail("参数值重复");
+        }
+        if (checkSameLevelName(null, null, dataDictTreeReq.getSysDictCodeName(), dataDictTreeReq.getId())) {
+            throw BizException.fail("参数名称重复");
+        }
+        RedisUser redisUser = this.redisUser();
+        DataDictDO after = new DataDictDO();
+        BeanUtils.copyProperties(dataDictTreeReq, after);
+        if (!dataDictTreeReq.getSysDictCodeParentId().equals(0L)) {
+            DataDictDO fatherDict = dataDictMapper.selectByPrimaryKey(dataDictTreeReq.getSysDictCodeParentId());
+            if (null == fatherDict) {
+                throw BizException.fail("父级数据字典不存在");
+            }
+            after.setSysDictCodeLevel(LevelUtil.calculateLevel(fatherDict.getSysDictCodeLevel(), dataDictTreeReq.getSysDictCodeParentId()));
+        } else {
+            after.setSysDictCodeLevel("0");
+        }
+        after.setUpdateBy(redisUser.getSysUserName());
+        after.setUpdateTime(DateUtils.getCurrentTime());
+        after.setId(before.getId());
+        updateWithChild(before, after);
+        return "编辑数据字典成功";
+    }
+
+    private boolean checkCodeValue(String sysDictCodeValue, Long id) {
+        return dataDictMapper.checkCodeValue(sysDictCodeValue, id) > 0;
     }
 
     private boolean checkSameLevelName(Long sysDictCodeParentId, String sysDictCodeParentValue, String sysDictCodeName, Long id) {
         return dataDictMapper.checkSameLevelName(sysDictCodeParentId, sysDictCodeParentValue, sysDictCodeName, id) > 0;
+    }
+
+    private String getLevel(Long dictParentId) {
+        DataDictDO aclModule = dataDictMapper.selectByPrimaryKey(dictParentId);
+        if (aclModule == null) {
+            return null;
+        }
+        return aclModule.getSysDictCodeLevel();
+    }
+
+    private void updateWithChild(DataDictDO before, DataDictDO after) {
+        String newLevelPrefix = after.getSysDictCodeLevel();
+        String oldLevelPrefix = before.getSysDictCodeLevel();
+        List<DataDictDO> aclModuleList;
+        if (!after.getSysDictCodeLevel().equals(before.getSysDictCodeLevel())) {
+            aclModuleList = dataDictMapper.getChildDictListByLevel(LevelUtil.calculateLevel(before.getSysDictCodeLevel(), before.getId()));
+            if (org.apache.commons.collections4.CollectionUtils.isNotEmpty(aclModuleList)) {
+                for (DataDictDO aclModule : aclModuleList) {
+                    String level = aclModule.getSysDictCodeLevel();
+                    if (level.indexOf(oldLevelPrefix) == 0) {
+                        level = newLevelPrefix + level.substring(oldLevelPrefix.length());
+                        aclModule.setSysDictCodeLevel(level);
+                    }
+                }
+                dataDictMapper.batchUpdateLevel(aclModuleList);
+
+            }
+        }
+        dataDictMapper.updateByPrimaryKeySelective(after);
     }
 
     private List<DataDictTreeRes> dictListToTree(List<DataDictTreeRes> dictTreeList) {
