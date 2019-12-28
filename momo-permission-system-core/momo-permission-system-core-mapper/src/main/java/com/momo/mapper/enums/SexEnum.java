@@ -15,6 +15,8 @@
  */
 package com.momo.mapper.enums;
 
+import com.alibaba.fastjson.JSONObject;
+
 /**
  * @ClassName: Sex
  * @Author: Jie Li

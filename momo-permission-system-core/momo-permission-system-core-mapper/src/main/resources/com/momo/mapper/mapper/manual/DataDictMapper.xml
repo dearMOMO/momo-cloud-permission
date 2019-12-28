@@ -40,6 +40,52 @@
         </trim>
 
     </select>
+    <select id="checkSameLevelName" parameterType="map" resultType="int">
+        select count(id) from sys_data_dict
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id!=null">
+                and id != #{id}
+            </if>
+            <if test="sys_dict_code_name!=null and sys_dict_code_name.trim()!=''">
+                and sys_dict_code_name=#{sys_dict_code_name}
+            </if>
+            <if test="sys_dict_code_parent_id!=null">
+                and sys_dict_code_parent_id=#{sys_dict_code_parent_id}
+            </if>
+            <if test="sys_dict_code_parent_value!=null and sys_dict_code_parent_value.trim()!=''">
+                and sys_dict_code_parent_value=#{sys_dict_code_parent_value}
+            </if>
+        </trim>
+    </select>
+    <update id="batchUpdateLevel" parameterType="map">
+        <foreach collection="sysAclModuleList" item="sysAclModule" separator=";">
+            UPDATE sys_data_dict
+            SET sys_dict_code_level = #{dictList.sys_dict_code_level}
+            WHERE id = #{dictList.id}
+        </foreach>
+    </update>
+    <select id="getChildDictListByLevel" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+            id,sys_dict_code_level
+        FROM sys_data_dict WHERE sys_dict_code_level LIKE CONCAT(#{sys_dict_code_level},'%')
+    </select>
+    <select id="checkCodeValue" parameterType="map" resultType="int">
+        select count(id) from sys_data_dict
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id!=null">
+                and id !=#{id}
+            </if>
+            <if test="sys_dict_code_value!=null and sys_dict_code_value.trim()!=''">
+               and sys_dict_code_value=#{sys_dict_code_value}
+            </if>
+        </trim>
+        order by null limit 1
+    </select>
+    <select id="selectByCodeValue" parameterType="map" resultMap="BaseResultMap">
+        select
+        id, sys_dict_code_name, sys_dict_code_value
+        from sys_data_dict where sys_dict_code_value=#{sys_dict_code_value}
+    </select>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
