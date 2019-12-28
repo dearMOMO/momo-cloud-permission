@@ -192,15 +192,15 @@ public class AclService extends BaseService {
         AclDO after = new AclDO();
         BeanUtils.copyProperties(aclReq, after);
         RedisUser redisUser = this.redisUser();
+        AclDO aclDO = aclMapper.selectByPrimaryKey(aclReq.getSysAclParentIdStr());
         if (!aclReq.getSysAclParentIdStr().equals(0L)) {
-            AclDO aclDO = aclMapper.selectByPrimaryKey(aclReq.getSysAclParentIdStr());
             if (null == aclDO) {
                 throw BizException.fail("父权限不存在");
             }
             if (!before.getSysAclPermissionCode().equals(aclDO.getSysAclPermissionCode())) {
                 throw BizException.fail("无法跨模块编辑");
             }
-            after.setSysAclLevel(LevelUtil.calculateLevel(aclDO.getSysAclLevel(), aclReq.getSysAclParentIdStr()));
+
         }
 
         if (checkUrl(aclReq.getSysAclUrl(), aclReq.getSysAclPermissionCode(), before.getId())) {
@@ -214,6 +214,7 @@ public class AclService extends BaseService {
         after.setId(before.getId());
         after.setSysAclParentId(aclReq.getSysAclParentIdStr());
         after.setSysAclPermissionCode(before.getSysAclPermissionCode());
+        after.setSysAclLevel(LevelUtil.calculateLevel(aclDO.getSysAclLevel(), aclReq.getSysAclParentIdStr()));
         updateWithChild(before, after);
 
         return "编辑权限成功";
