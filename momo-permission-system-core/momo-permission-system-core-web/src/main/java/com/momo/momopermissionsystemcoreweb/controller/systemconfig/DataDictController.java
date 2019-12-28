@@ -42,5 +42,11 @@ public class DataDictController {
         return JSONResult.ok(dataDictService.dictModify(dataDictTreeReq));
     }
 
+    @SystemCoreLog(description = "编辑 数据字典 状态")
+    @PostMapping("/dictStatus/v1")
+    public JSONResult dictStatus(@RequestBody DataDictTreeReq dataDictTreeReq) {
+        return JSONResult.ok(dataDictService.dictStatus(dataDictTreeReq));
+    }
+
 
 }

@@ -134,6 +134,25 @@ public class DataDictServiceImpl extends BaseService implements DataDictService 
         return "编辑数据字典成功";
     }
 
+    @Override
+    public String dictStatus(DataDictTreeReq dataDictTreeReq) {
+        DataDictDO dataDictDO = dataDictMapper.selectByPrimaryKey(dataDictTreeReq.getId());
+        if (dataDictDO == null) {
+            throw BizException.fail("待编辑的数据字典不存在");
+        }
+        DataDictDO dataDictStatus = new DataDictDO();
+        dataDictStatus.setId(dataDictDO.getId());
+        if (dataDictTreeReq.getDisabledFlag().equals(DisabledFlagEnum.start.type)) {
+            dataDictStatus.setDisabledFlag(DisabledFlagEnum.disabled.type);
+        } else if (dataDictTreeReq.getDisabledFlag().equals(DisabledFlagEnum.disabled.type)) {
+            dataDictStatus.setDisabledFlag(DisabledFlagEnum.start.type);
+        } else {
+            dataDictStatus.setDisabledFlag(DisabledFlagEnum.disabled.type);
+        }
+        dataDictMapper.updateByPrimaryKeySelective(dataDictStatus);
+        return "变更数据字典状态成功";
+    }
+
     private boolean checkCodeValue(String sysDictCodeValue, Long id) {
         return dataDictMapper.checkCodeValue(sysDictCodeValue, id) > 0;
     }

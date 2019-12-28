@@ -19,4 +19,6 @@ public interface DataDictService {
     String dictSave(DataDictTreeReq dataDictTreeReq);
 
     String dictModify(DataDictTreeReq dataDictTreeReq);
+
+    String dictStatus(DataDictTreeReq dataDictTreeReq);
 }
