@@ -189,11 +189,11 @@ public class AclService extends BaseService {
         if (before.getId().equals(aclReq.getSysAclParentIdStr())) {
             throw BizException.fail("无法将当前模块挂在自己模块下");
         }
-        AclDO aclDO = aclMapper.selectByPrimaryKey(aclReq.getSysAclParentIdStr());
-        if (null == aclDO) {
-            throw BizException.fail("父权限不存在");
-        }
         if (!aclReq.getSysAclParentIdStr().equals(0L)) {
+            AclDO aclDO = aclMapper.selectByPrimaryKey(aclReq.getSysAclParentIdStr());
+            if (null == aclDO) {
+                throw BizException.fail("父权限不存在");
+            }
             if (!before.getSysAclPermissionCode().equals(aclDO.getSysAclPermissionCode())) {
                 throw BizException.fail("无法跨模块编辑");
             }
