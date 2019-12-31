@@ -36,6 +36,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.Map;
@@ -133,11 +134,20 @@ public class NettyHandlerService {
     }
 
     @Async("threadPoolTaskExecutor")
-    public Future<String> onlineCount() {
+    public Future<String> onlineCount(String symbol) {
         Future<String> future = new AsyncResult<>("更新首页用户在线数量");
         Map<String, Channel> channelMapAll = ChannelManager.getAllChannel();
         if (channelMapAll != null && !channelMapAll.isEmpty()) {
-            int onlineConut = ChannelManager.sizeChannel() + 1;
+            int onlineConut = 0;
+            if (StringUtils.isEmpty(symbol)) {
+                onlineConut = ChannelManager.sizeChannel();
+            } else if ("-".equals(symbol)) {
+                onlineConut = ChannelManager.sizeChannel() - 1;
+            } else if ("+".equals(symbol)) {
+                onlineConut = ChannelManager.sizeChannel() + 1;
+            } else {
+                onlineConut = ChannelManager.sizeChannel();
+            }
             IMMessage imMessage = new IMMessage(RedisKeyEnum.NETTY_ONLINE_COUNT.getExpireTime(), onlineConut, null);
             channelMapAll.forEach((s, channel) -> ChannelManager.ctxWrite(channel, imMessage));
         }

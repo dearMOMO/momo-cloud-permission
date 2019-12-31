@@ -40,7 +40,7 @@ import javax.validation.constraints.NotNull;
 //@EqualsAndHashCode(callSuper = true, of = {"id"})
 public class SysEnterpriseRoleReq extends BaseReq {
 
-    @NotBlank(message = "enterpriseUuid必填", groups = {Modify.class, Status.class, Detail.class, Permission.class, save.class, Query.class})
+    @NotBlank(message = "enterpriseUuid必填", groups = {Modify.class, Status.class, Detail.class, Permission.class, ave.class, Query.class})
     private String enterpriseUuid;
 
     @NotBlank(message = "uuid必填", groups = {Modify.class, Status.class, Detail.class, Permission.class})

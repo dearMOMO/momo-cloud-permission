@@ -186,7 +186,7 @@ public class SysMainService extends BaseService {
         entity.setUuid(redisUserKey);
         loginLog.loginLog(entity, request);
         //更新首页用户在线数量
-        nettyServiceAsync.onlineCount();
+        nettyServiceAsync.onlineCount("+");
         //登录成功删除验证码
         redisUtil.del("verUUidCode:" + sysUserLoginReq.getVerUUidCode());
         return redisUserKey;
@@ -217,7 +217,7 @@ public class SysMainService extends BaseService {
             }
         }
         //更新首页用户在线数量
-        nettyServiceAsync.onlineCount();
+        nettyServiceAsync.onlineCount("-");
         return "安全退出成功";
     }
 
