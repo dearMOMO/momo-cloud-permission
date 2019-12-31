@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.momo.mapper.mapper.manual.DataDictDelsMapper">
+    <resultMap id="BaseResultMap" type="com.momo.mapper.dataobject.DataDictDelsDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="sys_dict_dels_name" jdbcType="VARCHAR" property="sysDictDelsName"/>
+        <result column="sys_dict_dels_value" jdbcType="VARCHAR" property="sysDictDelsValue"/>
+        <result column="sys_dict_code_value" jdbcType="VARCHAR" property="sysDictCodeValue"/>
+        <result column="sys_dict_code_id" jdbcType="BIGINT" property="sysDictCodeId"/>
+        <result column="sys_dict_dels_seq" jdbcType="INTEGER" property="sysDictDelsSeq"/>
+        <result column="sys_dict_code_html_left" jdbcType="VARCHAR" property="sysDictCodeHtmlLeft"/>
+        <result column="sys_dict_code_html_right" jdbcType="VARCHAR" property="sysDictCodeHtmlRight"/>
+        <result column="sys_dict_code_html_apply" jdbcType="INTEGER" property="sysDictCodeHtmlApply"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="disabled_flag" jdbcType="INTEGER" property="disabledFlag"/>
+        <result column="del_flag" jdbcType="INTEGER" property="delFlag"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, sys_dict_dels_name, sys_dict_dels_value, sys_dict_code_value, sys_dict_code_id,
+    sys_dict_dels_seq, sys_dict_code_html_left, sys_dict_code_html_right, sys_dict_code_html_apply,
+    remark, disabled_flag, del_flag, create_by, create_time, update_time, update_by
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_data_dict_dels
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="dictDelsPageList" parameterType="map" resultMap="BaseResultMap">
+        select
+        from sys_data_dict_dels
+        <trim prefix="where" prefixOverrides="and">
+            <if test="sys_dict_dels_name!=null and sys_dict_dels_name.trim()!=''">
+                and sys_dict_dels_name like CONCAT('%',#{sys_dict_dels_name},'%')
+            </if>
+            <if test="sys_dict_dels_value!=null and sys_dict_dels_value.trim()!=''">
+                and sys_dict_dels_value like CONCAT('%',#{sys_dict_dels_value},'%')
+            </if>
+        </trim>
+    </select>
+    <insert id="insertSelective" parameterType="com.momo.mapper.dataobject.DataDictDelsDO">
+        insert into sys_data_dict_dels
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="sysDictDelsName != null">
+                sys_dict_dels_name,
+            </if>
+            <if test="sysDictDelsValue != null">
+                sys_dict_dels_value,
+            </if>
+            <if test="sysDictCodeValue != null">
+                sys_dict_code_value,
+            </if>
+            <if test="sysDictCodeId != null">
+                sys_dict_code_id,
+            </if>
+            <if test="sysDictDelsSeq != null">
+                sys_dict_dels_seq,
+            </if>
+            <if test="sysDictCodeHtmlLeft != null">
+                sys_dict_code_html_left,
+            </if>
+            <if test="sysDictCodeHtmlRight != null">
+                sys_dict_code_html_right,
+            </if>
+            <if test="sysDictCodeHtmlApply != null">
+                sys_dict_code_html_apply,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="disabledFlag != null">
+                disabled_flag,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="sysDictDelsName != null">
+                #{sysDictDelsName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysDictDelsValue != null">
+                #{sysDictDelsValue,jdbcType=VARCHAR},
+            </if>
+            <if test="sysDictCodeValue != null">
+                #{sysDictCodeValue,jdbcType=VARCHAR},
+            </if>
+            <if test="sysDictCodeId != null">
+                #{sysDictCodeId,jdbcType=BIGINT},
+            </if>
+            <if test="sysDictDelsSeq != null">
+                #{sysDictDelsSeq,jdbcType=INTEGER},
+            </if>
+            <if test="sysDictCodeHtmlLeft != null">
+                #{sysDictCodeHtmlLeft,jdbcType=VARCHAR},
+            </if>
+            <if test="sysDictCodeHtmlRight != null">
+                #{sysDictCodeHtmlRight,jdbcType=VARCHAR},
+            </if>
+            <if test="sysDictCodeHtmlApply != null">
+                #{sysDictCodeHtmlApply,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="disabledFlag != null">
+                #{disabledFlag,jdbcType=INTEGER},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=INTEGER},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.momo.mapper.dataobject.DataDictDelsDO">
+        update sys_data_dict_dels
+        <set>
+            <if test="sysDictDelsName != null">
+                sys_dict_dels_name = #{sysDictDelsName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysDictDelsValue != null">
+                sys_dict_dels_value = #{sysDictDelsValue,jdbcType=VARCHAR},
+            </if>
+            <if test="sysDictCodeValue != null">
+                sys_dict_code_value = #{sysDictCodeValue,jdbcType=VARCHAR},
+            </if>
+            <if test="sysDictCodeId != null">
+                sys_dict_code_id = #{sysDictCodeId,jdbcType=BIGINT},
+            </if>
+            <if test="sysDictDelsSeq != null">
+                sys_dict_dels_seq = #{sysDictDelsSeq,jdbcType=INTEGER},
+            </if>
+            <if test="sysDictCodeHtmlLeft != null">
+                sys_dict_code_html_left = #{sysDictCodeHtmlLeft,jdbcType=VARCHAR},
+            </if>
+            <if test="sysDictCodeHtmlRight != null">
+                sys_dict_code_html_right = #{sysDictCodeHtmlRight,jdbcType=VARCHAR},
+            </if>
+            <if test="sysDictCodeHtmlApply != null">
+                sys_dict_code_html_apply = #{sysDictCodeHtmlApply,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="disabledFlag != null">
+                disabled_flag = #{disabledFlag,jdbcType=INTEGER},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=INTEGER},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>

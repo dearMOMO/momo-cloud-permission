@@ -85,5 +85,6 @@ public class DataDictTreeReq extends BaseReq {
     /**
      * sysDictCodeHtmlApply 是否应用html值 0是 1否.
      */
+    @NotNull(message = "是否应用html值 0是 1否 必填", groups = {Add.class, Modify.class})
     private Integer sysDictCodeHtmlApply;
 }

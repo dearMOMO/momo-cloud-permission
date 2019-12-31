@@ -55,7 +55,7 @@ public class AclController {
     }
 
     @RequestMapping("/save/v1")
-    public JSONResult save(@Validated(AclReq.save.class) @RequestBody AclReq aclReq) {
+    public JSONResult save(@Validated(AclReq.Save.class) @RequestBody AclReq aclReq) {
         return JSONResult.ok(aclService.insertSelective(aclReq));
     }
 

@@ -18,13 +18,12 @@ import java.util.concurrent.Future;
  **/
 @Service
 @Slf4j
-@Async("threadPoolTaskExecutor")
 public class NettyServiceAsync {
 
     @Autowired
     private NettyHandlerService nettyHandlerService;
 
-    public Future<String> onlineCount() {
-        return nettyHandlerService.onlineCount();
+    public Future<String> onlineCount(String symbol) {
+        return nettyHandlerService.onlineCount(symbol);
     }
 }

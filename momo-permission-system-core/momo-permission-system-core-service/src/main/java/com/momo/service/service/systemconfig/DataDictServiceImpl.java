@@ -94,6 +94,7 @@ public class DataDictServiceImpl extends BaseService implements DataDictService 
             dataDictDOInsert.setSysDictCodeParentValue("0");
             dataDictDOInsert.setSysDictCodeLevel("0");
         }
+        dataDictDOInsert.setSysDictCodeSeq(Integer.valueOf(dataDictTreeReq.getSysDictCodeSeq()));
         dataDictMapper.insertSelective(dataDictDOInsert);
 
         return "新增数据字典成功";
@@ -130,6 +131,7 @@ public class DataDictServiceImpl extends BaseService implements DataDictService 
         after.setUpdateBy(redisUser.getSysUserName());
         after.setUpdateTime(DateUtils.getCurrentTime());
         after.setId(before.getId());
+        after.setSysDictCodeSeq(Integer.valueOf(dataDictTreeReq.getSysDictCodeSeq()));
         updateWithChild(before, after);
         return "编辑数据字典成功";
     }

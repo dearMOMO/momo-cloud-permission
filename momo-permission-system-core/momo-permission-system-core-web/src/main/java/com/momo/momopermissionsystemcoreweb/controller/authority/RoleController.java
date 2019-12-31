@@ -36,7 +36,7 @@ public class RoleController {
     private RoleService roleService;
 
     @RequestMapping("/save/v1")
-    public JSONResult save(@Validated(RoleReq.save.class) @RequestBody RoleReq roleReq) {
+    public JSONResult save(@Validated(RoleReq.Save.class) @RequestBody RoleReq roleReq) {
         return JSONResult.ok(roleService.insertSelective(roleReq));
     }
 

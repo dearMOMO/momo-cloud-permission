@@ -204,10 +204,10 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-<!--    &lt;!&ndash;<repositories>-->
-<!--        <repository>-->
-<!--            <id>jitpack.io</id>-->
-<!--            <url>https://jitpack.io</url>-->
-<!--        </repository>-->
-<!--    </repositories>&ndash;&gt;-->
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
 </project>

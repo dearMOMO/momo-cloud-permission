@@ -56,15 +56,15 @@ public class BaseReq  {
 
     }
 
-    public interface save {
+    public interface Save {
 
     }
 
-    public interface page {
+    public interface Page {
 
     }
 
-    public interface select {
+    public interface Select {
 
     }
 
