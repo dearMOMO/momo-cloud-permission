@@ -3,6 +3,7 @@ package com.momo.service.service.systemconfig;
 import com.github.pagehelper.PageInfo;
 import com.momo.mapper.dataobject.DataDictDelsDO;
 import com.momo.mapper.req.systemconfig.DataDictDelsReq;
+import com.momo.mapper.res.systemconfig.DataDictDelsRes;
 
 /**
  * @ClassName: DataDictDelsService
@@ -13,5 +14,7 @@ import com.momo.mapper.req.systemconfig.DataDictDelsReq;
  * <p>Copyright: Copyright (c) 2019</p>
  **/
 public interface DataDictDelsService {
-    PageInfo<DataDictDelsDO> dictDelsPageList(DataDictDelsReq dataDictDelsReq);
+    PageInfo<DataDictDelsRes> dictDelsPageList(DataDictDelsReq dataDictDelsReq);
+
+    String dictDelsSave(DataDictDelsReq dataDictDelsReq);
 }
