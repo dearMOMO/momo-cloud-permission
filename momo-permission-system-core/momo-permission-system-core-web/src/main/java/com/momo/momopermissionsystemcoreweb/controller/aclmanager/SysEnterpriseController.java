@@ -70,7 +70,7 @@ public class SysEnterpriseController {
     }
 
     @RequestMapping("/save/v1")
-    public JSONResult save(@Validated(SysUserGroupReq.save.class) @RequestBody SysUserGroupReq sysUserGroupReq) {
+    public JSONResult save(@Validated(SysUserGroupReq.Save.class) @RequestBody SysUserGroupReq sysUserGroupReq) {
         return JSONResult.ok(sysEnterpriseService.save(sysUserGroupReq));
     }
 
@@ -91,7 +91,7 @@ public class SysEnterpriseController {
     }
 
     @RequestMapping("/roleAdd/v1")
-    public JSONResult roleAdd(@Validated(SysEnterpriseRoleReq.save.class) @RequestBody SysEnterpriseRoleReq sysEnterpriseRoleReq) {
+    public JSONResult roleAdd(@Validated(SysEnterpriseRoleReq.Save.class) @RequestBody SysEnterpriseRoleReq sysEnterpriseRoleReq) {
         return JSONResult.ok(sysEnterpriseService.roleAdd(sysEnterpriseRoleReq));
     }
 
@@ -123,7 +123,7 @@ public class SysEnterpriseController {
     }
 
     @RequestMapping("/userAdd/v1")
-    public JSONResult userAdd(@Validated(SysEnterpriseUserReq.save.class) @RequestBody SysEnterpriseUserReq sysEnterpriseUserReq) {
+    public JSONResult userAdd(@Validated(SysEnterpriseUserReq.Save.class) @RequestBody SysEnterpriseUserReq sysEnterpriseUserReq) {
         return JSONResult.ok(sysEnterpriseService.userAdd(sysEnterpriseUserReq));
     }
 

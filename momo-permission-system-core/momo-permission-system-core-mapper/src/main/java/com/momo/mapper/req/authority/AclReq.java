@@ -38,12 +38,12 @@ public class AclReq extends BaseReq {
     /**
      * sysAclModuleType 菜单系统类型 1 系统管理 2资产管理.
      */
-    @NotBlank(message = "菜单系统类型 必填", groups = {save.class, Modify.class,Permission.class})
+    @NotBlank(message = "菜单系统类型 必填", groups = {Save.class, Modify.class,Permission.class})
     private String sysAclPermissionCode;
     /**
      * sysAclModuleParentId 上级权限id.
      */
-    @NotNull(message = "上级权限id 必填", groups = {save.class, Modify.class,Permission.class})
+    @NotNull(message = "上级权限id 必填", groups = {Save.class, Modify.class,Permission.class})
     private Long sysAclParentIdStr;
     /**
      * remark 备注.
@@ -67,12 +67,12 @@ public class AclReq extends BaseReq {
     /**
      * sysAclName 权限名称.
      */
-    @NotBlank(message = "权限名称 必填", groups = {save.class, Modify.class,Permission.class})
+    @NotBlank(message = "权限名称 必填", groups = {Save.class, Modify.class,Permission.class})
     private String sysAclName;
     /**
      * 类型，-1系统 0:目录 1：菜单，2：按钮，3：其他
      */
-    @NotNull(message = "类型，类型，-1系统 0:目录 1：菜单，2：按钮，3：其他 必填", groups = {save.class, Modify.class,Permission.class})
+    @NotNull(message = "类型，类型，-1系统 0:目录 1：菜单，2：按钮，3：其他 必填", groups = {Save.class, Modify.class,Permission.class})
     @Max(value = 3,message = "权限类型：最大值为1")
     @Min(value = -1,message = "权限类型：最小值为-1")
     private Integer sysAclType;
@@ -84,7 +84,7 @@ public class AclReq extends BaseReq {
     /**
      * flag 状态 0启用  1禁用.
      */
-    @NotNull(message = "状态 0启用  1禁用 必填", groups = {save.class,Status.class, Modify.class,Permission.class})
+    @NotNull(message = "状态 0启用  1禁用 必填", groups = {Save.class,Status.class, Modify.class,Permission.class})
     @Max(value = 1,message = "状态：最大值为1")
     @Min(value = 0,message = "状态：最小值为0")
     private Integer disabledFlag;
@@ -101,7 +101,7 @@ public class AclReq extends BaseReq {
     /**
      * sysAclSeq 权限在当前模块下的顺序，由小到大.
      */
-    @NotNull(message = "权限在当前模块下的顺序，由小到大 必填", groups = {save.class, Modify.class,Permission.class})
+    @NotNull(message = "权限在当前模块下的顺序，由小到大 必填", groups = {Save.class, Modify.class,Permission.class})
     @Min(value = 0,message = "排序：最小值为0")
     private Integer sysAclSeq;
 
