@@ -37,7 +37,7 @@ import java.nio.charset.UnsupportedCharsetException;
  * <p>Copyright: Copyright (c) 2019</p>
  **/
 @Slf4j
-public class LoggerInterceptor implements Interceptor {
+public class OkHttpLoggerInterceptor implements Interceptor {
     private static final Charset UTF8 = StandardCharsets.UTF_8;
 
     @Override

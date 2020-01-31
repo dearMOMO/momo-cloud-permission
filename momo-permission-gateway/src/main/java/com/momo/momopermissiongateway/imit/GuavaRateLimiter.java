@@ -31,7 +31,7 @@ import java.util.concurrent.TimeUnit;
  **/
 public class GuavaRateLimiter {
 
-    public static ConcurrentHashMap<String, RateLimiter> resourceRateLimiter = new ConcurrentHashMap<>(32);
+    static ConcurrentHashMap<String, RateLimiter> resourceRateLimiter = new ConcurrentHashMap<>(32);
 
     //初始化限流工具RateLimiter
     static {
