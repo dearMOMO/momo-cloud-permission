@@ -39,15 +39,20 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
+import org.springframework.http.HttpCookie;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.URLEncoder;
 import java.util.Date;
+import java.util.function.Consumer;
 
 /**
  * Created by MOMO on 2018/12/28.
@@ -83,6 +88,10 @@ public class TokenFilter implements GlobalFilter, Ordered {
         ServerHttpRequest serverHttpRequest = exchange.getRequest();
 
         try {
+            HttpCookie httpCookie = new HttpCookie("test_cokie", "test_cokie_value");
+//            serverHttpRequest.getCookies().add("test_cookie", httpCookie);
+
+            MultiValueMap<String, HttpCookie> cookieMultiValueMap =  serverHttpRequest.getCookies();
             URI uri = serverHttpRequest.getURI();
             String path = uri.getPath();
             if (interceptUrlConfiguration.checkIgnoreUrl(path)) {
@@ -152,13 +161,24 @@ public class TokenFilter implements GlobalFilter, Ordered {
                     //刷新redis时间
                     redisUtil.expire(RedisKeyEnum.REDIS_KEY_USER_ID.getKey() + redisUser.getBaseId(), RedisKeyEnum.REDIS_KEY_USER_ID.getExpireTime());
                 }
+                String finalAuthToken = authToken;
+                Consumer<HttpHeaders> headersConsumer = httpHeaders -> {
+                    httpHeaders.add("exit", uuid);
+                    httpHeaders.add(RedisKeyEnum.REDIS_KEY_USER_HEADER_CODE.getKey(), finalAuthToken);
+                };
                 ServerHttpRequest request = exchange
                         .getRequest().mutate()
+                        .headers(headersConsumer)
                         // 统一头部，用于防止直接调用服务
-                        .header(RedisKeyEnum.REDIS_KEY_USER_HEADER_CODE.getKey(), authToken)
-                        .header("exit", uuid)
+//                        .header(RedisKeyEnum.REDIS_KEY_USER_HEADER_CODE.getKey(), authToken)
+//                        .header("exit", uuid)
                         .build();
-                exchange.getResponse().getHeaders().add("testresponse", "testresponse");
+                exchange.getResponse().getHeaders().add("testresponse1", "testresponse1");
+                exchange.getResponse().getHeaders().add("testresponse2", "testresponse2");
+                ResponseCookie responseCookie1= ResponseCookie.from("cookie1","cookie1").build();
+                exchange.getResponse().addCookie(responseCookie1);
+                ResponseCookie responseCookie2= ResponseCookie.from("cookie2","cookie2").build();
+                exchange.getResponse().addCookie(responseCookie2);
                 //将新的request 变成 change对象
                 ServerWebExchange serverWebExchange = exchange.mutate().request(request).build();
                 return chain.filter(serverWebExchange);
