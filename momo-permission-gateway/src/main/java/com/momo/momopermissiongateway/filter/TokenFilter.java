@@ -162,12 +162,9 @@ public class TokenFilter implements GlobalFilter, Ordered {
                     redisUtil.expire(RedisKeyEnum.REDIS_KEY_USER_ID.getKey() + redisUser.getBaseId(), RedisKeyEnum.REDIS_KEY_USER_ID.getExpireTime());
                 }
                 String finalAuthToken = authToken;
-                Consumer<HttpHeaders> headersConsumer = new Consumer<HttpHeaders>() {
-                    @Override
-                    public void accept(HttpHeaders httpHeaders) {
-                        httpHeaders.add("exit", uuid);
-                        httpHeaders.add(RedisKeyEnum.REDIS_KEY_USER_HEADER_CODE.getKey(), finalAuthToken);
-                    }
+                Consumer<HttpHeaders> headersConsumer = httpHeaders -> {
+                    httpHeaders.add("exit", uuid);
+                    httpHeaders.add(RedisKeyEnum.REDIS_KEY_USER_HEADER_CODE.getKey(), finalAuthToken);
                 };
                 ServerHttpRequest request = exchange
                         .getRequest().mutate()
