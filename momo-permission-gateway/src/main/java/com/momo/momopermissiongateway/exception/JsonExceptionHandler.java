@@ -70,9 +70,6 @@ public class JsonExceptionHandler extends DefaultErrorWebExceptionHandler {
         } else if (error instanceof com.netflix.client.ClientException) {
             status = 404;
             return response(status, "服务正在上线，请稍后。。。。");
-        } else if (error instanceof HttpRequestMethodNotSupportedException) {
-            status = 404;
-            return response(status, "请求类型不被允许" + error.getMessage());
         }
         return response(status, ErrorEnum.ERROR_NOT_FOUND.getErrorMessage());
     }
