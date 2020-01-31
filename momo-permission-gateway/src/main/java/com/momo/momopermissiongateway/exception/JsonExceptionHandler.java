@@ -24,6 +24,7 @@ import org.springframework.boot.autoconfigure.web.reactive.error.DefaultErrorWeb
 import org.springframework.boot.web.reactive.error.ErrorAttributes;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.reactive.function.server.*;
 
 import java.util.Map;
@@ -59,16 +60,19 @@ public class JsonExceptionHandler extends DefaultErrorWebExceptionHandler {
         log.error("网关错误：{}==={}===={}", error.getMessage(), this.buildMessage(request, error), error.getStackTrace());
         if (error instanceof org.springframework.cloud.gateway.support.NotFoundException) {
             status = 404;
-            return response(status, "服务正在上线，请稍后。。。。");
+            return response(status, "服务未被发现,正在努力寻找,请稍后。。。。");
         } else if (error instanceof org.springframework.web.server.ResponseStatusException) {
             status = 404;
             return response(status, "服务正在启动，请稍后。。。。");
         } else if (error instanceof java.net.ConnectException) {
             status = 404;
-            return response(status, "服务正在上线，请稍后。。。。");
+            return response(status, "服务连接超时，请稍后。。。。");
         } else if (error instanceof com.netflix.client.ClientException) {
             status = 404;
             return response(status, "服务正在上线，请稍后。。。。");
+        } else if (error instanceof HttpRequestMethodNotSupportedException) {
+            status = 404;
+            return response(status, "请求类型不被允许" + error.getMessage());
         }
         return response(status, ErrorEnum.ERROR_NOT_FOUND.getErrorMessage());
     }
