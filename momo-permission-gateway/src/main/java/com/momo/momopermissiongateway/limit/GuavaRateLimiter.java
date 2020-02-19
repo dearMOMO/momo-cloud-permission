@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.momo.momopermissiongateway.guavaLimit;
+package com.momo.momopermissiongateway.limit;
 
 import com.google.common.util.concurrent.RateLimiter;
 import org.apache.commons.lang3.StringUtils;
@@ -31,7 +31,7 @@ import java.util.concurrent.TimeUnit;
  **/
 public class GuavaRateLimiter {
 
-    public static ConcurrentHashMap<String, RateLimiter> resourceRateLimiter = new ConcurrentHashMap<>(32);
+    static ConcurrentHashMap<String, RateLimiter> resourceRateLimiter = new ConcurrentHashMap<>(32);
 
     //初始化限流工具RateLimiter
     static {
