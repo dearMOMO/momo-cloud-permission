@@ -19,8 +19,10 @@ package com.momo.momopermissionsystemcoreweb.configuration;
  * Created by Kagome on 2019/5/7.
  */
 
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -30,7 +32,7 @@ import org.springframework.web.filter.CorsFilter;
  *  https://www.cnblogs.com/cityspace/p/6858969.html
  */
 @Configuration
-public class CorsConfig {
+public class CorsConfigration {
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -45,5 +47,18 @@ public class CorsConfig {
         config.addAllowedMethod(CorsConfiguration.ALL);
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
+    }
+
+    /**
+     * 配置过滤器
+     */
+    @Bean
+    public FilterRegistrationBean someFilterRegistration() {
+        FilterRegistrationBean<CorsFilter> registration = new FilterRegistrationBean<>();
+        registration.setFilter(corsFilter());
+        registration.addUrlPatterns("/*");
+        registration.setName("corsFilter");
+        registration.setOrder(Ordered.HIGHEST_PRECEDENCE);
+        return registration;
     }
 }
