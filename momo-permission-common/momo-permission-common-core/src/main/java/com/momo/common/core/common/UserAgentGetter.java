@@ -57,7 +57,7 @@ public class UserAgentGetter {
             String[] str = userAgentString.split("[()]+");
             str = str[1].split("[;]");
             String device = "";
-            if (str != null && str.length > 0) {
+            if (str.length > 0) {
                 for (String s : str) {
                     if (s.contains("Build/")) {
                         String[] app = s.split("Build/");
