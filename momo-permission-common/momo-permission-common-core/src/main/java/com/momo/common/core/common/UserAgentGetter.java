@@ -56,8 +56,17 @@ public class UserAgentGetter {
         if (userAgentString.contains("Android")) {
             String[] str = userAgentString.split("[()]+");
             str = str[1].split("[;]");
-            String[] res = str[str.length - 1].split("Build/");
-            return res[0].trim();
+            String device = "";
+            if (str != null && str.length > 0) {
+                for (String s : str) {
+                    if (s.contains("Build/")) {
+                        String[] app = s.split("Build/");
+                        device = app[0];
+                        break;
+                    }
+                }
+            }
+            return device;
         } else if (userAgentString.contains("iPhone")) {
             String[] str = userAgentString.split("[()]+");
             String res = "iphone" + str[1].split("OS")[1].split("like")[0];
