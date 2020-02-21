@@ -56,7 +56,7 @@ public class OkHttpConfig {
                 .writeTimeout(10, TimeUnit.SECONDS)
                 //是否自动重连
                 .retryOnConnectionFailure(true)
-                .addInterceptor(new LoggerInterceptor())
+                .addInterceptor(new OkHttpLoggerInterceptor())
                 .connectionPool(new ConnectionPool(10, 5L, TimeUnit.MINUTES))
                 .build();
     }

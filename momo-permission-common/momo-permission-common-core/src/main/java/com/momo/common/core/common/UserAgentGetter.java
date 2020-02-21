@@ -11,6 +11,7 @@ import java.net.UnknownHostException;
  * @Author: Jie Li
  * @Date 2019-11-20 14:37
  * @Description: 获取客户端设备信息
+ * https://blog.csdn.net/qq_23832313/article/details/82775316
  * @Version: 1.0
  * <p>Copyright: Copyright (c) 2019</p>
  **/
@@ -55,8 +56,17 @@ public class UserAgentGetter {
         if (userAgentString.contains("Android")) {
             String[] str = userAgentString.split("[()]+");
             str = str[1].split("[;]");
-            String[] res = str[str.length - 1].split("Build/");
-            return res[0].trim();
+            String device = "";
+            if (str.length > 0) {
+                for (String s : str) {
+                    if (s.contains("Build/")) {
+                        String[] app = s.split("Build/");
+                        device = app[0];
+                        break;
+                    }
+                }
+            }
+            return device;
         } else if (userAgentString.contains("iPhone")) {
             String[] str = userAgentString.split("[()]+");
             String res = "iphone" + str[1].split("OS")[1].split("like")[0];

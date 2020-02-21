@@ -84,14 +84,10 @@ public class TokenFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String uuid = exchange.getRequest().getHeaders().getFirst(RedisKeyEnum.REDIS_KEY_HEADER_INFO.getKey());
-        String authToken = "";
+        String authToken;
         ServerHttpRequest serverHttpRequest = exchange.getRequest();
 
         try {
-            HttpCookie httpCookie = new HttpCookie("test_cokie", "test_cokie_value");
-//            serverHttpRequest.getCookies().add("test_cookie", httpCookie);
-
-            MultiValueMap<String, HttpCookie> cookieMultiValueMap =  serverHttpRequest.getCookies();
             URI uri = serverHttpRequest.getURI();
             String path = uri.getPath();
             if (interceptUrlConfiguration.checkIgnoreUrl(path)) {
