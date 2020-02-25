@@ -35,6 +35,7 @@
             )
             ]]>
         </operation>
+
         <operation name="insertSelectReturnId" paramtype="object" remark="插入表:${table.sqlName?lower_case}">
             <#if dalgen.dbType=="MySQL">
                 <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
@@ -60,7 +61,44 @@
             )
             ]]>
         </operation>
-
+        <operation name="updateBatchByPrimaryKeySelective" paramtype="object" remark="插入表:${table.sqlName?lower_case}">
+            <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+                <![CDATA[
+                update ${table.sqlName?lower_case}
+                <set>
+                    <#list table.columnList as column>
+                        <if test="item.${column.javaName} != null<#if column.sqlType?upper_case == "VARCHAR"> and item.${column.javaName}.trim()!=''</#if>">
+                            <#if column_index gt 0>,</#if> ${lib.insertBatchVal(column,dalgen)}
+                        </if>
+                    </#list>
+                </set>
+                WHERE
+                <#list table.primaryKeys.columnList as column>
+                    <if test="item.${column.javaName} != null<#if column.sqlType?upper_case == "VARCHAR"> and item.${column.javaName}.trim()!=''</#if>">
+                        <#if column_index gt 0>,</#if> ${lib.insertBatchVal(column,dalgen)}
+                    </if>
+                </#list>
+                ]]>
+            </foreach>
+        </operation>
+        <operation name="updateByPrimaryKeySelective" paramtype="object" remark="插入表:${table.sqlName?lower_case}">
+            <![CDATA[
+            update ${table.sqlName?lower_case}
+            <set>
+                <#list table.columnList as column>
+                    <if test="item.${column.javaName} != null<#if column.sqlType?upper_case == "VARCHAR"> and item.${column.javaName}.trim()!=''</#if>">
+                        <#if column_index gt 0>,</#if> ${lib.insertBatchVal(column,dalgen)}
+                    </if>
+                </#list>
+            </set>
+            WHERE
+            <#list table.primaryKeys.columnList as column>
+                <if test="item.${column.javaName} != null<#if column.sqlType?upper_case == "VARCHAR"> and item.${column.javaName}.trim()!=''</#if>">
+                    <#if column_index gt 0>,</#if> ${lib.insertBatchVal(column,dalgen)}
+                </if>
+            </#list>
+            ]]>
+        </operation>
         <!-- foreach 可以自定义类型，paramtype="primitive" foreach->javatype="自己书写的类"  -->
         <!-- 只有一个参数且为List时必须将参数命名为list -->
         <#--<operation name="insertBatch" paramtype="objectList" remark="批量插入表:${table.sqlName?lower_case}">
