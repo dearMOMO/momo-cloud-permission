@@ -47,6 +47,12 @@
     <#return '${"#"}{${column.javaName},jdbcType=${column.sqlType}}'/>
 </#function>
 
+<#-- Update 时字段处理 -->
+<#function updateBatchVal column>
+    <#if column.sqlName == "GMT_MODIFIED" || column.sqlName == "GMT_CREATE"><#return "now()"></#if>
+    <#return '${"#"}{item.${column.javaName},jdbcType=${column.sqlType}}'/>
+</#function>
+
 <#-- update 中需要设置的字段 -->
 <#function updateIncludeColumn dalgen column primaryKeys>
     <#if column.sqlName == "CREATOR" || column.sqlName == "GMT_CREATE">
