@@ -7,12 +7,12 @@
     <!--  特殊字符说明 &lt;&gt; <> -->
     <!-- baseSql option中 select * 会自动替换为 include -->
     <sql id="Base_Column_List">
-        <#list table.columnList as column><#if column_index gt 0><#if column_index%5==0>${" \n"}        </#if>,</#if>${column.sqlName}</#list>
+        <#list table.columnList as column><#if column_index gt 0><#if column_index%5==0>${" \n"}        </#if>,</#if>${column.sqlName?lower_case}</#list>
     </sql>
 
     <!-- baseSql option中 select sf.* 会自动替换为 include -->
     <sql id="Base_SF_Column_List">
-        <#list table.columnList as column><#if column_index gt 0><#if column_index%5==0>${"\n"}        </#if>,</#if>sf.${column.sqlName}</#list>
+        <#list table.columnList as column><#if column_index gt 0><#if column_index%5==0>${"\n"}        </#if>,</#if>sf.${column.sqlName?lower_case}</#list>
     </sql>
 
     <operation name="insert" paramtype="object" remark="插入表:${table.sqlName?lower_case}">
