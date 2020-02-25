@@ -122,7 +122,7 @@
                 DELETE FROM ${table.sqlName?lower_case}
                 WHERE
                 <#list table.primaryKeys.columnList as column>
-                    <#if column_index gt 0>AND </#if>${column.sqlName} = ${"#"}{${column.javaName},jdbcType=${column.sqlType}}
+                    <#if column_index gt 0>AND </#if>${column.sqlName?lower_case} = ${"#"}{${column.javaName},jdbcType=${column.sqlType}}
                 </#list>
                 ]]>
             </operation>
@@ -134,7 +134,7 @@
                 WHERE
                 <![CDATA[
                 <#list table.primaryKeys.columnList as column>
-                    <#if column_index gt 0>AND </#if>${column.sqlName} = ${"#"}{${column.javaName},jdbcType=${column.sqlType}}
+                    <#if column_index gt 0>AND </#if>${column.sqlName?lower_case} = ${"#"}{${column.javaName},jdbcType=${column.sqlType}}
                 </#list>
                 ]]>
             </operation>
