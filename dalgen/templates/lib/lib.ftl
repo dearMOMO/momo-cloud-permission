@@ -32,14 +32,12 @@
 <#-- insert  时字段处理 -->
 <#function insertVal column dalgen>
     <#if column.sqlName == "GMT_MODIFIED" || column.sqlName == "GMT_CREATE"><#return "now()"></#if>
-    <#if column.sqlName?upper_case == "ID"><#return "null"></#if>
     <#return '${"#"}{${column.javaName},jdbcType=${column.sqlType}}'/>
 </#function>
 
 <#-- insert  时字段处理 -->
 <#function insertBatchVal column dalgen>
     <#if column.sqlName == "GMT_MODIFIED" || column.sqlName == "GMT_CREATE"><#return "now()"></#if>
-    <#if column.sqlName?upper_case == "ID"><#return "null"></#if>
     <#return '${"#"}{item.${column.javaName},jdbcType=${column.sqlType}}'/>
 </#function>
 
