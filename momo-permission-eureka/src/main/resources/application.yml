@@ -18,8 +18,8 @@ eureka:
     preferIpAddress: true
     instance-id: ${momo.application}:${spring.cloud.client.ip-address}:${momo.port}
   client:
-    register-with-eureka: true #表示是否注册自身到eureka服务器 集群情况下 是需要改成true 的因为 集群是注册中心 相互注册自己 同步服务
-    fetch-registry: true  #是否从eureka上获取注册信息 集群情况下需要为true的  因为 会在别的注册中心 获取服务
+    register-with-eureka: false #表示是否注册自身到eureka服务器 集群情况下 是需要改成true 的因为 集群是注册中心 相互注册自己 同步服务
+    fetch-registry: false  #是否从eureka上获取注册信息 集群情况下需要为true的  因为 会在别的注册中心 获取服务
     registry-fetch-interval-seconds: 30 #client间隔多久去拉取服务注册信息，默认为30秒，对于api-gateway，如果要迅速获取服务注册状态，可以缩小该值，比如5秒
     service-url: #（集群时指定另外一个注册中心地址）
       defaultZone: http://${momo.security.name}:${momo.security.password}@${eureka.instance.hostname}:${momo.eureka-port}/eureka/

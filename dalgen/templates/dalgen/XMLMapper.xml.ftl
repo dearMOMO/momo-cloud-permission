@@ -11,7 +11,7 @@
     <#--生成BaseResultMap-->
     <resultMap id="BaseResultMap"  type="${xmlMapper.doClass.packageName}.${xmlMapper.doClass.className}">
 <#list xmlMapper.table.columnList as column>
-        <#if column.sqlName?upper_case =="ID"><id column="${column.sqlName}" property="${column.javaName}" jdbcType="${column.sqlType}" javaType="${fun.javaTypeTrun(column.javaType)}"/><#else><result column="${column.sqlName}" property="${column.javaName}" jdbcType="${column.sqlType}" javaType="${fun.javaTypeTrun(column.javaType)}"/></#if>
+        <#if column.sqlName?upper_case =="ID"><id column="${column.sqlName?lower_case}" property="${column.javaName}" jdbcType="${column.sqlType}" javaType="${fun.javaTypeTrun(column.javaType)}"/><#else><result column="${column.sqlName?lower_case}" property="${column.javaName}" jdbcType="${column.sqlType}" javaType="${fun.javaTypeTrun(column.javaType)}"/></#if>
 </#list>
     </resultMap>
 
