@@ -31,7 +31,7 @@
         <httpclient.version>4.5.11</httpclient.version>
         <commons-lang3.version>3.9</commons-lang3.version>
         <UserAgentUtils.version>1.21</UserAgentUtils.version>
-        <netty-all.version>4.1.36.Final</netty-all.version>
+        <netty-all.version>4.1.42.Final</netty-all.version>
         <spring-boot-admin.version>2.0.4</spring-boot-admin.version>
         <EasyCaptcha.version>1.6.2</EasyCaptcha.version>
         <commons-codec.version>1.13</commons-codec.version>
