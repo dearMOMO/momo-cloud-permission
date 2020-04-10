@@ -79,6 +79,12 @@ public class RoleService extends BaseService {
     private RoleRedisCacheServiceAsync roleRedisCacheServiceAsync;
     private SnowFlake snowFlake = new SnowFlake(1, 1);
 
+    /**
+     * 角色给用户(授权)
+     *
+     * @param batchRoleUserReq
+     * @return
+     */
     public String rolesToUser(BatchRoleUserReq batchRoleUserReq) {
         RedisUser redisUser = this.redisUser();
         //当前登录用户所拥有的 角色
@@ -132,6 +138,12 @@ public class RoleService extends BaseService {
         return "为用户授权角色成功";
     }
 
+    /**
+     * 为角色授权权限
+     *
+     * @param batchRoleUserReq
+     * @return
+     */
     public String aclsToRole(BatchRoleUserReq batchRoleUserReq) {
         RoleDO roleDO = roleMapper.selectByPrimaryUuid(batchRoleUserReq.getRoleUuid());
         if (null == roleDO) {
@@ -191,6 +203,12 @@ public class RoleService extends BaseService {
         updateRoleAcls(roleDO.getId(), aclDOS, redisUser, roleDO.getTenantId(), acls, roleDO.getSysRoleType(), alcIds);
     }
 
+    /**
+     * 为角色授权 权限 之前， 需要查看该角色拥有哪些权限点，以及当前登录用户可以操作哪些权限
+     *
+     * @param loginAuthReq
+     * @return
+     */
     public AclTreeRes roleHaveAclTree(DynamicMenuAuthorReq loginAuthReq) {
         RoleDO roleDO = roleMapper.selectByPrimaryUuid(loginAuthReq.getUuid());
         if (null == roleDO) {
@@ -211,6 +229,12 @@ public class RoleService extends BaseService {
         return roleMapper.rolesByCurrentId(redisUser.getBaseId(), DisabledFlagEnum.start.type);
     }
 
+    /**
+     * 角色列表
+     *
+     * @param roleReq
+     * @return
+     */
     public PageInfo<SysRolePageListRes> roleList(RoleReq roleReq) {
         RoleDO roleDO = new RoleDO();
         BeanUtils.copyProperties(roleReq, roleDO);
@@ -344,6 +368,12 @@ public class RoleService extends BaseService {
         }
     }
 
+    /**
+     * 角色详情
+     *
+     * @param roleReq
+     * @return
+     */
     public RoleDO showRole(RoleReq roleReq) {
         RoleDO roleDO = roleMapper.selectByPrimaryUuid(roleReq.getUuid());
         if (null == roleDO) {
@@ -352,6 +382,11 @@ public class RoleService extends BaseService {
         return roleDO;
     }
 
+    /**
+     * 是否禁用管理员按钮
+     *
+     * @return
+     */
     public DisabledAdminRoleButtonRes disabledAdminRoleButton() {
         RedisUser redisUser = this.redisUser();
         DisabledAdminRoleButtonRes disabledAdminRoleButtonRes = new DisabledAdminRoleButtonRes();
@@ -362,6 +397,12 @@ public class RoleService extends BaseService {
         return disabledAdminRoleButtonRes;
     }
 
+    /**
+     * 角色给用户(回显)
+     *
+     * @param roleReq
+     * @return
+     */
     public SysRoleCheckedRes userCheckedRoles(RoleReq roleReq) {
         UserDO userDO = userMapper.uuid(roleReq.getUuid());
         if (null == userDO) {
@@ -446,6 +487,12 @@ public class RoleService extends BaseService {
         return roleCheckedRes;
     }
 
+    /**
+     * 角色新增
+     *
+     * @param roleReq
+     * @return
+     */
     @Transactional
     public String insertSelective(RoleReq roleReq) {
         RedisUser redisUser = this.redisUser();
@@ -477,6 +524,12 @@ public class RoleService extends BaseService {
         return "新增角色成功";
     }
 
+    /**
+     * 角色编辑
+     *
+     * @param roleReq
+     * @return
+     */
     @Transactional
     public String updateByPrimaryKeySelective(RoleReq roleReq) {
         RoleDO roleDO = roleMapper.selectByPrimaryUuid(roleReq.getUuid());
@@ -519,6 +572,12 @@ public class RoleService extends BaseService {
         return "编辑角色成功";
     }
 
+    /**
+     * 角色状态
+     *
+     * @param roleReq
+     * @return
+     */
     @Transactional
     public String updateState(RoleReq roleReq) {
         RoleDO roleDO = roleMapper.selectByPrimaryUuid(roleReq.getUuid());
