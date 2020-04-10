@@ -28,7 +28,13 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Created by 李杰 on 2019/2/10.
+ * @ProjectName: momo-cloud-permission
+ * @Description: 登陆日志异步同步到数据库
+ * @Author: Jie Li
+ * @CreateDate: 2019-09-04 23:16
+ * @UpdateDate: 2019-09-04 23:16
+ * @Version: 1.0
+ * <p>Copyright: Copyright (c) 2019</p>
  */
 @Service
 @Slf4j
@@ -36,6 +42,11 @@ public class LoginLogAsync {
     @Autowired
     private LoginLogMapper loginLogMapper;
 
+    /**
+     * 登录日志存入数据库
+     * @param entity
+     * @param request
+     */
     @Async("threadPoolTaskExecutor")
     public void loginLog(LoginLogDO entity, HttpServletRequest request){
         UserAgentGetter userAgentGetter = new UserAgentGetter(request);
