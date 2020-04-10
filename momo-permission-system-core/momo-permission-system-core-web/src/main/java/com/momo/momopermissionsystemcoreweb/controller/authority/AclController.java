@@ -39,41 +39,79 @@ public class AclController {
     @Autowired
     private AclService aclService;
 
+    /**
+     * 权限菜单树
+     * @return
+     */
     @RequestMapping("/aclTree/v1")
     public JSONResult aclTree() {
         return JSONResult.ok(aclService.aclTree());
     }
 
+    /**
+     * 一键同步权限到Redis
+     *
+     * @return
+     */
     @RequestMapping("/aclsToRedis/v1")
     public JSONResult aclsToRedis() {
         return JSONResult.ok(aclService.aclsToRedis());
     }
 
+    /**
+     * 一键同步用户和角色关系到Redis
+     * @return
+     */
     @RequestMapping("/userToRolesToAcls/v1")
     public JSONResult userToRolesToAcls() {
         return JSONResult.ok(aclService.userToRolesToAcls());
     }
 
+    /**
+     * 新增权限
+     * @param aclReq
+     * @return
+     */
     @RequestMapping("/save/v1")
     public JSONResult save(@Validated(AclReq.Save.class) @RequestBody AclReq aclReq) {
         return JSONResult.ok(aclService.insertSelective(aclReq));
     }
 
+    /**
+     * 新增权限系统
+     * @param aclReq
+     * @return
+     */
     @RequestMapping("/saveSys/v1")
     public JSONResult saveSys(@Validated(AclReq.Permission.class) @RequestBody AclReq aclReq) {
         return JSONResult.ok(aclService.saveSys(aclReq));
     }
 
+    /**
+     * 编辑权限
+     * @param aclReq
+     * @return
+     */
     @RequestMapping("/modify/v1")
     public JSONResult modify(@Validated(AclReq.Modify.class) @RequestBody AclReq aclReq) {
         return JSONResult.ok(aclService.updateByPrimaryKeySelective(aclReq));
     }
 
+    /**
+     * 更新权限状态
+     * @param aclReq
+     * @return
+     */
     @RequestMapping("/status/v1")
     public JSONResult status(@Validated(AclReq.Status.class) @RequestBody AclReq aclReq) {
         return JSONResult.ok(aclService.updateStatus(aclReq));
     }
 
+    /**
+     * 查询菜单权限详情
+     * @param aclReq
+     * @return
+     */
     @RequestMapping("/detail/v1")
     public JSONResult showAclSysCode(@Validated(AclReq.Detail.class) @RequestBody AclReq aclReq) {
         return JSONResult.ok(aclService.detail(aclReq));

@@ -86,6 +86,11 @@ public class AclService extends BaseService {
     private AclRedisCacheServiceAsync aclRedisCacheServiceAsync;
     private SnowFlake snowFlake = new SnowFlake(1, 1);
 
+    /**
+     * 权限菜单树
+     *
+     * @return
+     */
     public AclTreeRes aclTree() {
         RedisUser redisUser = this.redisUser();
         // 1、当前用户已分配的权限点
@@ -127,6 +132,12 @@ public class AclService extends BaseService {
         return aclTreeRes;
     }
 
+    /**
+     * 新增权限
+     *
+     * @param aclReq
+     * @return
+     */
     @Transactional
     public String insertSelective(AclReq aclReq) {
         if (checkUrl(aclReq.getSysAclUrl(), aclReq.getSysAclPermissionCode(), null)) {
@@ -153,6 +164,12 @@ public class AclService extends BaseService {
         return "新增权限成功";
     }
 
+    /**
+     * 新增权限系统
+     *
+     * @param aclReq
+     * @return
+     */
     @Transactional
     public String saveSys(AclReq aclReq) {
         int checkAclPermissionType = aclMapper.checkAclPermissionType(aclReq.getSysAclPermissionCode());
@@ -180,6 +197,12 @@ public class AclService extends BaseService {
         return "新增权限系统成功";
     }
 
+    /**
+     * 编辑权限
+     *
+     * @param aclReq
+     * @return
+     */
     @Transactional
     public String updateByPrimaryKeySelective(AclReq aclReq) {
         AclDO before = aclMapper.selectByPrimaryUuid(aclReq.getUuid());
@@ -222,6 +245,12 @@ public class AclService extends BaseService {
         return "编辑权限成功";
     }
 
+    /**
+     * 查询菜单权限详情
+     *
+     * @param aclReq
+     * @return
+     */
     public AclDetailRes detail(AclReq aclReq) {
         AclDO aclDO = aclMapper.selectByPrimaryUuid(aclReq.getUuid());
         if (null == aclDO) {
@@ -243,6 +272,12 @@ public class AclService extends BaseService {
         return aclDetailRes;
     }
 
+    /**
+     * 更新权限状态
+     *
+     * @param aclReq
+     * @return
+     */
     @Transactional
     public String updateStatus(AclReq aclReq) {
         AclDO selfAclDO = aclMapper.selectByPrimaryUuid(aclReq.getUuid());
@@ -309,6 +344,11 @@ public class AclService extends BaseService {
         }
     }
 
+    /**
+     * 一键同步用户和角色关系到Redis
+     *
+     * @return
+     */
     public String userToRolesToAcls() {
         //用户相关
         int pageNumUser = 1;
@@ -415,6 +455,11 @@ public class AclService extends BaseService {
         }
     }
 
+    /**
+     * 一键同步权限到Redis
+     *
+     * @return
+     */
     public String aclsToRedis() {
         List<AclDO> getAllAcl = authorityMapper.getAllAcl(null, null);
         Set<String> redisMapKey = Sets.newHashSet();
