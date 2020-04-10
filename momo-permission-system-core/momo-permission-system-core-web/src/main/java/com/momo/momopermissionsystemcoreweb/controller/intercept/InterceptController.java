@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @ClassName: InterceptController
  * @Author: Jie Li
  * @Date 2019-10-15 17:53
- * @Description: TODO
+ * @Description: 当前用户是否有权限访问服务权限
  * @Version: 1.0
  * <p>Copyright: Copyright (c) 2019</p>
  **/
@@ -43,6 +43,12 @@ public class InterceptController {
     @Autowired
     private CommonSysCoreService commonSysCoreService;
 
+    /**
+     * 校验当前用户是否有权限访问服务权限
+     *
+     * @param hasAclReq
+     * @return
+     */
     @RequestMapping("/hasAcl/v1")
     public JSONResult hasAcl(@RequestBody HasAclReq hasAclReq) {
         if (hasAclReq.getTenantId().equals(1L)) {
