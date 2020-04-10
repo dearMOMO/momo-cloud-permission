@@ -32,11 +32,10 @@ import java.util.Map;
 
 /**
  * @ProjectName: momo-cloud-permission
- * @Package: com.momo.service.async
- * @Description: TODO
+ * @Description: 权限数据异步同步到Redis
  * @Author: Jie Li
- * @CreateDate: 2019/9/4 0004 23:16
- * @UpdateDate: 2019/9/4 0004 23:16
+ * @CreateDate: 2019-09-04 23:16
+ * @UpdateDate: 2019-09-04 23:16
  * @Version: 1.0
  * <p>Copyright: Copyright (c) 2019</p>
  */
@@ -46,6 +45,11 @@ public class AclRedisCacheServiceAsync {
     @Autowired
     private RedisUtil redisUtil;
 
+    /**
+     * 新增redis里的权限
+     *
+     * @param aclDO
+     */
     @Async("threadPoolTaskExecutor")
     public void aclSaveToRedis(AclDO aclDO) {
         String redisKey = RedisKeyEnum.REDIS_ACL_MAP.getKey() + aclDO.getSysAclPermissionCode();
@@ -53,6 +57,12 @@ public class AclRedisCacheServiceAsync {
         redisUtil.hset(redisKey, String.valueOf(aclDO.getId()), aclsStr);
     }
 
+    /**
+     * 更新redis里的权限
+     *
+     * @param aclSelf
+     * @param aclsChild
+     */
     @Async("threadPoolTaskExecutor")
     public void modifyAclToRedis(AclDO aclSelf, List<AclDO> aclsChild) {
         String redisKey = RedisKeyEnum.REDIS_ACL_MAP.getKey() + aclSelf.getSysAclPermissionCode();
