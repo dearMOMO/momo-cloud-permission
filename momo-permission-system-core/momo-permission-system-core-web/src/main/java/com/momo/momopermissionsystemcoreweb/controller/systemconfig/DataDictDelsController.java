@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
  * @ClassName: DataDictDelsController
  * @Author: Jie Li
  * @Date 2019-12-28 17:13
- * @Description: TODO
+ * @Description: 数据字典详情
  * @Version: 1.0
  * <p>Copyright: Copyright (c) 2019</p>
  **/

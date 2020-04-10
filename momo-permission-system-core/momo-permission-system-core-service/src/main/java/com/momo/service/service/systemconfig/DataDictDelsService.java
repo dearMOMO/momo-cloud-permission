@@ -9,11 +9,16 @@ import com.momo.mapper.res.systemconfig.DataDictDelsRes;
  * @ClassName: DataDictDelsService
  * @Author: Jie Li
  * @Date 2019-12-28 17:03
- * @Description: TODO
+ * @Description: 数据字典 详情
  * @Version: 1.0
  * <p>Copyright: Copyright (c) 2019</p>
  **/
 public interface DataDictDelsService {
+    /**
+     * 数据字典 详情分页
+     * @param dataDictDelsReq
+     * @return
+     */
     PageInfo<DataDictDelsRes> dictDelsPageList(DataDictDelsReq dataDictDelsReq);
 
     String dictDelsSave(DataDictDelsReq dataDictDelsReq);
