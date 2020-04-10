@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * @program: momo-cloud-permission
- * @description: TODO
+ * @description: 用户会话相关
  * @author: Jie Li
  * @create: 2019-07-30 16:39
  **/
@@ -64,7 +64,7 @@ public class SysMainController {
     }
 
     /**
-     * 获取用户信息
+     * 登陆成功后 获取用户信息
      *
      * @return
      */

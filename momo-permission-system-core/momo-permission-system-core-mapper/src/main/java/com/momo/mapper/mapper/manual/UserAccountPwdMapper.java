@@ -22,11 +22,35 @@ import org.apache.ibatis.annotations.Param;
 public interface UserAccountPwdMapper {
 
 
+    /**
+     * 根据登录账号 查询用户
+     *
+     * @param sysUserLoginName
+     * @return
+     */
     UserAccountPwdDO sysUserAccountLogin(@Param("sysUserLoginName") String sysUserLoginName);
 
+    /**
+     * 根据用户id查询用户
+     *
+     * @param userId
+     * @return
+     */
     UserAccountPwdDO sysUserAccountByUserId(@Param("userId") Long userId);
 
+    /**
+     * 新增用户
+     *
+     * @param userAccountPwdDO
+     * @return
+     */
     int insertSelective(UserAccountPwdDO userAccountPwdDO);
 
+    /**
+     * 编辑用户
+     *
+     * @param userAccountPwdDO
+     * @return
+     */
     int updateByPrimaryKeySelective(UserAccountPwdDO userAccountPwdDO);
 }

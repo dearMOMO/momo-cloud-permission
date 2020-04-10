@@ -80,6 +80,12 @@ public class SysMainService extends BaseService {
     @Value("${momo.checkVerificationCode}")
     private boolean checkVerificationCode;
 
+    /**
+     * 用户登录
+     * @param sysUserLoginReq
+     * @param request
+     * @return
+     */
     public String userLogin(SysUserLoginReq sysUserLoginReq, HttpServletRequest request) {
         //todo 验证码
         if (checkVerificationCode) {
@@ -192,6 +198,10 @@ public class SysMainService extends BaseService {
         return redisUserKey;
     }
 
+    /**
+     * 登陆成功后 获取用户信息
+     * @return
+     */
     public UserInfoRes getUserInfo() {
         RedisUser redisUser = this.redisUser();
         UserDO userDO = userMapper.getUserInfo(redisUser.getBaseId());
@@ -199,6 +209,10 @@ public class SysMainService extends BaseService {
         return userInfoRes;
     }
 
+    /**
+     * 用户退出
+     * @return
+     */
     public String logout() {
         RedisUser redisUser = this.redisUser();
         redisUtil.del(RedisKeyEnum.REDIS_KEY_USER_INFO.getKey() + redisUser.getRedisUserKey());
@@ -221,6 +235,10 @@ public class SysMainService extends BaseService {
         return "安全退出成功";
     }
 
+    /**
+     * 验证码
+     * @return
+     */
     public JSONResult createVerificationCode() {
         try {
             SpecCaptcha specCaptcha = new SpecCaptcha(130, 48, 5);
