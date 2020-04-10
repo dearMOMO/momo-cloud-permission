@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
  * @ClassName: SysDeptController
  * @Author: Jie Li
  * @Date 2019-11-15 16:47
- * @Description: 部门控制器
+ * @Description: 部门相关
  * @Version: 1.0
  * <p>Copyright: Copyright (c) 2019</p>
  **/

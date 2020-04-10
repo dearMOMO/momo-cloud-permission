@@ -30,6 +30,11 @@ import java.util.List;
  **/
 public interface DeptMapper {
 
+    /**
+     * 查询租户下面的所有部门
+     * @param tenantId
+     * @return
+     */
     List<DeptDO> deptGetAll(@Param("tenantId") Long tenantId);
 
     int deleteByPrimaryKey(Long id);
