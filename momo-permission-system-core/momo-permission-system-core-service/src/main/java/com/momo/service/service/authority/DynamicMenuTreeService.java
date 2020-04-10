@@ -30,9 +30,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * @ProjectName: momo-cloud-permission
- * @Package: com.momo.service.service.authority
- * @Description: 动态权限菜单
+ * @Description: 动态权限菜单-->Redis缓存
  * @Author: Jie Li
  * @CreateDate: 2019-09-03 16:43
  * @UpdateDate: 2019-09-03 16:43
@@ -68,6 +66,7 @@ public class DynamicMenuTreeService extends BaseService {
             if (CollectionUtils.isNotEmpty(dynamicMenuTree)) {
                 return dynamicMenuTree;
             }
+            //动态权限菜单(总部)
             return adminAuthorityService.dynamicMenuTree(loginAuthReq, redisUser);
         } else {//第三方权限菜单
             //走redis缓存
@@ -75,6 +74,7 @@ public class DynamicMenuTreeService extends BaseService {
             if (CollectionUtils.isNotEmpty(dynamicMenuTree)) {
                 return dynamicMenuTree;
             }
+            //动态权限菜单(第三方)
             return commonAuthorityService.dynamicMenuTree(loginAuthReq, redisUser);
         }
     }

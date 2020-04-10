@@ -36,7 +36,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Created by MOMO on 2019/4/9.
+ * @Description: 动态权限菜单(第三方)
+ * @Author: Jie Li
+ * @CreateDate: 2019-09-03 16:43
+ * @UpdateDate: 2019-09-03 16:43
+ * @Version: 1.0
+ * <p>Copyright: Copyright (c) 2019</p>
  */
 @Service
 public class CommonAuthorityService extends BaseService {

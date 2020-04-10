@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 
 /**
  * @program: momo-cloud-permission
- * @description: 本部 权限
+ * @description: 动态权限菜单(总部)
  * @author: Jie Li
  * @create: 2019-07-30 22:44
  **/

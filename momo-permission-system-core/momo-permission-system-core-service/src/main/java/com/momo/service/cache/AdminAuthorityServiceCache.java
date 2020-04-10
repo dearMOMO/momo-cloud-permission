@@ -33,7 +33,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * @Description: 动态权限菜单树
+ * @Description: 动态权限菜单树-->Redis缓存
  * @Author: Jie Li
  * @CreateDate: 2019-09-10 11:08
  * @UpdateDate: 2019-09-10 11:08
@@ -56,6 +56,7 @@ public class AdminAuthorityServiceCache {
      * @return
      */
     public List<AclLevelRes> dynamicMenuTree(DynamicMenuAuthorReq loginAuthReq, RedisUser redisUser) {
+        //当前用户的动态权限菜单-->Redis缓存
         List<AclDO> userAclList = adminSysCoreServiceCache.getUserAclList(loginAuthReq, redisUser);
         List<AclLevelRes> aclDtoList = Lists.newArrayList();
         for (AclDO acl : userAclList) {
