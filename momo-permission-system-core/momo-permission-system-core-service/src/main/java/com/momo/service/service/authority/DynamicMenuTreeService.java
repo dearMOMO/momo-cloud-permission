@@ -34,8 +34,8 @@ import java.util.List;
  * @Package: com.momo.service.service.authority
  * @Description: 动态权限菜单
  * @Author: Jie Li
- * @CreateDate: 2019/9/3 0003 16:43
- * @UpdateDate: 2019/9/3 0003 16:43
+ * @CreateDate: 2019-09-03 16:43
+ * @UpdateDate: 2019-09-03 16:43
  * @Version: 1.0
  * <p>Copyright: Copyright (c) 2019</p>
  */
@@ -53,6 +53,12 @@ public class DynamicMenuTreeService extends BaseService {
     @Autowired
     private CommonAuthorityServiceCache commonAuthorityServiceCache;
 
+    /**
+     * 动态权限菜单 (总部和第三方通用)
+     *
+     * @param loginAuthReq
+     * @return
+     */
     public List<AclLevelRes> dynamicMenuTree(DynamicMenuAuthorReq loginAuthReq) {
         RedisUser redisUser = this.redisUser();
         //总部权限菜单
