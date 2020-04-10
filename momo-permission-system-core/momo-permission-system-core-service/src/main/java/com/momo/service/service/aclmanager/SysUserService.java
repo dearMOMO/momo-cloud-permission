@@ -37,13 +37,43 @@ public interface SysUserService {
      */
     PageInfo<SysUserListRes> sysUserList(SysUserListReq sysUserListReq);
 
+    /**
+     * 用户新增--账号密码
+     *
+     * @param sysUserAddReq
+     * @return
+     */
     String sysUserAdd(SysUserAddReq sysUserAddReq);
 
+    /**
+     * 查询用户详情
+     *
+     * @param sysUserAddReq
+     * @return
+     */
     UserDO sysUserDetail(SysUserAddReq sysUserAddReq);
 
+    /**
+     * 编辑
+     *
+     * @param sysUserAddReq
+     * @return
+     */
     String sysUserModify(SysUserAddReq sysUserAddReq);
 
+    /**
+     * 用户状态
+     *
+     * @param sysUserAddReq
+     * @return
+     */
     String sysUserStatus(SysUserAddReq sysUserAddReq);
 
+    /**
+     * 用户密码
+     *
+     * @param sysUserAddReq
+     * @return
+     */
     String sysUserPwd(SysUserAddReq sysUserAddReq);
 }
