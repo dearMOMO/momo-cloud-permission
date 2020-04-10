@@ -14,11 +14,35 @@ import com.momo.mapper.res.systemconfig.DataDictLevelRes;
  **/
 public interface DataDictService {
 
+    /**
+     * 数据字典 树
+     *
+     * @param dataDictTreeReq
+     * @return
+     */
     DataDictLevelRes dataDictTree(DataDictTreeReq dataDictTreeReq);
 
+    /**
+     * 新增 数据字典
+     *
+     * @param dataDictTreeReq
+     * @return
+     */
     String dictSave(DataDictTreeReq dataDictTreeReq);
 
+    /**
+     * 编辑 数据字典
+     *
+     * @param dataDictTreeReq
+     * @return
+     */
     String dictModify(DataDictTreeReq dataDictTreeReq);
 
+    /**
+     * 编辑 数据字典 状态
+     *
+     * @param dataDictTreeReq
+     * @return
+     */
     String dictStatus(DataDictTreeReq dataDictTreeReq);
 }
