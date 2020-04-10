@@ -39,12 +39,10 @@ import java.util.Set;
 import java.util.concurrent.Future;
 
 /**
- * @ProjectName: momo-cloud-permission
- * @Package: com.momo.service.async
- * @Description: TODO
+ * @Description: 角色信息异步同步到Redis
  * @Author: Jie Li
- * @CreateDate: 2019/9/4 0004 14:42
- * @UpdateDate: 2019/9/4 0004 14:42
+ * @CreateDate: 2019-09-04 14:42
+ * @UpdateDate: 2019-09-04 14:42
  * @Version: 1.0
  * <p>Copyright: Copyright (c) 2019</p>
  */
