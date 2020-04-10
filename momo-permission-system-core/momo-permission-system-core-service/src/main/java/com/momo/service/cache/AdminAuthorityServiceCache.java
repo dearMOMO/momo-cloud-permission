@@ -33,12 +33,10 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * @ProjectName: momo-cloud-permission
- * @Package: com.momo.service.cache
- * @Description: TODO
+ * @Description: 动态权限菜单树
  * @Author: Jie Li
- * @CreateDate: 2019/9/10 0010 11:08
- * @UpdateDate: 2019/9/10 0010 11:08
+ * @CreateDate: 2019-09-10 11:08
+ * @UpdateDate: 2019-09-10 11:08
  * @Version: 1.0
  * <p>Copyright: Copyright (c) 2019</p>
  */
@@ -50,6 +48,13 @@ public class AdminAuthorityServiceCache {
     @Autowired
     private RedisUtil redisUtil;
 
+    /**
+     * 动态权限菜单树
+     *
+     * @param loginAuthReq
+     * @param redisUser
+     * @return
+     */
     public List<AclLevelRes> dynamicMenuTree(DynamicMenuAuthorReq loginAuthReq, RedisUser redisUser) {
         List<AclDO> userAclList = adminSysCoreServiceCache.getUserAclList(loginAuthReq, redisUser);
         List<AclLevelRes> aclDtoList = Lists.newArrayList();
@@ -65,6 +70,12 @@ public class AdminAuthorityServiceCache {
         return aclListToTree(aclDtoList);
     }
 
+    /**
+     * 设置首级菜单树
+     *
+     * @param aclDtoList
+     * @return
+     */
     private List<AclLevelRes> aclListToTree(List<AclLevelRes> aclDtoList) {
         if (CollectionUtils.isEmpty(aclDtoList)) {
             return Lists.newArrayList();
