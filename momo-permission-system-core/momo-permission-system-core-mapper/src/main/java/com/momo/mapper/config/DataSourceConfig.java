@@ -65,14 +65,14 @@ public class DataSourceConfig {
         hikariConfig.setJdbcUrl(hikariDattaSourceConfig.getJdbcUrl());
         hikariConfig.setUsername(hikariDattaSourceConfig.getUsername());
         hikariConfig.setPassword(hikariDattaSourceConfig.getPassword());
-        hikariConfig.setMaxLifetime(Integer.valueOf(hikariDattaSourceConfig.getMaxlifetime()));
+        hikariConfig.setMaxLifetime(hikariDattaSourceConfig.getMaxlifetime());
         hikariConfig.setConnectionTestQuery(hikariDattaSourceConfig.getConnectionTestQuery());
         hikariConfig.setPoolName(hikariDattaSourceConfig.getPoolName());
-        hikariConfig.setIdleTimeout(Integer.valueOf(hikariDattaSourceConfig.getIdleTimeout()));
+        hikariConfig.setIdleTimeout(hikariDattaSourceConfig.getIdleTimeout());
         hikariConfig.setAutoCommit(true);
-        hikariConfig.setConnectionTimeout(Integer.valueOf(hikariDattaSourceConfig.getConnectionTimeout()));
-        hikariConfig.setMinimumIdle(Integer.valueOf(hikariDattaSourceConfig.getMinimumTdle()));
-        hikariConfig.setMaximumPoolSize(Integer.valueOf(hikariDattaSourceConfig.getMaximumPoolSize()));
+        hikariConfig.setConnectionTimeout(hikariDattaSourceConfig.getConnectionTimeout());
+        hikariConfig.setMinimumIdle(hikariDattaSourceConfig.getMinimumTdle());
+        hikariConfig.setMaximumPoolSize(hikariDattaSourceConfig.getMaximumPoolSize());
         hikariConfig.addDataSourceProperty("dataSource.cachePrepStmts", "true");
         hikariConfig.addDataSourceProperty("dataSource.prepStmtCacheSize", "250");
         hikariConfig.addDataSourceProperty("dataSource.prepStmtCacheSqlLimit", "2048");
@@ -96,8 +96,7 @@ public class DataSourceConfig {
         String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + MAPPER_PATH;
 
         //添加插件
-        sessionFactory.setPlugins(new Interceptor[]{pageInterceptor()});
-
+        sessionFactory.setPlugins(pageInterceptor());
         sessionFactory.setDataSource(dataSource);
         sessionFactory.setMapperLocations(pathMatchingResourcePatternResolver.getResources(packageSearchPath));
         sessionFactory.getObject().getConfiguration().setMapUnderscoreToCamelCase(true);
