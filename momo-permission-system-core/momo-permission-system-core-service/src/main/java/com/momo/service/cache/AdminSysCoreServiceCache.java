@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 /**
  * @ProjectName: momo-cloud-permission
  * @Package: com.momo.service.cache
- * @Description: TODO
+ * @Description: 动态权限菜单(总部)-->Redis
  * @Author: Jie Li
  * @CreateDate: 2019-09-10 11:24
  * @UpdateDate: 2019-09-10 11:24

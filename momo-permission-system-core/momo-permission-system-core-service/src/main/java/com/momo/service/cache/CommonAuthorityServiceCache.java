@@ -40,10 +40,10 @@ import java.util.List;
 /**
  * @ProjectName: momo-cloud-permission
  * @Package: com.momo.service.cache
- * @Description: TODO
+ * @Description: 动态权限菜单(第三方)-->Redis
  * @Author: Jie Li
- * @CreateDate: 2019/9/10 0010 11:22
- * @UpdateDate: 2019/9/10 0010 11:22
+ * @CreateDate:
+ * @UpdateDate: 2019-0910 11:22
  * @Version: 1.0
  * <p>Copyright: Copyright (c) 2019</p>
  */

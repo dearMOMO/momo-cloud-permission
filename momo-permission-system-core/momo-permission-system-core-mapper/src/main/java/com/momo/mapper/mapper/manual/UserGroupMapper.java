@@ -34,5 +34,12 @@ public interface UserGroupMapper {
 
     int updateByPrimaryKeySelective(UserGroupDO userGroupDO);
 
+    /**
+     * 校验企业名称是否唯一
+     *
+     * @param user_group_name
+     * @param id
+     * @return
+     */
     int checkNameExists(@Param("user_group_name") String user_group_name, @Param("id") Long id);
 }

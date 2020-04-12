@@ -67,10 +67,30 @@ public interface AclMapper {
      */
     int checkAclPermissionType(@Param("sys_acl_permission_code") String sys_acl_permission_code);
 
+    /**
+     * 校验是否有子菜单
+     *
+     * @param sys_acl_level
+     * @return
+     */
     int checkChildAcl(@Param("sys_acl_level") String sys_acl_level);
 
+    /**
+     * 校验名称是否存在
+     *
+     * @param id
+     * @param sys_acl_name
+     * @param sys_acl_level
+     * @return
+     */
     int checkAclSysName(@Param("id") Long id, @Param("sys_acl_name") String sys_acl_name, @Param("sys_acl_level") String sys_acl_level);
 
+    /**
+     * 根据url 获取权限列表
+     *
+     * @param url
+     * @return
+     */
     List<AclDO> getByUrl(@Param("url") String url);
 
 }

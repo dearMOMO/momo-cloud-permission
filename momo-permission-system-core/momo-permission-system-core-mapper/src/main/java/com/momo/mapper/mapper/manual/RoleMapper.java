@@ -134,6 +134,14 @@ public interface RoleMapper {
      */
     RoleDO getVipAdminRole(@Param("tenantId") Long tenantId, @Param("roleType") Integer roleType);
 
-
+    /**
+     * 企业角色列表
+     *
+     * @param tenantId
+     * @param roleType
+     * @param disabledFlag
+     * @param sysRoleName
+     * @return
+     */
     List<RoleDO> getRoleListByEnterpriseId(@Param("tenantId") Long tenantId, @Param("roleType") Integer roleType, @Param("disabledFlag") Integer disabledFlag, @Param("sysRoleName") String sysRoleName);
 }

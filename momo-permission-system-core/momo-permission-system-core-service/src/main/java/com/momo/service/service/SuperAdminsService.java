@@ -30,7 +30,8 @@ import java.util.Set;
 /**
  * @ProjectName: momo-cloud-permission
  * @Package: com.momo.service.service
- * @Description:  这里是我自己定义了一个超级管理员规则，可以是配置文件获取，可以指定某个用户，也可以指定某个角色
+ * @Description: 这里是我自己定义了一个超级管理员规则，可以是配置文件获取，
+ * 可以指定某个用户，也可以指定某个角色
  * @Author: Jie Li
  * @CreateDate: 2019/8/24 0024 13:33
  * @UpdateDate: 2019/8/24 0024 13:33
@@ -50,6 +51,12 @@ public class SuperAdminsService {
     private Long teantId;
     private List<String> superAdmins = Lists.newArrayList();
 
+    /**
+     * true->超级管理员
+     *
+     * @param sysUserPhone
+     * @return
+     */
     public boolean checkIsSuperAdmin(String sysUserPhone) {
         if (StringUtils.isBlank(sysUserPhone)) {
             return false;

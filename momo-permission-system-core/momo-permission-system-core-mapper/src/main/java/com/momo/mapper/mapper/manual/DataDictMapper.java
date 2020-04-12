@@ -41,10 +41,29 @@ public interface DataDictMapper {
 
     List<DataDictDO> dataDiceGetAll(@Param("delFlag") Integer delFlag, @Param("sysDictCodeParentValue") String parentValue, @Param("sysDictCodeParentId") String parentId);
 
+    /**
+     * 校验字典值是否唯一
+     * @param codeValue
+     * @param id
+     * @return
+     */
     int checkCodeValue(@Param("sys_dict_code_value") String codeValue, @Param("id") Long id);
 
+    /**
+     * 校验同一层级名称是否唯一
+     * @param parentId
+     * @param parentValue
+     * @param codeName
+     * @param id
+     * @return
+     */
     int checkSameLevelName(@Param("sys_dict_code_parent_id") Long parentId, @Param("sys_dict_code_parent_value") String parentValue, @Param("sys_dict_code_name") String codeName, @Param("id") Long id);
 
+    /**
+     * 根据字典值获取子数据
+     * @param codeLevel
+     * @return
+     */
     List<DataDictDO> getChildDictListByLevel(@Param("sys_dict_code_level") String codeLevel);
 
     int batchUpdateLevel(@Param("dictList") List<DataDictDO> aclModuleDOS);

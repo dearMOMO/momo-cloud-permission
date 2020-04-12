@@ -31,7 +31,7 @@
     update_by
     </sql>
     <select id="checkChildAcl" parameterType="map" resultType="int">
-        select count(id) from sys_acl where sys_acl_level like CONCAT('%',#{sys_acl_level})
+        select count(id) from sys_acl where sys_acl_level like CONCAT(#{sys_acl_level},'%')
     </select>
     <select id="getByUrl" parameterType="map" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List" />
