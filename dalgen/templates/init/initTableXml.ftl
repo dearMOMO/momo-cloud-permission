@@ -83,14 +83,14 @@
                 update ${table.sqlName?lower_case}
                 <set>
                     <#list table.columnList as column>
-                        <if test="item.${column.javaName} != null<#if column.sqlType?upper_case == "VARCHAR"> and item.${column.javaName}.trim()!=''</#if>">
+                        <if test="item.${column.javaName} != null<#if column.sqlType?upper_case == "VARCHAR"></#if>">
                             ${column.sqlName?lower_case}=${lib.updateBatchVal(column)} ,
                         </if>
                     </#list>
                 </set>
                 WHERE
                 <#list table.primaryKeys.columnList as column>
-                    <if test="item.${column.javaName} != null<#if column.sqlType?upper_case == "VARCHAR"> and item.${column.javaName}.trim()!=''</#if>">
+                    <if test="item.${column.javaName} != null<#if column.sqlType?upper_case == "VARCHAR"></#if>">
                         ${column.sqlName?lower_case}=${lib.insertBatchVal(column,dalgen)}
                     </if>
                 </#list>
@@ -100,14 +100,14 @@
             update ${table.sqlName?lower_case}
             <set>
                 <#list table.columnList as column>
-                    <if test="${column.javaName} != null<#if column.sqlType?upper_case == "VARCHAR"> and ${column.javaName}.trim()!=''</#if>">
+                    <if test="${column.javaName} != null<#if column.sqlType?upper_case == "VARCHAR"></#if>">
                         ${column.sqlName?lower_case}=${lib.updateVal(column)},
                     </if>
                 </#list>
             </set>
             WHERE
             <#list table.primaryKeys.columnList as column>
-                <if test="${column.javaName} != null<#if column.sqlType?upper_case == "VARCHAR"> and ${column.javaName}.trim()!=''</#if>">
+                <if test="${column.javaName} != null<#if column.sqlType?upper_case == "VARCHAR"></#if>">
                     <#if column_index gt 0>,</#if> ${column.sqlName?lower_case}=${lib.updateVal(column)}
                 </if>
             </#list>
