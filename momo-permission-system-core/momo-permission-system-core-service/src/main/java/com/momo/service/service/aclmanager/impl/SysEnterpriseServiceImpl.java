@@ -87,7 +87,7 @@ public class SysEnterpriseServiceImpl extends BaseService implements SysEnterpri
     private RoleService roleService;
     @Autowired
     private RoleRedisCacheServiceAsync roleRedisCacheServiceAsync;
-    private SnowFlake snowFlake = new SnowFlake(1L, 1L);
+    private static final SnowFlake snowFlake = new SnowFlake(1L, 1L);
     @Autowired
     private SuperAdminsService superAdminsService;
 

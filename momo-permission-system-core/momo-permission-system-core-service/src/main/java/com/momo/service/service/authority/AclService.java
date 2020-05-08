@@ -84,7 +84,7 @@ public class AclService extends BaseService {
     private RoleAclMapper roleAclMapper;
     @Autowired
     private AclRedisCacheServiceAsync aclRedisCacheServiceAsync;
-    private SnowFlake snowFlake = new SnowFlake(1, 1);
+    private static final SnowFlake snowFlake = new SnowFlake(1, 1);
 
     /**
      * 权限菜单树

@@ -68,7 +68,7 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
     private RoleMapper roleMapper;
     @Autowired
     private SuperAdminsService superAdminsService;
-    private SnowFlake snowFlake = new SnowFlake(1, 1);
+    private static final SnowFlake snowFlake = new SnowFlake(1, 1);
 
     @Transactional
     @Override

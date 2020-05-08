@@ -38,7 +38,7 @@ import java.util.List;
 public class DataDictServiceImpl extends BaseService implements DataDictService {
     @Autowired
     private DataDictMapper dataDictMapper;
-    private static final SnowFlake SNOW_FLAKE = new SnowFlake(1, 2);
+    private static final SnowFlake snowFlake = new SnowFlake(1, 2);
 
     @Override
     public DataDictLevelRes dataDictTree(DataDictTreeReq dataDictTreeReq) {

@@ -77,7 +77,7 @@ public class RoleService extends BaseService {
     private SuperAdminsService superAdminsService;
     @Autowired
     private RoleRedisCacheServiceAsync roleRedisCacheServiceAsync;
-    private SnowFlake snowFlake = new SnowFlake(1, 1);
+    private static final SnowFlake snowFlake = new SnowFlake(1, 1);
 
     /**
      * 角色给用户(授权)

@@ -74,7 +74,7 @@ public class SysMainService extends BaseService {
     private UserGroupMapper userGroupMapper;
     @Autowired
     private NettyServiceAsync nettyServiceAsync;
-    private SnowFlake snowFlake = new SnowFlake(1, 1);
+    private static final SnowFlake snowFlake = new SnowFlake(1, 1);
     @Autowired
     private SuperAdminsService superAdminsService;
     @Value("${momo.checkVerificationCode}")
