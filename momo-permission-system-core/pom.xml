@@ -14,10 +14,8 @@
         <module>momo-permission-system-core-mapper</module>
         <module>momo-permission-system-core-service</module>
         <module>momo-permission-system-core-feign</module>
-<!--        <module>momo-permission-system-core-common</module>-->
         <module>momo-permission-system-core-web</module>
         <module>momo-permission-system-core-netty</module>
-        <module>momo-permission-system-core-weixin-all</module>
     </modules>
     <dependencyManagement>
         <dependencies>
