@@ -1,132 +1,612 @@
-<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
-<table sqlname="sys_acl" physicalName="sys_acl" remark="权限点表">
-    <!--  特殊字符说明 &lt;&gt; <> -->
-    <!-- baseSql option中 select * 会自动替换为 include -->
-    <sql id="Base_Column_List">
-        ID,SYS_ACL_PARENT_ID,SYS_ACL_PERMISSION_TYPE,UUID,REMARK 
-        ,CREATE_BY,UPDATE_BY,SYS_ACL_URL,SYS_ACL_CODE,SYS_ACL_ICON 
-        ,SYS_ACL_NAME,SYS_ACL_LEVEL,SYS_ACL_ACTION,SYS_ACL_ROUTER,FLAG 
-        ,DEL_FLAG,SYS_ACL_SEQ,SYS_ACL_TYPE,CREATE_TIME,UPDATE_TIME
-    </sql>
+    <!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+    <table sqlname="sys_acl"
+           physicalName="sys_acl" remark="操作权限-权限点表">
+        <!--  特殊字符说明 &lt;&gt; <> -->
+        <!-- baseSql option中 select * 会自动替换为 include -->
+        <sql id="Base_Column_List">
+            id,sys_acl_parent_id,uuid,remark,create_by 
+        ,update_by,sys_acl_url,sys_acl_code,sys_acl_icon,sys_acl_name 
+        ,sys_acl_level,sys_acl_action,sys_acl_router,sys_acl_component_name,sys_acl_permission_code 
+        ,del_flag,sys_acl_seq,sys_acl_type,sys_acl_frame,disabled_flag 
+        ,create_time,update_time
+        </sql>
 
-    <!-- baseSql option中 select sf.* 会自动替换为 include -->
-    <sql id="Base_SF_Column_List">
-        sf.ID,sf.SYS_ACL_PARENT_ID,sf.SYS_ACL_PERMISSION_TYPE,sf.UUID,sf.REMARK
-        ,sf.CREATE_BY,sf.UPDATE_BY,sf.SYS_ACL_URL,sf.SYS_ACL_CODE,sf.SYS_ACL_ICON
-        ,sf.SYS_ACL_NAME,sf.SYS_ACL_LEVEL,sf.SYS_ACL_ACTION,sf.SYS_ACL_ROUTER,sf.FLAG
-        ,sf.DEL_FLAG,sf.SYS_ACL_SEQ,sf.SYS_ACL_TYPE,sf.CREATE_TIME,sf.UPDATE_TIME
-    </sql>
+        <!-- baseSql option中 select sf.* 会自动替换为 include -->
+        <sql id="Base_SF_Column_List">
+            sf.id,sf.sys_acl_parent_id,sf.uuid,sf.remark,sf.create_by
+        ,sf.update_by,sf.sys_acl_url,sf.sys_acl_code,sf.sys_acl_icon,sf.sys_acl_name
+        ,sf.sys_acl_level,sf.sys_acl_action,sf.sys_acl_router,sf.sys_acl_component_name,sf.sys_acl_permission_code
+        ,sf.del_flag,sf.sys_acl_seq,sf.sys_acl_type,sf.sys_acl_frame,sf.disabled_flag
+        ,sf.create_time,sf.update_time
+        </sql>
 
-    <operation name="insert" paramtype="object" remark="插入表:sys_acl">
-        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
-            SELECT
-            LAST_INSERT_ID()
-        </selectKey>
-        <![CDATA[
-        INSERT INTO sys_acl(
-            ID
-            ,SYS_ACL_PARENT_ID
-            ,SYS_ACL_PERMISSION_TYPE
-            ,UUID
-            ,REMARK
-            ,CREATE_BY
-            ,UPDATE_BY
-            ,SYS_ACL_URL
-            ,SYS_ACL_CODE
-            ,SYS_ACL_ICON
-            ,SYS_ACL_NAME
-            ,SYS_ACL_LEVEL
-            ,SYS_ACL_ACTION
-            ,SYS_ACL_ROUTER
-            ,FLAG
-            ,DEL_FLAG
-            ,SYS_ACL_SEQ
-            ,SYS_ACL_TYPE
-            ,CREATE_TIME
-            ,UPDATE_TIME
-        )VALUES(
-             null
-            , #{sysAclParentId,jdbcType=BIGINT}
-            , #{sysAclPermissionType,jdbcType=BIGINT}
-            , #{uuid,jdbcType=VARCHAR}
-            , #{remark,jdbcType=VARCHAR}
-            , #{createBy,jdbcType=VARCHAR}
-            , #{updateBy,jdbcType=VARCHAR}
-            , #{sysAclUrl,jdbcType=VARCHAR}
-            , #{sysAclCode,jdbcType=VARCHAR}
-            , #{sysAclIcon,jdbcType=VARCHAR}
-            , #{sysAclName,jdbcType=VARCHAR}
-            , #{sysAclLevel,jdbcType=VARCHAR}
-            , #{sysAclAction,jdbcType=VARCHAR}
-            , #{sysAclRouter,jdbcType=VARCHAR}
-            , #{flag,jdbcType=INTEGER}
-            , #{delFlag,jdbcType=INTEGER}
-            , #{sysAclSeq,jdbcType=INTEGER}
-            , #{sysAclType,jdbcType=INTEGER}
-            , #{createTime,jdbcType=TIMESTAMP}
-            , #{updateTime,jdbcType=TIMESTAMP}
-        )
-        ]]>
-    </operation>
+        <operation name="insertSelect" paramtype="object" remark="插入表:sys_acl">
+            INSERT INTO sys_acl
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                    <if test="id != null">
+                        id ,
+                    </if>
+                    <if test="sysAclParentId != null">
+                        sys_acl_parent_id ,
+                    </if>
+                    <if test="uuid != null and uuid.trim()!=''">
+                        uuid ,
+                    </if>
+                    <if test="remark != null and remark.trim()!=''">
+                        remark ,
+                    </if>
+                    <if test="createBy != null and createBy.trim()!=''">
+                        create_by ,
+                    </if>
+                    <if test="updateBy != null and updateBy.trim()!=''">
+                        update_by ,
+                    </if>
+                    <if test="sysAclUrl != null and sysAclUrl.trim()!=''">
+                        sys_acl_url ,
+                    </if>
+                    <if test="sysAclCode != null and sysAclCode.trim()!=''">
+                        sys_acl_code ,
+                    </if>
+                    <if test="sysAclIcon != null and sysAclIcon.trim()!=''">
+                        sys_acl_icon ,
+                    </if>
+                    <if test="sysAclName != null and sysAclName.trim()!=''">
+                        sys_acl_name ,
+                    </if>
+                    <if test="sysAclLevel != null and sysAclLevel.trim()!=''">
+                        sys_acl_level ,
+                    </if>
+                    <if test="sysAclAction != null and sysAclAction.trim()!=''">
+                        sys_acl_action ,
+                    </if>
+                    <if test="sysAclRouter != null and sysAclRouter.trim()!=''">
+                        sys_acl_router ,
+                    </if>
+                    <if test="sysAclComponentName != null and sysAclComponentName.trim()!=''">
+                        sys_acl_component_name ,
+                    </if>
+                    <if test="sysAclPermissionCode != null and sysAclPermissionCode.trim()!=''">
+                        sys_acl_permission_code ,
+                    </if>
+                    <if test="delFlag != null">
+                        del_flag ,
+                    </if>
+                    <if test="sysAclSeq != null">
+                        sys_acl_seq ,
+                    </if>
+                    <if test="sysAclType != null">
+                        sys_acl_type ,
+                    </if>
+                    <if test="sysAclFrame != null">
+                        sys_acl_frame ,
+                    </if>
+                    <if test="disabledFlag != null">
+                        disabled_flag ,
+                    </if>
+                    <if test="createTime != null">
+                        create_time ,
+                    </if>
+                    <if test="updateTime != null">
+                        update_time ,
+                    </if>
+            </trim>
+            <trim prefix="values (" suffix=")" suffixOverrides=",">
+                    <if test="id != null">
+                        #{id,jdbcType=BIGINT} ,
+                    </if>
+                    <if test="sysAclParentId != null">
+                        #{sysAclParentId,jdbcType=BIGINT} ,
+                    </if>
+                    <if test="uuid != null and uuid.trim()!=''">
+                        #{uuid,jdbcType=VARCHAR} ,
+                    </if>
+                    <if test="remark != null and remark.trim()!=''">
+                        #{remark,jdbcType=VARCHAR} ,
+                    </if>
+                    <if test="createBy != null and createBy.trim()!=''">
+                        #{createBy,jdbcType=VARCHAR} ,
+                    </if>
+                    <if test="updateBy != null and updateBy.trim()!=''">
+                        #{updateBy,jdbcType=VARCHAR} ,
+                    </if>
+                    <if test="sysAclUrl != null and sysAclUrl.trim()!=''">
+                        #{sysAclUrl,jdbcType=VARCHAR} ,
+                    </if>
+                    <if test="sysAclCode != null and sysAclCode.trim()!=''">
+                        #{sysAclCode,jdbcType=VARCHAR} ,
+                    </if>
+                    <if test="sysAclIcon != null and sysAclIcon.trim()!=''">
+                        #{sysAclIcon,jdbcType=VARCHAR} ,
+                    </if>
+                    <if test="sysAclName != null and sysAclName.trim()!=''">
+                        #{sysAclName,jdbcType=VARCHAR} ,
+                    </if>
+                    <if test="sysAclLevel != null and sysAclLevel.trim()!=''">
+                        #{sysAclLevel,jdbcType=VARCHAR} ,
+                    </if>
+                    <if test="sysAclAction != null and sysAclAction.trim()!=''">
+                        #{sysAclAction,jdbcType=VARCHAR} ,
+                    </if>
+                    <if test="sysAclRouter != null and sysAclRouter.trim()!=''">
+                        #{sysAclRouter,jdbcType=VARCHAR} ,
+                    </if>
+                    <if test="sysAclComponentName != null and sysAclComponentName.trim()!=''">
+                        #{sysAclComponentName,jdbcType=VARCHAR} ,
+                    </if>
+                    <if test="sysAclPermissionCode != null and sysAclPermissionCode.trim()!=''">
+                        #{sysAclPermissionCode,jdbcType=VARCHAR} ,
+                    </if>
+                    <if test="delFlag != null">
+                        #{delFlag,jdbcType=INTEGER} ,
+                    </if>
+                    <if test="sysAclSeq != null">
+                        #{sysAclSeq,jdbcType=INTEGER} ,
+                    </if>
+                    <if test="sysAclType != null">
+                        #{sysAclType,jdbcType=INTEGER} ,
+                    </if>
+                    <if test="sysAclFrame != null">
+                        #{sysAclFrame,jdbcType=TINYINT} ,
+                    </if>
+                    <if test="disabledFlag != null">
+                        #{disabledFlag,jdbcType=INTEGER} ,
+                    </if>
+                    <if test="createTime != null">
+                        #{createTime,jdbcType=TIMESTAMP} ,
+                    </if>
+                    <if test="updateTime != null">
+                        #{updateTime,jdbcType=TIMESTAMP} ,
+                    </if>
+            </trim>
+        </operation>
 
-    <!-- foreach 可以自定义类型，paramtype="primitive" foreach->javatype="自己书写的类"  -->
-    <!-- 只有一个参数且为List时必须将参数命名为list -->
-    <operation name="insertBatch" paramtype="objectList" remark="批量插入表:sys_acl">
-        INSERT INTO sys_acl(
-            ID
-            ,SYS_ACL_PARENT_ID
-            ,SYS_ACL_PERMISSION_TYPE
-            ,UUID
-            ,REMARK
-            ,CREATE_BY
-            ,UPDATE_BY
-            ,SYS_ACL_URL
-            ,SYS_ACL_CODE
-            ,SYS_ACL_ICON
-            ,SYS_ACL_NAME
-            ,SYS_ACL_LEVEL
-            ,SYS_ACL_ACTION
-            ,SYS_ACL_ROUTER
-            ,FLAG
-            ,DEL_FLAG
-            ,SYS_ACL_SEQ
-            ,SYS_ACL_TYPE
-            ,CREATE_TIME
-            ,UPDATE_TIME
-        )VALUES
-        <foreach collection="list"  item="item" separator=",">
-            (
-                 null
-                , #{item.sysAclParentId,jdbcType=BIGINT}
-                , #{item.sysAclPermissionType,jdbcType=BIGINT}
-                , #{item.uuid,jdbcType=VARCHAR}
-                , #{item.remark,jdbcType=VARCHAR}
-                , #{item.createBy,jdbcType=VARCHAR}
-                , #{item.updateBy,jdbcType=VARCHAR}
-                , #{item.sysAclUrl,jdbcType=VARCHAR}
-                , #{item.sysAclCode,jdbcType=VARCHAR}
-                , #{item.sysAclIcon,jdbcType=VARCHAR}
-                , #{item.sysAclName,jdbcType=VARCHAR}
-                , #{item.sysAclLevel,jdbcType=VARCHAR}
-                , #{item.sysAclAction,jdbcType=VARCHAR}
-                , #{item.sysAclRouter,jdbcType=VARCHAR}
-                , #{item.flag,jdbcType=INTEGER}
-                , #{item.delFlag,jdbcType=INTEGER}
-                , #{item.sysAclSeq,jdbcType=INTEGER}
-                , #{item.sysAclType,jdbcType=INTEGER}
-                , #{item.createTime,jdbcType=TIMESTAMP}
-                , #{item.updateTime,jdbcType=TIMESTAMP}
-            )
-        </foreach>
-    </operation>
+        <operation name="insertSelectReturnId" paramtype="object" remark="插入表:sys_acl">
+                <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+                    SELECT
+                    LAST_INSERT_ID()
+                </selectKey>
+            INSERT INTO sys_acl
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                    <if test="id != null">
+                        id ,
+                    </if>
+                    <if test="sysAclParentId != null">
+                        sys_acl_parent_id ,
+                    </if>
+                    <if test="uuid != null and uuid.trim()!=''">
+                        uuid ,
+                    </if>
+                    <if test="remark != null and remark.trim()!=''">
+                        remark ,
+                    </if>
+                    <if test="createBy != null and createBy.trim()!=''">
+                        create_by ,
+                    </if>
+                    <if test="updateBy != null and updateBy.trim()!=''">
+                        update_by ,
+                    </if>
+                    <if test="sysAclUrl != null and sysAclUrl.trim()!=''">
+                        sys_acl_url ,
+                    </if>
+                    <if test="sysAclCode != null and sysAclCode.trim()!=''">
+                        sys_acl_code ,
+                    </if>
+                    <if test="sysAclIcon != null and sysAclIcon.trim()!=''">
+                        sys_acl_icon ,
+                    </if>
+                    <if test="sysAclName != null and sysAclName.trim()!=''">
+                        sys_acl_name ,
+                    </if>
+                    <if test="sysAclLevel != null and sysAclLevel.trim()!=''">
+                        sys_acl_level ,
+                    </if>
+                    <if test="sysAclAction != null and sysAclAction.trim()!=''">
+                        sys_acl_action ,
+                    </if>
+                    <if test="sysAclRouter != null and sysAclRouter.trim()!=''">
+                        sys_acl_router ,
+                    </if>
+                    <if test="sysAclComponentName != null and sysAclComponentName.trim()!=''">
+                        sys_acl_component_name ,
+                    </if>
+                    <if test="sysAclPermissionCode != null and sysAclPermissionCode.trim()!=''">
+                        sys_acl_permission_code ,
+                    </if>
+                    <if test="delFlag != null">
+                        del_flag ,
+                    </if>
+                    <if test="sysAclSeq != null">
+                        sys_acl_seq ,
+                    </if>
+                    <if test="sysAclType != null">
+                        sys_acl_type ,
+                    </if>
+                    <if test="sysAclFrame != null">
+                        sys_acl_frame ,
+                    </if>
+                    <if test="disabledFlag != null">
+                        disabled_flag ,
+                    </if>
+                    <if test="createTime != null">
+                        create_time ,
+                    </if>
+                    <if test="updateTime != null">
+                        update_time ,
+                    </if>
+            </trim>
+            <trim prefix="values (" suffix=")" suffixOverrides=",">
+                    <if test="id != null">
+                        #{id,jdbcType=BIGINT} ,
+                    </if>
+                    <if test="sysAclParentId != null">
+                        #{sysAclParentId,jdbcType=BIGINT} ,
+                    </if>
+                    <if test="uuid != null and uuid.trim()!=''">
+                        #{uuid,jdbcType=VARCHAR} ,
+                    </if>
+                    <if test="remark != null and remark.trim()!=''">
+                        #{remark,jdbcType=VARCHAR} ,
+                    </if>
+                    <if test="createBy != null and createBy.trim()!=''">
+                        #{createBy,jdbcType=VARCHAR} ,
+                    </if>
+                    <if test="updateBy != null and updateBy.trim()!=''">
+                        #{updateBy,jdbcType=VARCHAR} ,
+                    </if>
+                    <if test="sysAclUrl != null and sysAclUrl.trim()!=''">
+                        #{sysAclUrl,jdbcType=VARCHAR} ,
+                    </if>
+                    <if test="sysAclCode != null and sysAclCode.trim()!=''">
+                        #{sysAclCode,jdbcType=VARCHAR} ,
+                    </if>
+                    <if test="sysAclIcon != null and sysAclIcon.trim()!=''">
+                        #{sysAclIcon,jdbcType=VARCHAR} ,
+                    </if>
+                    <if test="sysAclName != null and sysAclName.trim()!=''">
+                        #{sysAclName,jdbcType=VARCHAR} ,
+                    </if>
+                    <if test="sysAclLevel != null and sysAclLevel.trim()!=''">
+                        #{sysAclLevel,jdbcType=VARCHAR} ,
+                    </if>
+                    <if test="sysAclAction != null and sysAclAction.trim()!=''">
+                        #{sysAclAction,jdbcType=VARCHAR} ,
+                    </if>
+                    <if test="sysAclRouter != null and sysAclRouter.trim()!=''">
+                        #{sysAclRouter,jdbcType=VARCHAR} ,
+                    </if>
+                    <if test="sysAclComponentName != null and sysAclComponentName.trim()!=''">
+                        #{sysAclComponentName,jdbcType=VARCHAR} ,
+                    </if>
+                    <if test="sysAclPermissionCode != null and sysAclPermissionCode.trim()!=''">
+                        #{sysAclPermissionCode,jdbcType=VARCHAR} ,
+                    </if>
+                    <if test="delFlag != null">
+                        #{delFlag,jdbcType=INTEGER} ,
+                    </if>
+                    <if test="sysAclSeq != null">
+                        #{sysAclSeq,jdbcType=INTEGER} ,
+                    </if>
+                    <if test="sysAclType != null">
+                        #{sysAclType,jdbcType=INTEGER} ,
+                    </if>
+                    <if test="sysAclFrame != null">
+                        #{sysAclFrame,jdbcType=TINYINT} ,
+                    </if>
+                    <if test="disabledFlag != null">
+                        #{disabledFlag,jdbcType=INTEGER} ,
+                    </if>
+                    <if test="createTime != null">
+                        #{createTime,jdbcType=TIMESTAMP} ,
+                    </if>
+                    <if test="updateTime != null">
+                        #{updateTime,jdbcType=TIMESTAMP} ,
+                    </if>
+            </trim>
+        </operation>
+        <operation name="insertBatchSelect" paramtype="objectList" remark="批量插入表:sys_acl">
+            <foreach collection="list" item="item" separator=";">
+                INSERT INTO sys_acl
+                <trim prefix="(" suffix=")" suffixOverrides=",">
+                        <if test="item.id != null">
+                            id ,
+                        </if>
+                        <if test="item.sysAclParentId != null">
+                            sys_acl_parent_id ,
+                        </if>
+                        <if test="item.uuid != null and item.uuid.trim()!=''">
+                            uuid ,
+                        </if>
+                        <if test="item.remark != null and item.remark.trim()!=''">
+                            remark ,
+                        </if>
+                        <if test="item.createBy != null and item.createBy.trim()!=''">
+                            create_by ,
+                        </if>
+                        <if test="item.updateBy != null and item.updateBy.trim()!=''">
+                            update_by ,
+                        </if>
+                        <if test="item.sysAclUrl != null and item.sysAclUrl.trim()!=''">
+                            sys_acl_url ,
+                        </if>
+                        <if test="item.sysAclCode != null and item.sysAclCode.trim()!=''">
+                            sys_acl_code ,
+                        </if>
+                        <if test="item.sysAclIcon != null and item.sysAclIcon.trim()!=''">
+                            sys_acl_icon ,
+                        </if>
+                        <if test="item.sysAclName != null and item.sysAclName.trim()!=''">
+                            sys_acl_name ,
+                        </if>
+                        <if test="item.sysAclLevel != null and item.sysAclLevel.trim()!=''">
+                            sys_acl_level ,
+                        </if>
+                        <if test="item.sysAclAction != null and item.sysAclAction.trim()!=''">
+                            sys_acl_action ,
+                        </if>
+                        <if test="item.sysAclRouter != null and item.sysAclRouter.trim()!=''">
+                            sys_acl_router ,
+                        </if>
+                        <if test="item.sysAclComponentName != null and item.sysAclComponentName.trim()!=''">
+                            sys_acl_component_name ,
+                        </if>
+                        <if test="item.sysAclPermissionCode != null and item.sysAclPermissionCode.trim()!=''">
+                            sys_acl_permission_code ,
+                        </if>
+                        <if test="item.delFlag != null">
+                            del_flag ,
+                        </if>
+                        <if test="item.sysAclSeq != null">
+                            sys_acl_seq ,
+                        </if>
+                        <if test="item.sysAclType != null">
+                            sys_acl_type ,
+                        </if>
+                        <if test="item.sysAclFrame != null">
+                            sys_acl_frame ,
+                        </if>
+                        <if test="item.disabledFlag != null">
+                            disabled_flag ,
+                        </if>
+                        <if test="item.createTime != null">
+                            create_time ,
+                        </if>
+                        <if test="item.updateTime != null">
+                            update_time ,
+                        </if>
+                </trim>
+                <trim prefix="values (" suffix=")" suffixOverrides=",">
+                        <if test="item.id != null">
+                            #{item.id,jdbcType=BIGINT} ,
+                        </if>
+                        <if test="item.sysAclParentId != null">
+                            #{item.sysAclParentId,jdbcType=BIGINT} ,
+                        </if>
+                        <if test="item.uuid != null and item.uuid.trim()!=''">
+                            #{item.uuid,jdbcType=VARCHAR} ,
+                        </if>
+                        <if test="item.remark != null and item.remark.trim()!=''">
+                            #{item.remark,jdbcType=VARCHAR} ,
+                        </if>
+                        <if test="item.createBy != null and item.createBy.trim()!=''">
+                            #{item.createBy,jdbcType=VARCHAR} ,
+                        </if>
+                        <if test="item.updateBy != null and item.updateBy.trim()!=''">
+                            #{item.updateBy,jdbcType=VARCHAR} ,
+                        </if>
+                        <if test="item.sysAclUrl != null and item.sysAclUrl.trim()!=''">
+                            #{item.sysAclUrl,jdbcType=VARCHAR} ,
+                        </if>
+                        <if test="item.sysAclCode != null and item.sysAclCode.trim()!=''">
+                            #{item.sysAclCode,jdbcType=VARCHAR} ,
+                        </if>
+                        <if test="item.sysAclIcon != null and item.sysAclIcon.trim()!=''">
+                            #{item.sysAclIcon,jdbcType=VARCHAR} ,
+                        </if>
+                        <if test="item.sysAclName != null and item.sysAclName.trim()!=''">
+                            #{item.sysAclName,jdbcType=VARCHAR} ,
+                        </if>
+                        <if test="item.sysAclLevel != null and item.sysAclLevel.trim()!=''">
+                            #{item.sysAclLevel,jdbcType=VARCHAR} ,
+                        </if>
+                        <if test="item.sysAclAction != null and item.sysAclAction.trim()!=''">
+                            #{item.sysAclAction,jdbcType=VARCHAR} ,
+                        </if>
+                        <if test="item.sysAclRouter != null and item.sysAclRouter.trim()!=''">
+                            #{item.sysAclRouter,jdbcType=VARCHAR} ,
+                        </if>
+                        <if test="item.sysAclComponentName != null and item.sysAclComponentName.trim()!=''">
+                            #{item.sysAclComponentName,jdbcType=VARCHAR} ,
+                        </if>
+                        <if test="item.sysAclPermissionCode != null and item.sysAclPermissionCode.trim()!=''">
+                            #{item.sysAclPermissionCode,jdbcType=VARCHAR} ,
+                        </if>
+                        <if test="item.delFlag != null">
+                            #{item.delFlag,jdbcType=INTEGER} ,
+                        </if>
+                        <if test="item.sysAclSeq != null">
+                            #{item.sysAclSeq,jdbcType=INTEGER} ,
+                        </if>
+                        <if test="item.sysAclType != null">
+                            #{item.sysAclType,jdbcType=INTEGER} ,
+                        </if>
+                        <if test="item.sysAclFrame != null">
+                            #{item.sysAclFrame,jdbcType=TINYINT} ,
+                        </if>
+                        <if test="item.disabledFlag != null">
+                            #{item.disabledFlag,jdbcType=INTEGER} ,
+                        </if>
+                        <if test="item.createTime != null">
+                            #{item.createTime,jdbcType=TIMESTAMP} ,
+                        </if>
+                        <if test="item.updateTime != null">
+                            #{item.updateTime,jdbcType=TIMESTAMP} ,
+                        </if>
+                </trim>
+            </foreach>
+        </operation>
 
-    <!-- 不推荐使用全 update 有需要自己打开
+        <operation name="updateBatchByPrimaryKeySelective" paramtype="objectList"
+                   remark="插入表:sys_acl">
+            <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+                update sys_acl
+                <set>
+                        <if test="item.id != null">
+                            id=#{item.id,jdbcType=BIGINT} ,
+                        </if>
+                        <if test="item.sysAclParentId != null">
+                            sys_acl_parent_id=#{item.sysAclParentId,jdbcType=BIGINT} ,
+                        </if>
+                        <if test="item.uuid != null">
+                            uuid=#{item.uuid,jdbcType=VARCHAR} ,
+                        </if>
+                        <if test="item.remark != null">
+                            remark=#{item.remark,jdbcType=VARCHAR} ,
+                        </if>
+                        <if test="item.createBy != null">
+                            create_by=#{item.createBy,jdbcType=VARCHAR} ,
+                        </if>
+                        <if test="item.updateBy != null">
+                            update_by=#{item.updateBy,jdbcType=VARCHAR} ,
+                        </if>
+                        <if test="item.sysAclUrl != null">
+                            sys_acl_url=#{item.sysAclUrl,jdbcType=VARCHAR} ,
+                        </if>
+                        <if test="item.sysAclCode != null">
+                            sys_acl_code=#{item.sysAclCode,jdbcType=VARCHAR} ,
+                        </if>
+                        <if test="item.sysAclIcon != null">
+                            sys_acl_icon=#{item.sysAclIcon,jdbcType=VARCHAR} ,
+                        </if>
+                        <if test="item.sysAclName != null">
+                            sys_acl_name=#{item.sysAclName,jdbcType=VARCHAR} ,
+                        </if>
+                        <if test="item.sysAclLevel != null">
+                            sys_acl_level=#{item.sysAclLevel,jdbcType=VARCHAR} ,
+                        </if>
+                        <if test="item.sysAclAction != null">
+                            sys_acl_action=#{item.sysAclAction,jdbcType=VARCHAR} ,
+                        </if>
+                        <if test="item.sysAclRouter != null">
+                            sys_acl_router=#{item.sysAclRouter,jdbcType=VARCHAR} ,
+                        </if>
+                        <if test="item.sysAclComponentName != null">
+                            sys_acl_component_name=#{item.sysAclComponentName,jdbcType=VARCHAR} ,
+                        </if>
+                        <if test="item.sysAclPermissionCode != null">
+                            sys_acl_permission_code=#{item.sysAclPermissionCode,jdbcType=VARCHAR} ,
+                        </if>
+                        <if test="item.delFlag != null">
+                            del_flag=#{item.delFlag,jdbcType=INTEGER} ,
+                        </if>
+                        <if test="item.sysAclSeq != null">
+                            sys_acl_seq=#{item.sysAclSeq,jdbcType=INTEGER} ,
+                        </if>
+                        <if test="item.sysAclType != null">
+                            sys_acl_type=#{item.sysAclType,jdbcType=INTEGER} ,
+                        </if>
+                        <if test="item.sysAclFrame != null">
+                            sys_acl_frame=#{item.sysAclFrame,jdbcType=TINYINT} ,
+                        </if>
+                        <if test="item.disabledFlag != null">
+                            disabled_flag=#{item.disabledFlag,jdbcType=INTEGER} ,
+                        </if>
+                        <if test="item.createTime != null">
+                            create_time=#{item.createTime,jdbcType=TIMESTAMP} ,
+                        </if>
+                        <if test="item.updateTime != null">
+                            update_time=#{item.updateTime,jdbcType=TIMESTAMP} ,
+                        </if>
+                </set>
+                WHERE
+                    <if test="item.id != null">
+                        id=#{item.id,jdbcType=BIGINT}
+                    </if>
+            </foreach>
+        </operation>
+        <operation name="updateByPrimaryKeySelective" paramtype="object" remark="插入表:sys_acl">
+            update sys_acl
+            <set>
+                    <if test="id != null">
+                        id=#{id,jdbcType=BIGINT},
+                    </if>
+                    <if test="sysAclParentId != null">
+                        sys_acl_parent_id=#{sysAclParentId,jdbcType=BIGINT},
+                    </if>
+                    <if test="uuid != null">
+                        uuid=#{uuid,jdbcType=VARCHAR},
+                    </if>
+                    <if test="remark != null">
+                        remark=#{remark,jdbcType=VARCHAR},
+                    </if>
+                    <if test="createBy != null">
+                        create_by=#{createBy,jdbcType=VARCHAR},
+                    </if>
+                    <if test="updateBy != null">
+                        update_by=#{updateBy,jdbcType=VARCHAR},
+                    </if>
+                    <if test="sysAclUrl != null">
+                        sys_acl_url=#{sysAclUrl,jdbcType=VARCHAR},
+                    </if>
+                    <if test="sysAclCode != null">
+                        sys_acl_code=#{sysAclCode,jdbcType=VARCHAR},
+                    </if>
+                    <if test="sysAclIcon != null">
+                        sys_acl_icon=#{sysAclIcon,jdbcType=VARCHAR},
+                    </if>
+                    <if test="sysAclName != null">
+                        sys_acl_name=#{sysAclName,jdbcType=VARCHAR},
+                    </if>
+                    <if test="sysAclLevel != null">
+                        sys_acl_level=#{sysAclLevel,jdbcType=VARCHAR},
+                    </if>
+                    <if test="sysAclAction != null">
+                        sys_acl_action=#{sysAclAction,jdbcType=VARCHAR},
+                    </if>
+                    <if test="sysAclRouter != null">
+                        sys_acl_router=#{sysAclRouter,jdbcType=VARCHAR},
+                    </if>
+                    <if test="sysAclComponentName != null">
+                        sys_acl_component_name=#{sysAclComponentName,jdbcType=VARCHAR},
+                    </if>
+                    <if test="sysAclPermissionCode != null">
+                        sys_acl_permission_code=#{sysAclPermissionCode,jdbcType=VARCHAR},
+                    </if>
+                    <if test="delFlag != null">
+                        del_flag=#{delFlag,jdbcType=INTEGER},
+                    </if>
+                    <if test="sysAclSeq != null">
+                        sys_acl_seq=#{sysAclSeq,jdbcType=INTEGER},
+                    </if>
+                    <if test="sysAclType != null">
+                        sys_acl_type=#{sysAclType,jdbcType=INTEGER},
+                    </if>
+                    <if test="sysAclFrame != null">
+                        sys_acl_frame=#{sysAclFrame,jdbcType=TINYINT},
+                    </if>
+                    <if test="disabledFlag != null">
+                        disabled_flag=#{disabledFlag,jdbcType=INTEGER},
+                    </if>
+                    <if test="createTime != null">
+                        create_time=#{createTime,jdbcType=TIMESTAMP},
+                    </if>
+                    <if test="updateTime != null">
+                        update_time=#{updateTime,jdbcType=TIMESTAMP},
+                    </if>
+            </set>
+            WHERE
+                <if test="id != null">
+                     id=#{id,jdbcType=BIGINT}
+                </if>
+        </operation>
+        <!-- foreach 可以自定义类型，paramtype="primitive" foreach->javatype="自己书写的类"  -->
+        <!-- 只有一个参数且为List时必须将参数命名为list -->
+
+
+            <!-- 不推荐使用全 update 有需要自己打开
     <operation name="update" paramtype="object" remark="更新表:sys_acl">
-        <![CDATA[
         UPDATE sys_acl
         SET
             SYS_ACL_PARENT_ID = #{sysAclParentId,jdbcType=BIGINT}
-            ,SYS_ACL_PERMISSION_TYPE = #{sysAclPermissionType,jdbcType=BIGINT}
             ,UUID            = #{uuid,jdbcType=VARCHAR}
             ,REMARK          = #{remark,jdbcType=VARCHAR}
             ,CREATE_BY       = #{createBy,jdbcType=VARCHAR}
@@ -138,50 +618,55 @@
             ,SYS_ACL_LEVEL   = #{sysAclLevel,jdbcType=VARCHAR}
             ,SYS_ACL_ACTION  = #{sysAclAction,jdbcType=VARCHAR}
             ,SYS_ACL_ROUTER  = #{sysAclRouter,jdbcType=VARCHAR}
-            ,FLAG            = #{flag,jdbcType=INTEGER}
+            ,SYS_ACL_COMPONENT_NAME = #{sysAclComponentName,jdbcType=VARCHAR}
+            ,SYS_ACL_PERMISSION_CODE = #{sysAclPermissionCode,jdbcType=VARCHAR}
             ,DEL_FLAG        = #{delFlag,jdbcType=INTEGER}
             ,SYS_ACL_SEQ     = #{sysAclSeq,jdbcType=INTEGER}
             ,SYS_ACL_TYPE    = #{sysAclType,jdbcType=INTEGER}
+            ,SYS_ACL_FRAME   = #{sysAclFrame,jdbcType=TINYINT}
+            ,DISABLED_FLAG   = #{disabledFlag,jdbcType=INTEGER}
             ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
             ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
         WHERE
             ID              = #{id,jdbcType=BIGINT}
-        ]]>
     </operation>
     -->
-    <operation name="deleteById"  remark="根据主键删除数据:sys_acl">
-        <![CDATA[
-        DELETE FROM sys_acl
-        WHERE
-            ID = #{id,jdbcType=BIGINT}
-        ]]>
-    </operation>
+            <operation name="deleteById" remark="根据主键删除数据:sys_acl">
+                DELETE FROM sys_acl
+                WHERE
+                    id = #{id,jdbcType=BIGINT}
+            </operation>
 
-    <operation name="getById" multiplicity="one" remark="根据主键获取数据:sys_acl">
-        SELECT *
-        FROM sys_acl
-        WHERE
-        <![CDATA[
-            ID = #{id,jdbcType=BIGINT}
-        ]]>
-    </operation>
+            <operation name="getById" multiplicity="one"
+                       remark="根据主键获取数据:sys_acl">
+                SELECT *
+                FROM sys_acl
+                WHERE
+                    id = #{id,jdbcType=BIGINT}
+            </operation>
 
-    <!-- 根据普通索引查询数据 -->
-    <operation name="queryBySysAclModuleId" multiplicity="many" remark="根据普通索引SysAclModuleId获取数据:sys_acl">
-        SELECT *
-        FROM sys_acl
-        WHERE
-        <![CDATA[
-            SYS_ACL_PARENT_ID = #{sysAclParentId,jdbcType=BIGINT}
-        ]]>
-    </operation>
-    <!-- 根据普通索引查询数据 -->
-    <operation name="queryBySysAclUuid" multiplicity="many" remark="根据普通索引SysAclUuid获取数据:sys_acl">
-        SELECT *
-        FROM sys_acl
-        WHERE
-        <![CDATA[
-            UUID            = #{uuid,jdbcType=VARCHAR}
-        ]]>
-    </operation>
-</table>
+            <!-- 根据普通索引查询数据 -->
+            <operation name="queryBySysAclLevel" multiplicity="many"
+                       remark="根据普通索引SysAclLevel获取数据:sys_acl">
+                SELECT *
+                FROM sys_acl
+                WHERE
+                    SYS_ACL_LEVEL   = #{sysAclLevel,jdbcType=VARCHAR}
+            </operation>
+            <!-- 根据普通索引查询数据 -->
+            <operation name="queryBySysAclModuleId" multiplicity="many"
+                       remark="根据普通索引SysAclModuleId获取数据:sys_acl">
+                SELECT *
+                FROM sys_acl
+                WHERE
+                    SYS_ACL_PARENT_ID = #{sysAclParentId,jdbcType=BIGINT}
+            </operation>
+            <!-- 根据普通索引查询数据 -->
+            <operation name="queryBySysAclUuid" multiplicity="many"
+                       remark="根据普通索引SysAclUuid获取数据:sys_acl">
+                SELECT *
+                FROM sys_acl
+                WHERE
+                    UUID            = #{uuid,jdbcType=VARCHAR}
+            </operation>
+    </table>

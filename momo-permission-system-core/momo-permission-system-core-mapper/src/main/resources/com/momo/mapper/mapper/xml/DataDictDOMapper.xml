@@ -3,23 +3,23 @@
 <mapper namespace="com.momo.mapper.mapper.DataDictDOMapper">
     <!-- 自动生成,请修改 SYS_DATA_DICT.xml -->
     <resultMap id="BaseResultMap"  type="com.momo.mapper.dataobject.DataDictDO">
-        <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
-        <result column="SYS_DICT_CODE_PARENT_ID" property="sysDictCodeParentId" jdbcType="BIGINT" javaType="Long"/>
-        <result column="REMARK" property="remark" jdbcType="VARCHAR" javaType="String"/>
-        <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
-        <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
-        <result column="SYS_DICT_CODE_NAME" property="sysDictCodeName" jdbcType="VARCHAR" javaType="String"/>
-        <result column="SYS_DICT_CODE_LEVEL" property="sysDictCodeLevel" jdbcType="VARCHAR" javaType="String"/>
-        <result column="SYS_DICT_CODE_VALUE" property="sysDictCodeValue" jdbcType="VARCHAR" javaType="String"/>
-        <result column="SYS_DICT_CODE_HTML_LEFT" property="sysDictCodeHtmlLeft" jdbcType="VARCHAR" javaType="String"/>
-        <result column="SYS_DICT_CODE_HTML_RIGHT" property="sysDictCodeHtmlRight" jdbcType="VARCHAR" javaType="String"/>
-        <result column="SYS_DICT_CODE_PARENT_VALUE" property="sysDictCodeParentValue" jdbcType="VARCHAR" javaType="String"/>
-        <result column="DEL_FLAG" property="delFlag" jdbcType="INTEGER" javaType="Integer"/>
-        <result column="DISABLED_FLAG" property="disabledFlag" jdbcType="INTEGER" javaType="Integer"/>
-        <result column="SYS_DICT_CODE_SEQ" property="sysDictCodeSeq" jdbcType="INTEGER" javaType="Integer"/>
-        <result column="SYS_DICT_CODE_HTML_APPLY" property="sysDictCodeHtmlApply" jdbcType="INTEGER" javaType="Integer"/>
-        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
-        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <id column="id" property="id" jdbcType="BIGINT" javaType="Long"/>
+        <result column="sys_dict_code_parent_id" property="sysDictCodeParentId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR" javaType="String"/>
+        <result column="create_by" property="createBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="update_by" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="sys_dict_code_name" property="sysDictCodeName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="sys_dict_code_level" property="sysDictCodeLevel" jdbcType="VARCHAR" javaType="String"/>
+        <result column="sys_dict_code_value" property="sysDictCodeValue" jdbcType="VARCHAR" javaType="String"/>
+        <result column="sys_dict_code_html_left" property="sysDictCodeHtmlLeft" jdbcType="VARCHAR" javaType="String"/>
+        <result column="sys_dict_code_html_right" property="sysDictCodeHtmlRight" jdbcType="VARCHAR" javaType="String"/>
+        <result column="sys_dict_code_parent_value" property="sysDictCodeParentValue" jdbcType="VARCHAR" javaType="String"/>
+        <result column="del_flag" property="delFlag" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="disabled_flag" property="disabledFlag" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="sys_dict_code_seq" property="sysDictCodeSeq" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="sys_dict_code_html_apply" property="sysDictCodeHtmlApply" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
     </resultMap>
 
 

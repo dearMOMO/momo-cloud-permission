@@ -3,23 +3,23 @@
 <mapper namespace="com.momo.mapper.mapper.UserGroupDOMapper">
     <!-- 自动生成,请修改 SYS_USER_GROUP.xml -->
     <resultMap id="BaseResultMap"  type="com.momo.mapper.dataobject.UserGroupDO">
-        <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
-        <result column="UUID" property="uuid" jdbcType="VARCHAR" javaType="String"/>
-        <result column="REMARK" property="remark" jdbcType="VARCHAR" javaType="String"/>
-        <result column="NAME_TOP" property="nameTop" jdbcType="VARCHAR" javaType="String"/>
-        <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
-        <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
-        <result column="NAME_BOTTOM" property="nameBottom" jdbcType="VARCHAR" javaType="String"/>
-        <result column="USER_GROUP_NAME" property="userGroupName" jdbcType="VARCHAR" javaType="String"/>
-        <result column="DEL_FLAG" property="delFlag" jdbcType="INTEGER" javaType="Integer"/>
-        <result column="SYS_OPEN_DAY" property="sysOpenDay" jdbcType="INTEGER" javaType="Integer"/>
-        <result column="DISABLED_FLAG" property="disabledFlag" jdbcType="INTEGER" javaType="Integer"/>
-        <result column="SYS_OPEN_ACCOUNT_NUM" property="sysOpenAccountNum" jdbcType="INTEGER" javaType="Integer"/>
-        <result column="SYS_CREATE_ACCOUNT_NUM" property="sysCreateAccountNum" jdbcType="INTEGER" javaType="Integer"/>
-        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
-        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
-        <result column="SYS_ACCOUNT_END_TIME" property="sysAccountEndTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
-        <result column="SYS_ACCOUNT_START_TIME" property="sysAccountStartTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <id column="id" property="id" jdbcType="BIGINT" javaType="Long"/>
+        <result column="uuid" property="uuid" jdbcType="VARCHAR" javaType="String"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR" javaType="String"/>
+        <result column="name_top" property="nameTop" jdbcType="VARCHAR" javaType="String"/>
+        <result column="create_by" property="createBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="update_by" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="name_bottom" property="nameBottom" jdbcType="VARCHAR" javaType="String"/>
+        <result column="user_group_name" property="userGroupName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="del_flag" property="delFlag" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="sys_open_day" property="sysOpenDay" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="disabled_flag" property="disabledFlag" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="sys_open_account_num" property="sysOpenAccountNum" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="sys_create_account_num" property="sysCreateAccountNum" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="sys_account_end_time" property="sysAccountEndTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="sys_account_start_time" property="sysAccountStartTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
     </resultMap>
 
 

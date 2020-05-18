@@ -3,8 +3,8 @@
 <mapper namespace="com.momo.mapper.mapper.WebsiteVisibleDOMapper">
     <!-- 自动生成,请修改 SYS_WEBSITE_VISIBLE.xml -->
     <resultMap id="BaseResultMap"  type="com.momo.mapper.dataobject.WebsiteVisibleDO">
-        <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
-        <result column="VISIBLE_NUMBER" property="visibleNumber" jdbcType="BIGINT" javaType="Long"/>
+        <id column="id" property="id" jdbcType="BIGINT" javaType="Long"/>
+        <result column="visible_number" property="visibleNumber" jdbcType="BIGINT" javaType="Long"/>
     </resultMap>
 
 

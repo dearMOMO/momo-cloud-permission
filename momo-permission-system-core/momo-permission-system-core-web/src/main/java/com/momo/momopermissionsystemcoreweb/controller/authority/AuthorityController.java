@@ -56,4 +56,18 @@ public class AuthorityController {
         return JSONResult.ok(map);
 
     }
+
+    /**
+     * 动态权限菜单 (总部和第三方通用)
+     *
+     * @return
+     */
+    @RequestMapping("/dynamicMenu/v2")
+    public JSONResult dynamicMenu_V2(@Validated(DynamicMenuAuthorReq.Permission.class) @RequestBody DynamicMenuAuthorReq loginAuthReq) {
+        Map<String, Object> map = Maps.newHashMap();
+        List<AclLevelRes> aclModuleLevelDtos_DB = dynamicMenuTreeService.dynamicMenuTree(loginAuthReq);
+        map.put("acls", aclModuleLevelDtos_DB);
+        return JSONResult.ok(map);
+
+    }
 }

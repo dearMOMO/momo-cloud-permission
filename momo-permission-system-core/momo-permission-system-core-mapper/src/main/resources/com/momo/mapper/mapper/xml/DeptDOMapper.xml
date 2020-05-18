@@ -3,20 +3,20 @@
 <mapper namespace="com.momo.mapper.mapper.DeptDOMapper">
     <!-- 自动生成,请修改 SYS_DEPT.xml -->
     <resultMap id="BaseResultMap"  type="com.momo.mapper.dataobject.DeptDO">
-        <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
-        <result column="TENANT_ID" property="tenantId" jdbcType="BIGINT" javaType="Long"/>
-        <result column="SYS_DEPT_PARENT_ID" property="sysDeptParentId" jdbcType="BIGINT" javaType="Long"/>
-        <result column="REMARK" property="remark" jdbcType="VARCHAR" javaType="String"/>
-        <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
-        <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
-        <result column="SYS_DEPT_NAME" property="sysDeptName" jdbcType="VARCHAR" javaType="String"/>
-        <result column="SYS_DEPT_LEVEL" property="sysDeptLevel" jdbcType="VARCHAR" javaType="String"/>
-        <result column="DEL_FLAG" property="delFlag" jdbcType="INTEGER" javaType="Integer"/>
-        <result column="SYS_IS_LEAF" property="sysIsLeaf" jdbcType="INTEGER" javaType="Integer"/>
-        <result column="SYS_DEPT_SEQ" property="sysDeptSeq" jdbcType="INTEGER" javaType="Integer"/>
-        <result column="DISABLED_FLAG" property="disabledFlag" jdbcType="INTEGER" javaType="Integer"/>
-        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
-        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <id column="id" property="id" jdbcType="BIGINT" javaType="Long"/>
+        <result column="tenant_id" property="tenantId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="sys_dept_parent_id" property="sysDeptParentId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR" javaType="String"/>
+        <result column="create_by" property="createBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="update_by" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="sys_dept_name" property="sysDeptName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="sys_dept_level" property="sysDeptLevel" jdbcType="VARCHAR" javaType="String"/>
+        <result column="del_flag" property="delFlag" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="sys_is_leaf" property="sysIsLeaf" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="sys_dept_seq" property="sysDeptSeq" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="disabled_flag" property="disabledFlag" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
     </resultMap>
 
 

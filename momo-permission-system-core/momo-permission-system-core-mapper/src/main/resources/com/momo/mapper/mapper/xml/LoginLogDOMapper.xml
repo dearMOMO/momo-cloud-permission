@@ -3,22 +3,22 @@
 <mapper namespace="com.momo.mapper.mapper.LoginLogDOMapper">
     <!-- 自动生成,请修改 SYS_LOGIN_LOG.xml -->
     <resultMap id="BaseResultMap"  type="com.momo.mapper.dataobject.LoginLogDO">
-        <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
-        <result column="USER_ID" property="userId" jdbcType="BIGINT" javaType="Long"/>
-        <result column="TENANT_ID" property="tenantId" jdbcType="BIGINT" javaType="Long"/>
-        <result column="UUID" property="uuid" jdbcType="VARCHAR" javaType="String"/>
-        <result column="USER_IP" property="userIp" jdbcType="VARCHAR" javaType="String"/>
-        <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
-        <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
-        <result column="USER_LOGIN_SYS" property="userLoginSys" jdbcType="VARCHAR" javaType="String"/>
-        <result column="USER_USER_NAME" property="userUserName" jdbcType="VARCHAR" javaType="String"/>
-        <result column="USER_LOGIN_NAME" property="userLoginName" jdbcType="VARCHAR" javaType="String"/>
-        <result column="USER_LOGIN_DEVICE" property="userLoginDevice" jdbcType="VARCHAR" javaType="String"/>
-        <result column="USER_LOGIN_BROWSER" property="userLoginBrowser" jdbcType="VARCHAR" javaType="String"/>
-        <result column="DISABLED_FLAG" property="disabledFlag" jdbcType="INTEGER" javaType="Integer"/>
-        <result column="USER_LOGIN_TYPE" property="userLoginType" jdbcType="INTEGER" javaType="Integer"/>
-        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
-        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <id column="id" property="id" jdbcType="BIGINT" javaType="Long"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="tenant_id" property="tenantId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="uuid" property="uuid" jdbcType="VARCHAR" javaType="String"/>
+        <result column="user_ip" property="userIp" jdbcType="VARCHAR" javaType="String"/>
+        <result column="create_by" property="createBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="update_by" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="user_login_sys" property="userLoginSys" jdbcType="VARCHAR" javaType="String"/>
+        <result column="user_user_name" property="userUserName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="user_login_name" property="userLoginName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="user_login_device" property="userLoginDevice" jdbcType="VARCHAR" javaType="String"/>
+        <result column="user_login_browser" property="userLoginBrowser" jdbcType="VARCHAR" javaType="String"/>
+        <result column="disabled_flag" property="disabledFlag" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="user_login_type" property="userLoginType" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
     </resultMap>
 
 

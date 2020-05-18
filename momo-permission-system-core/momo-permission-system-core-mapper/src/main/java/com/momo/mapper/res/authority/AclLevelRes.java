@@ -20,6 +20,7 @@ import com.momo.mapper.dataobject.AclDO;
 import lombok.*;
 import org.springframework.beans.BeanUtils;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -60,4 +61,48 @@ public class AclLevelRes extends AclDO {
         dto.setSysAclParentIdStr(String.valueOf(acl.getSysAclParentId()));
         return dto;
     }
+
+    //***********       动态权限菜单      ***********
+
+    /**
+     * 菜单名称
+     */
+    private String name;
+
+    /**
+     * 菜单权限标识
+     */
+    private String perms;
+
+    /**
+     * 前端path / 即跳转路由
+     */
+    private String path;
+
+    /**
+     * 菜单组件
+     */
+    private String component;
+
+    /**
+     * 父菜单ID
+     */
+    private Integer parentId;
+
+    /**
+     * 图标
+     */
+    private String icon;
+
+
+
+
+
+    /**
+     * 非数据库字段
+     * 父菜单名称
+     */
+    private String parentName;
+
+
 }

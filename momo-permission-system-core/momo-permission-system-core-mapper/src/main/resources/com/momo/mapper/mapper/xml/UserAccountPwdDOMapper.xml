@@ -3,21 +3,21 @@
 <mapper namespace="com.momo.mapper.mapper.UserAccountPwdDOMapper">
     <!-- 自动生成,请修改 SYS_USER_ACCOUNT_PWD.xml -->
     <resultMap id="BaseResultMap"  type="com.momo.mapper.dataobject.UserAccountPwdDO">
-        <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
-        <result column="TENANT_ID" property="tenantId" jdbcType="BIGINT" javaType="Long"/>
-        <result column="SYS_USER_ID" property="sysUserId" jdbcType="BIGINT" javaType="Long"/>
-        <result column="UUID" property="uuid" jdbcType="VARCHAR" javaType="String"/>
-        <result column="REMARK" property="remark" jdbcType="VARCHAR" javaType="String"/>
-        <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
-        <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
-        <result column="SYS_USER_PWD" property="sysUserPwd" jdbcType="VARCHAR" javaType="String"/>
-        <result column="SYS_USER_AUTH_SALT" property="sysUserAuthSalt" jdbcType="VARCHAR" javaType="String"/>
-        <result column="SYS_USER_LOGIN_NAME" property="sysUserLoginName" jdbcType="VARCHAR" javaType="String"/>
-        <result column="DEL_FLAG" property="delFlag" jdbcType="INTEGER" javaType="Integer"/>
-        <result column="DISABLED_FLAG" property="disabledFlag" jdbcType="INTEGER" javaType="Integer"/>
-        <result column="SYS_LOGIN_NUMBER" property="sysLoginNumber" jdbcType="INTEGER" javaType="Integer"/>
-        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
-        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <id column="id" property="id" jdbcType="BIGINT" javaType="Long"/>
+        <result column="tenant_id" property="tenantId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="sys_user_id" property="sysUserId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="uuid" property="uuid" jdbcType="VARCHAR" javaType="String"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR" javaType="String"/>
+        <result column="create_by" property="createBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="update_by" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="sys_user_pwd" property="sysUserPwd" jdbcType="VARCHAR" javaType="String"/>
+        <result column="sys_user_auth_salt" property="sysUserAuthSalt" jdbcType="VARCHAR" javaType="String"/>
+        <result column="sys_user_login_name" property="sysUserLoginName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="del_flag" property="delFlag" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="disabled_flag" property="disabledFlag" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="sys_login_number" property="sysLoginNumber" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
     </resultMap>
 
 

@@ -3,7 +3,7 @@ package com.momo.mapper.dataobject;
 import java.util.Date;
 
 /**
- * The table 权限点表
+ * The table 操作权限-权限点表
  */
 public class AclDO{
 
@@ -79,6 +79,10 @@ public class AclDO{
      * sysAclType 类型，-1系统 0:目录 1：菜单，2：按钮，3：其他.
      */
     private Integer sysAclType;
+    /**
+     * sysAclFrame 是否为外链 0否 1是.
+     */
+    private Integer sysAclFrame;
     /**
      * disabledFlag 状态 0启用  1禁用.
      */
@@ -378,6 +382,22 @@ public class AclDO{
      */
     public Integer getSysAclType(){
         return sysAclType;
+    }
+
+    /**
+     * Set sysAclFrame 是否为外链 0否 1是.
+     */
+    public void setSysAclFrame(Integer sysAclFrame){
+        this.sysAclFrame = sysAclFrame;
+    }
+
+    /**
+     * Get sysAclFrame 是否为外链 0否 1是.
+     *
+     * @return the string
+     */
+    public Integer getSysAclFrame(){
+        return sysAclFrame;
     }
 
     /**

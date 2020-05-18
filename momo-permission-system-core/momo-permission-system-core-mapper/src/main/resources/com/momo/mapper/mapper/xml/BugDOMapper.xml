@@ -3,17 +3,17 @@
 <mapper namespace="com.momo.mapper.mapper.BugDOMapper">
     <!-- 自动生成,请修改 SYS_BUG.xml -->
     <resultMap id="BaseResultMap"  type="com.momo.mapper.dataobject.BugDO">
-        <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
-        <result column="UUID" property="uuid" jdbcType="VARCHAR" javaType="String"/>
-        <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
-        <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
-        <result column="SYS_PRODUCT_IMG" property="sysProductImg" jdbcType="VARCHAR" javaType="String"/>
-        <result column="SYS_PRODUCT_NAME" property="sysProductName" jdbcType="VARCHAR" javaType="String"/>
-        <result column="SYS_PRODUCT_REPLY" property="sysProductReply" jdbcType="VARCHAR" javaType="String"/>
-        <result column="SYS_PRODUCT_DETAIL" property="sysProductDetail" jdbcType="VARCHAR" javaType="String"/>
-        <result column="DISABLED_FLAG" property="disabledFlag" jdbcType="INTEGER" javaType="Integer"/>
-        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
-        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <id column="id" property="id" jdbcType="BIGINT" javaType="Long"/>
+        <result column="uuid" property="uuid" jdbcType="VARCHAR" javaType="String"/>
+        <result column="create_by" property="createBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="update_by" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="sys_product_img" property="sysProductImg" jdbcType="VARCHAR" javaType="String"/>
+        <result column="sys_product_name" property="sysProductName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="sys_product_reply" property="sysProductReply" jdbcType="VARCHAR" javaType="String"/>
+        <result column="sys_product_detail" property="sysProductDetail" jdbcType="VARCHAR" javaType="String"/>
+        <result column="disabled_flag" property="disabledFlag" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
     </resultMap>
 
 
