@@ -24,10 +24,6 @@
         </dependency>
         <dependency>
             <groupId>com.momo</groupId>
-            <artifactId>momo-permission-system-core-weixin-all</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.momo</groupId>
             <artifactId>momo-permission-system-core-feign</artifactId>
         </dependency>
         <dependency>
