@@ -20,27 +20,25 @@
         <java.version>1.8</java.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <spring-cloud.version>Greenwich.SR4</spring-cloud.version>
-        <mysql-connector-java.version>8.0.18</mysql-connector-java.version>
+        <spring-cloud.version>Greenwich.SR6</spring-cloud.version>
+        <mysql-connector-java.version>8.0.21</mysql-connector-java.version>
         <pagehelper-spring-boot-starter.version>1.2.13</pagehelper-spring-boot-starter.version>
-        <lombok.version>1.18.10</lombok.version>
-        <fastjson.version>1.2.62</fastjson.version>
-        <guava.version>28.2-jre</guava.version>
+        <lombok.version>1.18.12</lombok.version>
+        <fastjson.version>1.2.72</fastjson.version>
+        <guava.version>29.0-jre</guava.version>
         <commons-pool2.version>2.8.0</commons-pool2.version>
         <jjwt.version>0.9.1</jjwt.version>
-        <httpclient.version>4.5.11</httpclient.version>
-        <commons-lang3.version>3.9</commons-lang3.version>
+        <httpclient.version>4.5.12</httpclient.version>
+        <commons-lang3.version>3.10</commons-lang3.version>
         <UserAgentUtils.version>1.21</UserAgentUtils.version>
-        <netty-all.version>4.1.36.Final</netty-all.version>
-        <spring-boot-admin.version>2.0.4</spring-boot-admin.version>
+        <netty-all.version>4.1.51.Final</netty-all.version>
+        <spring-boot-admin.version>2.2.3</spring-boot-admin.version>
         <EasyCaptcha.version>1.6.2</EasyCaptcha.version>
-        <commons-codec.version>1.13</commons-codec.version>
-        <hutool-all.version>5.1.2</hutool-all.version>
-        <commons-collections.version>3.2.2</commons-collections.version>
+        <commons-codec.version>1.14</commons-codec.version>
+        <hutool-all.version>5.3.9</hutool-all.version>
         <commons-collections4.version>4.4</commons-collections4.version>
-        <weixin-java-tools.version>3.5.0</weixin-java-tools.version>
-        <lettuce-core.version>5.2.1.RELEASE</lettuce-core.version>
-        <feign-okhttp.version>10.7.4</feign-okhttp.version>
+        <lettuce-core.version>5.3.1.RELEASE</lettuce-core.version>
+        <feign-okhttp.version>11.0</feign-okhttp.version>
     </properties>
     <modules>
         <module>momo-permission-eureka</module>
@@ -50,55 +48,11 @@
     </modules>
     <dependencyManagement>
         <dependencies>
-            <!--微信相关 begin-->
-            <!--微信小程序-->
-            <dependency>
-                <groupId>com.github.binarywang</groupId>
-                <artifactId>weixin-java-miniapp</artifactId>
-                <version>${weixin-java-tools.version}</version>
-            </dependency>
-            <!--微信支付-->
-            <dependency>
-                <groupId>com.github.binarywang</groupId>
-                <artifactId>weixin-java-pay</artifactId>
-                <version>${weixin-java-tools.version}</version>
-            </dependency>
-            <!--微信开放平台-->
-            <dependency>
-                <groupId>com.github.binarywang</groupId>
-                <artifactId>weixin-java-open</artifactId>
-                <version>${weixin-java-tools.version}</version>
-            </dependency>
-            <!--公众号（包括订阅号和服务号）-->
-            <dependency>
-                <groupId>com.github.binarywang</groupId>
-                <artifactId>weixin-java-mp</artifactId>
-                <version>${weixin-java-tools.version}</version>
-            </dependency>
-            <!--企业号/企业微信-->
-            <dependency>
-                <groupId>com.github.binarywang</groupId>
-                <artifactId>weixin-java-cp</artifactId>
-                <version>${weixin-java-tools.version}</version>
-            </dependency>
-
-            <!--微信相关 end-->
-            <dependency>
-                <groupId>io.github.openfeign</groupId>
-                <artifactId>feign-okhttp</artifactId>
-                <version>${feign-okhttp.version}</version>
-            </dependency>
-
             <!--Netty-->
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-all</artifactId>
                 <version>${netty-all.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-collections</groupId>
-                <artifactId>commons-collections</artifactId>
-                <version>${commons-collections.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
@@ -115,7 +69,7 @@
 
             <dependency>
                 <groupId>com.github.whvcse</groupId>
-                <artifactId>EasyCaptcha</artifactId>
+                <artifactId>easy-captcha</artifactId>
                 <version>${EasyCaptcha.version}</version>
             </dependency>
             <dependency>
@@ -196,7 +150,7 @@
             <dependency>
                 <groupId>com.momo</groupId>
                 <artifactId>momo-permission-system-core</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.momo</groupId>
@@ -206,10 +160,6 @@
         </dependencies>
     </dependencyManagement>
     <repositories>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
         <repository>
             <id>alimaven</id>
             <url>http://maven.aliyun.com/nexus/content/groups/public/</url>

@@ -64,7 +64,7 @@
         <!--验证码-->
         <dependency>
             <groupId>com.github.whvcse</groupId>
-            <artifactId>EasyCaptcha</artifactId>
+            <artifactId>easy-captcha</artifactId>
         </dependency>
         <!-- 整合redis begin-->
         <dependency>
