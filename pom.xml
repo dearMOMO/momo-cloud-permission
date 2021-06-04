@@ -28,7 +28,7 @@
         <guava.version>29.0-jre</guava.version>
         <commons-pool2.version>2.8.0</commons-pool2.version>
         <jjwt.version>0.9.1</jjwt.version>
-        <httpclient.version>4.5.12</httpclient.version>
+        <httpclient.version>4.5.13</httpclient.version>
         <commons-lang3.version>3.10</commons-lang3.version>
         <UserAgentUtils.version>1.21</UserAgentUtils.version>
         <netty-all.version>4.1.51.Final</netty-all.version>
